@@ -1,0 +1,84 @@
+:root {
+    color-scheme: light;
+    --background: #faf9f5;
+    --sidebar: #f0eee6;
+    --surface: #ffffff;
+    --soft: #f4f3ed;
+    --hover: #e9e7df;
+    --selected: #e4e1d8;
+    --text: #262624;
+    --muted: #66645e;
+    --faint: #77746b;
+    --border: #dedbd2;
+    --line: #e9e6de;
+    --accent: #a34f36;
+    --accent-text: #a34f36;
+    --accent-soft: #f3e7de;
+    --green: #47745c;
+    --green-background: #eaf1e8;
+    --red: #a9473e;
+    --red-background: #f8ebe6;
+    --amber: #896425;
+    --amber-background: #f6efdd;
+    --shadow: 0 8px 35px #26262414, 0 1px 4px #26262409;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+    --serif: Georgia, 'Times New Roman', 'Noto Serif CJK SC', 'Songti SC', SimSun, serif;
+    --mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+    --nav-width: 254px;
+    --panel-width: 470px;
+    --code-size: 13px;
+    --motion-fast: 140ms;
+    --motion-normal: 180ms;
+    --motion-layout: 240ms;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+    font-family: var(--font);
+    font-synthesis: none;
+    color: var(--text);
+    background: var(--background);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --background: #262624;
+    --sidebar: #20201e;
+    --surface: #30302d;
+    --soft: #2d2d29;
+    --hover: #393933;
+    --selected: #414038;
+    --text: #f1f0e9;
+    --muted: #b2afa3;
+    --faint: #969388;
+    --border: #48473f;
+    --line: #3b3a34;
+    --accent: #a9563d;
+    --accent-text: #e6a086;
+    --accent-soft: #49362c;
+    --green: #a4c4a6;
+    --green-background: #2d3e32;
+    --red: #e5a69c;
+    --red-background: #472f2b;
+    --amber: #dfbf82;
+    --amber-background: #423b2b;
+    --shadow: 0 8px 35px #0004;
+}
+
+
+:root {
+    --code-keyword: #7b3e91;
+    --code-string: #396949;
+    --code-tag: #965034;
+    --code-number: #a14e22;
+    --code-comment: #77746b;
+    --code-property: #315f8b;
+}
+:root[data-theme="dark"] {
+    --code-keyword: #cfacf0;
+    --code-string: #b3d39e;
+    --code-tag: #edb194;
+    --code-number: #edbc7d;
+    --code-comment: #aaa597;
+    --code-property: #9dc5e6;
+}
+
+:root { --scrollbar-thumb: #66645e66; --scrollbar-thumb-hover: #66645e99; }
+:root[data-theme="dark"] { --scrollbar-thumb: #b2afa366; --scrollbar-thumb-hover: #b2afa399; }

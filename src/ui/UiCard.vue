@@ -1,0 +1,24 @@
+<script setup lang="ts">
+withDefaults(defineProps<{
+    title?: string;
+    subtitle?: string;
+    variant?: 'outlined' | 'elevated' | 'tonal' | 'flat';
+    density?: 'comfortable' | 'compact';
+    flush?: boolean;
+    as?: string;
+    dense?: boolean;
+    ghost?: boolean;
+    rounded?: boolean;
+}>(), { variant: 'outlined', density: 'comfortable', as: 'section', rounded: true });
+</script>
+
+<template>
+    <component :is="as" class="ui-card" :class="[`ui-card--${variant}`, `ui-card--${dense ? 'compact' : density}`, { 'ui-card--flush': flush, 'is-ghost': ghost, 'is-square': !rounded }]">
+        <header v-if="title || subtitle || $slots.header" class="ui-card-header">
+            <slot name="header"><h3 v-if="title" class="ui-card-title">{{ title }}</h3><p v-if="subtitle" class="ui-card-subtitle">{{ subtitle }}</p></slot>
+        </header>
+        <div v-if="$slots.media" class="ui-card-media"><slot name="media" /></div>
+        <div class="ui-card-content"><slot /></div>
+        <footer v-if="$slots.actions" class="ui-card-actions"><slot name="actions" /></footer>
+    </component>
+</template>
