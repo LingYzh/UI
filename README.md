@@ -1,5 +1,7 @@
 # UAH UI
 
+New sessions: read [HANDOFF.md](HANDOFF.md) and [AGENTS.md](AGENTS.md) before implementation.
+
 Independent Vue 3 component library and documentation. Source repository: git@github.com:LingYzh/UI.git.
 
 ## Develop and verify
