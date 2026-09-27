@@ -1,17 +1,35 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { UiButton, UiInput, UiSelect, UiSwitch, UiField, UiTabs, UiTabPanel, UiDialog, UiCollapse, UiCard, UiScrollArea, UiCodeBlock, vRipple, snackbar } from '../index';
+import { UiActivity, UiButton, UiInput, UiSelect, UiSwitch, UiField, UiTabs, UiTabPanel, UiDialog, UiCollapse, UiCard, UiScrollArea, UiCodeBlock, UiIcon, UiTooltip, vRipple, snackbar } from '../index';
 import Icon from '../../components/Icon.vue';
+import { UiTextarea } from '../index';
 import VariantExample from './VariantExample.vue';
 import TableExample from './TableExample.vue';
+import DiffDemo from './DiffDemo.vue';
+import MarkdownDemo from './MarkdownDemo.vue';
+import ConversationDemo from './ConversationDemo.vue';
+import UsageMeterDemo from './UsageMeterDemo.vue';
 import { reducedMotion as reduced } from './preferences';
 
+const activityOpen = ref(true);
 const props = defineProps({ example: { type: String, required: true } });
 const query = ref('');
 const input = ref();
 const saving = ref(false);
 const size = ref(13);
 const density = ref('comfortable');
+const permissionMode = ref('default');
+const planVersion = ref('v1');
+const planSubmitted = ref(false);
+const planVersionItems = computed(() => [{ value: 'v1', label: planSubmitted.value ? 'v1 · 待审批' : 'v1 · 草稿', description: planSubmitted.value ? '已提交，等待审阅。' : '正在编写。' }]);
+const modeItems = [
+    { value: 'default', label: 'Default', description: 'Ask before making changes or running commands.' },
+    { value: 'accept-edits', label: 'Accept edits', description: 'Allow file edits; ask before running commands.' },
+    { value: 'plan', label: 'Plan', description: 'Explore and prepare a plan before implementation.' },
+    { value: 'dont-ask', label: "Don't ask", description: 'Run allowed actions without approval prompts.' },
+    { value: 'bypass', label: 'Bypass permissions', description: 'Allow all actions within the configured environment.' },
+    { value: 'auto', label: 'Auto', description: 'Let the application choose its approval behavior.', disabled: true }
+];
 const project = ref('');
 const projectError = computed(() => project.value ? '' : '请选择项目。');
 const codeSample = '<script setup>\nimport { ref } from \'vue\';\nconst saved = ref(false);\n<\/script>\n\n<template>\n    <UiButton :disabled="saved" @click="saved = true">保存</UiButton>\n</template>';
@@ -65,8 +83,18 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
 
 <template>
     <div class="live-example">
-        <TableExample v-if="['table-basic', 'table-fixed', 'table-server', 'pagination-basic', 'table-variants', 'server-variants', 'pagination-variants'].includes(example)" :example="example" />
+        <UsageMeterDemo v-if="example === 'usage-meter-basic'" />
+        <ConversationDemo v-else-if="example.startsWith('conversation-')" :example="example" />
+        <MarkdownDemo v-else-if="example.startsWith('markdown-')" :example="example" />
+        <DiffDemo v-else-if="example === 'diff-content'" />
+        <TableExample v-else-if="['table-basic', 'table-fixed', 'table-server', 'pagination-basic', 'table-variants', 'server-variants', 'pagination-variants'].includes(example)" :example="example" />
         <VariantExample v-else-if="example.endsWith('-shared-variants')" :component="example.replace('-shared-variants', '')" />
+        <template v-else-if="example === 'activity-basic'">
+            <UiActivity v-model:open="activityOpen" title="思考过程" status="已完成"><p>先确认项目约束，再检查相关模块。这里展示服务返回的思考摘要，正文回答在活动之外。</p></UiActivity>
+            <UiActivity title="读取 src/main.ts" status="已完成" tone="success">读取 84 行，找到应用入口。</UiActivity>
+            <UiActivity title="运行 npm test" status="等待审批" tone="busy" :open="true">命令将在当前用户权限下运行。<template #actions><UiButton size="sm">批准本次</UiButton><UiButton size="sm" variant="ghost">拒绝</UiButton></template></UiActivity>
+            <UiActivity title="编辑 src/main.ts" status="失败" tone="error">文件内容已变化，请重新读取后再试。</UiActivity>
+        </template>
         <template v-else-if="example === 'style-variants'">
             <div class="d-flex flex-wrap ga-4 mb-4">
                 <label class="d-flex align-center ga-2"><UiSwitch v-model="dense" aria-label="密集布局" />dense</label>
@@ -86,6 +114,29 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         </template>
         <template v-else-if="example === 'scroll-horizontal'">
             <UiScrollArea label="横向项目" axis="horizontal" always><div class="d-flex ga-4 pa-4" style="width: max-content"><UiCard v-for="item in 12" :key="item" :title="`项目 ${item}`" density="compact" style="width: 160px">水平拖动查看。</UiCard></div></UiScrollArea>
+        </template>
+        <template v-else-if="example === 'textarea-instructions'">
+            <div class="d-flex flex-column ga-3"><label for="demo-instructions">Agent 指令</label><UiTextarea id="demo-instructions" v-model="query" placeholder="描述职责、回答方式与任务边界…" /><UiTextarea model-value="禁用状态" disabled aria-label="禁用指令" :rows="2" /><UiTextarea model-value="待修正指令" invalid aria-label="错误指令" :rows="2" /></div>
+        </template>
+        <template v-else-if="example === 'tooltip-capability'">
+            <div class="d-flex ga-4"><UiTooltip text="图片输入"><UiIcon name="image" /></UiTooltip><UiTooltip text="音频输入"><UiIcon name="volume" /></UiTooltip><UiTooltip text="PDF 输入"><UiIcon name="file" /></UiTooltip></div>
+        </template>
+        <template v-else-if="example === 'card-provider'">
+            <UiCard density="compact" aria-label="紧凑服务卡片">
+                <div class="d-flex align-center justify-space-between ga-3">
+                    <strong class="ellipsis" title="Local Model Provider">Local Model Provider</strong>
+                    <label class="d-flex align-center ga-2 small"><span>启用</span><UiSwitch v-model="expanded" aria-label="启用示例服务" /></label>
+                </div>
+                <p class="muted small ellipsis my-2" title="http://localhost:5580/v1">http://localhost:5580/v1</p>
+                <div class="d-flex flex-wrap align-center justify-space-between ga-2">
+                    <span class="muted small">OpenAI Chat · 25 个模型</span>
+                    <div class="d-flex ga-1"><UiButton size="sm" variant="ghost">编辑</UiButton><UiButton size="sm" variant="ghost">删除</UiButton></div>
+                </div>
+                <div class="d-flex flex-wrap align-center ga-2 small muted" aria-label="模型能力示例">
+                    <span v-for="item in [['image','图片输入'],['file','PDF 输入'],['volume','音频输入'],['monitor','视频输入'],['puzzle','工具调用'],['spark','推理']]" :key="item[0]" role="img" :aria-label="item[1]" :title="item[1]"><UiIcon :name="item[0]" :size="16" /></span>
+                    <span>上下文 128K</span>
+                </div>
+            </UiCard>
         </template>
         <template v-else-if="example === 'card-form'">
             <UiCard title="工作区偏好" subtitle="保存当前工作区的显示选项。" aria-label="工作区偏好">
@@ -139,6 +190,18 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <UiField v-slot="{ controlAttrs }" label="项目名称" :for="`${prefix}-error`" error="请输入项目名称。"><UiInput v-bind="controlAttrs" invalid placeholder="例如：我的工作区" /></UiField>
             <UiField v-slot="{ controlAttrs }" label="只读能力" :for="`${prefix}-disabled`"><UiInput v-bind="controlAttrs" disabled model-value="尚未接入" /></UiField>
         </template>
+        <template v-else-if="example === 'select-dynamic'">
+            <UiSelect v-model="planVersion" :items="planVersionItems" aria-label="动态计划版本" />
+            <UiButton class="mt-3" @click="planSubmitted = !planSubmitted">切换计划状态</UiButton>
+            <output>选中值始终是 {{ planVersion }}，状态变更同步更新收起后的标签。</output>
+        </template>
+        <template v-else-if="example === 'select-described'">
+            <UiSelect v-model="permissionMode" :items="modeItems" menu-title="Mode" compact ghost aria-label="Permission mode" />
+            <output>Selected: {{ permissionMode }}</output>
+        </template>
+        <template v-else-if="example === 'select-groups'">
+            <UiSelect v-model="draft" placeholder="选择模型" aria-label="分组模型"><optgroup v-for="group in ['Provider A', 'Provider B']" :key="group" :label="group"><option v-for="n in 20" :key="n" :value="group + n">model-{{ n }}</option></optgroup></UiSelect>
+        </template>
         <template v-else-if="example === 'select-values'">
             <UiField v-slot="{ controlAttrs }" label="代码字号" :for="`${prefix}-size`"><UiSelect v-model="size" v-bind="controlAttrs"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></UiSelect></UiField>
             <UiField v-slot="{ controlAttrs }" label="显示密度" :for="`${prefix}-density`"><UiSelect v-model="density" v-bind="controlAttrs" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect></UiField>
@@ -181,6 +244,17 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 </div>
             </div>
             <output>选中：{{ selected }}{{ example === 'panel-persistence' ? ` · 草稿：${draft || '（空）'}` : '' }}</output>
+        </template>
+        <template v-else-if="example === 'dialog-scrollable'">
+            <UiButton @click="open = true; error = ''">打开长表单弹窗</UiButton>
+            <UiDialog v-model:open="open" scrollable :error="error" :aria-labelledby="`${prefix}-title`">
+                <template #header><h2 :id="`${prefix}-title`">固定提示与内部滚动</h2></template>
+                <div class="d-flex flex-column ga-4">
+                    <UiField v-for="number in 18" :key="number" v-slot="{ controlAttrs }" :label="`示例字段 ${number}`" :for="`${prefix}-field-${number}`"><UiInput v-bind="controlAttrs" placeholder="滚动查看其余字段" /></UiField>
+                    <UiButton @click="error = '读取失败：请检查服务地址与认证信息。此提示始终留在弹窗顶部。'">显示顶部错误</UiButton>
+                </div>
+                <template #footer><div class="d-flex justify-end ga-2"><UiButton @click="error = ''">清除错误</UiButton><UiButton variant="primary" @click="open = false">关闭长表单</UiButton></div></template>
+            </UiDialog>
         </template>
         <template v-else-if="example === 'dialog-lifecycle'">
             <UiButton @click="open = true"><Icon name="panel" :size="16" />打开示例弹窗</UiButton>

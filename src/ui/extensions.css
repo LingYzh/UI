@@ -6,7 +6,7 @@
 ::-webkit-scrollbar-thumb { border-radius: 999px; background: transparent; }
 :hover::-webkit-scrollbar-thumb, :focus-within::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
 ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-.ui-scroll-area { position: relative; min-width: 0; min-height: 0; overflow: hidden; border-radius: 8px; }
+.ui-scroll-area { position: relative; min-width: 0; min-height: 0; overflow: clip; border-radius: 8px; }
 .ui-scroll-viewport { min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: auto; scrollbar-width: none; outline-offset: -2px; }
 .ui-scroll-viewport::-webkit-scrollbar { display: none; }
 .ui-scroll-area[data-axis="vertical"] > .ui-scroll-viewport { overflow-x: hidden; }

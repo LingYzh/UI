@@ -79,7 +79,7 @@ try {
     await openDoc('dialog');
     await page.getByRole('button', { name: '打开示例弹窗' }).click();
     const dialog = page.getByRole('dialog', { name: '共享弹窗' });
-    await page.waitForFunction(() => document.querySelector('dialog').dataset.state === 'open');
+    await page.waitForFunction((element) => element.dataset.state === 'open', await dialog.elementHandle());
     assert.equal(await dialog.evaluate((element) => element.getAnimations().length), 0);
     await page.getByRole('button', { name: '关闭弹窗', exact: true }).click();
     await dialog.waitFor({ state: 'hidden' });
@@ -121,7 +121,7 @@ try {
     passed.push('snackbar supports all six positions, manual close, and independent pointer/focus timer pauses');
     for (const doc of docPages) {
         await openDoc(doc.id);
-        assert.ok((await page.locator('h1').textContent()).includes(doc.title), `document heading: ${doc.id}`);
+        assert.ok((await page.locator('.docs-page-heading h1').textContent()).includes(doc.title), `document heading: ${doc.id}`);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `horizontal overflow: ${doc.id}`);
     }
     passed.push(`all ${docPages.length} documentation routes render without page overflow`);

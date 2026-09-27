@@ -27,6 +27,14 @@
     --nav-width: 254px;
     --panel-width: 470px;
     --code-size: 13px;
+    --usage-category-1: #918476;
+    --usage-category-2: #a7856c;
+    --usage-category-3: #bda78a;
+    --usage-category-4: #768b79;
+    --usage-category-5: #8b9b84;
+    --usage-category-6: #b9b7a0;
+    --usage-category-7: #bfa487;
+    --usage-category-8: #c5baa9;
     --motion-fast: 140ms;
     --motion-normal: 180ms;
     --motion-layout: 240ms;
@@ -60,6 +68,14 @@
     --amber: #dfbf82;
     --amber-background: #423b2b;
     --shadow: 0 8px 35px #0004;
+    --usage-category-1: #ad9b88;
+    --usage-category-2: #c39c7e;
+    --usage-category-3: #d6bd9b;
+    --usage-category-4: #8aa88e;
+    --usage-category-5: #a3b898;
+    --usage-category-6: #c6c4a9;
+    --usage-category-7: #d4b795;
+    --usage-category-8: #d2c5b1;
 }
 
 

@@ -1,0 +1,88 @@
+import { _electron as electron } from 'playwright';
+import { preview } from 'vite';
+import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+
+await mkdir('artifacts', { recursive: true });
+const evidence = await mkdtemp(path.resolve('artifacts/described-select-'));
+const server = await preview({ build: { outDir: path.resolve('dist/docs') }, preview: { host: '127.0.0.1', port: 0 } });
+const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'profile'), UAH_UI_PREVIEW_URL: server.resolvedUrls.local[0] + 'index.html#/select' };
+delete env.ELECTRON_RUN_AS_NODE;
+delete env.UAH_DEV_URL;
+const app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], env });
+try {
+    const page = await app.firstWindow();
+    page.setDefaultTimeout(8000);
+    const select = page.getByRole('combobox', { name: 'Permission mode', exact: true });
+    const dynamic = page.getByRole('combobox', { name: '动态计划版本', exact: true });
+    const capture = async name => {
+        const data = await app.evaluate(async ({ BrowserWindow }) => (await BrowserWindow.getAllWindows()[0].capturePage()).toDataURL());
+        await writeFile(path.join(evidence, name + '.png'), Buffer.from(data.split(',')[1], 'base64'));
+    };
+    assert.equal(await select.inputValue(), 'default');
+    assert.equal(await select.locator('selectedcontent').innerText(), 'Default');
+    await select.click();
+    await page.waitForTimeout(200);
+    assert(await select.locator('.ui-select-menu-title').isVisible());
+    assert.equal(await select.locator('option').count(), 6);
+    assert(await select.locator('option[value="auto"]').isDisabled());
+    await capture('light-menu');
+    await select.locator('option[value="accept-edits"] .ui-select-item-description').click();
+    assert.equal(await select.inputValue(), 'accept-edits');
+    assert.equal(await select.locator('selectedcontent').innerText(), 'Accept edits');
+    assert.equal(await select.evaluate(e => document.activeElement === e), false);
+    await select.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    assert.equal(await select.inputValue(), 'plan');
+    assert.equal(await select.evaluate(e => document.activeElement === e), true);
+    await select.click();
+    await page.keyboard.press('End');
+    await page.keyboard.press('Enter');
+    assert.equal(await select.inputValue(), 'bypass');
+    await select.click();
+    await page.keyboard.press('Escape');
+    await dynamic.scrollIntoViewIfNeeded();
+    assert.match(await dynamic.locator('selectedcontent').textContent(), /草稿/);
+    await page.getByRole('button', { name: '切换计划状态', exact: true }).click();
+    await page.waitForTimeout(150);
+    assert.match(await dynamic.locator('selectedcontent').textContent(), /待审批/);
+    assert.equal(await dynamic.inputValue(), 'v1');
+    await capture('dynamic-label');
+    assert.equal(await select.evaluate(e => e.matches(':open')), false);
+    await page.evaluate(() => document.documentElement.dataset.theme = 'dark');
+    await select.click();
+    await page.waitForTimeout(200);
+    await capture('dark-menu');
+    await page.keyboard.press('Escape');
+    await app.evaluate(({ BrowserWindow }) => {
+        const window = BrowserWindow.getAllWindows()[0];
+        window.setSize(900, 800);
+        window.webContents.setZoomFactor(1.25);
+    });
+    await select.scrollIntoViewIfNeeded();
+    await select.click();
+    await page.waitForTimeout(200);
+    await capture('dark-900x800-125');
+    await page.keyboard.press('Escape');
+    await page.evaluate(() => document.documentElement.dataset.theme = 'light');
+    await select.click();
+    await page.waitForTimeout(200);
+    await capture('light-900x800-125');
+    await page.keyboard.press('Escape');
+    await page.addInitScript(() => {
+        const supports = CSS.supports.bind(CSS);
+        CSS.supports = (...args) => args[0] === 'appearance' && args[1] === 'base-select' ? false : supports(...args);
+    });
+    await page.reload();
+    assert.equal(await select.locator('selectedcontent').count(), 0);
+    assert.deepEqual(await select.locator('option').allTextContents(), ['Default', 'Accept edits', 'Plan', "Don't ask", 'Bypass permissions', 'Auto']);
+    await select.selectOption('plan');
+    assert.equal(await select.inputValue(), 'plan');
+    console.log('PASS ' + evidence);
+} finally {
+    await app.close();
+    await server.close();
+}

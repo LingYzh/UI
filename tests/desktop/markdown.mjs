@@ -1,0 +1,131 @@
+import { _electron as electron } from 'playwright';
+import { createServer } from 'vite';
+import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+
+await mkdir('artifacts', { recursive: true });
+const evidence = await mkdtemp(path.resolve('artifacts/markdown-'));
+const relative = path.relative(process.cwd(), evidence).replaceAll('\\', '/');
+const fixture = `<!doctype html><html lang="zh"><head><meta charset="UTF-8"><title>Markdown component acceptance</title></head><body><div id="app"></div><script type="module">
+import { createApp, h, reactive } from 'vue';
+import UiMarkdown from '/src/ui/UiMarkdown.vue';
+import '/src/ui/tokens.css';
+import '/src/ui/styles.css';
+import '/src/ui/markdown.css';
+const state = reactive({ source: '', streaming: false, second: '' });
+const links = []; const rendered = [];
+window.fixture = { state, links, rendered };
+createApp({ render: () => h('main', { style: 'max-width:760px;padding:32px;margin:auto' }, [h(UiMarkdown, { source: state.source, streaming: state.streaming, onLinkClick: value => links.push(value), onRendered: value => rendered.push({ value, time: performance.now() }) }), h(UiMarkdown, { source: state.second })]) }).mount('#app');
+</script></body></html>`;
+await writeFile(path.join(evidence, 'fixture.html'), fixture, 'utf8');
+const warnings = [];
+const server = await createServer({ server: { host: '127.0.0.1', port: 0, watch: { ignored: ['**/artifacts/**'] } }, customLogger: { info() {}, warn(message) { warnings.push(message); }, warnOnce(message) { warnings.push(message); }, error(message) { throw new Error(message); }, clearScreen() {}, hasErrorLogged() { return false; }, hasWarned: false } });
+await server.listen();
+const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'profile'), UAH_UI_PREVIEW_URL: server.resolvedUrls.local[0] + relative + '/fixture.html' };
+delete env.ELECTRON_RUN_AS_NODE;
+delete env.UAH_DEV_URL;
+const app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], env });
+try {
+    const page = await app.firstWindow();
+    page.setDefaultTimeout(12000);
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    try { await page.waitForFunction(() => window.fixture); }
+    catch (error) { console.error(JSON.stringify({ url: page.url(), errors, warnings, body: await page.locator('body').innerText() })); throw error; }
+    const rich = '# 可阅读的 Markdown\n\n**重点**、*强调*、~~删除~~、==标记==、H~2~O、x^2^ 与 [参考资料](https://example.com)。\n\n> 信息分层，保留自然的阅读节奏。\n\n- [x] Markdown\n- [ ] 待办项目\n\n| 能力 | 显示 |\n| --- | --- |\n| 表格 | 独立滚动 |\n\n```ts\nconst message = "Hello";\nconsole.log(message);\n```\n\n公式 $E = mc^2$。\n\n$$\n\\int_0^1 x^2 dx = \\frac{1}{3}\n$$\n\n<details><summary>补充说明</summary>\n\n**说明正文**\n\n```js\nconst nested = true;\n```\n\n</details>\n\n脚注[^n]。\n\n[^n]: 正文内部跳转。\n\n```mermaid\nflowchart LR\n A[收到消息] --> B[平滑呈现]\n B --> C[完成回答]\n```';
+    await page.evaluate(source => { window.fixture.state.source = source; }, rich);
+    await page.locator('.ui-markdown .katex').first().waitFor();
+    await page.locator('.ui-markdown-diagram svg').waitFor();
+    assert.equal(await page.locator('details strong').textContent(), '说明正文');
+    assert.equal(await page.locator('details .ui-code-block').count(), 1);
+    await page.getByRole('link', { name: '参考资料' }).focus();
+    await page.keyboard.press('Enter');
+    assert.deepEqual(await page.evaluate(() => window.fixture.links), ['https://example.com']);
+    const summary = page.locator('summary');
+    await summary.focus(); await page.keyboard.press('Space');
+    assert.equal(await page.locator('details').getAttribute('open'), '');
+    for (const theme of ['light', 'dark']) {
+        await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme);
+        await app.evaluate(({ BrowserWindow }) => { const window = BrowserWindow.getAllWindows()[0]; window.setSize(900, 1100); window.webContents.setZoomFactor(1.25); });
+        await page.waitForTimeout(700);
+        const metrics = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, toolbars: Array.from(document.querySelectorAll('.ui-code-toolbar')).map(element => ({ right: element.getBoundingClientRect().right, width: element.getBoundingClientRect().width })) }));
+        assert.ok(metrics.toolbars.every(toolbar => toolbar.right <= metrics.viewport + 1), JSON.stringify(metrics));
+        const screenshot = await app.evaluate(async ({ BrowserWindow }) => (await BrowserWindow.getAllWindows()[0].capturePage()).toDataURL());
+        await writeFile(path.join(evidence, theme + '.png'), Buffer.from(screenshot.split(',')[1], 'base64'));
+    }
+    await page.evaluate(() => {
+        window.fixture.state.source = '<p class="ui-visually-hidden ui-dialog" style="color:red" onclick="window.pwned=1">Safe</p>\n\n<a href="javascript:alert(1)">unsafe</a> <a href="file:///D:/secret">local</a> <a href="/relative">relative</a>\n\n<img src="data:image/svg+xml,evil" onerror="window.pwned=1"><img src="file:///D:/secret">\n\n<script>window.pwned=1<\/script><iframe src="https://example.com"></iframe><input type="text">';
+    });
+    await page.getByText('Safe', { exact: true }).waitFor();
+    assert.equal(await page.locator('.ui-markdown [onclick], .ui-markdown [onerror], .ui-markdown [style], .ui-markdown script, .ui-markdown iframe, .ui-markdown input').count(), 0);
+    assert.equal(await page.locator('.ui-markdown a[href], .ui-markdown img[src], .ui-markdown .ui-visually-hidden, .ui-markdown .ui-dialog').count(), 0);
+    assert.equal(await page.evaluate(() => window.pwned), undefined);
+    await page.evaluate(() => { window.fixture.state.source = 'Reference[^n].\n\n[^n]: First'; window.fixture.state.second = 'Reference[^n].\n\n[^n]: Second'; });
+    await page.locator('.footnote-ref').first().waitFor();
+    const ids = await page.locator('.ui-markdown [id]').evaluateAll(elements => elements.map(element => element.id));
+    assert.equal(new Set(ids).size, ids.length);
+    const footnote = page.locator('.footnote-ref a').first();
+    await footnote.click();
+    assert.equal(await page.evaluate(() => document.activeElement?.id), (await footnote.getAttribute('href')).slice(1));
+    await page.evaluate(() => { window.fixture.state.second = ''; window.fixture.state.source = 'Stable paragraph.\n\nTail'; });
+    await page.getByText('Tail', { exact: true }).waitFor();
+    await page.evaluate(() => {
+        const nodes = document.querySelectorAll('.ui-markdown-content p');
+        window.stable = nodes[0]; window.tail = nodes[1].firstChild;
+        const range = document.createRange(); range.setStart(window.tail, 0); range.setEnd(window.tail, 4);
+        const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+        window.fixture.state.streaming = true;
+        window.fixture.state.source += ' grows smoothly.';
+    });
+    await page.waitForTimeout(140);
+    assert.equal(await page.locator('.ui-markdown-content p').nth(1).textContent(), 'Tail');
+    await page.waitForFunction(() => document.querySelectorAll('.ui-markdown-content p')[1]?.textContent === 'Tail grows smoothly.');
+    assert.ok(await page.evaluate(() => window.stable === document.querySelectorAll('.ui-markdown-content p')[0] && window.tail === document.querySelectorAll('.ui-markdown-content p')[1].firstChild));
+    assert.equal(await page.evaluate(() => getSelection().toString()), 'Tail');
+    await page.evaluate(() => { window.fixture.state.source += '\n\n```text\nfirst'; });
+    await page.locator('.ui-code-block code').waitFor();
+    await page.evaluate(() => { window.codeNode = document.querySelector('.ui-code-block code'); window.fixture.state.source += ' second\n```\nFinal exact content.'; window.fixture.state.streaming = false; });
+    await page.waitForFunction(() => document.querySelector('.ui-markdown').getAttribute('aria-busy') === 'false');
+    assert.ok(await page.evaluate(() => window.codeNode === document.querySelector('.ui-code-block code')));
+    assert.equal(await page.locator('.ui-code-block code').textContent(), 'first second\n');
+    assert.equal(await page.getByText('Final exact content.', { exact: true }).count(), 1);
+    await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'true'; window.fixture.state.streaming = true; window.fixture.state.source = 'Application reduced motion flushes immediately.'; });
+    await page.getByText('Application reduced motion flushes immediately.', { exact: true }).waitFor();
+    await page.evaluate(() => { delete document.documentElement.dataset.reducedMotion; });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.evaluate(() => { window.fixture.state.streaming = true; window.fixture.state.source = 'Reduced motion flushes immediately.'; });
+    await page.getByText('Reduced motion flushes immediately.', { exact: true }).waitFor();
+    await page.evaluate(() => { window.fixture.state.source = '```mermaid\ninvalid -> ???\n```'; window.fixture.state.streaming = false; });
+    await page.locator('.ui-code-block code').waitFor();
+    await page.waitForTimeout(600);
+    assert.equal(await page.locator('.ui-code-block code').textContent(), 'invalid -> ???\n');
+    await app.evaluate(({ BrowserWindow }) => { const window = BrowserWindow.getAllWindows()[0]; window.setSize(480, 800); window.webContents.setZoomFactor(1.5); });
+    await page.evaluate(() => { window.fixture.state.source = '| A | B |\n| - | - |\n| This is a wide column with long text | Another wide column with long text |\n\n```text\n' + 'long '.repeat(40) + '\n```'; });
+    await page.waitForTimeout(400);
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1));
+    const toolbarBounds = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, rights: Array.from(document.querySelectorAll('.ui-code-toolbar')).map(element => element.getBoundingClientRect().right) }));
+    assert.ok(toolbarBounds.rights.every(right => right <= toolbarBounds.viewport + 1), JSON.stringify(toolbarBounds));
+    await page.goto(server.resolvedUrls.local[0] + 'index.html#/markdown');
+    await page.locator('.docs-page-heading h1').filter({ hasText: 'Markdown 正文' }).waitFor();
+    await app.evaluate(({ BrowserWindow }) => { const window = BrowserWindow.getAllWindows()[0]; window.setSize(1000, 1000); window.webContents.setZoomFactor(1.25); });
+    await page.waitForTimeout(600);
+    for (const theme of ['light', 'dark']) {
+        await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme);
+        await page.locator('.markdown-demo').first().evaluate(element => element.scrollIntoView({ block: 'start' }));
+        await page.waitForTimeout(450);
+        const screenshot = await app.evaluate(async ({ BrowserWindow }) => (await BrowserWindow.getAllWindows()[0].capturePage()).toDataURL());
+        await writeFile(path.join(evidence, 'docs-' + theme + '.png'), Buffer.from(screenshot.split(',')[1], 'base64'));
+    }
+    await app.evaluate(({ BrowserWindow }) => { const window = BrowserWindow.getAllWindows()[0]; window.setSize(480, 850); window.webContents.setZoomFactor(1.25); });
+    await page.waitForTimeout(500);
+    const docsBounds = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, width: document.documentElement.scrollWidth, toolbars: Array.from(document.querySelectorAll('.markdown-demo .ui-code-toolbar')).map(element => ({ right: element.getBoundingClientRect().right, width: element.getBoundingClientRect().width })) }));
+    assert.ok(docsBounds.width <= docsBounds.viewport + 1, JSON.stringify(docsBounds));
+    assert.ok(docsBounds.toolbars.every(toolbar => toolbar.right <= docsBounds.viewport + 1), JSON.stringify(docsBounds));
+    const narrowScreenshot = await app.evaluate(async ({ BrowserWindow }) => (await BrowserWindow.getAllWindows()[0].capturePage()).toDataURL());
+    await writeFile(path.join(evidence, 'docs-narrow.png'), Buffer.from(narrowScreenshot.split(',')[1], 'base64'));
+    assert.deepEqual(errors, []);
+    assert.equal(warnings.filter(warning => /cannot be child|hydration/i.test(warning)).length, 0, warnings.join('\n'));
+    await writeFile(path.join(evidence, 'results.json'), JSON.stringify({ passed: true, assertions: ['rich Markdown', 'nested details/code', 'strict links and sanitization', 'isolated footnotes', 'adaptive pacing', 'stable DOM and selection', 'exact finish', 'reduced motion', 'Mermaid fallback', 'theme/zoom/responsive'], warnings, errors }, null, 4));
+    console.log('PASS Markdown Electron acceptance: ' + evidence);
+} finally { await app.close(); await server.close(); }

@@ -14,20 +14,31 @@ hljs.registerLanguage('json', json);
 import UiButton from './UiButton.vue';
 import UiScrollArea from './UiScrollArea.vue';
 import Icon from '../components/Icon.vue';
-const props = defineProps({ code: { type: String, required: true }, language: { type: String, default: 'vue' }, dense: Boolean, ghost: Boolean, rounded: { type: Boolean, default: true } });
+import { patchMarkdownDom } from './markdownDom';
+import { writeClipboard } from './clipboard';
+const props = defineProps({ code: { type: String, required: true }, language: { type: String, default: 'vue' }, maxHeight: { type: String, default: '580px' }, streaming: Boolean, dense: Boolean, ghost: Boolean, rounded: { type: Boolean, default: true } });
 const highlighted = computed(() => {
     const aliases: Record<string, string> = { vue: 'xml', html: 'xml', js: 'javascript', ts: 'typescript' };
     const language = aliases[props.language] || props.language;
     if (!hljs.getLanguage(language)) return props.code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return hljs.highlight(props.code, { language, ignoreIllegals: true }).value;
 });
+function updateCode(element: HTMLElement, html: string) {
+    const fragment = document.createElement('template');
+    fragment.innerHTML = html;
+    patchMarkdownDom(element, fragment.content);
+}
+const vStableCode = {
+    mounted: (element: HTMLElement, binding: { value: string }) => updateCode(element, binding.value),
+    updated: (element: HTMLElement, binding: { value: string; oldValue: string }) => { if (binding.value !== binding.oldValue) updateCode(element, binding.value); }
+};
 const wrap = ref(false);
 const copied = ref(false);
 const feedback = ref('');
 watch(() => props.code, () => { copied.value = false; feedback.value = ''; });
 async function copy(code: string) {
     try {
-        await navigator.clipboard.writeText(code);
+        await writeClipboard(code);
         copied.value = true;
         feedback.value = '源码已复制。';
     } catch {
@@ -39,7 +50,7 @@ async function copy(code: string) {
 <template>
     <div class="ui-code-block" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }">
         <div class="ui-code-toolbar"><span>{{ language }}</span><div><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" :aria-pressed="wrap" @click="wrap = !wrap">{{ wrap ? '取消换行' : '自动换行' }}</UiButton><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" @click="copy(code)"><Icon :name="copied ? 'check' : 'copy'" :size="14" />{{ copied ? '已复制' : '复制源码' }}</UiButton></div></div>
-        <UiScrollArea label="源码内容" axis="both" max-height="580px" :dense="dense" :rounded="rounded"><pre :class="{ 'is-wrapped': wrap }"><!-- Only the escaping highlighter output is rendered; source is never executable HTML. --><code class="hljs" v-html="highlighted"></code></pre></UiScrollArea>
+        <UiScrollArea label="源码内容" axis="both" :max-height="maxHeight" :dense="dense" :rounded="rounded"><pre :class="{ 'is-wrapped': wrap }"><!-- Only escaping highlighter output is rendered; source is never executable HTML. --><code v-stable-code="highlighted" class="hljs"></code></pre></UiScrollArea>
         <span class="ui-visually-hidden" role="status">{{ feedback }}</span>
     </div>
 </template>

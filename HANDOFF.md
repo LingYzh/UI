@@ -1,6 +1,6 @@
 # UI 项目交接
 
-更新日期：2026-09-26。完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`；本项目的持续规则在 AGENTS.md。
+更新日期：2026-09-28。本文已更新至当前提交检查点；完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`。本项目的持续规则在 AGENTS.md。
 
 ## 开发顺序与分工
 
@@ -11,7 +11,7 @@
 ## 项目结构与消费方式
 
 - `src/ui/index.ts`：公开导出；同目录维护组件、tokens、样式、ripple 和 snackbar。
-- `src/ui/docs`、`src/ui/UiPreview.vue`：真实文档与 demo，25 页、16 个文档化组件；图标组件另导出为 UiIcon。
+- `src/ui/docs`、`src/ui/UiPreview.vue`：真实文档与 demo，当前全组件回归覆盖33个文档路由；以 content.js 和公开导出为准。
 - `src/components/Icon.vue`、`src/assets/icons`：库内图标，不依赖 UAH 原型目录。
 - `tests/desktop/ui.mjs`：隔离 Electron 文档回归；`tests/snackbar.test.mjs`：服务单元测试。
 - UAH 使用 `@lingyzh/ui: file:../UI`；package exports 指向 Vue/TypeScript 源码，Vite dedupe Vue。不是复制源码，也不是从远程仓库实时加载。
@@ -21,8 +21,14 @@
 
 ## 最近状态
 
-功能基线提交 `4eb946a`，main 分支；origin 为 git@github.com:LingYzh/UI.git，尚未推送。交接资料和规则将另作本地文档提交，以实际 git log/status 为准。
+用户明确要求将两仓当前累计改动连同handoff提交。本检查点基于 main 的 `010605f`，包含此前尚未提交的所有组件、依赖锁文件、文档与测试；具体新提交号以 `git log -1` 为准。仅创建本地提交，未请求push。UAH同步保存匹配功能检查点，恢复时两仓应一起checkout。
 
-排序指示改为上下三角，ghost hover 无边框并使用浅深主题适配的半透明状态层。类型检查/构建通过，单元 2/2、界面 20/20；证据在 `artifacts/ui-uX7okq`，视觉验收见 VALIDATION.md。artifact 不纳入版本控制。
+累计交付：UiTextarea与UiTooltip；UiActivity执行活动与内联样式；UiDiff行级快照差异和共享line-diff；UiFileChanges、UiMessageActions及剪贴板宿主适配；UiMarkdown的GFM、公式、Mermaid、安全HTML和自适应流式文本；UiUsageMeter的紧凑入口、服务/估算/未知状态及独立分类条。相关tokens、CSS、公开API、真实demo和文档已同步。依赖版本锁在package-lock.json，不引入Material主题。
 
-没有未完成的已授权功能；下一步业务任务由用户在新会话指定。新会话先读规则并核对两个仓库状态。
+已有组件修复：UiDialog的固定标题/错误/footer与正文滚动；UiSelect分组、描述式选项、原生回退及相同value的动态标签更新；UiCodeBlock共享复制、换行与长内容；UiScrollArea外壳使用overflow:clip，避免聚焦折叠按钮时外壳意外滚动，使弹窗正文移出视口。真实viewport仍负责鼠标、键盘和滚动条交互，无UAH局部CSS补丁。
+
+最新验收：typecheck、文档/库构建通过；全组件20项回归通过（artifacts/ui-PHOT1i）。UiUsageMeter专项及六张浅深1440/900/125%截图通过（usage-meter-qKhMlm）；嵌套Dialog→Collapse→CodeBlock的实际文本Range可见性、viewport对齐、尾部与footer专项及八张截图通过（dialog-nested-Avpq9P），root均已亲自验收。此前Markdown、Diff、对话操作、Tooltip、Textarea和Select专项记录见VALIDATION.md与各专项验证文档。测试证据artifacts为本地忽略内容，不随Git提交；共享源码、脚本、文档均提交。
+
+配套UAH已通过263项自动测试、Git/context真实Electron37条断言与Plan回归。使用file:../UI和Vue dedupe；不要复制本库源码到UAH。生产端需重新build并重启Electron，网页刷新不足以加载UAH主进程更新。
+
+已知边界：UiUsageMeter不提供tokenizer或模型能力猜测；分类合计与服务计数独立。Markdown仅渲染可见内容，不接受任意执行；嵌套列表/引用/details中的Mermaid围栏保留代码回退。新业务需求先盘点组件并遵循UI-first，当前没有未完成的已授权UI修复。

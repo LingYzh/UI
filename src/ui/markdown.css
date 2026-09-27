@@ -1,0 +1,55 @@
+.ui-markdown {
+    min-width: 0;
+    max-width: 100%;
+    color: var(--text);
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+.ui-markdown-block + .ui-markdown-block { margin-top: 16px; }
+.ui-markdown-content > :first-child { margin-top: 0; }
+.ui-markdown-content > :last-child { margin-bottom: 0; }
+.ui-markdown-content p { margin: 0 0 12px; }
+.ui-markdown-content h1, .ui-markdown-content h2, .ui-markdown-content h3, .ui-markdown-content h4, .ui-markdown-content h5, .ui-markdown-content h6 { margin: 22px 0 10px; font-weight: 650; line-height: 1.4; letter-spacing: -.02em; }
+.ui-markdown-content h1 { font-size: 26px; }
+.ui-markdown-content h2 { font-size: 21px; }
+.ui-markdown-content h3 { font-size: 17px; }
+.ui-markdown-content h4, .ui-markdown-content h5, .ui-markdown-content h6 { font-size: 14px; }
+.ui-markdown-content a { color: var(--accent-text); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent-text) 45%, transparent); text-underline-offset: 3px; }
+.ui-markdown-content a[href]:hover { text-decoration-color: currentColor; }
+.ui-markdown-content a:focus-visible, .ui-markdown-content summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+.ui-markdown-content blockquote { margin: 12px 0; padding: 3px 0 3px 16px; border-left: 3px solid var(--border); color: var(--muted); }
+.ui-markdown-content ul, .ui-markdown-content ol { margin: 10px 0; padding-left: 24px; }
+.ui-markdown-content li + li { margin-top: 4px; }
+.ui-markdown-content li > p { margin: 4px 0; }
+.ui-markdown-content .task-list-item { list-style: none; }
+.ui-markdown-content .task-list-item-checkbox { margin: 0 7px 0 -20px; accent-color: var(--accent); vertical-align: middle; }
+.ui-markdown-content code { padding: 2px 5px; border-radius: 4px; background: var(--soft); font-family: var(--mono); font-size: .9em; }
+.ui-markdown-content pre { max-width: 100%; overflow: auto; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); font-family: var(--mono); line-height: 1.65; }
+.ui-markdown-content pre code { padding: 0; background: transparent; }
+.ui-markdown-content hr { margin: 20px 0; border: 0; border-top: 1px solid var(--line); }
+.ui-markdown-content table { min-width: max-content; width: 100%; border-collapse: collapse; font-size: 13px; }
+.ui-markdown-content th, .ui-markdown-content td { padding: 9px 14px; border: 1px solid var(--border); text-align: left; }
+.ui-markdown-content th { background: var(--soft); font-weight: 600; }
+.ui-markdown-content [align="center"] { text-align: center; }
+.ui-markdown-content [align="right"] { text-align: right; }
+.ui-markdown-content img { display: block; max-width: 100%; height: auto; margin: 12px 0; border-radius: 8px; }
+.ui-markdown-content details { margin: 12px 0; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; }
+.ui-markdown-content summary { cursor: pointer; font-weight: 600; }
+.ui-markdown-content details[open] > summary { margin-bottom: 10px; }
+.ui-markdown-content mark { padding: 1px 3px; border-radius: 3px; background: var(--amber-background); color: var(--text); }
+.ui-markdown-content dt { font-weight: 600; }
+.ui-markdown-content dd { margin: 4px 0 12px 20px; color: var(--muted); }
+.ui-markdown-content .footnotes { font-size: 12px; color: var(--muted); }
+.ui-markdown-content .footnote-ref { margin-left: 2px; }
+.ui-markdown-content .ui-math-source[data-display="true"] { min-width: max-content; padding: 4px 0; }
+.ui-markdown-content .katex { font-size: 1.08em; }
+.ui-markdown-content .katex-display { margin: 8px 0; }
+.ui-markdown-diagram-svg { padding: 12px; text-align: center; }
+.ui-markdown-diagram-svg svg { display: inline-block; min-width: 260px; max-width: 100%; height: auto; }
+.ui-markdown-cursor { display: inline-block; width: 5px; height: 14px; margin: 8px 0 0 2px; border-radius: 2px; background: var(--accent-text); animation: ui-markdown-pulse 1.2s ease-in-out infinite; }
+@keyframes ui-markdown-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ui-markdown-cursor { animation: none; } }
+:root[data-reduced-motion="true"] .ui-markdown-cursor { animation: none; }
