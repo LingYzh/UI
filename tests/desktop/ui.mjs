@@ -129,6 +129,7 @@ try {
     const example = page.getByRole('region', { name: '动作层级', exact: true });
     await example.getByRole('tab', { name: '源码', exact: true }).click();
     await example.getByRole('button', { name: '复制源码', exact: true }).click();
+    await example.getByRole('button', { name: '已复制', exact: true }).waitFor();
     assert.equal((await app.evaluate(({ clipboard }) => clipboard.readText())).replace(/\r\n/g, '\n'), docPages.find((doc) => doc.id === 'button').examples[0].code);
     await example.getByRole('button', { name: '自动换行', exact: true }).click();
     assert.equal(await example.locator('pre').evaluate((element) => getComputedStyle(element).whiteSpace), 'pre-wrap');

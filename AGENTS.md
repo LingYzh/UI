@@ -17,3 +17,10 @@
 - UI 唯一实现位于相邻 UI 仓库。UAH 通过 `@lingyzh/ui`（`file:../UI`）导入，保持 Vue dedupe，不复制组件源码回 UAH。
 
 新会话首先阅读 `HANDOFF.md`，并检查两个仓库的实际状态，不将交接中的历史状态当成当前状态。
+
+## 构建与发布约定
+
+- `src/ui/index.ts` 是公开组件入口；`src/ui/styles.css` 汇总 tokens、工具类和扩展样式；`src/ui/docs/` 与 `UiPreview.vue` 是真实组件文档。UAH 仍可通过 `file:../UI` 使用源码导出。
+- 开发环境按 README 使用 Node.js 24+。运行 `npm ci`、`npm run typecheck`、`npm test`、`npm run build` 和 `npm run test:ui`；`npm run dev` 在 5174 端口查看文档。
+- `dist/docs` 与 `dist/lib` 是忽略的构建产物。npm 包只发布 `package.json#files` 白名单中的源码及自动包含的 README、LICENSE、package.json；发布前用 `npm pack --dry-run --json` 核查文件列表。
+- 发布面向官方 npm registry；首次公开发布的版本、许可证、npm dist-tag 和 Git tag 必须与本仓库的发布记录一致。不要把本地镜像站当成发布目标。

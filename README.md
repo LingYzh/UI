@@ -2,7 +2,7 @@
 
 New sessions: read [HANDOFF.md](HANDOFF.md) and [AGENTS.md](AGENTS.md) before implementation.
 
-Independent Vue 3 component library and documentation. Source repository: git@github.com:LingYzh/UI.git.
+Independent Vue 3 component library and documentation. Source repository: https://github.com/LingYzh/UI.
 
 ## Develop and verify
 
@@ -12,14 +12,16 @@ Requires Node.js 24+. Run `npm ci`, `npm run dev` (port 5174), `npm run typechec
 
 ## Consume
 
-This private source package is consumed by Vue/Vite projects. Check out UI next to UAH (`D:/UI`, `D:/UAH`) and use `"@lingyzh/ui": "file:../UI"`. Run npm ci in UI first and then UAH. Vite consumers must deduplicate Vue (`resolve.dedupe: ['vue']`) to share the host Vue instance. For CI, clone both repositories at their recorded checkpoint revisions into sibling directories.
+Install the public package with `npm install @lingyzh/ui`. Vue `^3.5.0` is a peer dependency. The package exports Vue SFC and TypeScript source, so consumers need a Vue-aware bundler such as Vite.
 
 ```js
 import { UiButton, UiTable, UiDataTableServer, UiPagination } from '@lingyzh/ui';
 import '@lingyzh/ui/styles.css';
 ```
 
-Package exports point to Vue/TypeScript source; a consumer needs a Vue-aware bundler. The build output is not a published npm release. Vue is a peer dependency; headless behavior uses @vuetify/v0. There is no Electron runtime dependency in the components. Electron is used only as the test host.
+For local development with UAH, check out both repositories side by side and use `"@lingyzh/ui": "file:../UI"`. Run `npm ci` in UI first and then UAH. Vite consumers using the local link must deduplicate Vue (`resolve.dedupe: ['vue']`) to share the host Vue instance. For CI, clone both repositories at their recorded checkpoint revisions into sibling directories.
+
+The npm package includes the library source and documentation components, not the generated `dist` output. Headless behavior uses `@vuetify/v0`. There is no Electron runtime dependency in the components; Electron is used only as the test host.
 
 Design tokens, components, icons and their demos are owned here. UAH keeps its application layout, business state and prototype. Update this library and visually verify the docs before changing consuming screens. See [component contracts](src/ui/README.md).
 

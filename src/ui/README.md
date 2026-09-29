@@ -2,16 +2,18 @@
 
 独立 Vue 3 UI 库。业务组件通过 `@lingyzh/ui` 导入；共享外观由 `tokens.css` 与 `styles.css` 管理。业务状态仍由页面或 Pinia 持有。
 
-基于 [Vuetify0](https://0.vuetifyjs.com/introduction/getting-started) 的 headless 组件逐步整合，运行依赖固定为 `@vuetify/v0@1.2.3`。`UiButton` 使用 `Button.Root`，`UiTabs` 使用 `Tabs.Root/List/Item` 提供键盘导航和激活状态；UAH 保留设计 tokens、真实按钮 DOM 和公开 API。其余组件仍使用现有 Vue/原生实现，尤其 Dialog 保留退出动画、焦点恢复与 Electron 原生网页隐藏生命周期。没有引入 Material 主题；当前库尚未发布独立 npm 包。
+基于 [Vuetify0](https://0.vuetifyjs.com/introduction/getting-started) 的 headless 组件逐步整合，运行依赖固定为 `@vuetify/v0@1.2.3`。`UiButton` 使用 `Button.Root`，`UiTabs` 使用 `Tabs.Root/List/Item` 提供键盘导航和激活状态；UAH 保留设计 tokens、真实按钮 DOM 和公开 API。其余组件仍使用现有 Vue/原生实现，尤其 Dialog 保留退出动画、焦点恢复与 Electron 原生网页隐藏生命周期。没有引入 Material 主题。npm 包发布 Vue/TypeScript 源码，使用方需配置支持 Vue SFC 的构建工具。
 
 ## 使用
 
+先安装 `npm install @lingyzh/ui`；本地开发 UAH 时也可以继续使用 `file:../UI`。
+
 ```js
 import { UiInput, UiSelect, UiButton, snackbar } from '@lingyzh/ui';
-import './ui/styles.css';
+import '@lingyzh/ui/styles.css';
 ```
 
-运行 `npm run dev:web` 后打开 http://127.0.0.1:5173/ui.html 查看完整组件文档与真实示例。运行 `npm run build:ui` 可单独生成 `dist/ui-docs/ui.html` 及其 assets，部署时须保留整个目录并通过 HTTP 服务访问。文档与正式工作台构建分离，不加入工作台导航。
+运行 `npm run dev` 后打开 http://127.0.0.1:5174 查看完整组件文档与真实示例。运行 `npm run build` 生成 `dist/docs` 文档及 `dist/lib` 库构建；预览文档可运行 `npm run preview` 并打开 http://127.0.0.1:4174。文档与正式工作台构建分离，不加入工作台导航。
 
 Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolation`、sandbox 或 Node 集成设置。当前项目 Vue 3.5 与 Node 24 满足该版本要求。
 

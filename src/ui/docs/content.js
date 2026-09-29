@@ -27,10 +27,10 @@ export const pages = [
         id: 'getting-started', title: '接入指南', name: 'Getting started', kind: 'guide', group: '开始使用',
         description: '从项目内公共入口导入组件，一次加载共享样式，再让页面持有业务状态。',
         sections: [
-            { id: 'import', title: '导入与样式', text: '当前库在独立 UI 仓库维护，以 @lingyzh/ui 源码包供 Vue/Vite 项目使用；UAH 通过 file:../UI 引用。先安装 UI 依赖，再安装 UAH 依赖，并在 Vite 中配置 Vue dedupe。只在应用入口引入一次共享样式。', code: "import { UiButton, UiInput, UiField, UiSnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';" },
+            { id: 'import', title: '导入与样式', text: '运行 npm install @lingyzh/ui；安装包导出 Vue/TypeScript 源码，需使用支持 Vue SFC 的构建工具。本地联调 UAH 可继续使用 file:../UI，并在 Vite 中配置 Vue dedupe。只在应用入口引入一次共享样式。', code: "import { UiButton, UiInput, UiField, UiSnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';" },
             { id: 'form', title: '组合一个表单', text: 'UiField 提供关联属性，UiInput 接收字符串状态。校验属于页面；同时传入 error 与 invalid，分别提供说明和错误视觉。', code: `<script setup>\nimport { ref } from 'vue';\nimport { UiButton, UiField, UiInput, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n<\/script>\n\n<template>\n    <form @submit.prevent="save">\n        <UiField v-slot="{ controlAttrs }" label="项目名称" for="name" :error="error">\n            <UiInput v-model="name" v-bind="controlAttrs" :invalid="Boolean(error)" />\n        </UiField>\n        <UiButton type="submit" variant="primary">保存</UiButton>\n    </form>\n</template>` },
             { id: 'host', title: '挂载全局提示', text: '在根组件挂载一个 UiSnackbarHost。之后任何应用模块都能调用 snackbar，无需通过页面 ref 寻找 Host。', code: '<template>\n    <AppContent />\n    <UiSnackbarHost />\n</template>' },
-            { id: 'workflow', title: '开发与交付', items: ['npm run dev:web：打开 /ui.html，直接验证组件。', 'npm run build:ui：构建可独立浏览的文档入口。', 'npm run typecheck：检查 TypeScript 与 Vue SFC。', '特殊外观通过组件 variant 或局部布局处理，避免全局 input:hover 等覆盖。'] }
+            { id: 'workflow', title: '开发与交付', items: ['npm run dev：在 5174 端口直接验证组件。', 'npm run build：构建独立文档和库产物。', 'npm run typecheck：检查 TypeScript 与 Vue SFC。', '特殊外观通过组件 variant 或局部布局处理，避免全局 input:hover 等覆盖。'] }
         ]
     },
     component('button', '按钮', 'UiButton', '通过层级、尺寸和状态传达动作的重要性。默认使用原生 button，保留键盘和表单语义。', [

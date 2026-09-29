@@ -1,9 +1,17 @@
 {
     "name": "@lingyzh/ui",
     "version": "0.1.0",
-    "private": true,
     "type": "module",
     "description": "UAH styled Vue component library and standalone documentation",
+    "license": "MIT",
+    "files": [
+        "src/"
+    ],
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/",
+        "tag": "latest"
+    },
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/LingYzh/UI.git"
