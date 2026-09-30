@@ -16,6 +16,7 @@ import UiScrollArea from './UiScrollArea.vue';
 import Icon from '../components/Icon.vue';
 import { patchMarkdownDom } from './markdownDom';
 import { writeClipboard } from './clipboard';
+import { uiText } from './locale';
 const props = defineProps({ code: { type: String, required: true }, language: { type: String, default: 'vue' }, maxHeight: { type: String, default: '580px' }, streaming: Boolean, dense: Boolean, ghost: Boolean, rounded: { type: Boolean, default: true } });
 const highlighted = computed(() => {
     const aliases: Record<string, string> = { vue: 'xml', html: 'xml', js: 'javascript', ts: 'typescript' };
@@ -40,17 +41,17 @@ async function copy(code: string) {
     try {
         await writeClipboard(code);
         copied.value = true;
-        feedback.value = '源码已复制。';
+        feedback.value = uiText('code.copySuccess');
     } catch {
-        feedback.value = '浏览器未允许剪贴板访问，请选中源码手动复制。';
+        feedback.value = uiText('code.copyBlocked');
     }
 }
 </script>
 
 <template>
     <div class="ui-code-block" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }">
-        <div class="ui-code-toolbar"><span>{{ language }}</span><div><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" :aria-pressed="wrap" @click="wrap = !wrap">{{ wrap ? '取消换行' : '自动换行' }}</UiButton><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" @click="copy(code)"><Icon :name="copied ? 'check' : 'copy'" :size="14" />{{ copied ? '已复制' : '复制源码' }}</UiButton></div></div>
-        <UiScrollArea label="源码内容" axis="both" :max-height="maxHeight" :dense="dense" :rounded="rounded"><pre :class="{ 'is-wrapped': wrap }"><!-- Only escaping highlighter output is rendered; source is never executable HTML. --><code v-stable-code="highlighted" class="hljs"></code></pre></UiScrollArea>
+        <div class="ui-code-toolbar"><span>{{ language }}</span><div><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" :aria-pressed="wrap" @click="wrap = !wrap">{{ wrap ? uiText('code.unwrap') : uiText('common.autoWrap') }}</UiButton><UiButton variant="ghost" size="sm" :dense="dense" :rounded="rounded" @click="copy(code)"><Icon :name="copied ? 'check' : 'copy'" :size="14" />{{ copied ? uiText('common.copied') : uiText('code.copy') }}</UiButton></div></div>
+        <UiScrollArea :label="uiText('code.content')" axis="both" :max-height="maxHeight" :dense="dense" :rounded="rounded"><pre :class="{ 'is-wrapped': wrap }"><!-- Only escaping highlighter output is rendered; source is never executable HTML. --><code v-stable-code="highlighted" class="hljs"></code></pre></UiScrollArea>
         <span class="ui-visually-hidden" role="status">{{ feedback }}</span>
     </div>
 </template>

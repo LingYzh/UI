@@ -1,4 +1,5 @@
 import { diffLines } from 'diff';
+import { uiText } from './locale';
 
 export interface DiffRow {
     kind: 'context' | 'added' | 'removed' | 'gap';
@@ -45,9 +46,9 @@ export function collapseDiffContext(rows: DiffRow[], context = 3): DiffRow[] {
     let skipped = 0;
     rows.forEach((row, index) => {
         if (!kept.has(index)) { skipped++; return; }
-        if (skipped) { result.push({ kind: 'gap', text: `省略 ${skipped} 行未改动内容` }); skipped = 0; }
+        if (skipped) { result.push({ kind: 'gap', text: uiText('diff.gap', { count: skipped }) }); skipped = 0; }
         result.push(row);
     });
-    if (skipped) result.push({ kind: 'gap', text: `省略 ${skipped} 行未改动内容` });
+    if (skipped) result.push({ kind: 'gap', text: uiText('diff.gap', { count: skipped }) });
     return result;
 }

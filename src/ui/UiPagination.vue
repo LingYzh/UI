@@ -2,7 +2,8 @@
 import { computed, watch } from 'vue';
 import UiButton from './UiButton.vue';
 import { positiveInteger } from './table';
-const props = withDefaults(defineProps<{ length: number; totalVisible?: number; disabled?: boolean; dense?: boolean; ghost?: boolean; rounded?: boolean; label?: string }>(), { totalVisible: 5, rounded: true, label: '分页' });
+import { uiText } from './locale';
+const props = withDefaults(defineProps<{ length: number; totalVisible?: number; disabled?: boolean; dense?: boolean; ghost?: boolean; rounded?: boolean; label?: string }>(), { totalVisible: 5, rounded: true, label: undefined });
 const model = defineModel<number>({ default: 1 });
 const count = computed(() => positiveInteger(props.length));
 const current = computed(() => Math.min(count.value, positiveInteger(model.value)));
@@ -21,12 +22,12 @@ function select(page: number) { if (!props.disabled) model.value = Math.max(1, M
 </script>
 
 <template>
-    <nav class="ui-pagination" :class="{ 'is-dense': dense }" :aria-label="label">
-        <UiButton icon :dense="dense" :ghost="ghost" :rounded="rounded" :disabled="disabled || current === 1" aria-label="上一页" @click="select(current - 1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg></UiButton>
+    <nav class="ui-pagination" :class="{ 'is-dense': dense }" :aria-label="label ?? uiText('pagination.label')">
+        <UiButton icon :dense="dense" :ghost="ghost" :rounded="rounded" :disabled="disabled || current === 1" :aria-label="uiText('pagination.previous')" @click="select(current - 1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg></UiButton>
         <template v-for="entry in entries" :key="entry">
-            <UiButton v-if="typeof entry === 'number'" :dense="dense" :variant="entry === current ? 'primary' : 'secondary'" :ghost="ghost && entry !== current" :rounded="rounded" :disabled="disabled" :aria-label="`第 ${entry} 页`" :aria-current="entry === current ? 'page' : undefined" @click="select(entry)">{{ entry }}</UiButton>
+            <UiButton v-if="typeof entry === 'number'" :dense="dense" :variant="entry === current ? 'primary' : 'secondary'" :ghost="ghost && entry !== current" :rounded="rounded" :disabled="disabled" :aria-label="uiText('pagination.page', { page: entry })" :aria-current="entry === current ? 'page' : undefined" @click="select(entry)">{{ entry }}</UiButton>
             <span v-else class="ui-pagination-ellipsis" aria-hidden="true">…</span>
         </template>
-        <UiButton icon :dense="dense" :ghost="ghost" :rounded="rounded" :disabled="disabled || current === count" aria-label="下一页" @click="select(current + 1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg></UiButton>
+        <UiButton icon :dense="dense" :ghost="ghost" :rounded="rounded" :disabled="disabled || current === count" :aria-label="uiText('pagination.next')" @click="select(current + 1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg></UiButton>
     </nav>
 </template>

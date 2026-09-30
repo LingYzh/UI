@@ -5,6 +5,7 @@ import UiPagination from './UiPagination.vue';
 import UiSelect from './UiSelect.vue';
 import UiButton from './UiButton.vue';
 import { positiveInteger, type TableHeader, type TableSort, type TableOptions } from './table';
+import { uiText } from './locale';
 const props = withDefaults(defineProps<{
     headers: readonly TableHeader[];
     items: readonly Record<string, unknown>[];
@@ -40,19 +41,19 @@ function sort(key: string) {
     sortBy.value = active?.key !== key ? [{ key, order: 'asc' }] : active.order === 'asc' ? [{ key, order: 'desc' }] : [];
     page.value = 1;
 }
-const range = computed(() => total.value ? `${(page.value - 1) * size.value + 1}–${Math.min(page.value * size.value, total.value)} / ${total.value} 条` : '0 条');
+const range = computed(() => total.value ? uiText('table.range', { start: (page.value - 1) * size.value + 1, end: Math.min(page.value * size.value, total.value), total: total.value }) : uiText('table.rangeEmpty'));
 </script>
 
 <template>
     <div class="ui-data-table-server" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }">
         <UiTable :headers="headers" :items="error ? [] : items" :item-value="itemValue" :label="label" :loading="loading" :sort-by="sortBy" :dense="dense" :ghost="ghost" :rounded="false" :height="height" :fixed-header="fixedHeader" @sort="sort">
             <template v-for="name in Object.keys($slots).filter((key) => key !== 'no-data' && key !== 'error')" #[name]="scope"><slot :name="name" v-bind="scope" /></template>
-            <template #no-data><slot v-if="error" name="error" :error="error"><div class="ui-table-error" role="alert"><span>{{ error }}</span><UiButton dense @click="emit('retry')">重试</UiButton></div></slot><slot v-else name="no-data"><span role="status">暂无数据</span></slot></template>
+            <template #no-data><slot v-if="error" name="error" :error="error"><div class="ui-table-error" role="alert"><span>{{ error }}</span><UiButton dense @click="emit('retry')">{{ uiText('common.retry') }}</UiButton></div></slot><slot v-else name="no-data"><span role="status">{{ uiText('common.empty') }}</span></slot></template>
         </UiTable>
         <footer class="ui-table-footer">
-            <div class="ui-table-page-size"><label :for="selectId">每页</label><UiSelect :id="selectId" :model-value="size" :disabled="loading" dense :ghost="ghost" :rounded="rounded" @update:model-value="changeSize"><option v-for="value in sizes" :key="value" :value="value">{{ value }} 条</option></UiSelect></div>
+            <div class="ui-table-page-size"><label :for="selectId">{{ uiText('table.perPage') }}</label><UiSelect :id="selectId" :model-value="size" :disabled="loading" dense :ghost="ghost" :rounded="rounded" @update:model-value="changeSize"><option v-for="value in sizes" :key="value" :value="value">{{ uiText('table.perPageOption', { count: value }) }}</option></UiSelect></div>
             <span class="ui-table-range" aria-live="polite">{{ range }}</span>
-            <UiPagination v-model="page" :length="loading ? Math.max(page, pageCount) : pageCount" :disabled="loading || total === 0" :total-visible="3" :dense="dense" :ghost="ghost" :rounded="rounded" :label="`${label}分页`" />
+            <UiPagination v-model="page" :length="loading ? Math.max(page, pageCount) : pageCount" :disabled="loading || total === 0" :total-visible="3" :dense="dense" :ghost="ghost" :rounded="rounded" :label="uiText('table.pagination', { label })" />
         </footer>
     </div>
 </template>

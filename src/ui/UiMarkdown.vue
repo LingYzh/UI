@@ -6,6 +6,7 @@ import UiCodeBlock from './UiCodeBlock.vue';
 import UiScrollArea from './UiScrollArea.vue';
 import UiMarkdownHtml from './UiMarkdownHtml.vue';
 import UiMarkdownDiagram from './UiMarkdownDiagram.vue';
+import { uiText } from './locale';
 
 const props = withDefaults(defineProps<{ source: string; streaming?: boolean }>(), { streaming: false });
 const emit = defineEmits<{ 'link-click': [href: string]; rendered: [source: string] }>();
@@ -74,7 +75,7 @@ onBeforeUnmount(() => { cancelAnimationFrame(frame); reducedMotion.removeEventLi
         <div v-for="block in blocks" :key="block.key" class="ui-markdown-block" :data-block-kind="block.kind">
             <UiCodeBlock v-if="block.kind === 'code'" :code="block.code" :language="block.language" :streaming="displaying" />
             <UiMarkdownDiagram v-else-if="block.kind === 'mermaid'" :code="block.code" :complete="block.complete" :id="`${prefix}-${block.key}`" />
-            <UiScrollArea v-else-if="block.kind === 'table' || block.kind === 'math'" :label="block.kind === 'table' ? 'Markdown 表格' : '数学公式'" axis="horizontal"><UiMarkdownHtml :html="block.html" :prefix="prefix" /></UiScrollArea>
+            <UiScrollArea v-else-if="block.kind === 'table' || block.kind === 'math'" :label="block.kind === 'table' ? uiText('markdown.table') : uiText('markdown.math')" axis="horizontal"><UiMarkdownHtml :html="block.html" :prefix="prefix" /></UiScrollArea>
             <UiMarkdownHtml v-else :html="block.html" :prefix="prefix" />
         </div>
         <span v-if="displaying" class="ui-markdown-cursor" aria-hidden="true"></span>

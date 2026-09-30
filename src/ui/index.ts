@@ -37,3 +37,6 @@ export type { MessageActionItem } from './UiMessageActions.vue';
 
 export { default as UiUsageMeter } from './UiUsageMeter.vue';
 export type { UsageSegment } from './UiUsageMeter.vue';
+
+export { setLocale, getLocale, uiLocale, uiText } from './locale';
+export type { UiLocale, UiMessageKey } from './locale';

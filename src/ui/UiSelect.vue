@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getCurrentInstance, h, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
 import UiScrollArea from './UiScrollArea.vue';
+import { uiText } from './locale';
 export interface SelectItem {
     value: string;
     label: string;
@@ -73,7 +74,7 @@ defineExpose({ element, focus: () => element.value?.focus() });
     <select ref="element" v-model="model" class="ui-select" :class="{ 'is-described': Boolean(items), 'is-compact': compact, 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }" :aria-invalid="invalid || $attrs['aria-invalid'] === true || $attrs['aria-invalid'] === 'true' || undefined" @pointerdown="pointerSelection = true" @keydown="keyboardSelection" @change="commit" @click="optionClick" @blur="pointerSelection = false">
         <button v-if="items && customPicker" type="button"><selectedcontent /></button>
         <option v-if="placeholder" value="" disabled hidden>{{ placeholder }}</option>
-        <UiScrollArea v-if="customPicker" class="ui-select-options" label="可选项" :max-height="items ? 'min(420px, 65dvh)' : 'min(320px, 50dvh)'" :focusable="false">
+        <UiScrollArea v-if="customPicker" class="ui-select-options" :label="uiText('common.options')" :max-height="items ? 'min(420px, 65dvh)' : 'min(320px, 50dvh)'" :focusable="false">
             <template v-if="items">
                 <div v-if="menuTitle" class="ui-select-menu-title" aria-hidden="true">{{ menuTitle }}</div>
                 <RichOption v-for="item in items" :key="item.value" :item="item" />

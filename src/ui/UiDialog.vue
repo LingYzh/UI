@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import UiScrollArea from './UiScrollArea.vue';
-const props = withDefaults(defineProps<{ open: boolean; scrollable?: boolean; error?: string; contentLabel?: string }>(), { scrollable: false, error: '', contentLabel: '弹窗内容' });
+import { uiText } from './locale';
+const props = withDefaults(defineProps<{ open: boolean; scrollable?: boolean; error?: string; contentLabel?: string }>(), { scrollable: false, error: '', contentLabel: undefined });
 const emit = defineEmits<{ 'update:open': [value: boolean]; 'present-change': [value: boolean]; opened: []; closed: [] }>();
 const element = ref<HTMLDialogElement>();
 const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
@@ -61,7 +62,7 @@ defineExpose({ element });
         <template v-if="scrollable">
             <header v-if="$slots.header" class="ui-dialog-header"><slot name="header" /></header>
             <div v-if="error" class="ui-dialog-error" role="alert">{{ error }}</div>
-            <UiScrollArea class="ui-dialog-scroll" :label="contentLabel" :rounded="false"><div class="ui-dialog-body"><slot /></div></UiScrollArea>
+            <UiScrollArea class="ui-dialog-scroll" :label="contentLabel ?? uiText('dialog.contentLabel')" :rounded="false"><div class="ui-dialog-body"><slot /></div></UiScrollArea>
             <footer v-if="$slots.footer" class="ui-dialog-footer"><slot name="footer" /></footer>
         </template>
         <slot v-else />

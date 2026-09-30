@@ -3,6 +3,7 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 import DOMPurify from 'dompurify';
 import UiCodeBlock from './UiCodeBlock.vue';
 import UiScrollArea from './UiScrollArea.vue';
+import { uiText } from './locale';
 
 const props = defineProps<{ code: string; complete: boolean; id: string }>();
 const svg = ref('');
@@ -36,7 +37,7 @@ onBeforeUnmount(() => { disposed = true; version++; observer.disconnect(); });
 
 <template>
     <div class="ui-markdown-diagram">
-        <UiScrollArea v-if="svg" label="Mermaid 图表" axis="both" max-height="560px"><div class="ui-markdown-diagram-svg" v-html="svg"></div></UiScrollArea>
+        <UiScrollArea v-if="svg" :label="uiText('markdown.diagram')" axis="both" max-height="560px"><div class="ui-markdown-diagram-svg" v-html="svg"></div></UiScrollArea>
         <UiCodeBlock v-else :code="code" language="mermaid" :streaming="!complete" />
     </div>
 </template>
