@@ -9,6 +9,11 @@ import DiffDemo from './DiffDemo.vue';
 import MarkdownDemo from './MarkdownDemo.vue';
 import ConversationDemo from './ConversationDemo.vue';
 import UsageMeterDemo from './UsageMeterDemo.vue';
+import FeedbackDemo from './FeedbackDemo.vue';
+import LocaleDemo from './LocaleDemo.vue';
+
+const feedbackExamples = ['badge-tones', 'badge-custom', 'alert-tones', 'alert-actions', 'spinner-states', 'menu-items', 'menu-panel', 'confirm-basic', 'button-danger', 'dialog-sizes'];
+const port = ref(5580);
 import { reducedMotion as reduced } from './preferences';
 
 const activityOpen = ref(true);
@@ -111,6 +116,12 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <UiCodeBlock :code="codeSample" language="vue" :dense="dense" :ghost="ghost" :rounded="!square" />
                 <template #actions><UiButton :dense="dense" :ghost="ghost" :rounded="!square" @click="snackbar.show('样式设置示例。')">查看反馈</UiButton></template>
             </UiCard>
+        </template>
+        <FeedbackDemo v-else-if="feedbackExamples.includes(example)" :example="example" />
+        <LocaleDemo v-else-if="example === 'locale-switch'" />
+        <template v-else-if="example === 'input-number'">
+            <UiField v-slot="{ controlAttrs }" label="代理端口" :for="`${prefix}-port`" description="type=number 时模型为数字，清空为 null。"><UiInput v-model="port" v-bind="controlAttrs" type="number" min="1" max="65535" /></UiField>
+            <output>{{ port === null ? 'null' : `${typeof port} · ${port}` }}</output>
         </template>
         <template v-else-if="example === 'scroll-horizontal'">
             <UiScrollArea label="横向项目" axis="horizontal" always><div class="d-flex ga-4 pa-4" style="width: max-content"><UiCard v-for="item in 12" :key="item" :title="`项目 ${item}`" density="compact" style="width: 160px">水平拖动查看。</UiCard></div></UiScrollArea>

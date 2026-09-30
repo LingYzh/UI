@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { UiButton, UiInput, UiSwitch, UiSnackbarHost } from './index';
+import { UiButton, UiInput, UiSwitch, UiSnackbarHost, UiConfirmHost } from './index';
 import Icon from '../components/Icon.vue';
 import { groups, pages, tokens } from './docs/content';
 import ExampleCard from './docs/ExampleCard.vue';
@@ -142,5 +142,6 @@ onBeforeUnmount(() => {
             </main>
         </div>
         <UiSnackbarHost />
+        <UiConfirmHost />
     </div>
 </template>

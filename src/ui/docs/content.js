@@ -1,4 +1,5 @@
 import { tablePages } from './tableContent.js';
+import { feedbackPages } from './feedbackContent.js';
 const row = (name, type, fallback, description) => ({ name, type, fallback, description });
 const example = (id, title, description, code) => ({ id, title, description, code });
 const component = (id, title, name, description, examples, props, events = [], slots = [], notes = []) => ({
@@ -184,6 +185,21 @@ pages.push({ id: 'variants', title: '统一样式变体', name: 'Variants', grou
     { id: 'scope', title: '支持范围', items: ['按钮、输入框、选择器、Tabs、Card、代码块、滚动区域、表格、服务端表格及分页器支持 dense、ghost、rounded；各自页面提供变体演示。', 'dense 缩小控件高度、内边距或滚动滑块宽度；不缩小字体到不可读尺寸。', 'ghost 使用透明表面；输入框聚焦和错误状态仍有明确边框。', 'rounded=false 去除组件圆角，包含 Tabs 指示条和滚动滑块。', '开关、弹窗、Snackbar 等保留表达状态所需的既定形态，不机械套用透明表面。'] }
 ] });
 pages.push(...tablePages);
+pages.push(...feedbackPages);
+// A 批对现有组件的扩展：危险按钮、弹窗宽度与抽屉、数字输入。
+const buttonPage = pages.find((page) => page.id === 'button');
+buttonPage.props.find((item) => item.name === 'variant').type = "'primary' | 'secondary' | 'ghost' | 'danger'";
+buttonPage.props.find((item) => item.name === 'variant').description = '动作层级；danger 用于删除等不可撤销操作，可与 ghost 组合。';
+buttonPage.examples.push({ id: 'button-danger', title: '危险操作', description: '红色文字与悬停弱底区分不可撤销的操作，不与主要动作的强调填充混淆；可与 ghost、尺寸和图标组合。', code: '<UiButton variant="danger">删除</UiButton>\n<UiButton variant="danger" ghost>清空日志</UiButton>\n<UiButton variant="danger" icon aria-label="删除项目"><Icon name="trash" /></UiButton>' });
+buttonPage.notes.push('danger 只用于删除、清空等不可撤销的操作，并配合 confirmDialog 二次确认。');
+const dialogPage = pages.find((page) => page.id === 'dialog');
+dialogPage.props.push(row('size', "'sm' | 'md' | 'lg' | 'xl' | 'full'", 'undefined', '固定宽度 420 / 560 / 720 / 960px / 视口宽减 40px；不传保持原行为。'), row('placement', "'center' | 'end'", 'center', 'end 为贴靠结束边的整高抽屉，只保留内侧圆角。'));
+dialogPage.examples.push({ id: 'dialog-sizes', title: '宽度与侧边抽屉', description: 'size 固定弹窗宽度并始终适应视口；placement="end" 适合任务中心等侧边面板，焦点约束与生命周期不变。', code: '<UiDialog v-model:open="open" size="md" aria-labelledby="title">…</UiDialog>\n<UiDialog v-model:open="drawer" placement="end" scrollable aria-labelledby="drawer-title">\n    <template #header><h2 id="drawer-title">任务中心</h2></template>\n    …\n</UiDialog>' });
+const inputPage = pages.find((page) => page.id === 'input');
+inputPage.props.find((item) => item.name === 'model-value / v-model').type = 'string | number | null';
+inputPage.props.find((item) => item.name === 'model-value / v-model').description = '输入字符串；type="number" 时为 number，清空为 null。';
+inputPage.examples.push({ id: 'input-number', title: '数字输入', description: 'type="number" 时模型保持数字类型；清空为 null，输入中间态不会被提前改写。min / max / step 透传给原生输入。', code: '<UiInput v-model="port" type="number" min="1" max="65535" aria-label="端口" />' });
+inputPage.notes.push('数字模式只做类型转换，范围校验仍由业务页面负责。');
 // The source view is a runnable Vue usage example, not an HTML facsimile.
 const state = {
     'conversation-inline': "const selected = ref('');\nconst items = [{ id: 'tool', path: 'src/ui/ToolCallRow.ts', status: 'M', added: 16, removed: 2 }];\nfunction inspectFile() { selected.value = 'tool'; }\nfunction selectFile(id) { selected.value = id; }\nfunction viewAll() { selected.value = 'all'; }",
@@ -205,7 +221,9 @@ const state = {
     'panel-persistence': "const selected = ref('overview');\nconst draft = ref('');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' }\n];",
     'dialog-scrollable': "const open = ref(false);\nconst error = ref('');",
     'dialog-lifecycle': 'const open = ref(false);\nconst present = ref(false);\nconst closes = ref(0);',
-    'collapse-content': "const expanded = ref(false);\nconst draft = ref('');"
+    'collapse-content': "const expanded = ref(false);\nconst draft = ref('');",
+    'dialog-sizes': "const open = ref(false);\nconst drawer = ref(false);",
+    'input-number': 'const port = ref(5580);'
 };
 for (const page of pages.filter((entry) => entry.kind === 'component')) {
     for (const entry of page.examples) {

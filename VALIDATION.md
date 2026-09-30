@@ -73,3 +73,24 @@ KAM（Kiro Account Manager）渲染层从 React 迁到 Vue 之前，先按 UI-fi
     - B 批（0.2.1）：UiCheckbox、UiRadio、UiProgress、UiCopyButton、UiColorSwatches。
 - **留在 KAM 的业务组件**：标题栏窗口控制、侧栏、统计卡片、账号卡片与列表行、注册步骤展示。
 - **兼容性底线**：运行环境最低 Chromium 140（KAM 用 Electron 38），默认值保持 UAH 现有行为不变。
+
+## 2026-09-30 A 批组件验收（0.2.0）
+
+- **locale**：由子代理接入 13 个组件与 line-diff，新增 `table.perPageOption` 键。`tests/locale.test.ts` 双向校验键集合并验证切换；zh 默认文案与原文逐字一致，完整 UI 回归 20/20（`artifacts/ui-mn0XVL`，39 个文档路由）。
+- **新增组件**：UiBadge、UiAlert、UiSpinner、UiMenu/UiMenuItem、confirmDialog/UiConfirmHost 的样式与 demo 由 root 编写。
+- **现有组件扩展**：UiButton `danger`、UiDialog `size`/`placement="end"`、UiInput 数字模式、utilities 扩展。
+- **专项测试** `node tests/desktop/feedback.mjs`（900×800、125%）覆盖：
+    - Badge 移除按钮通过 aria-describedby 关联标签文字。
+    - Alert 仅 error 使用 alert 角色。
+    - Spinner 在减少动效时从 0.8s 放慢到 1.6s。
+    - Menu：方向键、Home/End 循环，Esc 关闭并把焦点还给触发器，keep-open 多选，panel 模式 Tab 顺序正常。
+    - confirmDialog：默认焦点在取消，关闭后才 resolve，可排队。
+    - Dialog：md 宽 560px，抽屉贴右侧且整高，关闭后焦点返回。
+    - locale 切换后分页、表格、代码块文案更新，离开页面后恢复中文。
+- **root 视觉验收**（`artifacts/feedback-2IMaGV`、`feedback-YQwJn0`、`feedback-r7AemX`，浅色与深色）：
+    - Badge 五种语义色在两套主题下对比清晰；自定义颜色混合后可读，长标签截断正常。
+    - Alert 四种语气的弱底与状态标记和 snackbar 一致。
+    - 菜单面板贴锚点显示在顶层，不被卡片裁切；Dialog md 与右侧抽屉的圆角、阴影、遮罩正常。
+    - 验收中修正了三处：面板内字段改为纵向排列；菜单项焦点改为选中底色加细环，替代 2px 描边；danger 按钮加淡红边框，与普通次要按钮区分。
+- **TS 5.9 兼容**：用 KAM 的 TypeScript 5.9.3 与 vue-tsc 3.3.11 检查 `src/ui` 源码，零错误。
+- **单元测试**：23/23（新增 confirm 队列、结算、卸载取消）。允许 KAM 使用本批组件。
