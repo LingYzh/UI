@@ -1,6 +1,12 @@
 # UI 项目交接
 
-更新日期：2026-09-28。本文已更新至当前提交检查点；完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`。本项目的持续规则在 AGENTS.md。
+更新日期：2026-09-30（发布流程）；下文开发检查点保留历史记录，消费方式和验证结果需以实际仓库状态核对。完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`。本项目的持续规则在 AGENTS.md。
+
+## 当前 npm 发布入口
+
+- 提交 `f26cdc9` 已加入 `.github/workflows/publish.yml`：推送 `v*` 标签，经版本匹配、类型检查、单测、构建和打包预览后，由 GitHub Actions 使用 npm Trusted Publishing / OIDC 发布到官方 registry，dist-tag 为 `latest`。
+- 发布前同步 package.json/lockfile 版本并完成本地桌面 UI、专项、兼容性与视觉验收；当前 CI 未覆盖这些检查。推送标签会实际发包，完成后核查 Actions 和 registry，再更新 `.Codex/memory/publishing.md`。
+- 0.2.1 的网页授权发布属于历史记录，不代表新 workflow 已完成发包。相邻 UAH-desktop 当前 package.json/lockfile 使用 npm `@lingyzh/ui@0.1.0`；下文 `file:../UI` 描述属于旧检查点或显式本地联调。
 
 ## 开发顺序与分工
 
