@@ -134,6 +134,7 @@ try {
     const tagCard = await region(page, '标签颜色');
     const group = tagCard.getByRole('radiogroup', { name: '标签颜色' });
     assert.equal(await group.getByRole('radio').count(), 10);
+    // 示例初值为大写 #4A78B8，验证选中态按忽略大小写匹配色板中的 #4a78b8。
     assert.equal(await group.getByRole('radio', { name: '蓝色' }).isChecked(), true);
     await shots(page, tagCard, 'swatches');
     await group.getByRole('radio', { name: '蓝色' }).focus();

@@ -5,13 +5,16 @@ import UiTooltip from './UiTooltip.vue';
 import { writeClipboard } from './clipboard';
 import { uiText } from './locale';
 
+// 根节点是 Tooltip 的包裹 span，未声明的属性（id、data-*、aria-*）需转给内部按钮。
+defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<{
     /** 要复制的原始文本；函数形式在点击时才求值，适合较大的内容。 */
     text: string | (() => string);
     label?: string;
     copiedLabel?: string;
     dense?: boolean;
-}>(), { dense: true });
+    disabled?: boolean;
+}>(), { dense: true, disabled: false });
 const emit = defineEmits<{ copied: [text: string]; error: [error: unknown] }>();
 const copied = ref(false);
 const announcement = ref('');
@@ -38,7 +41,7 @@ onBeforeUnmount(() => clearTimeout(timer));
 
 <template>
     <UiTooltip :text="copied ? doneName : name" :focusable="false">
-        <UiButton class="ui-copy-button" :class="{ 'is-copied': copied }" icon variant="ghost" :dense="dense" :aria-label="name" @click="copy">
+        <UiButton v-bind="$attrs" class="ui-copy-button" :class="{ 'is-copied': copied }" icon variant="ghost" :dense="dense" :disabled="disabled" :aria-label="name" @click="copy">
             <svg v-if="copied" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5L19.5 7" /></svg>
             <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2" /><path d="M16 8V3H3v13h5" /></svg>
         </UiButton>

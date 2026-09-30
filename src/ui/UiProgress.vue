@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
     /** 进度条的可访问名称，例如“批量注册进度”。 */
     label?: string;
 }>(), { value: 0, max: 100, tone: 'accent', dense: false });
-// 越界与非法值收敛到 [0, max]，避免填充溢出轨道；max 非正数时视为空进度。
+// 越界与非法值收敛到 [0, max]，避免填充溢出轨道；max 非正数或非法时回退为默认的 100。
 const safeMax = computed(() => (Number.isFinite(props.max) && props.max > 0 ? props.max : 100));
 const clamped = computed(() => (Number.isFinite(props.value) ? Math.min(safeMax.value, Math.max(0, props.value)) : 0));
 const ratio = computed(() => clamped.value / safeMax.value);

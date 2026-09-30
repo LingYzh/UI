@@ -41,7 +41,7 @@ onBeforeUnmount(() => clearInterval(timer));
 const usageTone = computed(() => (usage.value > 95 ? 'error' : usage.value > 80 ? 'warning' : 'accent'));
 
 const token = 'eyJhbGciOiJIUzI1NiJ9.demo.signature';
-const color = ref('#4a78b8');
+const color = ref('#4A78B8');
 const legacy = ref('#2f6f9f');
 const tagName = ref('工作');
 </script>
