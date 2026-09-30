@@ -41,6 +41,7 @@ const project = ref('');
 const projectError = computed(() => project.value ? '' : '请选择项目。');
 const codeSample = '<script setup>\nimport { ref } from \'vue\';\nconst saved = ref(false);\n<\/script>\n\n<template>\n    <UiButton :disabled="saved" @click="saved = true">保存</UiButton>\n</template>';
 const rippleEnabled = ref(true);
+const rippleDense = ref(false);
 const dense = ref(false);
 const ghost = ref(false);
 const square = ref(false);
@@ -168,8 +169,11 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         </template>
         <template v-else-if="example === 'code-highlight'"><UiCodeBlock :code="codeSample" language="vue" /></template>
         <template v-else-if="example === 'ripple-feedback'">
-            <div class="d-flex align-center ga-2 mb-4"><UiSwitch id="ripple-enabled" v-model="rippleEnabled" /><label for="ripple-enabled">启用涟漪</label></div>
-            <div class="d-flex flex-wrap ga-4"><UiButton :ripple="rippleEnabled" variant="primary">指针位置扩散</UiButton><UiButton :ripple="rippleEnabled && { center: true }">居中扩散</UiButton><button v-ripple="rippleEnabled" class="pa-4 rounded">原生按钮</button><UiButton disabled>禁用反馈</UiButton></div>
+            <div class="d-flex flex-wrap align-center ga-4 mb-4">
+                <div class="d-flex align-center ga-2"><UiSwitch id="ripple-enabled" v-model="rippleEnabled" /><label for="ripple-enabled">启用涟漪</label></div>
+                <div class="d-flex align-center ga-2"><UiSwitch id="ripple-dense" v-model="rippleDense" /><label for="ripple-dense">紧凑按钮</label></div>
+            </div>
+            <div class="d-flex flex-wrap ga-4"><UiButton :ripple="rippleEnabled" :dense="rippleDense" variant="primary">指针位置扩散</UiButton><UiButton :ripple="rippleEnabled && { center: true }" :dense="rippleDense">居中扩散</UiButton><button v-ripple="rippleEnabled" class="pa-4 rounded" :class="{ 'text-muted': rippleDense }">原生按钮</button><UiButton disabled>禁用反馈</UiButton></div>
         </template>
         <template v-else-if="example === 'utility-layout'">
             <div class="d-flex align-center justify-space-between ga-4 pa-4 demo-utility"><span class="flex-grow-1">工作区</span><UiButton size="sm" @click="snackbar.show('已打开示例工作区。')">打开</UiButton></div>

@@ -1,6 +1,6 @@
 {
     "name": "@lingyzh/ui",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "type": "module",
     "description": "UAH styled Vue component library and standalone documentation",
     "license": "MIT",

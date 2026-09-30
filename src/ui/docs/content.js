@@ -139,7 +139,7 @@ pages.push(
 );
 pages.push(
     { id: 'ripple', title: '涟漪反馈', name: 'vRipple', group: '设计基础', kind: 'guide', description: '按下位置产生扩散反馈，松开后淡出；与原生点击和键盘行为分离。', sections: [
-        { id: 'demo', title: '指针与键盘', demo: 'ripple-feedback', text: '按钮和 Tabs 默认启用。可关闭，或居中扩散并指定颜色；禁用控件和减少动效不产生涟漪。', code: "import { vRipple } from '@lingyzh/ui';\n// 在 script setup 中导入后可直接使用 v-ripple\n<UiButton :ripple=\"{ center: true }\">居中反馈</UiButton>\n<button v-ripple class=\"pa-4\">原生按钮</button>" },
+        { id: 'demo', title: '指针与键盘', demo: 'ripple-feedback', text: '按钮和 Tabs 默认启用。可关闭，或居中扩散并指定颜色；禁用控件和减少动效不产生涟漪。切换紧凑按钮后，动态 class 更新仍保留控件内的涟漪定位。', code: "import { vRipple } from '@lingyzh/ui';\n// 在 script setup 中导入后可直接使用 v-ripple\n<UiButton :ripple=\"{ center: true }\">居中反馈</UiButton>\n<button v-ripple class=\"pa-4\">原生按钮</button>" },
         { id: 'contract', title: '使用契约', items: ['UiButton / UiTabs：ripple 为 false 或 { center?: boolean, color?: string }。', 'v-ripple 只负责视觉；原生元素须自行提供按钮语义、键盘操作与名称。', '支持 pointerup、pointercancel、失焦和键盘 Enter / Space；重复按键不叠加涟漪，卸载时清理监听与动画。', '不改变控件 overflow，避免裁切焦点和 Tabs 指示条。'] }
     ] },
     { id: 'utilities', title: '布局工具类', name: 'Utilities', group: '设计基础', kind: 'guide', description: '用预制 class 组合常见布局和间距，让卡片、表单与操作区保持一致。', sections: [

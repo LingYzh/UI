@@ -68,6 +68,11 @@ export const vRipple: ObjectDirective<HTMLElement, RippleOptions | undefined> = 
         window.addEventListener('blur', clear, { signal });
         state.cleanup = () => { controller.abort(); clear(); element.classList.remove('ui-ripple-target'); };
     },
-    updated(element, binding) { const state = states.get(element); if (state) state.value = binding.value ?? true; },
+    updated(element, binding) {
+        // Vue may replace the class attribute before this directive hook runs.
+        element.classList.add('ui-ripple-target');
+        const state = states.get(element);
+        if (state) state.value = binding.value ?? true;
+    },
     beforeUnmount(element) { states.get(element)?.cleanup(); states.delete(element); }
 };

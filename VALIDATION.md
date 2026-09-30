@@ -1,5 +1,17 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-01 Ripple 动态 class 修复（0.2.2 待发布）
+
+- 工作树 `D:/UI-ripple-fix`，分支 `codex/fix-ripple-update`，基于 `origin/main` 的 `059f785`；原 `D:/UI` main 的旧四个本地提交已撤回并另存备份。用户已确认发布本修复，正式发布状态以 Actions 与官方 npm 核验记录为准。
+- KAM 的真实 Electron 复现：折叠按钮含 `ui-ripple-target`，展开后 Vue class patch 删除该类，按钮变为 `position: static`，指令监听仍创建 layer，但 `layer.offsetParent` 变成页面。修复在指令 `updated` 后恢复定位类；不改控件样式、overflow 或事件语义。
+- 真实文档 demo 增加“紧凑按钮”切换，同时更新两个 UiButton 和原生按钮的动态 class；公开 API 不变。
+- 类型检查、23 项单测、文档/库构建通过；完整 UI 回归 20/20（44 个文档路由），证据 `artifacts/ui-BkToo2`。
+- A 批专项 7/7（`artifacts/feedback-u9epXb`）、B 批专项 6/6（`artifacts/controls-U8APxO`）通过，确认共享按钮修改不影响菜单、确认、关闭、复制与表单控制。
+- `node tests/desktop/ripple.mjs` 66 项断言通过：两轮动态 class 切换、三种按钮的实际鼠标 held 定位与边界、Enter/Space、释放、禁用、关闭涟漪、减少动效与卸载清理；无 Renderer 错误。证据 `artifacts/ripple-1vHAQY/report.json`。
+- root 亲自检查同目录 `ripple-light-held.png` 与 `ripple-dark-held.png`：切换密度后，涟漪保持在按钮内并被既有圆角裁切，浅深主题沿用既有陶土橙，页面左上角没有涟漪。允许消费方使用候选源码或本地 tarball 做兼容验证；正式依赖待发布后使用官方 registry。
+- package.json/lockfile 已同步为 0.2.2；打包白名单核对 154 个文件，仅 src/、README、LICENSE 与 package.json。0.2.2 尚未发布，不可将本地验证视为正式升级。
+- KAM 候选源码兼容验证 dev 53 / prod 52 检查通过（`kam-vue-shell-8BwyOv`），包含展开前后三个底部按钮的 ripple 宿主定位和主题最终组件颜色；新增逻辑使用 KAM TypeScript 5.9 检查通过。正式 npm 消费结果待发布后复测。
+
 The library, tokens, component documentation, icons and isolated tests now belong to D:/UI. No source imports refer back to D:/UAH. Consumers use @lingyzh/ui; Vue is a deduplicated peer dependency.
 
 - Typecheck and documentation/library builds passed; unit tests 2/2.
