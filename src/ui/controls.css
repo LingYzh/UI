@@ -1,0 +1,138 @@
+/* Selection and progress controls: checkbox, radio, progress, copy button and color swatches. */
+
+/* Checkbox and radio share one native, appearance-reset control so keyboard, form and label behavior stay native. */
+.ui-checkbox, .ui-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+.ui-checkbox.is-disabled, .ui-radio.is-disabled { cursor: not-allowed; opacity: .56; }
+.ui-checkbox-label, .ui-radio-label { min-width: 0; }
+.ui-checkbox-control, .ui-radio-control {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    box-sizing: border-box;
+    border: 1.5px solid color-mix(in srgb, var(--muted) 70%, var(--border));
+    background: var(--surface);
+    cursor: inherit;
+    transition: border-color var(--motion-fast), background-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.ui-checkbox-control { border-radius: 4px; }
+.ui-radio-control { border-radius: 50%; }
+.ui-checkbox-control:hover:not(:disabled), .ui-radio-control:hover:not(:disabled) { border-color: var(--accent-text); }
+.ui-checkbox-control:focus-visible, .ui-radio-control:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+.ui-checkbox-control:disabled, .ui-radio-control:disabled { cursor: not-allowed; }
+/* A bare control (no label wrapper) dims itself; wrapped controls are dimmed by the label. */
+:not(.ui-checkbox) > .ui-checkbox-control:disabled, :not(.ui-radio) > .ui-radio-control:disabled { opacity: .56; }
+
+/* Checked / mixed: accent fill with a white glyph drawn by a mask so it follows theme-independent contrast. */
+.ui-checkbox-control:is(:checked, :indeterminate) { border-color: var(--accent); background: var(--accent); }
+.ui-checkbox-control::after {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    content: "";
+    opacity: 0;
+    transform: scale(.6);
+    transition: opacity var(--motion-fast), transform var(--motion-fast) var(--ease);
+    mask: no-repeat center / 12px 12px;
+}
+.ui-checkbox-control:checked::after {
+    opacity: 1;
+    transform: none;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
+.ui-checkbox-control:indeterminate::after {
+    opacity: 1;
+    transform: none;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+}
+.ui-radio-control:checked { border-color: var(--accent); background: var(--surface); }
+.ui-radio-control::after {
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    content: "";
+    transform: scale(0);
+    transition: transform var(--motion-fast) var(--ease);
+}
+.ui-radio-control:checked::after { transform: scale(1); }
+
+/* Progress: a scaled fill avoids layout work while animating; tone keeps the same thin track. */
+.ui-progress {
+    --progress-fill: var(--accent);
+    position: relative;
+    width: 100%;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text) 9%, transparent);
+}
+.ui-progress.is-dense { height: 4px; }
+.ui-progress[data-tone="success"] { --progress-fill: var(--green); }
+.ui-progress[data-tone="warning"] { --progress-fill: var(--amber); }
+.ui-progress[data-tone="error"] { --progress-fill: var(--red); }
+.ui-progress-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--progress-fill);
+    transform-origin: left center;
+    transition: transform var(--motion-layout) var(--ease), background-color var(--motion-fast);
+}
+.ui-progress:dir(rtl) .ui-progress-fill { transform-origin: right center; }
+
+/* Copy button: a quiet ghost icon that confirms with a green check for a moment.
+   Selectors repeat .ui-button because this file is imported before the button rules in styles.css. */
+.ui-button.ui-copy-button { color: var(--muted); }
+.ui-button.ui-copy-button:hover:not(:disabled) { color: var(--text); }
+.ui-copy-button > svg { width: 15px; height: 15px; }
+.ui-button.ui-copy-button.is-copied,
+.ui-button.ui-copy-button.is-copied:hover:not(:disabled) { color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+.ui-copy-button > svg { animation: ui-copy-in var(--motion-fast) var(--ease); }
+@keyframes ui-copy-in { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+
+/* Swatches: native radios keep arrow-key selection; the ring uses a surface gap so it reads on any color. */
+.ui-swatches { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ui-swatch { position: relative; display: inline-flex; width: 22px; height: 22px; flex: 0 0 auto; }
+.ui-swatch-control {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--swatch-color);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 14%, transparent);
+    cursor: pointer;
+    transition: box-shadow var(--motion-fast), transform var(--motion-fast) var(--ease);
+}
+.ui-swatch-control:hover:not(:disabled) { transform: scale(1.08); }
+.ui-swatch-control:checked { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
+.ui-swatch-control:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 5px; }
+.ui-swatch-control:disabled { cursor: not-allowed; opacity: .5; }
+/* A saved color outside the palette is marked with a dashed outline so it reads as "kept", not "suggested". */
+.ui-swatch.is-custom { margin-inline-start: 6px; }
+.ui-swatch.is-custom::before { position: absolute; inset-block: 3px; inset-inline-start: -8px; width: 1px; background: var(--line); content: ""; pointer-events: none; }
+.ui-swatch.is-custom::after { position: absolute; inset: -5px; border: 1px dashed var(--faint); border-radius: 50%; content: ""; pointer-events: none; }
+.ui-swatch.is-custom:has(:checked)::after { inset: -7px; }
+
+@media (prefers-reduced-motion: reduce) {
+    :is(.ui-checkbox-control, .ui-radio-control, .ui-swatch-control, .ui-progress-fill), .ui-checkbox-control::after, .ui-radio-control::after, .ui-copy-button > svg { transition: none !important; animation: none !important; }
+}
+:root[data-reduced-motion="true"] :is(.ui-checkbox-control, .ui-radio-control, .ui-swatch-control, .ui-progress-fill),
+:root[data-reduced-motion="true"] .ui-checkbox-control::after,
+:root[data-reduced-motion="true"] .ui-radio-control::after,
+:root[data-reduced-motion="true"] .ui-copy-button > svg { transition: none !important; animation: none !important; }

@@ -50,3 +50,10 @@ export type { MenuPlacement } from './menu';
 export { default as UiConfirmHost } from './UiConfirmHost.vue';
 export { confirmDialog } from './confirm';
 export type { ConfirmOptions } from './confirm';
+
+export { default as UiCheckbox } from './UiCheckbox.vue';
+export { default as UiRadio } from './UiRadio.vue';
+export { default as UiProgress } from './UiProgress.vue';
+export { default as UiCopyButton } from './UiCopyButton.vue';
+export { default as UiColorSwatches } from './UiColorSwatches.vue';
+export type { ColorSwatch } from './UiColorSwatches.vue';
