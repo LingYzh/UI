@@ -4,6 +4,7 @@
 @import './markdown.css';
 @import './conversation.css';
 @import "./extensions.css";
+@import "./feedback.css";
 
 :root {
     --form-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2366645e' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -603,3 +604,50 @@
 .ui-activity-content { padding: 4px 12px 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; }
 .ui-activity-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0 4px; }
 @media (prefers-reduced-motion: reduce) { .ui-activity-chevron { transition: none; } }
+
+/* Danger actions: red text on the normal surface, so they never read as the accent-filled primary action. */
+.ui-button.danger:not(:disabled) { border-color: color-mix(in srgb, var(--red) 28%, var(--border)); color: var(--red); }
+.ui-button.danger:hover:not(:disabled) { border-color: color-mix(in srgb, var(--red) 45%, var(--border)); background: color-mix(in srgb, var(--red) 8%, var(--surface)); }
+.ui-button.danger:active:not(:disabled) { background: color-mix(in srgb, var(--red) 14%, var(--surface)); }
+.ui-button.danger:focus-visible { outline-color: var(--red); }
+.ui-button.danger.is-ghost-danger { border-color: transparent; background: transparent; }
+.ui-button.danger.is-ghost-danger:hover:not(:disabled) { border-color: transparent; background: color-mix(in srgb, var(--red) 10%, transparent); }
+.ui-button.danger.is-ghost-danger:active:not(:disabled) { background: color-mix(in srgb, var(--red) 16%, transparent); }
+
+/* Dialog widths: unset size keeps the previous content / 680px scrollable widths. */
+.ui-dialog.ui-dialog--sm { width: 420px; }
+.ui-dialog.ui-dialog--md { width: 560px; }
+.ui-dialog.ui-dialog--lg { width: 720px; }
+.ui-dialog.ui-dialog--xl { width: 960px; }
+.ui-dialog.ui-dialog--full { width: calc(100vw - 40px); }
+
+/* End drawer: full height on the inline-end edge, rounded only toward the content. */
+.ui-dialog.ui-dialog--end {
+    width: 420px;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin-block: 0;
+    margin-inline: auto 0;
+    border-block: 0;
+    border-inline-end: 0;
+    border-radius: 0;
+    border-start-start-radius: 15px;
+    border-end-start-radius: 15px;
+    box-shadow: -12px 0 48px #0002;
+}
+.ui-dialog.ui-dialog--end.ui-dialog--sm { width: 420px; }
+.ui-dialog.ui-dialog--end.ui-dialog--md { width: 560px; }
+.ui-dialog.ui-dialog--end.ui-dialog--lg { width: 720px; }
+.ui-dialog.ui-dialog--end.ui-dialog--xl { width: 960px; }
+.ui-dialog.ui-dialog--end.ui-dialog--full { width: calc(100vw - 40px); }
+.ui-dialog.ui-dialog--end[open]:not(.ui-dialog--scrollable) { overflow: auto; }
+.ui-dialog.ui-dialog--end[data-state="opening"] { animation: ui-drawer-in var(--motion-layout) cubic-bezier(.2, .8, .2, 1) both; }
+.ui-dialog.ui-dialog--end[data-state="closing"] { animation: ui-drawer-out var(--motion-normal) ease-in both; pointer-events: none; }
+.ui-dialog.ui-dialog--end:dir(rtl) { --drawer-offset: -100%; }
+@keyframes ui-drawer-in { from { transform: translateX(var(--drawer-offset, 100%)); } to { transform: none; } }
+@keyframes ui-drawer-out { from { transform: none; } to { transform: translateX(var(--drawer-offset, 100%)); } }
+
+/* Numeric inputs: tabular digits; native spin buttons stay but are tinted to the muted text color. */
+.ui-input > input[type="number"] { font-variant-numeric: tabular-nums; }
+.ui-input > input[type="number"]::-webkit-inner-spin-button { opacity: .55; cursor: pointer; }
+.ui-input > input[type="number"]:hover::-webkit-inner-spin-button { opacity: .9; }

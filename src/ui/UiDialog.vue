@@ -2,7 +2,16 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import UiScrollArea from './UiScrollArea.vue';
 import { uiText } from './locale';
-const props = withDefaults(defineProps<{ open: boolean; scrollable?: boolean; error?: string; contentLabel?: string }>(), { scrollable: false, error: '', contentLabel: undefined });
+const props = withDefaults(defineProps<{
+    open: boolean;
+    scrollable?: boolean;
+    error?: string;
+    contentLabel?: string;
+    /** 固定宽度档位；不传时保持原行为（普通弹窗按内容、scrollable 为 680px）。 */
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+    /** end 为贴靠行内结束边的整高抽屉。 */
+    placement?: 'center' | 'end';
+}>(), { scrollable: false, error: '', contentLabel: undefined, size: undefined, placement: 'center' });
 const emit = defineEmits<{ 'update:open': [value: boolean]; 'present-change': [value: boolean]; opened: []; closed: [] }>();
 const element = ref<HTMLDialogElement>();
 const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
@@ -58,7 +67,7 @@ defineExpose({ element });
 </script>
 
 <template>
-    <dialog ref="element" class="ui-dialog" :class="{ 'ui-dialog--scrollable': scrollable }" :data-state="state" @cancel.prevent="requestClose" @pointerdown="pointerDown" @pointerup="pointerUp">
+    <dialog ref="element" class="ui-dialog" :class="[{ 'ui-dialog--scrollable': scrollable, 'ui-dialog--end': placement === 'end' }, size ? `ui-dialog--${size}` : '']" :data-state="state" @cancel.prevent="requestClose" @pointerdown="pointerDown" @pointerup="pointerUp">
         <template v-if="scrollable">
             <header v-if="$slots.header" class="ui-dialog-header"><slot name="header" /></header>
             <div v-if="error" class="ui-dialog-error" role="alert">{{ error }}</div>

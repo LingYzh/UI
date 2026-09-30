@@ -1,0 +1,189 @@
+/* Status and feedback components: badge, alert, spinner, menu and confirm. Semantic tokens only. */
+
+/* Badge: tone sets foreground/background pairs; a custom color is mixed toward --text so it stays readable in both themes. */
+.ui-badge {
+    --badge-fg: var(--muted);
+    --badge-bg: color-mix(in srgb, var(--text) 7%, transparent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 20px;
+    padding: 0 7px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+    font: 500 11px/1.2 var(--font);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.ui-badge[data-tone="accent"] { --badge-fg: var(--accent-text); --badge-bg: var(--accent-soft); }
+.ui-badge[data-tone="success"] { --badge-fg: var(--green); --badge-bg: var(--green-background); }
+.ui-badge[data-tone="warning"] { --badge-fg: var(--amber); --badge-bg: var(--amber-background); }
+.ui-badge[data-tone="error"] { --badge-fg: var(--red); --badge-bg: var(--red-background); }
+.ui-badge.has-color {
+    --badge-fg: color-mix(in srgb, var(--badge-color) 70%, var(--text));
+    --badge-bg: color-mix(in srgb, var(--badge-color) 16%, transparent);
+}
+.ui-badge--outline { border-color: color-mix(in srgb, var(--badge-fg) 38%, var(--border)); background: transparent; }
+.ui-badge.is-dense { min-height: 18px; padding: 0 5px; }
+.ui-badge-icon { display: inline-flex; flex: 0 0 auto; }
+.ui-badge-icon > svg { width: 12px; height: 12px; }
+.ui-badge-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ui-badge-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    margin-inline: 1px -3px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    opacity: .7;
+    cursor: pointer;
+    transition: opacity var(--motion-fast), background-color var(--motion-fast);
+}
+.ui-badge-close:hover { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
+.ui-badge-close:focus-visible { opacity: 1; outline: 2px solid currentColor; outline-offset: 1px; }
+
+/* Alert: tinted surface with the snackbar status mark; body text stays at full contrast. */
+.ui-alert {
+    --alert-fg: var(--muted);
+    --alert-bg: var(--soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+    padding: 11px 14px;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--alert-fg) 24%, var(--border));
+    border-radius: 10px;
+    background: var(--alert-bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+}
+.ui-alert[data-tone="success"] { --alert-fg: var(--green); --alert-bg: var(--green-background); }
+.ui-alert[data-tone="warning"] { --alert-fg: var(--amber); --alert-bg: var(--amber-background); }
+.ui-alert[data-tone="error"] { --alert-fg: var(--red); --alert-bg: var(--red-background); }
+.ui-alert-icon { display: inline-flex; flex: 0 0 auto; margin-top: 1px; color: var(--alert-fg); }
+.ui-alert-icon > svg { width: 18px; height: 18px; }
+.ui-alert-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    box-sizing: border-box;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+}
+.ui-alert-body { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.ui-alert-title { margin: 0; font-weight: 600; }
+.ui-alert-title + .ui-alert-text { margin-top: 2px; color: var(--muted); }
+.ui-alert-text > :first-child { margin-top: 0; }
+.ui-alert-text > :last-child { margin-bottom: 0; }
+.ui-alert-actions { display: flex; flex-wrap: wrap; align-items: center; align-self: center; gap: 6px; margin-inline-start: auto; }
+.ui-alert.is-dense { gap: 8px; padding: 7px 10px; font-size: 12px; line-height: 1.55; }
+.ui-alert.is-dense .ui-alert-mark { width: 16px; height: 16px; font-size: 10px; }
+.ui-alert.is-dense .ui-alert-icon > svg { width: 16px; height: 16px; }
+
+/* Spinner: rotation is a status signal, so reduced motion slows it instead of stopping it. */
+.ui-spinner { display: inline-flex; flex: 0 0 auto; width: var(--spinner-size); height: var(--spinner-size); vertical-align: middle; }
+.ui-spinner > svg { width: 100%; height: 100%; animation: ui-spin 800ms linear infinite; }
+.ui-spinner-track { stroke: currentColor; stroke-width: 2.5; opacity: .2; }
+.ui-spinner-arc { stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ui-spinner > svg { animation-duration: 1.6s; } }
+:root[data-reduced-motion="true"] .ui-spinner > svg { animation-duration: 1.6s; }
+
+/* Menu: native auto popover in the top layer, anchored to its activator and flipped at viewport edges. */
+.ui-menu { display: contents; }
+.ui-menu-surface {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    min-width: max(180px, anchor-size(width));
+    max-width: min(360px, calc(100vw - 16px));
+    max-height: min(420px, 70dvh);
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    font: 13px/1.5 var(--font);
+    opacity: 0;
+    transform: translateY(-3px);
+    transition: opacity var(--motion-fast), transform var(--motion-fast), overlay var(--motion-fast) allow-discrete, display var(--motion-fast) allow-discrete;
+}
+.ui-menu-surface:popover-open { opacity: 1; transform: none; }
+@starting-style { .ui-menu-surface:popover-open { opacity: 0; transform: translateY(-3px); } }
+.ui-menu-surface[data-placement="bottom-start"] { position-area: bottom span-right; margin-top: 5px; }
+.ui-menu-surface[data-placement="bottom-end"] { position-area: bottom span-left; margin-top: 5px; }
+.ui-menu-surface[data-placement="top-start"] { position-area: top span-right; margin-bottom: 5px; }
+.ui-menu-surface[data-placement="top-end"] { position-area: top span-left; margin-bottom: 5px; }
+.ui-menu-surface { position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
+.ui-menu-surface[data-placement^="top"] { transform: translateY(3px); }
+.ui-menu-surface[data-placement^="top"]:popover-open { transform: none; }
+@starting-style { .ui-menu-surface[data-placement^="top"]:popover-open { transform: translateY(3px); } }
+.ui-menu-surface:focus-visible { outline: none; }
+.ui-menu-surface.is-panel { max-width: calc(100vw - 16px); max-height: min(640px, 80dvh); padding: 14px; }
+/* Fields stack inside panels, matching UiCard content: label above a full-width control. */
+.ui-menu-surface.is-panel .ui-field { flex-direction: column; align-items: stretch; gap: 6px; padding: 0; border: 0; font-size: 12px; }
+.ui-menu-surface.is-panel .ui-field :is(.ui-input, .ui-select) { width: 100%; }
+.ui-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 32px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font: 12px/1.4 var(--font);
+    text-align: start;
+    cursor: pointer;
+    transition: background-color var(--motion-fast);
+}
+.ui-menu-item:hover:not(:disabled) { background: var(--hover); }
+/* The roving highlight is the focus indicator: selected fill plus a quiet accent ring, lighter than a control outline. */
+.ui-menu-item:focus-visible { outline: none; background: var(--selected); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-text) 55%, transparent); }
+.ui-menu-item:disabled { opacity: .45; cursor: not-allowed; }
+.ui-menu-item.is-danger { color: var(--red); }
+.ui-menu-item.is-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--red) 10%, transparent); }
+.ui-menu-item.is-danger:focus-visible { background: color-mix(in srgb, var(--red) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--red) 55%, transparent); }
+.ui-menu-item-icon { display: inline-flex; flex: 0 0 auto; color: var(--muted); }
+.ui-menu-item.is-danger .ui-menu-item-icon { color: inherit; }
+.ui-menu-item-icon > svg { width: 15px; height: 15px; }
+.ui-menu-item-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-menu-item-trailing { flex: 0 0 auto; color: var(--faint); font-size: 11px; }
+.ui-menu-item-check { flex: 0 0 auto; color: var(--accent-text); opacity: 0; }
+.ui-menu-item-check.is-visible { opacity: 1; }
+.ui-menu-label { padding: 8px 10px 4px; color: var(--muted); font-size: 11px; font-weight: 500; }
+.ui-menu-divider { height: 1px; margin: 5px 6px; border: 0; background: var(--line); }
+@media (prefers-reduced-motion: reduce) { .ui-menu-surface, .ui-menu-item, .ui-badge-close { transition: none !important; } }
+:root[data-reduced-motion="true"] :is(.ui-menu-surface, .ui-menu-item, .ui-badge-close) { transition: none !important; }
+
+/* Confirm: compact alertdialog on the shared dialog surface. */
+.ui-dialog.ui-confirm { padding: 22px 24px 18px; }
+.ui-confirm-title { margin: 0 0 8px; font: 600 16px/1.5 var(--font); }
+.ui-confirm-message { margin: 0 0 22px; color: var(--muted); font-size: 13px; line-height: 1.7; white-space: pre-line; overflow-wrap: anywhere; }
+.ui-confirm-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }

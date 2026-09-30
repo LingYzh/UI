@@ -381,3 +381,38 @@
     .flex-lg-row { flex-direction:row !important; }
     .flex-lg-column { flex-direction:column !important; }
 }
+
+/* Typography scale follows component sizes: 11 / 12 / 13 / 14 / 16px. */
+.text-caption { font-size: 11px !important; line-height: 1.5 !important; }
+.text-body-2 { font-size: 12px !important; line-height: 1.6 !important; }
+.text-body-1 { font-size: 13px !important; line-height: 1.6 !important; }
+.text-subtitle { font-size: 14px !important; line-height: 1.5 !important; font-weight: 500 !important; }
+.text-title { font-size: 16px !important; line-height: 1.5 !important; font-weight: 600 !important; }
+.font-weight-regular { font-weight: 400 !important; }
+.font-weight-medium { font-weight: 500 !important; }
+.font-weight-semibold { font-weight: 600 !important; }
+.font-mono { font-family: var(--mono) !important; }
+.text-truncate { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+.text-no-wrap { white-space: nowrap !important; }
+.text-break { overflow-wrap: anywhere !important; word-break: normal !important; }
+.text-faint { color: var(--faint) !important; }
+.text-accent { color: var(--accent-text) !important; }
+.text-success { color: var(--green) !important; }
+.text-warning { color: var(--amber) !important; }
+.text-error { color: var(--red) !important; }
+
+/* Positioning and grid for page layout; component internals keep their own rules. */
+.position-relative { position: relative !important; }
+.position-absolute { position: absolute !important; }
+.position-sticky { position: sticky !important; }
+.inset-0 { inset: 0 !important; }
+.grid-cols-1 { grid-template-columns: minmax(0, 1fr) !important; }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+.col-span-2 { grid-column: span 2 / span 2 !important; }
+.overflow-x-auto { overflow-x: auto !important; }
+.overflow-y-auto { overflow-y: auto !important; }
+.cursor-pointer { cursor: pointer !important; }
+.w-auto { width: auto !important; }
+.flex-1-1 { flex: 1 1 0 !important; min-width: 0 !important; }

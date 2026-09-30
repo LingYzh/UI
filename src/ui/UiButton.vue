@@ -6,7 +6,7 @@ defineOptions({ inheritAttrs: false });
 const element = ref<HTMLButtonElement>();
 defineExpose({ element, focus: (options?: FocusOptions) => element.value?.focus(options) });
 withDefaults(defineProps<{
-    variant?: 'secondary' | 'primary' | 'ghost';
+    variant?: 'secondary' | 'primary' | 'ghost' | 'danger';
     size?: 'sm' | 'md';
     loading?: boolean;
     disabled?: boolean;
@@ -21,6 +21,6 @@ withDefaults(defineProps<{
 
 <template>
     <Button.Root v-slot="{ attrs }" :disabled="disabled || loading" :loading="loading" renderless>
-        <button ref="element" v-ripple="ripple" v-bind="{ ...attrs, ...$attrs }" :type="type" class="ui-button" :class="[ghost ? 'ghost' : variant, dense ? 'sm' : size, { 'is-icon': icon, 'is-square': !rounded }]"><slot /></button>
+        <button ref="element" v-ripple="ripple" v-bind="{ ...attrs, ...$attrs }" :type="type" class="ui-button" :class="[ghost && variant !== 'danger' ? 'ghost' : variant, dense ? 'sm' : size, { 'is-icon': icon, 'is-square': !rounded, 'is-ghost-danger': ghost && variant === 'danger' }]"><slot /></button>
     </Button.Root>
 </template>

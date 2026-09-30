@@ -40,3 +40,13 @@ export type { UsageSegment } from './UiUsageMeter.vue';
 
 export { setLocale, getLocale, uiLocale, uiText } from './locale';
 export type { UiLocale, UiMessageKey } from './locale';
+
+export { default as UiBadge } from './UiBadge.vue';
+export { default as UiAlert } from './UiAlert.vue';
+export { default as UiSpinner } from './UiSpinner.vue';
+export { default as UiMenu } from './UiMenu.vue';
+export { default as UiMenuItem } from './UiMenuItem.vue';
+export type { MenuPlacement } from './menu';
+export { default as UiConfirmHost } from './UiConfirmHost.vue';
+export { confirmDialog } from './confirm';
+export type { ConfirmOptions } from './confirm';
