@@ -1,12 +1,14 @@
 # UI 项目交接
 
-## 2026-10-01 Ripple 修复候选
+## 2026-10-01 Ripple 修复与 0.2.2 发布完成
 
-独立工作树 `D:/UI-ripple-fix` 的 `codex/fix-ripple-update` 基于上游 `059f785`，原 `D:/UI` main 已按用户要求完全对齐上游并保持干净。候选 0.2.2 修复 Vue 动态 class 更新删掉 `ui-ripple-target` 后涟漪定位到页面的问题：`vRipple.updated` 恢复定位类，真实文档 demo 与专项测试覆盖重复切换和实际鼠标/键盘操作。
+独立工作树 `D:/UI-ripple-fix` 的 `codex/fix-ripple-update` 基于上游 `059f785`，原 `D:/UI` main 已按用户要求完全对齐上游并保持干净。0.2.2 修复 Vue 动态 class 更新删掉 `ui-ripple-target` 后涟漪定位到页面的问题：`vRipple.updated` 恢复定位类，真实文档 demo 与专项测试覆盖重复切换和实际鼠标/键盘操作。
 
-root 已验收浅深两张 held 截图；类型检查、23 单测、文档/库构建、完整 UI 回归 20/20、ripple 专项 66 断言、A 批 7/7 与 B 批 6/6 通过，详见 VALIDATION.md 最新记录。KAM 候选源码兼容验证 dev 53 / prod 52 检查通过；修改后的 ripple.ts 使用 KAM 的 TypeScript 5.9 校验通过。用户已确认提交、推送并通过 GitHub Actions 发布 0.2.2，再正式升级 KAM。发布是否完成以 Actions 与官方 npm 核验记录为准；候选验证不能替代正式依赖升级。
+root 已验收浅深两张 held 截图；类型检查、23 单测、文档/库构建、完整 UI 回归 20/20、ripple 专项 66 断言、A 批 7/7 与 B 批 6/6 通过，详见 VALIDATION.md 最新记录。KAM 候选源码兼容验证 dev 53 / prod 52 检查通过；修改后的 ripple.ts 使用 KAM 的 TypeScript 5.9 校验通过。
 
-更新日期：2026-09-30（发布流程）；下文开发检查点保留历史记录，消费方式和验证结果需以实际仓库状态核对。完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`。本项目的持续规则在 AGENTS.md。
+用户确认后发布提交 `cd9d3ce5d08bb5416e14a69bfecca30e9f02097b` 与标签 `v0.2.2` 已原子推送到 main，Actions [36757427137](https://github.com/LingYzh/UI/actions/runs/36757427137) 的所有检查与 Publish 步骤成功，完成 npm Trusted Publishing 和 provenance。官方 npm 已确认 0.2.2，latest 指向 0.2.2；KAM package/lock/实际安装已正式升级，只替换一个包，最终消费回归记录见 KAM 的 `docs/vue-phase2-validation.md`。原 `D:/UI` main 已快进到上游新版本，旧四个本地提交保留在备份分支，不再进入 main。
+
+更新日期：2026-10-01（Ripple 与自动发布）；下文开发检查点保留历史记录，消费方式和验证结果需以实际仓库状态核对。完整跨仓库交接位于相邻 UAH 项目的 `D:/UAH/docs/HANDOFF.md`。本项目的持续规则在 AGENTS.md。
 
 ## 当前 npm 发布入口
 

@@ -1,5 +1,14 @@
 # npm 发布记忆
 
+## 2026-10-01：0.2.2 自动发布已验证
+
+- 用户确认发布 Ripple 动态 class 修复并升级 KAM 后，发布提交 `cd9d3ce5d08bb5416e14a69bfecca30e9f02097b` 与注释标签 `v0.2.2` 使用 atomic push 推送到 main。
+- `.github/workflows/publish.yml` 首次实际运行 [36757427137](https://github.com/LingYzh/UI/actions/runs/36757427137) 全部成功，包括 Publish；npm Trusted Publishing / OIDC 生效，并生成 provenance，无需本地网页登录。
+- npm 提示新包处理可能需要几分钟；首次完整 packument 暂时未列出 0.2.2，随后官方版本 endpoint、完整 packument 与 dist-tags 均确认发布，不重发同版本。
+- 官方 latest 为 0.2.2；tarball `https://registry.npmjs.org/@lingyzh/ui/-/ui-0.2.2.tgz`，integrity `sha512-m0j1u26pgS0e+PSnl8aTvzTp6GQ9FuJmgoVgSMaQcGnsLuV7yCNfzTd5iMlpQXZgcyEDgi5OliExeoMXotgP7A==`，共 154 文件。
+- 发布前类型检查、23 单测、完整 UI 20/20、ripple 专项 66 断言、A 批 7/7、B 批 6/6、root 浅深 held 图与 KAM 候选兼容 dev 53/prod 52 检查通过；修改后的指令使用 KAM TypeScript 5.9 检查通过。完整证据在 VALIDATION.md。
+- KAM 已从官方 registry 精确升级 0.2.2，package/lock/实际安装一致，lock integrity 与 registry 一致；安装读取原 lockfile，只替换 UI 包。正式消费回归以 KAM 验证记录为准。
+
 - 包名是 `@lingyzh/ui`，公开入口仍指向 `src/ui/` 下的 Vue SFC、TypeScript 与 CSS 源码。UAH 消费方式以其 package.json/lockfile 为准；2026-09-30 核对相邻 UAH-desktop 仍为官方 npm `0.1.0`，`file:../UI` 仅为显式本地联调选项。使用方需有支持 Vue SFC 的构建工具，并让 Vue peer dependency 与宿主共用同一实例。
 - `package.json#files` 只包含 `src/`。npm 会另外包含根目录的 `package.json`、`README.md` 和 `LICENSE`；检查 `npm pack --dry-run --json`，不能带入 `.idea/`、测试、`dist/`、项目记忆或凭据。
 - `publishConfig` 固定官方 `https://registry.npmjs.org/`、`access=public` 与 `tag=latest`，避免本机镜像 registry 或 scoped 包默认私有状态影响发布。
@@ -19,7 +28,7 @@
 ### 认证约定
 
 - npm Trusted Publishing 通过 OIDC 认证；workflow 保留 `contents: read`、`id-token: write`，不配置长期 `NPM_TOKEN`，不以本地 npm login/网页授权作为常规发布步骤。
-- npm 包设置中的 GitHub Trusted Publisher 应匹配 owner `LingYzh`、repository `UI`、workflow filename `publish.yml`（仅文件名）；当前 job 无 `environment`，绑定应与之保持一致。本次依据仓库配置与用户说明更新文档，未登录 npm 设置页核验远端绑定，也未运行新版本发布。
+- npm 包设置中的 GitHub Trusted Publisher 应匹配 owner `LingYzh`、repository `UI`、workflow filename `publish.yml`（仅文件名）；当前 job 无 `environment`，绑定应与之保持一致。2026-10-01 的 0.2.2 workflow 日志与官方 registry 已验证 OIDC 自动发布成功；未登录 npm 设置页读取远端配置。
 - 按 [npm 官方 Trusted Publishing 文档](https://docs.npmjs.com/trusted-publishers/)，npm CLI 至少 11.5.1、Node.js 至少 22.14.0；仓库当前选用 Node.js 24。认证失败先检查运行日志中的 npm 版本、`id-token` 权限和远端绑定，不直接改成 token 发布。
 
 ### 后续发布步骤
