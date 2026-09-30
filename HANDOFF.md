@@ -42,4 +42,10 @@
 - 现有组件扩展：UiButton 加 danger，UiDialog 加 size 与 placement=end，UiInput 加数字模式，utilities 补充字号、截断、定位、网格等类。
 - UAH 如需使用 confirmDialog，要在根组件挂载一次 UiConfirmHost。
 - 验收记录见 VALIDATION.md“2026-09-30 A 批组件验收”。
-- 待办：B 批（0.2.1）的 UiCheckbox、UiRadio、UiProgress、UiCopyButton、UiColorSwatches 尚未开始。
+## 2026-09-30 B 批（0.2.1）
+
+- 新增组件：UiCheckbox、UiRadio、UiProgress、UiCopyButton、UiColorSwatches，样式集中在 `controls.css`；新增 `copy.label` 与 `swatch.*` 文案。
+- UiColorSwatches 的选中判断忽略大小写；色板外的已保存颜色保留为“当前颜色”，不会被改写。
+- UiCopyButton 的根节点是 Tooltip 包裹层，未声明的属性转给内部按钮。
+- 验收记录见 VALIDATION.md“2026-09-30 B 批组件验收”。专项回归为 `node tests/desktop/controls.mjs`。
+- KAM 迁移计划中的 UI 库补缺到此完成；后续页面迁移发现的新缺口按 0.2.x 追加。

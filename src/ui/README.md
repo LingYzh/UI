@@ -44,6 +44,11 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 | `UiMenu` / `UiMenuItem` | `v-model:open`、`placement`、`panel`、`label`；activator 插槽 `{ props }`；MenuItem `checked/disabled/danger/keep-open` | popover 顶层与 anchor 定位；菜单方向键漫游，面板 Tab 导航；Esc/点击外部关闭并还焦点 |
 | `confirmDialog` / `UiConfirmHost` | `confirmDialog({ message, title?, confirmText?, cancelText?, tone? }) => Promise<boolean>` | 根组件挂载一次 Host；排队显示，关闭后才 resolve，默认焦点在取消 |
 | `setLocale` | `setLocale('zh' / 'en')`、`getLocale()` | 只翻译组件内置文案，默认 zh；显式 props 优先 |
+| `UiCheckbox` | 布尔 `v-model`、`indeterminate`、`disabled`；默认插槽为标签 | 原生复选框；部分选中同时设置 DOM indeterminate 与 `aria-checked="mixed"`，用户点击后由调用方重算；无插槽时须提供 `aria-label` |
+| `UiRadio` | `v-model`（string/number）、`value`、`disabled`；原生 `name` 等属性透传；默认插槽为标签 | 原生单选；同一 `name` 的实例可分布在不同容器，方向键在组内移动 |
+| `UiProgress` | `value`、`max`、`tone="accent/success/warning/error"`、`dense`、`label` | progressbar 语义；值裁剪到 [0, max]，max 非法时回退 100；阈值配色由调用方决定 |
+| `UiCopyButton` | `text`（字符串或点击时求值的函数）、`label`、`copied-label`、`dense`、`disabled`；`copied/error` | 图标按钮名称固定，结果经 status 播报；成功 1.6 秒后恢复；失败不自动提示 |
+| `UiColorSwatches` | `v-model`（CSS 颜色或 null）、`colors`、`label`、`disabled` | 命名 radiogroup，默认 10 色；比较忽略大小写，色板外的已保存颜色显示为“当前颜色” |
 
 
 ```vue
@@ -127,7 +132,7 @@ UiScrollArea 参考 Element Plus 的悬浮滚动条交互：透明轨道、圆�
 
 Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `dense`、`ghost` 和 `:rounded="false"`。dense 缩小控件高度或内容间距，ghost 使用透明表面，rounded=false 去除圆角；保持错误、禁用和键盘焦点状态。既有 size、compact、density 参数继续兼容。Switch 等依赖固定形状表达状态的组件不机械套用这些变体。
 
-组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。文档当前共 39 页。
+组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。文档当前共 44 页。
 
 上述七类组件自己的页面也提供默认、dense、ghost、直角的独立演示及源码。滚动区域允许原生滚动衔接：横向区域不会阻断父级的纵向滚轮操作，滚动到边界后可继续滚动祖先容器。
 
