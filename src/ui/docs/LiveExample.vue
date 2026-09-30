@@ -11,6 +11,8 @@ import ConversationDemo from './ConversationDemo.vue';
 import UsageMeterDemo from './UsageMeterDemo.vue';
 import FeedbackDemo from './FeedbackDemo.vue';
 import LocaleDemo from './LocaleDemo.vue';
+import ControlsDemo from './ControlsDemo.vue';
+const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
 
 const feedbackExamples = ['badge-tones', 'badge-custom', 'alert-tones', 'alert-actions', 'spinner-states', 'menu-items', 'menu-panel', 'confirm-basic', 'button-danger', 'dialog-sizes'];
 const port = ref(5580);
@@ -119,6 +121,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         </template>
         <FeedbackDemo v-else-if="feedbackExamples.includes(example)" :example="example" />
         <LocaleDemo v-else-if="example === 'locale-switch'" />
+        <ControlsDemo v-else-if="controlExamples.includes(example)" :example="example" />
         <template v-else-if="example === 'input-number'">
             <UiField v-slot="{ controlAttrs }" label="代理端口" :for="`${prefix}-port`" description="type=number 时模型为数字，清空为 null。"><UiInput v-model="port" v-bind="controlAttrs" type="number" min="1" max="65535" /></UiField>
             <output>{{ port === null ? 'null' : `${typeof port} · ${port}` }}</output>

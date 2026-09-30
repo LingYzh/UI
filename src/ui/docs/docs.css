@@ -222,3 +222,12 @@
 .demo-utility { background: var(--soft); border: 1px dashed var(--border); border-radius: 8px; }
 .live-example .ui-card .ui-field { gap: 10px; }
 @media (max-width: 480px) { .docs-theme-switch > span { display: none; } .demo-card-grid { grid-template-columns: 1fr; } }
+
+/* B 批示例的局部排版：列表行分隔、路由卡片网格与标签预览。 */
+.demo-list-head { border-bottom: 1px solid var(--line); }
+.demo-list-row { border-bottom: 1px solid var(--line); cursor: pointer; }
+.demo-list-row:last-child { border-bottom: 0; }
+.demo-list-row:hover { background: var(--soft); }
+@media (max-width: 720px) { .demo-route-grid { grid-template-columns: minmax(0, 1fr) !important; } }
+.demo-token { padding: 3px 6px; border-radius: 5px; background: var(--soft); color: var(--muted); }
+.demo-tag-preview { display: inline-flex; align-items: center; min-height: 20px; padding: 0 7px; border-radius: 6px; background: color-mix(in srgb, var(--tag) 16%, transparent); color: color-mix(in srgb, var(--tag) 70%, var(--text)); font-size: 11px; font-weight: 500; }

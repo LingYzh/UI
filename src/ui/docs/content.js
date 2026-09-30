@@ -1,5 +1,6 @@
 import { tablePages } from './tableContent.js';
 import { feedbackPages } from './feedbackContent.js';
+import { controlPages } from './controlsContent.js';
 const row = (name, type, fallback, description) => ({ name, type, fallback, description });
 const example = (id, title, description, code) => ({ id, title, description, code });
 const component = (id, title, name, description, examples, props, events = [], slots = [], notes = []) => ({
@@ -186,6 +187,7 @@ pages.push({ id: 'variants', title: '统一样式变体', name: 'Variants', grou
 ] });
 pages.push(...tablePages);
 pages.push(...feedbackPages);
+pages.push(...controlPages);
 // A 批对现有组件的扩展：危险按钮、弹窗宽度与抽屉、数字输入。
 const buttonPage = pages.find((page) => page.id === 'button');
 buttonPage.props.find((item) => item.name === 'variant').type = "'primary' | 'secondary' | 'ghost' | 'danger'";

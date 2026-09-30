@@ -94,3 +94,22 @@ KAM（Kiro Account Manager）渲染层从 React 迁到 Vue 之前，先按 UI-fi
     - 验收中修正了三处：面板内字段改为纵向排列；菜单项焦点改为选中底色加细环，替代 2px 描边；danger 按钮加淡红边框，与普通次要按钮区分。
 - **TS 5.9 兼容**：用 KAM 的 TypeScript 5.9.3 与 vue-tsc 3.3.11 检查 `src/ui` 源码，零错误。
 - **单元测试**：23/23（新增 confirm 队列、结算、卸载取消）。允许 KAM 使用本批组件。
+
+## 2026-09-30 B 批组件验收（0.2.1）
+
+- **新增组件**：UiCheckbox、UiRadio、UiProgress、UiCopyButton、UiColorSwatches，样式（`controls.css`）与 demo 由 root 编写；新增 `copy.label`、`swatch.*` locale 键。
+- **专项测试** `node tests/desktop/controls.mjs`（900×800、125%）覆盖：
+    - Checkbox：全选的部分选中同时暴露 `indeterminate` 与 `aria-checked="mixed"`，Space 切换，全选联动，行内 label 扩大点击区域。
+    - Radio：分布在不同卡片中的单选共享一组，Space 选中、方向键切换。
+    - Progress：progressbar 数值、阈值配色、批量任务完成态。
+    - CopyButton：剪贴板写入原文，成功态与 status 播报，Tooltip 切换为“已复制”，1.6 秒后恢复。
+    - ColorSwatches：命名 radiogroup，方向键选择；色板外的已保存颜色显示为“当前颜色”，选择其他颜色后消失。
+    - 减少动效时进度与勾选过渡关闭。
+- **root 视觉验收**（`artifacts/controls-2q1nXf`、`controls-sHWDMS`，浅色与深色）：
+    - 勾选、部分选中、单选圆点在两套主题下对比清晰，禁用态淡化一致。
+    - 进度条四种语气与 Alert/Badge 色系一致，轨道在深色下仍可辨。
+    - 色板选中环使用表面色间隔，任何色块上都可读。
+    - 验收中修正了三处：复制成功的勾加粗并加绿色弱底；自定义色块前加分隔线并调整虚线圈间距；复制按钮颜色规则提高特异度，避免被后置的 ghost 按钮规则覆盖。
+- **回归**：完整 UI 回归与 A 批 `feedback.mjs` 全部通过（`artifacts/ui-ZLzwOj`、`feedback-EOT8AZ`）。
+- **TS 5.9 兼容**：用 KAM 的 TypeScript 5.9.3 与 vue-tsc 3.3.11 检查 `src/ui` 源码，零错误。
+- **单元测试**：23/23（locale 键集合校验覆盖新增键）。允许 KAM 使用本批组件。
