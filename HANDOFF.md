@@ -32,3 +32,14 @@
 配套UAH已通过263项自动测试、Git/context真实Electron37条断言与Plan回归。使用file:../UI和Vue dedupe；不要复制本库源码到UAH。生产端需重新build并重启Electron，网页刷新不足以加载UAH主进程更新。
 
 已知边界：UiUsageMeter不提供tokenizer或模型能力猜测；分类合计与服务计数独立。Markdown仅渲染可见内容，不接受任意执行；嵌套列表/引用/details中的Mermaid围栏保留代码回退。新业务需求先盘点组件并遵循UI-first，当前没有未完成的已授权UI修复。
+
+## 2026-09-30 A 批（0.2.0）
+
+为 KAM（Kiro Account Manager）从 React 迁移到 Vue 补齐组件，UAH 默认行为不变。
+
+- locale：新增 zh/en 两种语言，默认 zh，文案与原文逐字一致。
+- 新增组件：UiBadge、UiAlert、UiSpinner、UiMenu/UiMenuItem、confirmDialog/UiConfirmHost。
+- 现有组件扩展：UiButton 加 danger，UiDialog 加 size 与 placement=end，UiInput 加数字模式，utilities 补充字号、截断、定位、网格等类。
+- UAH 如需使用 confirmDialog，要在根组件挂载一次 UiConfirmHost。
+- 验收记录见 VALIDATION.md“2026-09-30 A 批组件验收”。
+- 待办：B 批（0.2.1）的 UiCheckbox、UiRadio、UiProgress、UiCopyButton、UiColorSwatches 尚未开始。

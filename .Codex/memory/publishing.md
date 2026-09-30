@@ -5,3 +5,4 @@
 - `publishConfig` 固定官方 `https://registry.npmjs.org/`、`access=public` 与 `tag=latest`，避免本机镜像 registry 或 scoped 包默认私有状态影响发布。
 - 发布前先确认 UI 已含相邻 UAH 所需的公开导出，再运行 `npm ci`、`npm run typecheck`、`npm test`、`npm run test:ui` 和打包预览。桌面 UI 测试的复制断言应等待“已复制”反馈后读取剪贴板，避免异步写入的时序误报。
 - 首次公开版本使用 MIT 协议，版权署名 `LingYzh`；首次 npm dist-tag 为 `latest`，对应 Git tag 为 `v0.1.0`。npm 发布及 Git tag 状态以实时 registry 和 Git 检查为准，不能仅凭本文件推断。
+- 0.2.0（2026-09-30）是 KAM 迁移 A 批。发布前必须全部通过：typecheck、单测、完整 `test:ui`、`tests/desktop/feedback.mjs`，并用 KAM 的 TS 5.9.3 + vue-tsc 3.3.11 在临时 tsconfig 下检查 `src/ui`，要求零错误。运行环境最低 Chromium 140（KAM 为 Electron 38）。

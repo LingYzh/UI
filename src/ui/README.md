@@ -25,19 +25,25 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 
 | 组件 | 主要 API | 交互约定 |
 | --- | --- | --- |
-| `UiButton` | `variant="primary/secondary/ghost"`、`size="sm/md"`、`icon`、`loading`、`disabled` | 默认 `type="button"`；等待态禁止重复点击；纯图标按钮必须传 `aria-label`；`ripple` 默认开启，可设 false；ref 暴露 `element/focus(options?)` |
-| `UiInput` | 字符串 `v-model`、`disabled`、`invalid`；`leading/trailing` 插槽 | 边框、背景、hover/focus 属于整个外壳。`class/style` 落外壳，其余原生属性与事件落 input。ref 暴露 `element/focus()/select()` |
+| `UiButton` | `variant="primary/secondary/ghost/danger"`、`size="sm/md"`、`icon`、`loading`、`disabled` | 默认 `type="button"`；等待态禁止重复点击；纯图标按钮必须传 `aria-label`；`ripple` 默认开启，可设 false；ref 暴露 `element/focus(options?)` |
+| `UiInput` | 字符串 `v-model`（`type="number"` 时为 number，清空为 null）、`disabled`、`invalid`；`leading/trailing` 插槽 | 边框、背景、hover/focus 属于整个外壳。`class/style` 落外壳，其余原生属性与事件落 input。ref 暴露 `element/focus()/select()` |
 | `UiSelect` | 字符串或数字 `v-model`、`compact`、`invalid`；原生 option 插槽 | 未传模型默认选择首项；指针选完默认释放焦点（`blur-on-select=false` 可关闭），键盘保留焦点；保留数字 option 值；支持 base-select 时使用统一弹层与居中箭头，否则使用原生弹层 |
 | `UiSwitch` | 布尔 `v-model`、原生 checkbox 属性 | Space 切换；使用关联 label 或 `aria-label` 提供名称 |
 | `UiField` | `label`、`for`、`description`、`error`；默认插槽 `controlAttrs` | 将 `controlAttrs` 绑定控件，自动关联 label、描述与错误。没有 `for` 时显示非表单标题 |
 | `UiTabs` | `v-model`、`items`、`id-prefix`、`orientation`、`variant="soft/underline"` | 默认 underline；底部/垂直右侧的连续滑动指示条，默认 ripple；方向键、Home/End、跳过禁用项、自动激活；插槽获得 `item` |
 | `UiTabPanel` | `model-value`、`value`、与 Tabs 相同的 `id-prefix` | ARIA 关联，隐藏时保留实例和内部状态，显示时淡入。每组 id-prefix 必须唯一 |
-| `UiDialog` | `v-model:open`；`opened/closed/present-change` | 原生 modal、焦点约束、Esc/遮罩关闭、退出后恢复焦点；须提供 `aria-label` 或 `aria-labelledby` |
+| `UiDialog` | `v-model:open`、`size="sm/md/lg/xl/full"`、`placement="center/end"`；`opened/closed/present-change` | 原生 modal、焦点约束、Esc/遮罩关闭、退出后恢复焦点；须提供 `aria-label` 或 `aria-labelledby` |
 | `UiCollapse` | `open` | 高度和透明度过渡；关闭立即 inert，内容保留实例 |
 | `UiSnackbarHost` | 根组件挂载一次 | 显示全局提示；卸载时清理提示和定时器 |
 | `UiCard` | title/subtitle、variant、density、flush、as；header/media/default/actions 插槽 | 统一标题、表单、Tabs 与底部操作间距，容器本身不隐式承担按钮行为 |
 | `UiScrollArea` | label、height/max-height、axis、always；ref element/focus/scrollTo/update | 悬浮滑块与原生滚动行为；支持拖动、轨道点击和动态尺寸 |
 | `UiCodeBlock` | code、language | highlight.js 按需语法；浅深主题、复制、换行，原始源码不执行 |
+| `UiBadge` | `tone`、`variant="soft/outline"`、`color`、`dense`、`closable` + `close` | 自定义颜色按主题混合；移除按钮通过 aria-describedby 关联标签文字 |
+| `UiAlert` | `tone="info/success/warning/error"`、`title`、`dense`；`icon/actions` 插槽 | error 为 alert，其余 status，可透传 role（如 note） |
+| `UiSpinner` | `size`、`label` | 继承文字颜色；有 label 时为 status，减少动效时放慢而不停止 |
+| `UiMenu` / `UiMenuItem` | `v-model:open`、`placement`、`panel`、`label`；activator 插槽 `{ props }`；MenuItem `checked/disabled/danger/keep-open` | popover 顶层与 anchor 定位；菜单方向键漫游，面板 Tab 导航；Esc/点击外部关闭并还焦点 |
+| `confirmDialog` / `UiConfirmHost` | `confirmDialog({ message, title?, confirmText?, cancelText?, tone? }) => Promise<boolean>` | 根组件挂载一次 Host；排队显示，关闭后才 resolve，默认焦点在取消 |
+| `setLocale` | `setLocale('zh' / 'en')`、`getLocale()` | 只翻译组件内置文案，默认 zh；显式 props 优先 |
 
 
 ```vue
@@ -121,7 +127,7 @@ UiScrollArea 参考 Element Plus 的悬浮滚动条交互：透明轨道、圆�
 
 Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `dense`、`ghost` 和 `:rounded="false"`。dense 缩小控件高度或内容间距，ghost 使用透明表面，rounded=false 去除圆角；保持错误、禁用和键盘焦点状态。既有 size、compact、density 参数继续兼容。Switch 等依赖固定形状表达状态的组件不机械套用这些变体。
 
-组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。文档当前共 25 页、16 个公开组件。
+组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。文档当前共 39 页。
 
 上述七类组件自己的页面也提供默认、dense、ghost、直角的独立演示及源码。滚动区域允许原生滚动衔接：横向区域不会阻断父级的纵向滚轮操作，滚动到边界后可继续滚动祖先容器。
 
