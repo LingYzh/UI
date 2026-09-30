@@ -72,6 +72,10 @@ try {
     const tones = await region(page, '四种语气');
     assert.equal(await tones.getByRole('alert').count(), 1);
     assert.equal(await tones.getByRole('status').count(), 3);
+    // 宿主透传的 role 覆盖默认 status。
+    const actionsCard = await region(page, '操作、紧凑与语义');
+    assert.equal(await actionsCard.getByRole('note').count(), 1);
+    assert.equal(await actionsCard.getByRole('status').count(), 1);
     for (const value of ['light', 'dark']) {
         await theme(page, value);
         await tones.scrollIntoViewIfNeeded();
@@ -147,6 +151,14 @@ try {
     }
     await page.keyboard.press('Escape');
     await panel.waitFor({ state: 'hidden' });
+    // 焦点仍在初始输入框时，Esc 同样关闭面板并把焦点还给触发器。
+    const filterTrigger = panelCard.getByRole('button', { name: '筛选' });
+    await filterTrigger.click();
+    await panel.waitFor();
+    await page.waitForFunction(() => document.activeElement?.getAttribute('placeholder') === '邮箱或昵称');
+    await page.keyboard.press('Escape');
+    await panel.waitFor({ state: 'hidden' });
+    await page.waitForFunction((element) => element === document.activeElement, await filterTrigger.elementHandle());
     passed.push('menu roves with arrows/Home/End, closes on Esc with focus return, supports keep-open checks and a tabbable panel');
 
     // confirmDialog：危险确认、默认焦点、排队。
@@ -208,6 +220,14 @@ try {
     await page.keyboard.press('Escape');
     await drawer.waitFor({ state: 'hidden' });
     assert.equal(await sizes.getByRole('button', { name: '打开抽屉' }).evaluate((element) => element === document.activeElement), true);
+    // 减少动效：共享 .ui-dialog 的 !important 规则同样关闭抽屉的滑入动画。
+    await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'true'; });
+    await sizes.getByRole('button', { name: '打开抽屉' }).click();
+    await page.waitForFunction(() => document.querySelector('.ui-dialog--end')?.dataset.state === 'open');
+    assert.equal(await drawer.evaluate((element) => getComputedStyle(element).animationName), 'none');
+    await page.keyboard.press('Escape');
+    await drawer.waitFor({ state: 'hidden' });
+    await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'false'; });
     passed.push('danger buttons render in both themes; dialog sizes apply fixed widths and the end drawer spans the full height with focus return');
 
     // locale：切换英文后内置文案更新，离开页面恢复中文。
