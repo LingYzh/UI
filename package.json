@@ -14,7 +14,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/LingYzh/UI.git"
+        "url": "git+https://github.com/LingYzh/UI.git"
     },
     "exports": {
         ".": "./src/ui/index.ts",
