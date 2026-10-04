@@ -32,11 +32,11 @@ try {
     assert.equal(await over.locator('.ui-usage-progress').getAttribute('stroke-dasharray'), '100 100');
     assert.equal(await page.getByRole('button', { name: '零用量：0%，查看详情', exact: true }).locator('.ui-usage-progress').getAttribute('stroke-dasharray'), '0 100');
     assert.equal(await page.getByRole('button', { name: '禁用：20%，查看详情', exact: true }).isDisabled(), true);
-    assert.match(await page.locator('.ui-usage-composition').innerText(), /合计 24,200（部分未统计）/);
-    assert.equal(await page.locator('.ui-usage-legend li').last().innerText(), '压缩摘要\n未统计');
+    assert.match(await page.locator('.ui-usage-composition').first().innerText(), /合计 200,000（部分未统计）/);
+    assert.equal(await page.locator('.ui-usage-legend').first().locator('li').last().innerText(), '剩余可用上下文\n175,800');
     await page.getByRole('button', { name: '更新用量', exact: true }).click();
     await page.getByRole('button', { name: '上下文：20%，本地估算，查看详情', exact: true }).waitFor();
-    assert.match(await page.locator('.ui-usage-heading').innerText(), /40,000/);
+    assert.match(await page.locator('.ui-usage-heading').first().innerText(), /40,000/);
     await page.getByRole('button', { name: '更新用量', exact: true }).click();
     await page.emulateMedia({ reducedMotion: 'reduce' });
     assert.equal(await trigger.locator('.ui-usage-progress').evaluate(element => getComputedStyle(element).transitionDuration), '0s');

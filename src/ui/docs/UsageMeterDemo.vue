@@ -19,7 +19,8 @@ const segments = [
     { id: 'assistant', label: '助手正文', value: 5700 },
     { id: 'results', label: '工具结果', value: 6100 },
     { id: 'attachments', label: '附件', value: 2100 },
-    { id: 'summary', label: '压缩摘要', value: null }
+    { id: 'summary', label: '压缩摘要', value: null },
+    { id: 'remaining', label: '剩余可用上下文', value: 175800, tone: 'remaining' }
 ];
 </script>
 

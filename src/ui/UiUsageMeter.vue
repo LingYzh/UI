@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { uiText, uiNumberLocale } from './locale';
 
-export interface UsageSegment { id: string; label: string; value: number | null }
+export interface UsageSegment { id: string; label: string; value: number | null; tone?: 'remaining' }
 const props = withDefaults(defineProps<{
     used?: number | null;
     capacity?: number | null;
@@ -26,7 +26,7 @@ const status = computed(() => used.value === null ? uiText('usage.unknown') : ca
 const accessible = computed(() => uiText('usage.accessible', { label: displayLabel.value, status: status.value, estimated: props.estimated ? uiText('usage.estimatedSuffix') : '', inspect: uiText('usage.inspect') }));
 const number = (value: number | null) => value === null ? uiText('usage.unknown') : value.toLocaleString(uiNumberLocale(), { maximumFractionDigits: 1 });
 const compactStatus = computed(() => used.value !== null && capacity.value === null ? `${props.estimated ? uiText('usage.approx') : ''}${used.value >= 1000 ? `${Math.round(used.value / 100) / 10}K` : number(used.value)} · ${uiText('usage.capacityUnknown')}` : status.value);
-const segments = computed(() => (props.segments || []).map((item, index) => ({ ...item, value: valid(item.value) ? item.value : null, color: `var(--usage-category-${index % 8 + 1})` })));
+const segments = computed(() => (props.segments || []).map((item, index) => ({ ...item, value: valid(item.value) ? item.value : null, color: item.tone === 'remaining' ? 'var(--usage-remaining)' : `var(--usage-category-${index % 8 + 1})` })));
 const total = computed(() => segments.value.reduce((sum, item) => sum + (item.value || 0), 0));
 const incomplete = computed(() => segments.value.some(item => item.value === null));
 </script>

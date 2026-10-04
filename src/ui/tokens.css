@@ -27,6 +27,7 @@
     --nav-width: 254px;
     --panel-width: 470px;
     --code-size: 13px;
+    --usage-remaining: #c1c8d0;
     --usage-category-1: #918476;
     --usage-category-2: #a7856c;
     --usage-category-3: #bda78a;
@@ -68,6 +69,7 @@
     --amber: #dfbf82;
     --amber-background: #423b2b;
     --shadow: 0 8px 35px #0004;
+    --usage-remaining: #555f6e;
     --usage-category-1: #ad9b88;
     --usage-category-2: #c39c7e;
     --usage-category-3: #d6bd9b;

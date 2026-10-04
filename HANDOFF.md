@@ -64,3 +64,9 @@ root 已验收浅深两张 held 截图；类型检查、23 单测、文档/库�
 - 验收记录见 VALIDATION.md“2026-09-30 B 批组件验收”。专项回归为 `node tests/desktop/controls.mjs`。
 - KAM 迁移计划中的 UI 库补缺到此完成；后续页面迁移发现的新缺口按 0.2.x 追加。
 - 0.2.1 已于 2026-09-30 发布到官方 npm，latest 指向 0.2.1；UI main 与 v0.2.1 标签已推送，标签对应发布准备提交 `449183b`。发布校验与消费方 integrity 见 `.Codex/memory/publishing.md`。
+
+## 2026-10-05：空闲上下文分类颜色（0.2.3 待发布）
+
+UiUsageMeter 的 UsageSegment 新增可选 tone: 'remaining'，使用独立 --usage-remaining 冷灰色（浅色 #c1c8d0，深色 #555f6e），不随分类位置变化。默认分类行为保持兼容；真实 demo 和 API 文档同步。
+
+typecheck、23项测试、build、pack白名单检查通过。usage-meter专项通过，root已检查 artifacts/usage-meter-WPh1Qi 的浅色1440与深色900/125%截图，空闲与绿色内容分类可辨。正式发布需按AGENTS以版本提交+标签触发Actions；当前待授权。
