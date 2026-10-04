@@ -70,3 +70,9 @@ root 已验收浅深两张 held 截图；类型检查、23 单测、文档/库�
 UiUsageMeter 的 UsageSegment 新增可选 tone: 'remaining'，使用独立 --usage-remaining 冷灰色（浅色 #c1c8d0，深色 #555f6e），不随分类位置变化。默认分类行为保持兼容；真实 demo 和 API 文档同步。
 
 typecheck、23项测试、build、pack白名单检查通过。usage-meter专项通过，root已检查 artifacts/usage-meter-WPh1Qi 的浅色1440与深色900/125%截图，空闲与绿色内容分类可辨。正式发布需按AGENTS以版本提交+标签触发Actions；当前待授权。
+
+## 2026-10-05：0.2.3 发布完成
+
+用户已明确授权发布并升级 UAH。发布提交 6f405a84e6dd1e3c36e9b04853488eff571214b8，标签 v0.2.3；GitHub Actions 37226243401 的 Publish 步骤成功，官方 npm 的 latest 为 0.2.3。tarball：https://registry.npmjs.org/@lingyzh/ui/-/ui-0.2.3.tgz；integrity：sha512-P+sBNm4KjRNkBcoIImV2+PQRT9mYxqqYqkzAWGNZNVfBqea6owCklrupb7W6ap8jx9s5alWi78rcH7/z74PgRQ==。
+
+UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 typecheck、23/23 单测、build、pack 白名单及 usage-meter 桌面专项通过；root 检查 artifacts/usage-meter-WPh1Qi 的浅色 1440 与深色 900/125% 截图。剩余量使用独立冷灰 token，不再与消息分类共享绿色。
