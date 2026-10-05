@@ -57,3 +57,13 @@ UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 ty
 0.3.0：提交a7ea191a1166e842ea4018b246ff0a28a25bc1e7，标签v0.3.0，Actions37287893853；integrity sha512-MrxVpXbQrqGvVFrqTmmU2ieS/OZ7uHAmceqAw7hX/D+ejNi2ApHAb7TjPutcwyHDblsMMniR9DTjlQJfpb4c7A==。
 0.3.1：提交55c1d7b74e31eec396610c1b701bf729e113dd71，标签v0.3.1，Actions37292273421；integrity sha512-jjRUnrDkuKbiJj5EW80i811mYZ7GJKc9y3n2qmWxUHJqiDYyPsmvVMIJcUatfJThh8V7JhWJZz2TqDWfyk1uiw==。
 两次均由既有OIDC工作流成功发布，正式registry版本与latest已核对。UAH兼容回归发现嵌套选择器更新循环后补发0.3.1；补充slot动态文字回归发现遗漏，最终正在准备0.3.2。不要将中间版本当作消费方最终验收结果；完整过程见HANDOFF.md与VALIDATION.md。
+
+## 2026-10-05：0.3.2 发布完成
+
+发布提交9961a7858a0757f588c70935ccd7f237cf1cfab4，标签v0.3.2，Actions37293347476；官方latest为0.3.2，tarball https://registry.npmjs.org/@lingyzh/ui/-/ui-0.3.2.tgz，integrity sha512-XaR61MNq1VH4hz+eFeh42/tCSqYI2XmctYzK0zInd1tpaW8aRgth5l2IOavOKsAQurQOrJCa36kuvgwHDqURUg==。registry完整元数据为artifacts/release-0.3.2-registry.json。UAH已固定安装官方0.3.2，包/lock/node_modules一致且Vue dedupe保持；typecheck、应用和文档build通过，桌面最终验收见HANDOFF.md与VALIDATION.md后续增量。发布标签不改写，后续纯验证记录提交只推main，不触发再发包。
+
+### UAH 最终兼容验收
+
+UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
+
+消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。

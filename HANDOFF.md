@@ -146,3 +146,15 @@ UAH 固定安装官方 npm 0.3.0 后，实际端点编辑器的嵌套模型能�
 补充回归发现停止重复渲染后，旧 slot 提供的 option 文本在 UiScrollArea 内更新时不会触发 UiSelect 的 updated，选中文本克隆停留在旧内容。0.3.2 仅观察选项容器的子节点与文本变化，同步真正变化的克隆并在卸载时清理监听；不观察 selectedcontent，避免监听自身写入。专项增加修改选中项文字后显示更新且模型不变的断言，浅深主题均通过，证据 artifacts/select-initialization-KIxN9D。UI API／样式无变动；UAH 最终消费 0.3.2，0.3.0 与 0.3.1 是中间版本。
 
 0.3.2 发布前 typecheck、48/48 单测、build、20/20 全 UI 通过，证据 artifacts/ui-EQH98h，日志 artifacts/release-0.3.2-*；root 检查最终嵌套选择器截图与两次修复 diff。发布按现有标签／OIDC流程进行，最终 registry 和消费端记录另追加。
+
+## 2026-10-05：0.3.2 正式发布结果
+
+发布提交 9961a7858a0757f588c70935ccd7f237cf1cfab4，注释标签 v0.3.2 已推送并核对远端解引用；GitHub Actions 37293347476 成功，官方 npm latest 为0.3.2，tarball已可下载。tarball 为 https://registry.npmjs.org/@lingyzh/ui/-/ui-0.3.2.tgz，integrity 为 sha512-XaR61MNq1VH4hz+eFeh42/tCSqYI2XmctYzK0zInd1tpaW8aRgth5l2IOavOKsAQurQOrJCa36kuvgwHDqURUg==。完整 registry 元数据保存在 artifacts/release-0.3.2-registry.json。
+
+UAH 已固定安装官方 npm 0.3.2，package／lockfile／实际 node_modules 版本一致，integrity 与官方一致，Vue 3.5.43 保持 dedupe。消费端 TypeScript 7 无 ts.sys，Vite Vue plugin 已显式提供 Node 文件读取／realpath 适配；typecheck、应用 build、build:ui 均通过。UAH 最终桌面结果另追加。
+
+### UAH 最终兼容验收
+
+UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
+
+消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。

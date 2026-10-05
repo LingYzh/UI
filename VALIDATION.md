@@ -202,3 +202,11 @@ select-initialization 专项增加更新已选中 option 文字、断言 selecte
 0.3.2 发布前 typecheck、48/48 单测、build、20/20 全 UI 回归通过，仍覆盖60路由和滚动条内容调整；证据 artifacts/ui-EQH98h，日志 artifacts/release-0.3.2-{typecheck,test,build,ui}.log。root 已复核专项最新浅色完整窗口图像，选中文字实时更新、模型值保持不变，布局与主题保持组件规范。公开 props/emits/slots/expose 无变动，API审计不需要新增项目。
 
 最终 npm pack --dry-run 为182个文件，无 tests/artifacts/dist/docs 泄漏，JSON 为 artifacts/release-0.3.2-pack.json。
+
+0.3.2 正式发布：提交9961a7858a0757f588c70935ccd7f237cf1cfab4／标签v0.3.2／Actions37293347476，Publish成功；官方registry latest与版本元数据核对成功，tarball HTTP 200，UAH npm安装成功且lockfile integrity与官方相同。UAH typecheck、build、build:ui通过，最终实际弹窗与消费端完整UI结果随后记录。
+
+### UAH 最终兼容验收
+
+UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
+
+消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。
