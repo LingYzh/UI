@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { getCurrentInstance, h, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
+import { getCurrentInstance, h, onBeforeUnmount, onMounted, onUpdated, ref, useAttrs, type CSSProperties } from 'vue';
+import UiControlFrame from './UiControlFrame.vue';
+import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
 import UiScrollArea from './UiScrollArea.vue';
 import { uiText } from './locale';
+import { controlSizeStyles, type ControlSizing } from './control-sizing';
 export interface SelectItem {
     value: string;
     label: string;
@@ -18,9 +21,13 @@ const RichOption = ({ item }: { item: SelectItem }) => h('option', { value: item
     ]),
     item.hint ? h('span', { class: 'ui-select-item-hint', 'aria-hidden': 'true' }, item.hint) : null,
 ]);
-const props = withDefaults(defineProps<{ items?: SelectItem[]; menuTitle?: string; placeholder?: string; compact?: boolean; invalid?: boolean; blurOnSelect?: boolean; dense?: boolean; ghost?: boolean; rounded?: boolean }>(), { compact: false, invalid: false, blurOnSelect: true, rounded: true });
+const SelectedContent = () => h('selectedcontent');
+defineOptions({ inheritAttrs: false });
+const props = withDefaults(defineProps<ControlSizing & FormControlProps & { items?: SelectItem[]; menuTitle?: string; placeholder?: string; compact?: boolean; invalid?: boolean; blurOnSelect?: boolean }>(), { compact: false, invalid: false, blurOnSelect: true, dense: undefined, ghost: undefined, rounded: undefined });
+const attrs = useAttrs();
 const model = defineModel<string | number | null>();
 const element = ref<HTMLSelectElement>();
+const control = useFormControl(props, model, element, attrs);
 const instance = getCurrentInstance();
 const customPicker = typeof CSS !== 'undefined' && CSS.supports('appearance', 'base-select');
 function defaultSelection() {
@@ -43,7 +50,8 @@ onMounted(syncSelectedContent);
 onUpdated(syncSelectedContent);
 const pointerSelection = ref(false);
 let blurFrame = 0;
-function keyboardSelection() {
+function keyboardSelection(event: KeyboardEvent) {
+    control.guardKeys(event);
     pointerSelection.value = false;
     cancelAnimationFrame(blurFrame);
 }
@@ -67,21 +75,23 @@ function optionClick(event: MouseEvent) {
     }
 }
 onBeforeUnmount(() => cancelAnimationFrame(blurFrame));
-defineExpose({ element, focus: () => element.value?.focus() });
+defineExpose({ element, focus: () => element.value?.focus(), validate: control.validate, reset: control.reset, resetValidation: control.resetValidation, errors: control.errors });
 </script>
 
 <template>
-    <select ref="element" v-model="model" class="ui-select" :class="{ 'is-described': Boolean(items), 'is-compact': compact, 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }" :aria-invalid="invalid || $attrs['aria-invalid'] === true || $attrs['aria-invalid'] === 'true' || undefined" @pointerdown="pointerSelection = true" @keydown="keyboardSelection" @change="commit" @click="optionClick" @blur="pointerSelection = false">
-        <button v-if="items && customPicker" type="button"><selectedcontent /></button>
-        <option v-if="placeholder" value="" disabled hidden>{{ placeholder }}</option>
-        <UiScrollArea v-if="customPicker" class="ui-select-options" :label="uiText('common.options')" :max-height="items ? 'min(420px, 65dvh)' : 'min(320px, 50dvh)'" :focusable="false">
-            <template v-if="items">
-                <div v-if="menuTitle" class="ui-select-menu-title" aria-hidden="true">{{ menuTitle }}</div>
-                <RichOption v-for="item in items" :key="item.value" :item="item" />
-            </template>
+    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
+        <select ref="element" v-model="control.editable.value" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-select" :class="{ 'is-described': Boolean(items), 'is-compact': compact, 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': inline }" :style="[control.framed.value ? undefined : controlSizeStyles(props), attrs.style as CSSProperties]" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="invalid || control.state.value === false || $attrs['aria-invalid'] === true || $attrs['aria-invalid'] === 'true' || undefined" @pointerdown="pointerSelection = true; control.guard($event)" @keydown="keyboardSelection" @change="commit" @click="control.guard($event); optionClick($event)" @blur="pointerSelection = false; control.blur()">
+            <button v-if="customPicker" type="button"><SelectedContent /></button>
+            <option v-if="placeholder" value="" disabled hidden>{{ placeholder }}</option>
+            <UiScrollArea v-if="customPicker" class="ui-select-options" :label="uiText('common.options')" :max-height="items ? 'min(420px, 65dvh)' : 'min(320px, 50dvh)'" :focusable="false">
+                <template v-if="items">
+                    <div v-if="menuTitle" class="ui-select-menu-title" aria-hidden="true">{{ menuTitle }}</div>
+                    <RichOption v-for="item in items" :key="item.value" :item="item" />
+                </template>
+                <slot v-else />
+            </UiScrollArea>
+            <template v-else-if="items"><option v-for="item in items" :key="item.value" :value="item.value" :disabled="item.disabled">{{ item.label }}</option></template>
             <slot v-else />
-        </UiScrollArea>
-        <template v-else-if="items"><option v-for="item in items" :key="item.value" :value="item.value" :disabled="item.disabled">{{ item.label }}</option></template>
-        <slot v-else />
-    </select>
+        </select>
+    </UiControlFrame>
 </template>

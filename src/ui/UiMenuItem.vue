@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vPointerBlur } from './pointer-focus';
 import { inject } from 'vue';
 import { menuContextKey } from './menu';
 
@@ -21,7 +22,7 @@ function select(event: MouseEvent) {
 
 <template>
     <!-- 菜单项不进入 Tab 顺序，由 UiMenu 统一处理方向键漫游焦点。 -->
-    <button
+    <button v-pointer-blur
         type="button"
         class="ui-menu-item"
         :class="{ 'is-danger': danger }"

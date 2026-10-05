@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vPointerBlur } from './pointer-focus';
 import { computed, ref } from 'vue';
 import UiButton from './UiButton.vue';
 import UiScrollArea from './UiScrollArea.vue';
@@ -27,7 +28,7 @@ async function copy(value: string) {
     <section class="ui-diff" :class="{ 'is-compact': compact }" :aria-label="`${displayPath} ${status}`">
         <header class="ui-diff-header">
             <div class="ui-diff-identity"><strong :title="displayPath">{{ displayPath }}</strong><span>{{ compact ? `· ${proposed ? uiText('diff.pendingShort') : uiText('diff.snapshot')}` : status }}</span></div>
-            <button v-if="inspectable" class="ui-diff-inspect" type="button" @click="emit('inspect')">{{ uiText('diff.inspect') }} <Icon name="external" :size="14" /></button>
+            <button v-pointer-blur v-if="inspectable" class="ui-diff-inspect" type="button" @click="emit('inspect')">{{ uiText('diff.inspect') }} <Icon name="external" :size="14" /></button>
             <div v-if="!compact && !diff.omitted" class="ui-diff-counts" :aria-label="uiText('diff.counts')"><span class="ui-diff-added">+{{ diff.added }}</span><span class="ui-diff-removed">−{{ diff.removed }}</span></div>
         </header>
         <div v-if="!compact" class="ui-diff-toolbar">

@@ -6,7 +6,7 @@
 
 ## 使用
 
-先安装 `npm install @lingyzh/ui`；本地开发 UAH 时也可以继续使用 `file:../UI`。
+通过 npm 安装 `@lingyzh/ui` 的固定版本。UAH 不使用本地源码复制或 file: 依赖；共享修改先在此库验收并发布，再升级 UAH 依赖。
 
 ```js
 import { UiInput, UiSelect, UiButton, snackbar } from '@lingyzh/ui';
@@ -29,10 +29,13 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 | `UiInput` | 字符串 `v-model`（`type="number"` 时为 number，清空为 null）、`disabled`、`invalid`；`leading/trailing` 插槽 | 边框、背景、hover/focus 属于整个外壳。`class/style` 落外壳，其余原生属性与事件落 input。ref 暴露 `element/focus()/select()` |
 | `UiSelect` | 字符串或数字 `v-model`、`compact`、`invalid`；原生 option 插槽 | 未传模型默认选择首项；指针选完默认释放焦点（`blur-on-select=false` 可关闭），键盘保留焦点；保留数字 option 值；支持 base-select 时使用统一弹层与居中箭头，否则使用原生弹层 |
 | `UiSwitch` | 布尔 `v-model`、原生 checkbox 属性 | Space 切换；使用关联 label 或 `aria-label` 提供名称 |
-| `UiField` | `label`、`for`、`description`、`error`；默认插槽 `controlAttrs` | 将 `controlAttrs` 绑定控件，自动关联 label、描述与错误。没有 `for` 时显示非表单标题 |
-| `UiTabs` | `v-model`、`items`、`id-prefix`、`orientation`、`variant="soft/underline"` | 默认 underline；底部/垂直右侧的连续滑动指示条，默认 ripple；方向键、Home/End、跳过禁用项、自动激活；插槽获得 `item` |
+| `UiField` | `label`、`for`、`description`、`error`；默认插槽 `controlAttrs` | 用于自定义表单项；标准控件内置 label/hint。说明与错误在控件下方，controlAttrs 关联自定义控件 |
+| `UiTabs` | 可选 `v-model/items/idPrefix`、`direction`、`activation`、`grow/fixedTabs/showArrows` | 默认方向键与 Home/End 移动焦点，Enter/Space 确认；mandatory=force 选首个可用项；支持声明式 Tab、数组、#item/#window 与连续指示条 |
+| `UiTab` | `value`、`text/icon/disabled/ripple`；默认插槽 | 用于 Tabs；value 可省略并使用索引；原生按钮提供键盘与指针操作 |
+| `UiTabsWindow` | 可选 `v-model/idPrefix`；默认插槽 | 统一控制所有内容；#window 内继承 Tabs，兄弟窗口共享模型；相邻时自动关联 ID |
+| `UiTabsWindowItem` | `value`、`eager`；默认插槽 | 由 Window 控制显示；首次访问挂载并保留，eager 预先挂载 |
 | `UiTabPanel` | `model-value`、`value`、与 Tabs 相同的 `id-prefix` | ARIA 关联，隐藏时保留实例和内部状态，显示时淡入。每组 id-prefix 必须唯一 |
-| `UiDialog` | `v-model:open`、`size="sm/md/lg/xl/full"`、`placement="center/end"`；`opened/closed/present-change` | 原生 modal、焦点约束、Esc/遮罩关闭、退出后恢复焦点；须提供 `aria-label` 或 `aria-labelledby` |
+| `UiDialog` | `v-model:open`、`size="sm/md/lg/xl/full"`、`placement="center/end"`；`opened/closed/present-change` | 原生 modal、焦点约束、Esc/遮罩关闭、键盘退出后恢复触发器焦点，指针退出后释放操作焦点；须提供 `aria-label` 或 `aria-labelledby` |
 | `UiCollapse` | `open` | 高度和透明度过渡；关闭立即 inert，内容保留实例 |
 | `UiSnackbarHost` | 根组件挂载一次 | 显示全局提示；卸载时清理提示和定时器 |
 | `UiCard` | title/subtitle、variant、density、flush、as；header/media/default/actions 插槽 | 统一标题、表单、Tabs 与底部操作间距，容器本身不隐式承担按钮行为 |
@@ -44,7 +47,7 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 | `UiMenu` / `UiMenuItem` | `v-model:open`、`placement`、`panel`、`label`；activator 插槽 `{ props }`；MenuItem `checked/disabled/danger/keep-open` | popover 顶层与 anchor 定位；菜单方向键漫游，面板 Tab 导航；Esc/点击外部关闭并还焦点 |
 | `confirmDialog` / `UiConfirmHost` | `confirmDialog({ message, title?, confirmText?, cancelText?, tone? }) => Promise<boolean>` | 根组件挂载一次 Host；排队显示，关闭后才 resolve，默认焦点在取消 |
 | `setLocale` | `setLocale('zh' / 'en')`、`getLocale()` | 只翻译组件内置文案，默认 zh；显式 props 优先 |
-| `UiCheckbox` | 布尔 `v-model`、`indeterminate`、`disabled`；默认插槽为标签 | 原生复选框；部分选中同时设置 DOM indeterminate 与 `aria-checked="mixed"`，用户点击后由调用方重算；无插槽时须提供 `aria-label` |
+| `UiCheckbox` | 布尔 `v-model`、`indeterminate`、`disabled`；默认插槽为标签 | 原生复选框；部分选中同时设置 DOM indeterminate 与 `aria-checked="mixed"`，用户点击后由调用方重算；无插槽时使用 `label` 或 `aria-label` 提供名称 |
 | `UiRadio` | `v-model`（string/number）、`value`、`disabled`；原生 `name` 等属性透传；默认插槽为标签 | 原生单选；同一 `name` 的实例可分布在不同容器，方向键在组内移动 |
 | `UiProgress` | `value`、`max`、`tone="accent/success/warning/error"`、`dense`、`label` | progressbar 语义；值裁剪到 [0, max]，max 非法时回退 100；阈值配色由调用方决定 |
 | `UiCopyButton` | `text`（字符串或点击时求值的函数）、`label`、`copied-label`、`dense`、`disabled`；`copied/error` | 图标按钮名称固定，结果经 status 播报；成功 1.6 秒后恢复；失败不自动提示 |
@@ -52,8 +55,10 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 
 
 ```vue
-<UiField v-slot="{ controlAttrs }" label="名称" for="project-name" :error="error">
-    <UiInput v-model="name" v-bind="controlAttrs" :invalid="Boolean(error)" />
+<UiInput v-model="name" label="名称" hint="请输入项目名称" :error-messages="error" />
+<!-- UiField 仅用于自定义表单项 -->
+<UiField v-slot="{ controlAttrs }" label="自定义输入" for="custom-name" :error="error">
+    <input v-model="name" v-bind="controlAttrs" />
 </UiField>
 ```
 
@@ -132,7 +137,7 @@ UiScrollArea 参考 Element Plus 的悬浮滚动条交互：透明轨道、圆�
 
 Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `dense`、`ghost` 和 `:rounded="false"`。dense 缩小控件高度或内容间距，ghost 使用透明表面，rounded=false 去除圆角；保持错误、禁用和键盘焦点状态。既有 size、compact、density 参数继续兼容。Switch 等依赖固定形状表达状态的组件不机械套用这些变体。
 
-组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。文档当前共 44 页。
+组合预览 `/ui.html#/variants` 可同时切换三种属性，检查 Card 内表单、Tabs、代码和操作按钮的布局。
 
 上述七类组件自己的页面也提供默认、dense、ghost、直角的独立演示及源码。滚动区域允许原生滚动衔接：横向区域不会阻断父级的纵向滚轮操作，滚动到边界后可继续滚动祖先容器。
 
@@ -150,3 +155,65 @@ Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `den
 服务端示例用本地 450ms 延迟模拟查询，带失败重试和请求序号保护；示例源码提供 fetch + AbortController 的接入方式，实际项目应使用自身 API 模块。调用方负责过期响应隔离和卸载取消。未实现行选择、分组、多列排序或虚拟滚动，也不宣称兼容 Vuetify 全量 API。
 
 参考 [Vuetify 服务端表格](https://vuetifyjs.com/en/components/data-tables/server-side-tables/) 与 [分页器](https://vuetifyjs.com/en/components/paginations/)，保持 UAH 主题，没有引入 Vuetify Material 组件库依赖。
+
+## 栅格、表单和控件宽度
+
+页面组合使用 `UiContainer → UiRow → UiCol`：默认 12 列，支持数值／分数／auto、sm 到 xxl、offset、order、align、justify，以及 default/comfortable/compact 的 24/16/8px 间距。`UiSpacer` 占用剩余弹性空间。预览 `/#/grid`。
+
+表单使用 `UiForm → UiRow → UiCol → 控件`。Form 只管理验证和共享控件状态，不提供分列或间距；Row.density 管理间距，Col 的 cols/断点属性管理宽度。Input、Select、Textarea、Switch、Checkbox、Radio 与 ColorSwatches 内置 label/hint/rules；UiField 仅用于自定义项目，FormSection/FormActions 按需使用。说明和错误始终位于控件下方，无说明时不预留空白。labelPosition=top/left 可统一设置或由控件覆盖；labelWidth 配置左侧标签宽度，窄 Form 自动显示为上方标签。完整案例见 `/#/form`、`/#/row`、`/#/col`。
+
+Input、Select、Textarea 默认占满可用区域、允许随父容器收缩；支持 width/minWidth/maxWidth（数值 px 或 CSS 长度），inline 取消伸展，供工具栏使用。Switch、Checkbox、Radio 与色板保持自身尺寸。各输入组件文档包含 240/320/480px 宽度演示。
+
+Textarea 与 Input 使用相同边框、圆角、字号及状态。新增 readonly/dense/ghost/rounded、autoGrow/maxRows/noResize、counter；autoGrow 随输入、清空和宽度变化增高／缩小，达到 maxRows 后内部滚动。默认保持 textarea 根节点，启用 counter 时增加外壳；属性、事件、class/style 仍传给 textarea，尺寸 props 作用于外壳。counter 是显示上限，maxlength 才是原生长度限制。预览 `/#/textarea`。
+
+## 图标与操作焦点
+
+UiIcon 保留原型名称，支持常用 mdi-* 名称、按需 path 与 registerIcons。额外图标从 `@mdi/js` 导入单个路径；不会加载网络字体或整套字体。默认为装饰性图标，label 提供 role=img 与可访问名称。预览 `/#/icons`。
+
+鼠标或触摸完成离散操作后释放该控件焦点；键盘操作保留焦点与焦点标记，文本输入保留编辑焦点。统一应用于 Switch、Checkbox、Radio、ColorSwatches、Button、TabTrigger、MenuItem、Activity、Badge 关闭、Table 排序、文件／差异／用量入口，以及复用 Button 的分页、复制和消息操作。菜单与弹窗关闭时按操作方式恢复触发器焦点；动作移动到输入或弹窗的新焦点不会被清除。Select 保留 blurOnSelect=true 的指针选择策略。预览 `/#/focus`。
+
+47 个公开组件均有独立文档路由、真实组件 demo、源码和 API；文档共 60 页。自动盘点测试限制漏页和不可见导航组。
+
+
+### 简化表单与验证
+
+```vue
+<UiForm ref="form" v-model="valid" @submit="save">
+    <UiRow density="comfortable">
+        <UiCol :cols="12" :md="6"><UiInput v-model="name" label="名称" hint="至少 3 个字符" :rules="nameRules" /></UiCol>
+        <UiCol :cols="12" :md="6"><UiSwitch v-model="enabled" label="启用" /></UiCol>
+        <UiCol :cols="12"><UiTextarea v-model="description" label="说明" :rows="3" /></UiCol>
+        <UiCol :cols="12"><UiFormActions><UiButton type="reset">重置</UiButton><UiButton type="submit" variant="primary">保存</UiButton></UiFormActions></UiCol>
+    </UiRow>
+</UiForm>
+```
+
+规则返回 true 通过，false 使用缺省错误，字符串为错误文案；支持 Promise。validateOn=input/blur/submit，默认为 input；初始不展示错误。errorMessages 接收调用方错误，maxErrors 默认 1。UiForm 自动注册控件，统一 disabled/readonly/dense/ghost/rounded；子控件可覆盖外观与验证时机，不能解除 Form 的禁用／只读。
+
+`await form.validate()` 返回 `{ valid, errors, cancelled? }`，错误项为 `{ id, errorMessages }`；过期异步校验不会覆盖新值或提交。`reset()` 恢复初始模型并清除内部验证，`resetValidation()` 保留值并清除内部验证，调用方传入的外部错误仍由调用方维护。有效提交 emit submit(SubmitEvent, result)，失败 emit invalid(result) 并聚焦首项错误。ref 和默认插槽暴露 isValid、isValidating、errors 与验证／重置方法；v-model 为 true/false/null（有效／无效／未验证）。
+
+长选择值单行省略；Input 保留原生横向滚动与文本选择，不使用省略号。短选择菜单与控件同宽，长选项按内容扩展并受视口约束。Tooltip 忽略指针激活产生的 focus，移出后关闭，Tab 聚焦保持提示。scrollable Dialog 错误绝对定位在滚动区顶部，正文动态 padding 保护首项，错误不消耗正文 viewport 高度。
+
+
+### 级联选择
+
+UiCascader 与其他表单控件使用相同的 label/hint/rules、labelPosition、宽度和状态属性；通过 UiRow/UiCol 组合。items 为 { value: string | number, label, disabled?, children? }[]，v-model 是完整值路径数组，默认 []。默认只选择叶节点，changeOnSelect 允许父级选择；showAllLevels=false 只显示最后一级，separator 设置显示分隔符，clearable 提供清空操作。required 与同步／异步 rules 都参与 UiForm 验证。真实示例和 API 位于 `/#/cascader`。
+
+API 参考集中于 docs/apiReference.js；测试直接对照全部 47 个公开组件源码，检查属性、类型、默认值、模型事件、插槽及暴露成员，并编译所有组件示例源码。更新组件 API 时必须同时更新该参考。
+
+### 标签页与内容容器
+
+```vue
+<UiTabs v-model="tab" aria-label="配置视图">
+    <UiTab value="general">常规</UiTab>
+    <UiTab value="runtime">运行</UiTab>
+</UiTabs>
+<UiTabsWindow v-model="tab">
+    <UiTabsWindowItem value="general">常规内容</UiTabsWindowItem>
+    <UiTabsWindowItem value="runtime">运行内容</UiTabsWindowItem>
+</UiTabsWindow>
+```
+
+模型可省略；默认选择首个可用标签，值支持 string/number，未传 value 时使用索引。默认 activation=manual：方向键、Home/End 移动焦点，Enter/Space 确认；automatic 可在聚焦时选择。UiTabsWindow 统一控制所有内容项，首次访问挂载并保留状态，eager 预先挂载。相邻 Tabs/Window 自动关联 ID，分开到不同容器时使用一致 idPrefix。
+
+Tabs 的 #window 内直接放 WindowItem，可自动继承模型和 ID；items 支持 value/text 对象或字符串／数字，#item 提供对应内容，#tab 可返回自定义 UiTab。旧 id/label 数组、orientation 与 UiTabPanel 仍兼容；旧面板始终挂载。direction、alignTabs、grow、fixedTabs、stacked、hideSlider 配置布局；centerActive 将选中项居中，showArrows 配置滚动入口。箭头仅滚动，不改变选择。预览 `/#/tabs`。

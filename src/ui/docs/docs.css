@@ -89,11 +89,10 @@
 .docs-example-tabs.ui-tabs[data-variant="underline"] > button { height: 40px; min-height: 40px; font-size: 11px; border-radius: 0; }
 .docs-example-tabs.ui-tabs[data-variant="underline"] > button[aria-selected="true"] { background: transparent; color: var(--accent-text); }
 .live-example { padding: 25px 24px; min-width: 0; }
-.live-example .ui-field { gap: 18px; padding: 14px 0; align-items: flex-start; flex-direction: column; border-bottom: none; }
-.live-example .ui-field:first-child { padding-top: 0; }
-.live-example .ui-field label { font-weight: 500; font-size: 12px; }
-.live-example .ui-input { width: 100%; }
-.live-example .ui-field p { font-size: 11px; }
+.live-example .ui-field:not(.is-layout-field) { gap: 18px; padding: 14px 0; align-items: start; grid-template-columns: minmax(0, 1fr); border-bottom: none; }
+.live-example .ui-field:not(.is-layout-field):first-child { padding-top: 0; }
+.live-example .ui-field:not(.is-layout-field) label { font-weight: 500; font-size: 12px; }
+.live-example .ui-field:not(.is-layout-field) p { font-size: 11px; }
 .live-example output { display: block; font: 11px/1.8 var(--mono); color: var(--faint); margin-top: 16px; overflow-wrap: anywhere; }
 .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; font-size: 12px; }
 .demo-row:first-child { margin-top: 0; }
@@ -105,13 +104,13 @@
 .demo-vertical { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 20px; margin-top: 18px; }
 .demo-vertical .demo-panels { padding-top: 8px; }
 .demo-vertical.demo-content-first { grid-template-columns: minmax(0, 1fr) 140px; }
-.demo-content-first > .ui-tabs { grid-column: 2; grid-row: 1; }
+.demo-content-first > .ui-tabs-shell { grid-column: 2; grid-row: 1; }
 .demo-content-first > .demo-panels { grid-column: 1; grid-row: 1; }
 .docs-variant-list { display: grid; gap: 24px; min-width: 0; }
 .docs-variant-sample { min-width: 0; }
 .docs-variant-label { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
 .demo-options { display: flex; gap: 22px; flex-wrap: wrap; }
-.demo-options .ui-field { gap: 10px; }
+.demo-options .ui-field:not(.is-layout-field) { gap: 10px; }
 .demo-collapse-body { padding: 18px 0 0; }
 .demo-collapse-body p { font-size: 12px; color: var(--muted); line-height: 1.8; }
 .docs-dialog { width: 460px; padding: 28px; }
@@ -220,7 +219,7 @@
 .docs-example-tabs.ui-tabs[data-variant="underline"] > button[aria-selected="true"] { background: var(--accent-soft); }
 .demo-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .demo-utility { background: var(--soft); border: 1px dashed var(--border); border-radius: 8px; }
-.live-example .ui-card .ui-field { gap: 10px; }
+.live-example .ui-card .ui-field:not(.is-layout-field) { gap: 10px; }
 @media (max-width: 480px) { .docs-theme-switch > span { display: none; } .demo-card-grid { grid-template-columns: 1fr; } }
 
 /* B 批示例的局部排版：列表行分隔、路由卡片网格与标签预览。 */
@@ -231,3 +230,5 @@
 @media (max-width: 720px) { .demo-route-grid { grid-template-columns: minmax(0, 1fr) !important; } }
 .demo-token { padding: 3px 6px; border-radius: 5px; background: var(--soft); color: var(--muted); }
 .demo-tag-preview { display: inline-flex; align-items: center; min-height: 20px; padding: 0 7px; border-radius: 6px; background: color-mix(in srgb, var(--tag) 16%, transparent); color: color-mix(in srgb, var(--tag) 70%, var(--text)); font-size: 11px; font-weight: 500; }
+
+.live-example .ui-field:not(.is-layout-field) .ui-field-details { grid-column: 1; }

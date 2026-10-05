@@ -6,7 +6,20 @@ export type { SelectItem } from './UiSelect.vue';
 export { default as UiSwitch } from './UiSwitch.vue';
 export { default as UiTooltip } from './UiTooltip.vue';
 export { default as UiField } from './UiField.vue';
+export { default as UiContainer } from './UiContainer.vue';
+export { default as UiRow } from './UiRow.vue';
+export { default as UiCol } from './UiCol.vue';
+export { default as UiSpacer } from './UiSpacer.vue';
+export { default as UiForm } from './UiForm.vue';
+export { default as UiFormSection } from './UiFormSection.vue';
+export { default as UiFormActions } from './UiFormActions.vue';
+export type { GridSize, LayoutDensity, FieldLayout } from './layout';
+export type { ControlSizing } from './control-sizing';
 export { default as UiTabs } from './UiTabs.vue';
+export { default as UiTab } from './UiTab.vue';
+export { default as UiTabsWindow } from './UiTabsWindow.vue';
+export { default as UiTabsWindowItem } from './UiTabsWindowItem.vue';
+export type { TabValue, TabItem } from './tabs';
 export { default as UiTabPanel } from './UiTabPanel.vue';
 export { default as UiDialog } from './UiDialog.vue';
 export { default as UiCollapse } from './UiCollapse.vue';
@@ -24,6 +37,7 @@ export { default as UiPagination } from './UiPagination.vue';
 export type { TableHeader, TableSort, TableOptions } from './table';
 
 export { default as UiIcon } from '../components/Icon.vue';
+export { registerIcons } from './icons';
 
 export { default as UiActivity } from './UiActivity.vue';
 export { default as UiDiff } from './UiDiff.vue';
@@ -57,3 +71,8 @@ export { default as UiProgress } from './UiProgress.vue';
 export { default as UiCopyButton } from './UiCopyButton.vue';
 export { default as UiColorSwatches } from './UiColorSwatches.vue';
 export type { ColorSwatch } from './UiColorSwatches.vue';
+export type { ValidationRule, ValidateOn, ValidationResult } from './validation';
+export type { FormControlProps, FormValidationResult, FormError } from './form';
+
+export { default as UiCascader } from './UiCascader.vue';
+export type { CascaderItem, CascaderValue } from './cascader';

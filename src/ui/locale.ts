@@ -7,6 +7,17 @@ type Params = Record<string, string | number>;
 
 // zh 是键集合的基准：en 必须提供完全相同的键（由 UiMessages 类型约束，tests/locale.test.ts 双向校验）。
 const zh = {
+    'tabs.previous': '向前滚动标签页',
+    'tabs.next': '向后滚动标签页',
+    'cascader.placeholder': '请选择',
+    'cascader.clear': '清除选择',
+    'cascader.required': '请选择完整路径。',
+    'cascader.invalid': '所选路径已失效，请重新选择。',
+    'cascader.level': '第 {level} 级选项',
+    'cascader.branch': '含下级选项',
+
+    'form.invalid': '请检查此项内容。',
+    'form.validationFailed': '验证暂时失败，请重试。',
     'common.close': '关闭',
     'common.cancel': '取消',
     'common.confirm': '确定',
@@ -102,6 +113,17 @@ export type UiMessageKey = keyof typeof zh;
 type UiMessages = Record<UiMessageKey, string>;
 
 const en: UiMessages = {
+    'tabs.previous': 'Scroll tabs backward',
+    'tabs.next': 'Scroll tabs forward',
+    'cascader.placeholder': 'Select an option',
+    'cascader.clear': 'Clear selection',
+    'cascader.required': 'Select a complete path.',
+    'cascader.invalid': 'This path is no longer available. Select again.',
+    'cascader.level': 'Level {level} options',
+    'cascader.branch': 'has child options',
+
+    'form.invalid': 'Please check this field.',
+    'form.validationFailed': 'Validation failed. Please try again.',
     'common.close': 'Close',
     'common.cancel': 'Cancel',
     'common.confirm': 'OK',

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue';
+import { vPointerBlur } from './pointer-focus';
+import { computed, ref, useAttrs, useId } from 'vue';
+import UiControlFrame from './UiControlFrame.vue';
+import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
 import { uiText, type UiMessageKey } from './locale';
 
 export interface ColorSwatch {
@@ -7,14 +10,16 @@ export interface ColorSwatch {
     label: string;
 }
 
-const props = withDefaults(defineProps<{
+defineOptions({ inheritAttrs: false });
+const props = withDefaults(defineProps<FormControlProps & {
     /** 可选颜色；不传时使用与 tokens 协调的 10 色默认色板。 */
     colors?: ColorSwatch[];
-    /** 色板组的可访问名称。 */
-    label?: string;
-    disabled?: boolean;
 }>(), { disabled: false });
 const model = defineModel<string | null>({ default: null });
+const element = ref<HTMLDivElement>();
+const attrs = useAttrs();
+const control = useFormControl(props, model, element, attrs);
+defineExpose({ element, focus: () => element.value?.querySelector<HTMLInputElement>('input:checked, input:not(:disabled)')?.focus(), validate: control.validate, reset: control.reset, resetValidation: control.resetValidation, errors: control.errors });
 const name = `ui-swatch-${useId()}`;
 
 // 默认色板取自 KAM 标签常用色相，饱和度下调以贴合暖色 tokens。
@@ -38,10 +43,12 @@ const choices = computed(() => (custom.value ? [...items.value, { value: custom.
 </script>
 
 <template>
-    <div class="ui-swatches" role="radiogroup" :aria-label="label ?? uiText('swatch.label')" :aria-disabled="disabled || undefined">
-        <!-- 选中态按归一化值判断，不用 v-model：原生 radio 按严格相等匹配，大小写不同的已保存值会导致整组无选中。 -->
-        <label v-for="item in choices" :key="item.value" class="ui-swatch" :class="{ 'is-custom': item.value === custom }" :style="{ '--swatch-color': item.value }" :title="item.label">
-            <input type="radio" class="ui-swatch-control" :name="name" :value="item.value" :checked="normalized(item.value) === normalized(model)" :aria-label="item.label" :disabled="disabled" @change="model = item.value" />
-        </label>
-    </div>
+    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
+        <div ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-swatches" role="radiogroup" :aria-label="label ?? uiText('swatch.label')" :aria-disabled="control.disabled.value || undefined" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click.capture="control.guard" @keydown.capture="control.guardKeys" @focusout="control.blur">
+            <!-- 选中态按归一化值判断，不用 v-model：原生 radio 按严格相等匹配，大小写不同的已保存值会导致整组无选中。 -->
+            <label v-for="item in choices" :key="item.value" class="ui-swatch" :class="{ 'is-custom': item.value === custom }" :style="{ '--swatch-color': item.value }" :title="item.label">
+                <input v-pointer-blur type="radio" class="ui-swatch-control" :name="name" :value="item.value" :checked="normalized(item.value) === normalized(model)" :aria-label="item.label" :disabled="control.disabled.value" @change="control.editable.value = item.value" />
+            </label>
+        </div>
+    </UiControlFrame>
 </template>

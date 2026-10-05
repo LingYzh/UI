@@ -76,3 +76,55 @@ typecheck、23项测试、build、pack白名单检查通过。usage-meter专项�
 用户已明确授权发布并升级 UAH。发布提交 6f405a84e6dd1e3c36e9b04853488eff571214b8，标签 v0.2.3；GitHub Actions 37226243401 的 Publish 步骤成功，官方 npm 的 latest 为 0.2.3。tarball：https://registry.npmjs.org/@lingyzh/ui/-/ui-0.2.3.tgz；integrity：sha512-P+sBNm4KjRNkBcoIImV2+PQRT9mYxqqYqkzAWGNZNVfBqea6owCklrupb7W6ap8jx9s5alWi78rcH7/z74PgRQ==。
 
 UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 typecheck、23/23 单测、build、pack 白名单及 usage-meter 桌面专项通过；root 检查 artifacts/usage-meter-WPh1Qi 的浅色 1440 与深色 900/125% 截图。剩余量使用独立冷灰 token，不再与消息分类共享绿色。
+
+## 2026-10-05：布局、输入宽度、全组件文档与指针焦点（本地待发布）
+
+用户要求参考 Vuetify 4 补充布局能力，统一多行输入与单行输入的样式、补齐所有组件 demo，并同步默认输入宽度和点击后不保留控件焦点。
+
+- 新增 UiContainer/UiRow/UiCol/UiSpacer、UiForm/UiFormSection/UiFormActions；12 列、分数、auto、sm–xxl、偏移／顺序／对齐／密度，以及以自身容器响应的两列表单和横排标签。Field 增加布局、required、span=full，继续支持既有独立横排使用方式。
+- Textarea 增加 autoGrow/maxRows/counter/noResize/readonly/dense/ghost/rounded，使用与 Input 相同的表面和状态；Input/Select/Textarea 共享 width/minWidth/maxWidth/inline，默认跟随父容器，选择类控件维持自身尺寸。
+- UiIcon 保留原型 SVG，新增常用 mdi-* 名称、按需 path、registerIcons 与 label。依赖固定 @mdi/js 7.4.47，无 Material 主题、字体或 CDN。
+- 内部 pointer-focus 指令统一离散操作点击后的 blur，覆盖选择类、Button/TabTrigger/MenuItem 及内容操作入口。键盘和文本编辑保留焦点；菜单／弹窗关闭区分指针和键盘。Select 沿用 blurOnSelect。
+- 43 个公开组件均有可访问导航、独立文档和真实组件 demo，文档共 56 页。修复未注册导航组使部分旧组件页面不可见的问题，并新增 grid/focus 指南、宽度比较、textarea 状态比较、MDI 和实际弹窗表单。
+- Duplicate attribute 编译错误已修复：控制属性合并为一个 v-bind。selectedcontent 使用 VNode 组件，避免消费方 Vue 报未知标签警告。
+
+设计与缺口记录：docs/LAYOUT-PLAN-2026-10-05.md。验收结果见 VALIDATION.md 新增记录。所有改动仍在 UI 工作区，未提交、发包或修改 UAH 依赖；package 当前仍 0.2.3，UAH 继续固定消费已发布 0.2.3。正式发布应使用新版本提交和标签触发 Actions，再升级 UAH；不可将本地组件复制到 UAH。
+
+本轮最终验收：29/29 单测、20 项全 UI、7 项反馈、6 项选择类、11 项布局／宽度／焦点专项通过，typecheck/build/pack/diff-check 通过。root 已复核 artifacts/layout-DfKnam 的最终浅深／窄屏／125% 图像；42 张证据及测试覆盖详见 VALIDATION.md。5174 dev 服务保持运行，忽略 Electron artifacts 后不再触发缓存锁文件监听。
+
+
+## 2026-10-05：内置标签、简化 Form 与验证（本地待发布）
+
+用户继续要求 Form 像 v-form 一样直接包裹控件，并将 label/hint 内置在所有输入控件，Field 仅用于自定义项目；标签方向通过属性配置。现已在 UI 实现 label/hint/labelPosition(top/left)/labelWidth、下方说明和错误、同步／异步 rules、错误汇总、三态 v-model、validate/reset/resetValidation、disabled/readonly/dense/ghost/rounded 继承。FormSection/FormActions 可选，真实 demo 和 API／源码已同步简化。可在5174的/#/form查看。
+
+同时修复长选择值换行、短 picker 固定过宽、丰富选项不显示省略号、Tooltip 指针聚焦残留、scrollable Dialog 错误缩短正文空间，以及横排紧凑控件标签基线偏差。Input 保留原生横向文本选择；Dialog 错误悬浮且正文按实测高度留 padding。
+
+最终验证：typecheck/build、38单测、20全UI、13表单专项、11布局专项通过，pack172文件无测试或artifacts泄漏。root复核浅深、窄屏、125%及实时菜单、tooltip和浮动错误。最终证据为 artifacts/forms-K8yOpZ、artifacts/layout-PhX36A、artifacts/ui-Zl4v7R；截图使用Electron NativeImage完整窗口并检查物理尺寸。详情见 VALIDATION.md、docs/FORM-PLAN-2026-10-05.md 和 src/ui/README.md。
+
+仍未提交或发包，UI和UAH版本保持0.2.3，UAH实际工作区干净；按授权发布新版本后再更新其固定npm依赖。
+
+## 2026-10-05：Form 布局分工、级联选择器及 API 完整核对（本地状态）
+
+Form 已收敛为验证、提交、重置与共享控件状态／外观容器，布局直接使用 Row/Col；不再提供 layout/columns/density/actions。FormSection 仅分组，控件与 Field 不再提供 span。所有 demo、源码与 README 已更新；Form、Row、Col 页面包含实际行列表单案例。标准控件内置 label/hint，Field 仅用于自定义项目。
+
+新增 UiCascader 与公开 CascaderItem/CascaderValue 类型，独立文档 #/cascader；路径数组 v-model、父级／叶子选择、禁用项、数字值、清空、显示路径、键盘导航和 Form 注册验证均已实现。菜单和级联弹层补充键盘打开后外部指针关闭的焦点释放。
+
+现在共有 44 个公开组件、57 个文档页。API 参考由 src/ui/docs/apiReference.js 统一提供；五份页面 metadata 仅负责导航、示例和说明。props／类型／required／默认值／事件参数／插槽参数／expose 全量核对 0 差异、源码重复声明 0，报告为 docs/API-AUDIT-2026-10-05.json。全部组件源码示例可编译，并清理了多余 Row/FormActions 嵌套。
+
+验证通过：typecheck/build、44 单测、20 全 UI、14 表单、11 布局、14 级联。最终证据：artifacts/ui-dhrVFX、artifacts/forms-ioeQeZ、artifacts/layout-Z9pi97、artifacts/cascader-wo09Ic。root 已亲自复核浅深、窄屏、125% 和三级弹层；完整窗口 PNG 尺寸已断言。详细验收见 VALIDATION.md 最新增量。
+
+本轮尚未提交或发布，UI package 仍为 0.2.3；UAH 工作区干净并固定消费官方 npm 0.2.3。5174 dev 服务可直接查看最新 demo。后续发布新版本并升级 UAH 时遵循各仓库发布规范，不复制 UI 源码或恢复 file: 依赖。
+
+## 2026-10-05：Tabs 对齐（最新本地状态）
+
+Tabs 已支持声明式 UiTab、统一 UiTabsWindow/UiTabsWindowItem、数组 items 与 #tab/#item/#window。model/idPrefix/items 均可省略；兄弟 Tabs/Window 显式绑定同一模型，#window 自动继承。默认首个可用项选中，方向键/Home/End 移动焦点、Enter/Space 确认；支持 automatic、数字0、隐式索引、禁用、可空选择、动态列表与空列表恢复。内容首次访问挂载并保留，eager 可预先挂载；旧 id/label/orientation/UiTabPanel 兼容。
+
+新增水平／垂直滚动箭头、centerActive、alignTabs、grow、fixedTabs、stacked、hideSlider；滚动不改变选择，窄屏不撑宽页面。所有新组件有独立文档和真实示例，当前47组件、60页；API 全量审计0差异。计划见 docs/TABS-PLAN-2026-10-05.md，预览为5174的/#/tabs。
+
+最终验证：typecheck/build、48单测、20全UI、11布局／焦点、5组Tabs专项通过；证据 artifacts/ui-El84a3、artifacts/layout-kKB6ie、artifacts/tabs-tZ7icE。root 已复核浅深、390px、125%以及垂直滚动；截图尺寸和主题均有断言。pack182文件无测试／artifacts／dist泄漏，详细记录见 VALIDATION.md。
+
+上述 Form/Row/Col、级联与 Tabs 修改均仍在 UI 本地，尚未提交或发包，版本保持0.2.3；UAH 工作区干净且仍固定消费已发布 npm 0.2.3。发布新版本并升级消费端时继续遵守 UI-first 和固定 npm 版本要求。
+
+## 2026-10-05：准备发布 0.3.0
+
+用户已授权发布最新版。本轮包含布局、表单接口调整及新增组件，版本升级为0.3.0，package.json与lockfile一致；以v0.3.0标签触发既有GitHub Actions/OIDC正式发布。发布前再次通过typecheck、48单测、build及pack182文件白名单检查；此前最终20全UI、11布局、14表单、14级联与5组Tabs专项及root视觉验收保持有效。发布成功后核对官方npm latest、tarball/integrity，再固定升级UAH依赖并验证兼容性。此段是发布准备记录，实际发布结果另追加。

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vPointerBlur } from './pointer-focus';
 import { useId } from 'vue';
 import UiCollapse from './UiCollapse.vue';
 import UiScrollArea from './UiScrollArea.vue';
@@ -10,7 +11,7 @@ const contentId = useId();
 
 <template>
     <section class="ui-activity" :class="{ 'is-inline': variant === 'inline' }" :data-tone="tone || 'neutral'">
-        <button type="button" class="ui-activity-heading" :aria-expanded="open" :aria-controls="contentId" @click="open = !open">
+        <button v-pointer-blur type="button" class="ui-activity-heading" :aria-expanded="open" :aria-controls="contentId" @click="open = !open">
             <Icon v-if="variant === 'inline'" :name="icon || 'terminal'" :size="15" />
             <svg v-else class="ui-activity-chevron" :class="{ 'is-open': open }" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4" /></svg>
             <span class="ui-activity-title">{{ title }}</span><span v-if="variant === 'inline' && filename" class="ui-activity-filename" :title="filename">{{ filename }}</span><span v-if="status" class="ui-activity-status">{{ status }}</span>

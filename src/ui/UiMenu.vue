@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, provide, ref, useId, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useId, watch } from 'vue';
 import { menuContextKey, type MenuPlacement } from './menu';
 
 const props = withDefaults(defineProps<{
@@ -17,6 +17,7 @@ const surfaceId = `ui-menu-${uid}`;
 const activatorId = `ui-menu-trigger-${uid}`;
 const anchorName = `--ui-menu-${uid}`;
 const surface = ref<HTMLElement>();
+let keyboardInteraction = false;
 const FOCUSABLE = 'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
 
 // 触发器使用原生 popovertarget：浏览器负责切换、点击外部关闭与 Esc，且点击触发器本身不会先被轻关闭再重开。
@@ -26,8 +27,12 @@ const activatorProps = computed(() => ({
     'aria-haspopup': props.panel ? 'dialog' : 'menu',
     'aria-expanded': open.value,
     'aria-controls': surfaceId,
-    style: `anchor-name: ${anchorName}`
+    style: `anchor-name: ${anchorName}`,
+    onPointerdown: () => { keyboardInteraction = false; },
+    onKeydown: () => { keyboardInteraction = true; }
 }));
+
+function pointerInteraction() { if (open.value) keyboardInteraction = false; }
 
 function activator() {
     return document.getElementById(activatorId);
@@ -55,7 +60,10 @@ function focusInitial() {
 }
 function restoreFocus() {
     const active = document.activeElement;
-    if (!active || active === document.body || surface.value?.contains(active)) activator()?.focus({ preventScroll: true });
+    const trigger = activator();
+    if (keyboardInteraction) {
+        if (!active || active === document.body || surface.value?.contains(active)) trigger?.focus({ preventScroll: true });
+    } else if (active === trigger) trigger?.blur();
 }
 function toggled(event: Event) {
     const shown = (event as ToggleEvent).newState === 'open';
@@ -64,6 +72,7 @@ function toggled(event: Event) {
     else restoreFocus();
 }
 function keydown(event: KeyboardEvent) {
+    keyboardInteraction = true;
     if (props.panel) return;
     if (event.key === 'Tab') {
         close();
@@ -85,8 +94,10 @@ function keydown(event: KeyboardEvent) {
 
 watch(open, (value) => (value ? show() : close()), { flush: 'post' });
 onMounted(() => {
+    document.addEventListener('pointerdown', pointerInteraction, true);
     if (open.value) show();
 });
+onBeforeUnmount(() => document.removeEventListener('pointerdown', pointerInteraction, true));
 provide(menuContextKey, { close });
 defineExpose({ close });
 </script>
@@ -107,6 +118,7 @@ defineExpose({ close });
             tabindex="-1"
             :style="`position-anchor: ${anchorName}`"
             @toggle="toggled"
+            @pointerdown.capture="keyboardInteraction = false"
             @keydown="keydown"
         >
             <slot :close="close" />

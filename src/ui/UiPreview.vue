@@ -7,6 +7,7 @@ import ExampleCard from './docs/ExampleCard.vue';
 import CodeBlock from './docs/CodeBlock.vue';
 import ApiTable from './docs/ApiTable.vue';
 import LiveExample from './docs/LiveExample.vue';
+import packageInfo from '../../package.json';
 
 const theme = ref(document.documentElement.dataset.theme || 'light');
 const darkTheme = computed({ get: () => theme.value === 'dark', set: (value) => { theme.value = value ? 'dark' : 'light'; } });
@@ -87,7 +88,7 @@ onBeforeUnmount(() => {
             <div class="docs-brand-wrap">
                 <UiButton ref="menuButton" class="docs-menu-button" icon variant="ghost" aria-label="切换文档导航" :aria-expanded="menuOpen" aria-controls="docs-navigation" @click="menuOpen = !menuOpen"><Icon name="panel" /></UiButton>
                 <a href="#/overview" class="docs-brand" aria-label="UAH UI 首页"><span class="docs-logo"><Icon name="spark" :size="21" /></span><strong>UAH <span>UI</span></strong></a>
-                <span class="docs-version">0.1 · 独立库</span>
+                <span class="docs-version">{{ packageInfo.version }} · 独立库</span>
             </div>
             <div class="docs-header-links"><a href="#/getting-started" :class="{ active: current.group === '开始使用' }">文档</a><a href="#/tokens" :class="{ active: current.group === '设计基础' }">设计基础</a></div>
             <div class="docs-header-actions">
@@ -132,7 +133,15 @@ onBeforeUnmount(() => {
                         </template>
                         <template v-else>
                             <section id="section-examples" class="docs-section"><h2><a :href="`#/${current.id}/examples`">交互示例<span aria-hidden="true">#</span></a></h2><p class="docs-section-intro">直接操作真实组件，或切换到源码查看组合方式。</p><ExampleCard v-for="example in current.examples" :key="example.id" :example="example" /></section>
-                            <section id="section-api" class="docs-section"><h2><a :href="`#/${current.id}/api`">API 参考<span aria-hidden="true">#</span></a></h2><p class="docs-section-intro">{{ current.kind === 'service' ? '服务选项与方法。所有选项均可在 show 调用时覆写。' : '以下为公开组件契约。未声明的原生属性与事件按组件约定透传。' }}</p><ApiTable :title="current.kind === 'service' ? 'Options' : 'Props'" :rows="current.props" empty="无公开 props。" /><ApiTable :title="current.kind === 'service' ? 'Methods' : 'Emits'" :rows="current.events" empty="无自定义事件。" /><ApiTable v-if="current.kind === 'component'" title="Slots" :rows="current.slots" empty="无公开插槽。" /></section>
+                            <section id="section-api" class="docs-section">
+                                <h2><a :href="`#/${current.id}/api`">API 参考<span aria-hidden="true">#</span></a></h2>
+                                <p class="docs-section-intro">{{ current.kind === 'service' ? '服务选项与方法；以各方法签名为准。' : '公开组件契约；modelValue 使用 v-model，其他双向属性使用 v-model:属性名。未声明的原生属性与事件按组件约定透传。' }}</p>
+                                <ApiTable :title="current.kind === 'service' ? 'Options' : 'Props'" :rows="current.props" empty="无公开 props。" />
+                                <ApiTable :title="current.kind === 'service' ? 'Methods' : 'Emits'" :rows="current.events" empty="无自定义事件。" />
+                                <ApiTable v-if="current.kind === 'component'" title="Slots" :rows="current.slots" empty="无公开插槽。" />
+                                <ApiTable v-if="current.methods?.length" title="Expose（通过 ref 使用）" :rows="current.methods" />
+                                <ApiTable v-if="current.attributes?.length" title="原生属性透传" :rows="current.attributes" />
+                            </section>
                             <section id="section-usage" class="docs-section"><h2><a :href="`#/${current.id}/usage`">使用约定<span aria-hidden="true">#</span></a></h2><ul class="docs-prose-list"><li v-for="note in current.notes" :key="note">{{ note }}</li></ul><div class="docs-related"><Icon name="book" :size="18" /><div><strong>继续阅读</strong><p><a href="#/accessibility">可访问性</a><span> / </span><a href="#/motion">动效与生命周期</a><span> / </span><a href="#/getting-started">接入指南</a></p></div></div></section>
                         </template>
                         <footer class="docs-page-footer"><div class="docs-page-pagination"><a v-if="previous" :href="`#/${previous.id}`"><span>上一篇</span><strong><Icon name="back" :size="15" />{{ previous.title }}</strong></a><a v-if="next" :href="`#/${next.id}`" class="docs-pagination-next"><span>下一篇</span><strong>{{ next.title }}<Icon name="arrowRight" :size="15" /></strong></a></div><div class="docs-footnote"><span>UAH UI · 独立组件库</span><span>Vue 3 · 共享样式 · 中文文档</span></div></footer>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vPointerBlur } from './pointer-focus';
 import { computed } from 'vue';
 import { uiText, uiNumberLocale } from './locale';
 
@@ -32,7 +33,7 @@ const incomplete = computed(() => segments.value.some(item => item.value === nul
 </script>
 
 <template>
-    <button v-if="compact" type="button" class="ui-usage-trigger" :disabled="disabled" :aria-label="accessible" :title="accessible" @click="emit('inspect')">
+    <button v-pointer-blur v-if="compact" type="button" class="ui-usage-trigger" :disabled="disabled" :aria-label="accessible" :title="accessible" @click="emit('inspect')">
         <svg class="ui-usage-ring" viewBox="0 0 24 24" aria-hidden="true">
             <circle class="ui-usage-track" cx="12" cy="12" r="9" />
             <circle v-if="ratio !== null" class="ui-usage-progress" cx="12" cy="12" r="9" pathLength="100" :stroke-dasharray="`${Math.min(100, ratio * 100)} 100`" />

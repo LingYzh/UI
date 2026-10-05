@@ -132,3 +132,55 @@ KAM（Kiro Account Manager）渲染层从 React 迁到 Vue 之前，先按 UI-fi
 用户已明确授权发布并升级 UAH。发布提交 6f405a84e6dd1e3c36e9b04853488eff571214b8，标签 v0.2.3；GitHub Actions 37226243401 的 Publish 步骤成功，官方 npm 的 latest 为 0.2.3。tarball：https://registry.npmjs.org/@lingyzh/ui/-/ui-0.2.3.tgz；integrity：sha512-P+sBNm4KjRNkBcoIImV2+PQRT9mYxqqYqkzAWGNZNVfBqea6owCklrupb7W6ap8jx9s5alWi78rcH7/z74PgRQ==。
 
 UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 typecheck、23/23 单测、build、pack 白名单及 usage-meter 桌面专项通过；root 检查 artifacts/usage-meter-WPh1Qi 的浅色 1440 与深色 900/125% 截图。剩余量使用独立冷灰 token，不再与消息分类共享绿色。
+
+## 2026-10-05：布局、全组件文档、输入宽度与操作焦点（本地源码）
+
+- root 对照 Vuetify 官方 grids、textarea、icons 与 VInput/VSelectionControl 样式，沿用 UAH tokens，新增 7 个布局／表单组件和 SVG MDI 能力。计划与边界见 docs/LAYOUT-PLAN-2026-10-05.md。
+- 43 个 index.ts 公开组件全部拥有独立文档路由、可见导航组、真实 demo 和 API／源码；单测自动核对导出与组件页一一对应，防止漏页与导航不可见。全部 56 文档路由渲染回归通过。
+- typecheck、29/29 单测、文档／库 build、npm pack 白名单核查通过（168 个发布文件；包含新布局、尺寸与焦点模块，排除测试／artifacts／工作区文档）。
+- 全 UI 回归 20 项通过：artifacts/ui-Ky0Ebh。反馈专项 7 项通过：artifacts/feedback-VefaiS。选择类专项 6 项通过：artifacts/controls-C44VMF；覆盖原生 Space／方向键、菜单 Esc 恢复、确认队列、复制反馈及减少动效。
+- root 已通过 in-app browser 亲自检查浅色 1440 表单、深色 1440 Textarea/Input 状态对比、900px 与 390px 表单、实际 md Dialog、指针开关与输入编辑。控件边框／字号／圆角统一，宽表单控件下沿对齐，长字段跨列，窄屏自动单列，390px document.scrollWidth=390，无横向溢出；弹窗有真实 header 与可访问名称。
+- 本轮发现并修复：重复 v-bind 的 Vue 编译错误、旧组件导航组未注册、示例弹窗误用 title 插槽、selectedcontent 的 Vue 组件解析警告。Vite dev 对 Electron artifacts 缓存监听导致 Windows EBUSY，现排除 **/artifacts/**；5174 服务已恢复。
+- 操作焦点按指针／键盘区分：完成点击后仅 blur 原动作控件，已移入弹窗或文本输入的焦点保留；键盘继续保留焦点及可见焦点标记。Menu/Dialog 关闭时按方式处理触发器，文本 returnFocus 不因指针关闭被清除。
+- 无 UAH 源码或依赖改动，未发布；消费端继续使用官方 npm 固定 0.2.3。发布新版本后再升级 UAH。
+
+- 布局／宽度／焦点专项 `node tests/desktop/layout.mjs`：11 项全部通过，证据 artifacts/layout-DfKnam，共 42 张浅深 1440×900／900×900／375×812 和 125% 截图。覆盖 43 组件导航、240/320/480 容器与 inline/maxWidth、指针与键盘焦点、菜单关闭／keep-open、Dialog 指针／键盘／文本 returnFocus、原生表单验证与提交、栅格断点／分数／偏移／顺序／密度、MDI 语义、Textarea 增高／缩小／最高行数及宽度变化。
+- root 亲自复核最终截图：浅色双列表单的标签与控件对齐、深色单行／多行同样式、900px 栅格单列与分数行、375px 表单／图标／操作区及 125% 横排表单。对齐、主题对比、圆角与间距符合约定；无阻断性未解决项。测试修正了 required 星号的标签定位、宽度测试文本样本已封顶、默认浅色 data-theme 未初始化等测试前提，没有通过放宽产品行为掩盖失败。
+
+
+## 2026-10-05：简化表单、内置标签与统一验证（本地源码）
+
+- Input/Select/Textarea/Switch/Checkbox/Radio/ColorSwatches 内置 label/hint/labelPosition=top|left/labelWidth/rules/errorMessages/validateOn。标准用法直接 Form → 控件；Field 用于自定义项目。说明与错误放在控件下方，不再预留缺少说明的标签空行。FormSection/FormActions 是可选布局工具。
+- Form 提供同步／异步验证、三态 v-model、错误列表、validate/reset/resetValidation、有效 submit／invalid、状态与外观继承。子控件不能解除 Form 禁用／只读。异步旧值、重置和正在提交期间的值修改都不能覆盖最新状态或误提交。
+- 根代理实际浏览器复核：240px 选择器短 picker=240px，长内容 picker≈556.7px；420px 窄屏 picker≤396px，无页面横向溢出。丰富选项与原生选项闭合后均单行省略。Input 保持 text-overflow=clip、scrollLeft=330、42/42 字符完整可选。
+- Tooltip 指针点击后的 focus 不参与显示，保留真实 hover，移出关闭；Tab 聚焦保留，Esc 关闭。scrollable Dialog 错误绝对定位，单／三行错误时正文 viewport 均保持493px；padding 随错误高度由16px调整为73px／114px，第一项未被遮住。
+- root 横排视觉验收修复选择类 label 的8px基线偏差与 Switch 默认 margin；紧凑选择控件及提示与控件列对齐。浅深、390/420px、125% 完整窗口均已复核。NativeImage 截图核查物理窗口尺寸，修正旧 Playwright 缩放截图被裁剪的问题。
+- typecheck/build通过；npm test 38/38通过；完整UI 20项通过（artifacts/ui-Zl4v7R）；表单专项13项通过（artifacts/forms-K8yOpZ）；布局／宽度／焦点专项11项通过（artifacts/layout-PhX36A）。此前选择类6项与反馈7项也通过（artifacts/controls-mXCvqZ、artifacts/feedback-kmvM3m）。
+- root 直接复核最终 forms 的浅深、窄屏、900×900@125% 与左标签浅深截图；复核最终 layout 的窄深横排转竖排、多行输入125%以及实时选择器、Tooltip、浮动Dialog。验收结论：满足本轮接口、交互和视觉要求，允许后续发布和消费迁移。
+- npm pack --dry-run：172个文件，包括所有新组件、类型及真实demo，不包含tests/artifacts/dist。43个公开组件均有页面和真实示例，56个文档路由无横向溢出。
+- 当前仍为本地修改，未提交／发布；版本仍0.2.3，UAH工作区干净且依赖保持固定npm版本。新版本发布后再升级UAH，不复制组件源码或使用业务CSS绕过规范。
+
+## 2026-10-05：Form 与 Row/Col 分工、级联选择及完整 API 核对
+
+- Form 仅负责验证、提交、重置和共享状态／外观；移除 layout/columns/density/actions，FormSection 移除 columns，标准控件和 Field 移除 span。使用 Form → Row → Col → 控件；Row 管间距、Col 管列宽及断点。所有真实 demo 和示例源码已迁移，Row/Col/Form 页面均有可操作的实际表单案例。
+- 新增 UiCascader、CascaderItem/CascaderValue、独立 demo 和文档。值模型为路径数组，支持树形选项、禁用分支／叶子、父级选择、完整／末级标签、清空、数字 0、统一宽度、label/hint/rules，以及 Form 验证与状态继承。原生 Popover 自身横向滚动，列自身纵向滚动；窄屏不撑开页面。
+- UiMenu/UiCascader 同步记录弹层打开期间的外部 pointerdown；键盘打开后改用鼠标点击外部关闭也会释放触发器焦点，保留外部输入的新焦点。键盘选择／Escape 返回触发器，Tab 关闭并向下一项移动。
+- 全部 44 个公开组件拥有独立文档、真实 demo、源码和 API，文档共 57 页。API 集中于 src/ui/docs/apiReference.js，源码 AST 核对 props 名称／类型／required／声明默认值、模型事件、emits 参数、slots 参数和 expose；所有缺漏／陈旧／不匹配／重复声明计数为 0，详见 docs/API-AUDIT-2026-10-05.json。服务方法与原生透传属性另列说明。
+- 清理标准控件示例中的旧 Field 包装、旧 API 追加覆盖及 11 处多余 Row／FormActions 嵌套。单测编译全部组件示例，检查重复属性与布局结构；另核对所有示例的 Ui* 标签均有对应导入。
+- typecheck、build、44/44 单测通过。全 UI 20 项通过（artifacts/ui-dhrVFX，57 路由无横向溢出）；表单专项 14 项通过（artifacts/forms-ioeQeZ，含 Row/Col 实例和三档间距）；最终布局专项 11 项通过（artifacts/layout-Z9pi97）；最终级联专项 14 项通过（artifacts/cascader-wo09Ic）。
+- root 亲自复核 Row 宽屏深色、Col 390px 浅色、最新布局窄屏深色，以及级联三列浅深 1440×900、390×844 浅色与 900×900@125% 深色完整窗口截图。输入高度、标签／下方说明、弹层边框与主题一致；窄屏仅弹层内部滚动，缩放不产生页面横向溢出。NativeImage PNG 与窗口 contentSize 均有尺寸断言。验收通过，无阻断项。
+- npm pack --dry-run 白名单检查通过，包含级联组件、类型、CSS、demo 和 API 参考，不含 tests/artifacts/dist。所有修改仍在 UI 本地，未发布；UAH 工作区干净，继续固定消费已发布 0.2.3。
+
+## 2026-10-05：Tabs 组合方式、选择行为及滚动布局
+
+- root 对照 Vuetify 官方 VTabs/VTab/VTabsWindow/VWindowItem 源码与 usage.vue，增加 UiTab、UiTabsWindow、UiTabsWindowItem。声明式标签不再必须传 items/idPrefix；兄弟 Tabs/Window 共用一个 v-model，#window 内可继承模型与 ID，#item 可为数组项直接提供内容。旧 id/label、orientation、UiTabPanel 用法继续兼容。
+- 默认 mandatory=force 选择首个可用项；支持 string/number、数字 0、隐式索引、禁用、动态删除与空列表恢复。mandatory=false 可取消选择，空状态允许 null/undefined，v0 可将无选中项标准化为 undefined。默认方向键／Home／End 仅移动焦点，Enter／Space 确认；automatic 显式启用，RTL 方向与禁用跳过已验证。指针释放焦点，键盘可见焦点保留。
+- WindowItem 首次访问挂载并保留内容，eager 预先挂载。补充 direction/alignTabs/grow/fixedTabs/stacked/hideSlider/centerActive/showArrows；箭头只滚动，选中和键盘焦点可进入视口，垂直滚动由列表承载。
+- 新增 5 个真实 Tabs 示例及 3 个独立组件页；现为 47 个公开组件、60 个文档页。API 参考、示例源码、README 与键盘指南同步；全量源码 API 审计仍为 0 差异、0 重复声明。
+- typecheck/build、48/48 单测、20 项全 UI 回归（artifacts/ui-El84a3）、11 项布局／焦点回归（artifacts/layout-kKB6ie）、5 组 Tabs 专项（artifacts/tabs-tZ7icE）全部通过。60 路由无页面横向溢出，旧标签页内容及滑动指示条几何／动画回归通过。
+- root 已亲自复核声明式浅深与390px、横向滚动浅色、垂直滚动深色，以及最终390px浅色和900×900@125%深色图像。主题、选中条、提示间距、箭头和内部滚动符合组件规范；NativeImage PNG 与窗口尺寸、截图文件名主题与实际 data-theme 均由测试断言。修复滚动 demo 两组不同 items 共用模型互相回退的问题；旧测试定位同步新 shell 层级，原几何断言保留。无阻断项。
+- npm pack --dry-run 为182个发布文件，无 tests/artifacts/dist 泄漏。所有改动仍为 UI 本地源码，尚未提交或发布；UAH 无改动且保持固定 npm 0.2.3。
+
+## 2026-10-05：0.3.0 发布前核对
+
+用户授权发布本轮完整组件更新。package.json与lockfile均为0.3.0；正式标签v0.3.0沿用GitHub Actions的npm Trusted Publishing。再次运行typecheck、48/48单测、文档与库build、npm pack --dry-run；182个发布文件，无tests/artifacts/dist/工作区文档泄漏。对应日志为artifacts/release-0.3.0-unit.log、release-0.3.0-build.log与release-0.3.0-pack.json。此前最终交互与视觉证据见以上Tabs、Form/Row/Col与级联记录；版本变更未修改组件行为。

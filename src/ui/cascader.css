@@ -1,0 +1,53 @@
+.ui-cascader { position: relative; box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; flex: 1 1 auto; }
+.ui-cascader.is-inline { width: auto; flex: 0 1 auto; }
+.ui-cascader-trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    min-height: 36px;
+    padding: 7px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font: 13px/1.4 var(--font);
+    text-align: start;
+    cursor: pointer;
+    transition: border-color 160ms, background-color 160ms, box-shadow 160ms;
+}
+.ui-cascader-trigger:hover:not(:disabled) { border-color: color-mix(in srgb, var(--accent-text) 38%, var(--border)); background: var(--soft); }
+.ui-cascader-trigger:focus-visible { outline: none; border-color: var(--accent-text); box-shadow: 0 0 0 3px var(--accent-soft); }
+.ui-cascader-trigger:disabled { opacity: .56; cursor: not-allowed; }
+.ui-cascader-trigger[aria-readonly="true"] { cursor: default; }
+.ui-cascader-trigger[aria-invalid="true"] { border-color: var(--red); }
+.ui-cascader-value { display: block; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-cascader-value.is-placeholder { color: var(--faint); }
+.ui-cascader-trigger > .prototype-icon { color: var(--muted); }
+.ui-cascader:has(.ui-cascader-clear) .ui-cascader-trigger { padding-inline-end: 38px; }
+.ui-cascader-clear { position: absolute; inset-inline-end: 8px; inset-block-start: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 5px; background: var(--surface); color: var(--muted); cursor: pointer; }
+.ui-cascader-clear:hover:not(:disabled) { background: var(--soft); color: var(--text); }
+.ui-cascader-clear:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 1px; }
+.ui-cascader-clear:disabled { opacity: .56; cursor: not-allowed; }
+.ui-cascader.is-dense .ui-cascader-trigger { min-height: 30px; padding-block: 4px; font-size: 12px; }
+.ui-cascader.is-ghost .ui-cascader-trigger { border-color: transparent; background: transparent; }
+.ui-cascader.is-ghost .ui-cascader-trigger:hover:not(:disabled) { background: var(--soft); }
+.ui-cascader.is-ghost .ui-cascader-trigger:focus-visible { border-color: var(--accent-text); }
+.ui-cascader.is-ghost .ui-cascader-trigger[aria-invalid="true"] { border-color: var(--red); }
+.ui-cascader.is-ghost .ui-cascader-clear { background: transparent; }
+.ui-cascader.is-square .ui-cascader-trigger { border-radius: 0; }
+.ui-cascader-panel { width: max-content; min-width: anchor-size(width); max-width: calc(100vw - 24px); max-height: min(320px, 70dvh); padding: 4px; }
+.ui-cascader-columns { display: flex; width: max-content; min-width: 100%; }
+.ui-cascader-column { flex: 1 0 160px; box-sizing: border-box; width: 180px; max-height: min(300px, 65dvh); overflow-y: auto; padding: 2px; overscroll-behavior: contain; }
+.ui-cascader-column + .ui-cascader-column { border-inline-start: 1px solid var(--line); padding-inline-start: 6px; margin-inline-start: 4px; }
+.ui-cascader-option { display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0; min-height: 32px; padding: 7px 9px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; text-align: start; cursor: pointer; }
+.ui-cascader-option > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-cascader-option:hover:not(:disabled) { background: var(--soft); }
+.ui-cascader-option[aria-selected="true"] { color: var(--accent-text); background: var(--accent-soft); }
+.ui-cascader-option:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+.ui-cascader-option:disabled { opacity: .45; cursor: not-allowed; }
+.ui-cascader-empty { margin: 12px 8px; color: var(--muted); font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { .ui-cascader-trigger { transition: none; } }
+:root[data-reduced-motion="true"] .ui-cascader-trigger { transition: none; }

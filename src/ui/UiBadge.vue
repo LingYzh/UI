@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vPointerBlur } from './pointer-focus';
 import { computed, useId } from 'vue';
 import { uiText } from './locale';
 
@@ -21,7 +22,7 @@ const style = computed(() => (props.color ? { '--badge-color': props.color } : u
         <span v-if="$slots.icon" class="ui-badge-icon"><slot name="icon" /></span>
         <span :id="labelId" class="ui-badge-label"><slot /></span>
         <!-- 关闭按钮名称固定为“移除”，通过 aria-describedby 关联标签文字，读屏可区分列表中的多个标签。 -->
-        <button
+        <button v-pointer-blur
             v-if="closable"
             type="button"
             class="ui-badge-close"

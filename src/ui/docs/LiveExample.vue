@@ -12,6 +12,9 @@ import UsageMeterDemo from './UsageMeterDemo.vue';
 import FeedbackDemo from './FeedbackDemo.vue';
 import LocaleDemo from './LocaleDemo.vue';
 import ControlsDemo from './ControlsDemo.vue';
+import CascaderDemo from './CascaderDemo.vue';
+import TabsDemo from './TabsDemo.vue';
+import LayoutDemo from './LayoutDemo.vue';
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
 
 const feedbackExamples = ['badge-tones', 'badge-custom', 'alert-tones', 'alert-actions', 'spinner-states', 'menu-items', 'menu-panel', 'confirm-basic', 'button-danger', 'dialog-sizes'];
@@ -91,7 +94,10 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
 
 <template>
     <div class="live-example">
-        <UsageMeterDemo v-if="example === 'usage-meter-basic'" />
+        <CascaderDemo v-if="example === 'cascader-form'" />
+        <TabsDemo v-else-if="['tabs-declarative', 'tabs-items', 'tabs-window', 'tabs-values', 'tabs-scroll'].includes(example)" :example="example" />
+        <LayoutDemo v-else-if="example.startsWith('layout-') || example === 'textarea-grow'" :example="example" />
+        <UsageMeterDemo v-else-if="example === 'usage-meter-basic'" />
         <ConversationDemo v-else-if="example.startsWith('conversation-')" :example="example" />
         <MarkdownDemo v-else-if="example.startsWith('markdown-')" :example="example" />
         <DiffDemo v-else-if="example === 'diff-content'" />
@@ -110,8 +116,8 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <label class="d-flex align-center ga-2"><UiSwitch v-model="square" aria-label="直角边界" />rounded=false</label>
             </div>
             <UiCard class="variants-card" title="统一样式变体" subtitle="切换上方开关，观察所有控件与容器。" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="统一样式变体预览">
-                <UiField v-slot="{ controlAttrs }" label="工作区名称" for="variants-name"><UiInput v-model="name" v-bind="controlAttrs" :dense="dense" :ghost="ghost" :rounded="!square" placeholder="例如 UAH" /></UiField>
-                <UiField v-slot="{ controlAttrs }" label="显示密度" for="variants-select"><UiSelect v-model="density" v-bind="controlAttrs" :dense="dense" :ghost="ghost" :rounded="!square"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect></UiField>
+                <UiInput label="工作区名称" id="variants-name" v-model="name" :dense="dense" :ghost="ghost" :rounded="!square" placeholder="例如 UAH" />
+                <UiSelect label="显示密度" id="variants-select" v-model="density" :dense="dense" :ghost="ghost" :rounded="!square"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
                 <UiTabs v-model="selected" :items="items" id-prefix="variants" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="变体标签页" class="mt-4" />
                 <UiTabPanel :model-value="selected" value="overview" id-prefix="variants"><p class="text-muted my-4">所有变体保留原来的键盘操作、错误态与焦点。</p></UiTabPanel>
                 <UiTabPanel :model-value="selected" value="details" id-prefix="variants"><p class="text-muted my-4">通过相同属性控制密度、表面和圆角。</p></UiTabPanel>
@@ -124,7 +130,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <LocaleDemo v-else-if="example === 'locale-switch'" />
         <ControlsDemo v-else-if="controlExamples.includes(example)" :example="example" />
         <template v-else-if="example === 'input-number'">
-            <UiField v-slot="{ controlAttrs }" label="代理端口" :for="`${prefix}-port`" description="type=number 时模型为数字，清空为 null。"><UiInput v-model="port" v-bind="controlAttrs" type="number" min="1" max="65535" /></UiField>
+            <UiInput label="代理端口" :id="`${prefix}-port`" hint="type=number 时模型为数字，清空为 null。" v-model="port" type="number" min="1" max="65535" />
             <output>{{ port === null ? 'null' : `${typeof port} · ${port}` }}</output>
         </template>
         <template v-else-if="example === 'scroll-horizontal'">
@@ -155,8 +161,8 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         </template>
         <template v-else-if="example === 'card-form'">
             <UiCard title="工作区偏好" subtitle="保存当前工作区的显示选项。" aria-label="工作区偏好">
-                <UiField v-slot="{ controlAttrs }" label="名称" for="demo-card-name"><UiInput v-model="name" v-bind="controlAttrs" placeholder="例如 UAH" /></UiField>
-                <UiField v-slot="{ controlAttrs }" label="显示密度" for="demo-card-density"><UiSelect v-model="density" v-bind="controlAttrs"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect></UiField>
+                <UiInput label="名称" id="demo-card-name" v-model="name" placeholder="例如 UAH" />
+                <UiSelect label="显示密度" id="demo-card-density" v-model="density"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
                 <template #actions><UiButton variant="ghost" @click="name = ''">清空</UiButton><UiButton variant="primary" @click="snackbar.show('示例偏好已保存。', { tone: 'success' })">保存</UiButton></template>
             </UiCard>
         </template>
@@ -195,18 +201,17 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <output aria-live="polite">{{ saving ? '等待态 · disabled=true · aria-busy=true' : '就绪 · 点击“模拟保存”试验等待态' }}</output>
         </template>
         <template v-else-if="example === 'input-search'">
-            <UiField v-slot="{ controlAttrs }" label="搜索" :for="`${prefix}-search`" description="支持前后插槽与原生输入属性。">
-                <UiInput ref="input" v-model="query" v-bind="controlAttrs" placeholder="搜索会话、项目与设置">
+            <UiInput label="搜索" :id="`${prefix}-search`" hint="支持前后插槽与原生输入属性。" ref="input" v-model="query" placeholder="搜索会话、项目与设置">
                     <template #leading><Icon name="search" :size="16" /></template>
                     <template #trailing><span class="demo-count">{{ query.length }}</span></template>
                 </UiInput>
-            </UiField>
             <div class="demo-row"><UiButton size="sm" @click="input?.focus()">聚焦输入</UiButton><UiButton size="sm" variant="ghost" @click="query = ''">清空</UiButton></div>
             <output>输入值：{{ query || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'input-states'">
-            <UiField v-slot="{ controlAttrs }" label="项目名称" :for="`${prefix}-error`" error="请输入项目名称。"><UiInput v-bind="controlAttrs" invalid placeholder="例如：我的工作区" /></UiField>
-            <UiField v-slot="{ controlAttrs }" label="只读能力" :for="`${prefix}-disabled`"><UiInput v-bind="controlAttrs" disabled model-value="尚未接入" /></UiField>
+            <UiInput label="项目名称" error-messages="请输入项目名称。" placeholder="例如：我的工作区" />
+            <UiInput label="只读能力" readonly model-value="尚未接入" />
+            <UiInput label="禁用项目" disabled model-value="暂不可编辑" />
         </template>
         <template v-else-if="example === 'select-dynamic'">
             <UiSelect v-model="planVersion" :items="planVersionItems" aria-label="动态计划版本" />
@@ -221,28 +226,26 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <UiSelect v-model="draft" placeholder="选择模型" aria-label="分组模型"><optgroup v-for="group in ['Provider A', 'Provider B']" :key="group" :label="group"><option v-for="n in 20" :key="n" :value="group + n">model-{{ n }}</option></optgroup></UiSelect>
         </template>
         <template v-else-if="example === 'select-values'">
-            <UiField v-slot="{ controlAttrs }" label="代码字号" :for="`${prefix}-size`"><UiSelect v-model="size" v-bind="controlAttrs"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></UiSelect></UiField>
-            <UiField v-slot="{ controlAttrs }" label="显示密度" :for="`${prefix}-density`"><UiSelect v-model="density" v-bind="controlAttrs" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect></UiField>
+            <UiSelect label="代码字号" :id="`${prefix}-size`" v-model="size"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></UiSelect>
+            <UiSelect label="显示密度" :id="`${prefix}-density`" v-model="density" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
             <output id="size-value">{{ typeof size }} · {{ size }}</output>
         </template>
         <template v-else-if="example === 'select-states'">
-            <UiField v-slot="{ controlAttrs }" label="需要选择的项目" :for="`${prefix}-project`" :error="projectError">
-                <UiSelect v-model="project" v-bind="controlAttrs" :invalid="Boolean(projectError)"><option value="">请选择项目</option><option value="uah">UAH 工作台</option></UiSelect>
-            </UiField>
-            <UiField v-slot="{ controlAttrs }" label="不可用的选择" :for="`${prefix}-disabled`"><UiSelect model-value="unavailable" disabled v-bind="controlAttrs"><option value="unavailable">尚未启用</option></UiSelect></UiField>
+            <UiSelect label="需要选择的项目" :id="`${prefix}-project`" :error-messages="projectError" v-model="project" :invalid="Boolean(projectError)"><option value="">请选择项目</option><option value="uah">UAH 工作台</option></UiSelect>
+            <UiSelect label="不可用的选择" :id="`${prefix}-disabled`" model-value="unavailable" disabled><option value="unavailable">尚未启用</option></UiSelect>
             <output>选中项目：{{ project || '（未选择）' }}</output>
         </template>
         <template v-else-if="example === 'switch-preference' || example === 'motion-toggle'">
-            <UiField v-slot="{ controlAttrs }" label="示例减少动效" :for="`${prefix}-motion`" description="影响当前文档；与顶部偏好同步，系统偏好仍独立生效。"><UiSwitch v-model="reduced" v-bind="controlAttrs" /></UiField>
+            <UiSwitch label="示例减少动效" :id="`${prefix}-motion`" hint="影响当前文档；与顶部偏好同步，系统偏好仍独立生效。" v-model="reduced" />
             <output>应用减少动效：{{ reduced ? '已开启' : '未开启' }}</output>
         </template>
         <template v-else-if="example === 'switch-states'">
-            <UiField v-slot="{ controlAttrs }" label="启用通知" :for="`${prefix}-enabled`"><UiSwitch v-model="enabled" v-bind="controlAttrs" /></UiField>
+            <UiSwitch label="启用通知" :id="`${prefix}-enabled`" v-model="enabled" />
             <div class="demo-row"><span>禁用 · 关</span><UiSwitch :model-value="false" disabled aria-label="禁用的关闭状态" /><span>禁用 · 开</span><UiSwitch :model-value="true" disabled aria-label="禁用的开启状态" /></div>
             <output>{{ enabled ? '通知已启用' : '通知已关闭' }}</output>
         </template>
         <template v-else-if="example === 'field-validation'">
-            <UiField v-slot="{ controlAttrs }" label="项目名称" :for="`${prefix}-name`" description="2 个字符以上，便于识别。" :error="error"><UiInput v-model="name" v-bind="controlAttrs" :invalid="Boolean(error)" placeholder="给工作区起个名字" /></UiField>
+            <UiInput label="项目名称" :id="`${prefix}-name`" hint="2 个字符以上，便于识别。" :error-messages="error" v-model="name" :invalid="Boolean(error)" placeholder="给工作区起个名字" />
             <div class="demo-row"><UiButton @click="error = name.trim().length < 2 ? '请至少输入 2 个字符。' : ''">校验名称</UiButton><span v-if="name.trim().length >= 2 && !error" class="demo-success">名称可用</span></div>
         </template>
         <template v-else-if="example === 'field-heading'">
@@ -268,7 +271,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <UiDialog v-model:open="open" scrollable :error="error" :aria-labelledby="`${prefix}-title`">
                 <template #header><h2 :id="`${prefix}-title`">固定提示与内部滚动</h2></template>
                 <div class="d-flex flex-column ga-4">
-                    <UiField v-for="number in 18" :key="number" v-slot="{ controlAttrs }" :label="`示例字段 ${number}`" :for="`${prefix}-field-${number}`"><UiInput v-bind="controlAttrs" placeholder="滚动查看其余字段" /></UiField>
+                    <UiInput :label="`示例字段 ${number}`" :id="`${prefix}-field-${number}`" placeholder="滚动查看其余字段" />
                     <UiButton @click="error = '读取失败：请检查服务地址与认证信息。此提示始终留在弹窗顶部。'">显示顶部错误</UiButton>
                 </div>
                 <template #footer><div class="d-flex justify-end ga-2"><UiButton @click="error = ''">清除错误</UiButton><UiButton variant="primary" @click="open = false">关闭长表单</UiButton></div></template>
@@ -280,7 +283,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <output>{{ dialogLog }}</output>
             <UiDialog v-model:open="open" :aria-labelledby="`${prefix}-title`" class="docs-dialog" @present-change="present = $event" @opened="dialogLog = 'opened · 进入动效完成'" @closed="closed">
                 <p class="docs-dialog-kicker">UAH / DIALOG</p><h2 :id="`${prefix}-title`">共享弹窗</h2>
-                <p>按 Esc、点击遮罩或关闭按钮结束。退出动画完成后恢复焦点。</p>
+                <p>按 Esc、点击遮罩或关闭按钮结束。键盘关闭后恢复触发器焦点，点击关闭后释放操作焦点。</p>
                 <UiInput autofocus aria-label="弹窗输入" placeholder="试试键盘操作" />
                 <div class="demo-row"><UiButton variant="primary" @click="open = false">关闭弹窗</UiButton></div>
             </UiDialog>
@@ -291,11 +294,11 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <output>open={{ expanded }} · 草稿：{{ draft || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'snackbar-playground' || example === 'snackbar-service'">
-            <UiField v-slot="{ controlAttrs }" label="提示内容" :for="`${prefix}-message`"><UiInput v-model="message" v-bind="controlAttrs" /></UiField>
+            <UiInput label="提示内容" :id="`${prefix}-message`" v-model="message" />
             <div class="demo-options">
-                <UiField v-slot="{ controlAttrs }" label="提示方位" :for="`${prefix}-position`"><UiSelect v-model="position" v-bind="controlAttrs"><option v-for="value in positions" :key="value" :value="value">{{ value }}</option></UiSelect></UiField>
-                <UiField v-slot="{ controlAttrs }" label="提示时长" :for="`${prefix}-duration`"><UiSelect v-model="duration" v-bind="controlAttrs"><option :value="6000">6 秒</option><option :value="800">0.8 秒</option><option :value="0">手动关闭</option></UiSelect></UiField>
-                <UiField v-slot="{ controlAttrs }" label="提示类型" :for="`${prefix}-tone`"><UiSelect v-model="tone" v-bind="controlAttrs"><option value="success">成功</option><option value="info">信息</option><option value="error">错误</option></UiSelect></UiField>
+                <UiSelect label="提示方位" :id="`${prefix}-position`" v-model="position"><option v-for="value in positions" :key="value" :value="value">{{ value }}</option></UiSelect>
+                <UiSelect label="提示时长" :id="`${prefix}-duration`" v-model="duration"><option :value="6000">6 秒</option><option :value="800">0.8 秒</option><option :value="0">手动关闭</option></UiSelect>
+                <UiSelect label="提示类型" :id="`${prefix}-tone`" v-model="tone"><option value="success">成功</option><option value="info">信息</option><option value="error">错误</option></UiSelect>
             </div>
             <div class="demo-row"><UiButton variant="primary" @click="showNotice">显示提示</UiButton><UiButton :disabled="lastId === null" @click="snackbar.dismiss(lastId)">撤销上一条</UiButton><UiButton variant="ghost" @click="snackbar.clear()">清空提示</UiButton></div>
             <output aria-live="polite">{{ lastId === null ? '尚未创建提示' : `最近提示 id：${lastId}` }}</output>
