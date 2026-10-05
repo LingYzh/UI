@@ -14,8 +14,9 @@ const App = defineComponent({
     setup() {
         const open = ref(false);
         const values = ref({});
+        const supportLabel = ref('支持');
         const fields = Array.from({length: 8}, (_, index) => '能力 ' + index);
-        watch(open, value => { if (value) values.value = Object.fromEntries(fields.map(name => [name, 'inherit'])); });
+        watch(open, value => { if (value) { values.value = Object.fromEntries(fields.map(name => [name, 'inherit'])); supportLabel.value = '支持'; } });
         const option = (value, label) => h('option', {value}, label);
         return () => h('div', [
             h(UiDialog, {open: true, scrollable: true, 'aria-label': '设置'}, {
@@ -28,10 +29,13 @@ const App = defineComponent({
                 header: () => h('h2', '能力设置'),
                 default: () => fields.map((name, index) => h(UiField, {key: name, label: name, for: 'ability-' + index, description: '使用接口声明或手动设置'}, {
                     default: ({controlAttrs}) => h(UiSelect, {...controlAttrs, modelValue: values.value[name], 'onUpdate:modelValue': value => { values.value[name] = value; }}, {
-                        default: () => [option('inherit', '使用接口声明'), option('true', '支持'), option('false', '不支持')]
+                        default: () => [option('inherit', '使用接口声明'), option('true', supportLabel.value), option('false', '不支持')]
                     })
                 })),
-                footer: () => h(UiButton, {onClick: () => { open.value = false; }}, () => '关闭能力设置')
+                footer: () => [
+                    h(UiButton, {onClick: () => { supportLabel.value = '支持（更新）'; }}, () => '更新选项文字'),
+                    h(UiButton, {onClick: () => { open.value = false; }}, () => '关闭能力设置')
+                ]
             })
         ]);
     }
@@ -65,6 +69,9 @@ try {
         const first = child.getByRole('combobox', { name: '能力 0', exact: true });
         await first.selectOption('true');
         assert.equal(await first.inputValue(), 'true');
+        await child.getByRole('button', { name: '更新选项文字', exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('#ability-0 selectedcontent')?.textContent === '支持（更新）');
+        assert.equal(await first.inputValue(), 'true', 'updating the selected label retains the model');
         await child.evaluate(async element => {
             await Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {})));
         });
@@ -79,7 +86,10 @@ try {
     console.log('PASS hidden selects initialize inside nested dialogs, remain responsive, select and reopen without observer update loops');
     console.log('Evidence: ' + evidence);
 } finally {
-    clearTimeout(watchdog);
-    await app.close();
-    await server.close();
+    try {
+        await app.close();
+    } finally {
+        clearTimeout(watchdog);
+        await server.close();
+    }
 }

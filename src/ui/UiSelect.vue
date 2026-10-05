@@ -30,6 +30,7 @@ const element = ref<HTMLSelectElement>();
 const control = useFormControl(props, model, element, attrs);
 const instance = getCurrentInstance();
 const customPicker = typeof CSS !== 'undefined' && CSS.supports('appearance', 'base-select');
+let optionObserver: MutationObserver | undefined;
 function defaultSelection() {
     const vnodeProps = instance?.vnode.props || {};
     if ('modelValue' in vnodeProps || 'model-value' in vnodeProps || model.value !== undefined) return;
@@ -49,7 +50,15 @@ function syncSelectedContent() {
         selectedContent.replaceChildren(...Array.from(option.childNodes, node => node.cloneNode(true)));
     }
 }
-onMounted(syncSelectedContent);
+onMounted(() => {
+    syncSelectedContent();
+    // Slot content can update inside UiScrollArea without updating this component.
+    const options = element.value?.querySelector('.ui-select-options .ui-scroll-content');
+    if (customPicker && options) {
+        optionObserver = new MutationObserver(syncSelectedContent);
+        optionObserver.observe(options, { childList: true, subtree: true, characterData: true });
+    }
+});
 onUpdated(syncSelectedContent);
 const pointerSelection = ref(false);
 let blurFrame = 0;
@@ -77,7 +86,7 @@ function optionClick(event: MouseEvent) {
         commit();
     }
 }
-onBeforeUnmount(() => cancelAnimationFrame(blurFrame));
+onBeforeUnmount(() => { cancelAnimationFrame(blurFrame); optionObserver?.disconnect(); });
 defineExpose({ element, focus: () => element.value?.focus(), validate: control.validate, reset: control.reset, resetValidation: control.resetValidation, errors: control.errors });
 </script>
 

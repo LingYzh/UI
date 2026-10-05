@@ -192,3 +192,13 @@ UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 ty
 修复限定于 UiSelect 的相同 selectedcontent 不再重复替换，以及 UiScrollArea 的相同几何不再赋新响应式对象，不改变公开 API／样式。新增真实组件桌面回归 select-initialization.mjs：原始 0.3.0 卡住，修复后浅深主题、八个模型初始化、选择和弹窗重开均通过，无 pageerror；证据 artifacts/select-initialization-eZNDNF。root 亲自复核完整窗口浅深截图；发布前完整回归及最终消费端结果另追加。
 
 0.3.1 最终发布前：typecheck、48/48 单测、build、20/20 全 UI 回归通过，60 路由无溢出，动态选项文字及滚动条调整断言保留。日志 artifacts/release-0.3.1-{typecheck,npm-test,build,ui}.log；全 UI 证据 artifacts/ui-4XLID7。嵌套选择器最终证据 artifacts/select-initialization-Shg8O8，root 复核浅深完整窗口截图。最终在修复源码恢复后重新 pack，182 个文件，无 tests/artifacts/dist/docs 泄漏；JSON 为 artifacts/release-0.3.1-pack.json。负例运行复现原始版本在点击打开能力弹窗后停止响应，cleanup 经主进程检查独立 profile 与 fixture URL 后退出该测试实例，未关闭用户 dev 服务。
+
+### 0.3.2：插槽选项的动态文本
+
+0.3.1 Actions 37292273421 与官方 registry 已确认发布成功。补充实际 slot 文字回归发现原 option 已更新、selectedcontent 仍显示旧文字；此前完整 UI 仅覆盖 items／模型等更新，没有覆盖该 slot 文本情况。0.3.2 在 UiSelect 内观察独立选项容器的文本与子节点变更，并复用内容相同时不写入的同步逻辑，卸载清理观察器。
+
+select-initialization 专项增加更新已选中 option 文字、断言 selectedcontent 更新且模型保持 true，浅深主题均通过；证据 artifacts/select-initialization-KIxN9D。测试退出时在关闭 Electron 完成后清理 watchdog，覆盖失败清理路径；不改动用户服务。最终完整验证与发布结果另追加。
+
+0.3.2 发布前 typecheck、48/48 单测、build、20/20 全 UI 回归通过，仍覆盖60路由和滚动条内容调整；证据 artifacts/ui-EQH98h，日志 artifacts/release-0.3.2-{typecheck,test,build,ui}.log。root 已复核专项最新浅色完整窗口图像，选中文字实时更新、模型值保持不变，布局与主题保持组件规范。公开 props/emits/slots/expose 无变动，API审计不需要新增项目。
+
+最终 npm pack --dry-run 为182个文件，无 tests/artifacts/dist/docs 泄漏，JSON 为 artifacts/release-0.3.2-pack.json。

@@ -138,3 +138,11 @@ UAH 固定安装官方 npm 0.3.0 后，实际端点编辑器的嵌套模型能�
 新增 tests/desktop/select-initialization.mjs 使用真实组件复现关闭状态的八个选择器，在打开嵌套弹窗时同时初始化模型，覆盖浅深主题、选择、关闭及重新打开。原始版本复现卡住，修复后通过，证据 artifacts/select-initialization-eZNDNF。root 已检查浅深截图。0.3.1 发布前继续完整回归，发布结果另追加；消费端必须固定安装最终 npm 版本。
 
 0.3.1 最终发布前验证已通过：typecheck、48 单测、build、20 全 UI、嵌套选择器专项；最终证据 artifacts/ui-4XLID7 与 artifacts/select-initialization-Shg8O8，root 已复核主题截图。修复源码恢复后重新 pack 为182文件，无测试／artifacts／dist／docs泄漏。公开 API 无变动。推送 v0.3.1 后核对 Actions 与官方 registry，再将 UAH 固定升级并完成实际端点回归。
+
+## 2026-10-05：0.3.1 已发布，0.3.2 补齐插槽文字同步
+
+0.3.1 发布提交 55c1d7b74e31eec396610c1b701bf729e113dd71，标签 v0.3.1；Actions 37292273421 成功，官方 npm 版本／latest 已确认。integrity 为 sha512-jjRUnrDkuKbiJj5EW80i811mYZ7GJKc9y3n2qmWxUHJqiDYyPsmvVMIJcUatfJThh8V7JhWJZz2TqDWfyk1uiw==，tarball 为 https://registry.npmjs.org/@lingyzh/ui/-/ui-0.3.1.tgz。
+
+补充回归发现停止重复渲染后，旧 slot 提供的 option 文本在 UiScrollArea 内更新时不会触发 UiSelect 的 updated，选中文本克隆停留在旧内容。0.3.2 仅观察选项容器的子节点与文本变化，同步真正变化的克隆并在卸载时清理监听；不观察 selectedcontent，避免监听自身写入。专项增加修改选中项文字后显示更新且模型不变的断言，浅深主题均通过，证据 artifacts/select-initialization-KIxN9D。UI API／样式无变动；UAH 最终消费 0.3.2，0.3.0 与 0.3.1 是中间版本。
+
+0.3.2 发布前 typecheck、48/48 单测、build、20/20 全 UI 通过，证据 artifacts/ui-EQH98h，日志 artifacts/release-0.3.2-*；root 检查最终嵌套选择器截图与两次修复 diff。发布按现有标签／OIDC流程进行，最终 registry 和消费端记录另追加。

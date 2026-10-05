@@ -51,3 +51,9 @@
 用户已明确授权发布并升级 UAH。发布提交 6f405a84e6dd1e3c36e9b04853488eff571214b8，标签 v0.2.3；GitHub Actions 37226243401 的 Publish 步骤成功，官方 npm 的 latest 为 0.2.3。tarball：https://registry.npmjs.org/@lingyzh/ui/-/ui-0.2.3.tgz；integrity：sha512-P+sBNm4KjRNkBcoIImV2+PQRT9mYxqqYqkzAWGNZNVfBqea6owCklrupb7W6ap8jx9s5alWi78rcH7/z74PgRQ==。
 
 UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 typecheck、23/23 单测、build、pack 白名单及 usage-meter 桌面专项通过；root 检查 artifacts/usage-meter-WPh1Qi 的浅色 1440 与深色 900/125% 截图。剩余量使用独立冷灰 token，不再与消息分类共享绿色。
+
+## 2026-10-05：0.3.0 / 0.3.1 发布完成
+
+0.3.0：提交a7ea191a1166e842ea4018b246ff0a28a25bc1e7，标签v0.3.0，Actions37287893853；integrity sha512-MrxVpXbQrqGvVFrqTmmU2ieS/OZ7uHAmceqAw7hX/D+ejNi2ApHAb7TjPutcwyHDblsMMniR9DTjlQJfpb4c7A==。
+0.3.1：提交55c1d7b74e31eec396610c1b701bf729e113dd71，标签v0.3.1，Actions37292273421；integrity sha512-jjRUnrDkuKbiJj5EW80i811mYZ7GJKc9y3n2qmWxUHJqiDYyPsmvVMIJcUatfJThh8V7JhWJZz2TqDWfyk1uiw==。
+两次均由既有OIDC工作流成功发布，正式registry版本与latest已核对。UAH兼容回归发现嵌套选择器更新循环后补发0.3.1；补充slot动态文字回归发现遗漏，最终正在准备0.3.2。不要将中间版本当作消费方最终验收结果；完整过程见HANDOFF.md与VALIDATION.md。
