@@ -1,10 +1,24 @@
 <script setup>
-import { onBeforeUnmount, ref } from 'vue';
-import UiMarkdown from '../UiMarkdown.vue';
-import UiButton from '../UiButton.vue';
-import UiScrollArea from '../UiScrollArea.vue';
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import UMarkdown from '../UiMarkdown.vue';
+import UButton from '../UiButton.vue';
+import UScrollArea from '../UiScrollArea.vue';
+import USwitch from '../UiSwitch.vue';
+import { reducedMotion } from './preferences';
 
 const props = defineProps({ example: { type: String, default: 'markdown-rich' } });
+const navigationArea = ref();
+onMounted(async () => { await nextTick(); if (props.example === 'markdown-navigation') navigationArea.value?.scrollTo({ top: 220 }); });
+const navigation = `## 阅读与补充说明
+
+\`行内代码\` 和 ==标记== 跟随主题 primary。这里有一条脚注[^motion]，点击后观察平滑滚动与居中位置，再点击脚注的返回箭头。
+
+<details><summary>展开补充说明</summary><p>展开和收起均有高度过渡，可用 Tab 选中后按 Enter 或空格操作。</p><p>快速重复操作会从当前高度继续，不必等待上一次动画。</p><p>减少动态效果时立即展开和收起。</p></details>
+
+${Array.from({ length: 8 }, (_, index) => `### 阅读段落 ${index + 1}\n\n滚动中的正文保持稳定，脚注链接仅在当前 Markdown 内定位。`).join('\n\n')}
+
+[^motion]: 这是脚注目标。返回箭头会平滑滚动到正文引用处并移交键盘焦点。
+`;
 const rich = `# 一份可阅读的回答
 
 正文支持 **重点**、*强调*、~~删除~~、\`行内代码\`、==标记==、H~2~O 与 x^2^。链接 [Markdown 文档](https://spec.commonmark.org/) 由应用接管；https://example.com 自动识别。
@@ -86,11 +100,15 @@ onBeforeUnmount(() => clearTimeout(timer));
 
 <template>
     <div class="markdown-demo">
-        <template v-if="props.example === 'markdown-streaming'">
-            <div class="markdown-demo-toolbar"><UiButton size="sm" @click="restart">开始 / 重新播放</UiButton><UiButton size="sm" variant="ghost" :disabled="!active" @click="finish">立即结束接收</UiButton><span aria-live="polite">接收 {{ progress }}%</span></div>
-            <UiScrollArea label="流式 Markdown 示例" height="420px"><UiMarkdown :source="source" :streaming="active" @link-click="lastLink = $event" /></UiScrollArea>
+        <template v-if="props.example === 'markdown-navigation'">
+            <div class="markdown-demo-toolbar"><u-switch v-model="reducedMotion" label="减少动态效果" /><span>比较平滑过渡与立即定位</span></div>
+            <u-scroll-area ref="navigationArea" label="Markdown 跳转与折叠示例" height="420px"><div class="markdown-demo-reading"><u-markdown :source="navigation" /></div></u-scroll-area>
         </template>
-        <UiMarkdown v-else :source="rich" @link-click="lastLink = $event" />
+        <template v-else-if="props.example === 'markdown-streaming'">
+            <div class="markdown-demo-toolbar"><u-button size="sm" @click="restart">开始 / 重新播放</u-button><u-button size="sm" variant="ghost" :disabled="!active" @click="finish">立即结束接收</u-button><span aria-live="polite">接收 {{ progress }}%</span></div>
+            <u-scroll-area label="流式 Markdown 示例" height="420px"><u-markdown :source="source" :streaming="active" @link-click="lastLink = $event" /></u-scroll-area>
+        </template>
+        <u-markdown v-else :source="rich" @link-click="lastLink = $event" />
         <p v-if="lastLink" role="status" class="markdown-demo-link">应用收到链接：{{ lastLink }}</p>
     </div>
 </template>
@@ -99,4 +117,5 @@ onBeforeUnmount(() => clearTimeout(timer));
 .markdown-demo { min-width: 0; }
 .markdown-demo-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .markdown-demo-toolbar span, .markdown-demo-link { color: var(--muted); font-size: 12px; }
+.markdown-demo-reading { padding-block: 220px; }
 </style>

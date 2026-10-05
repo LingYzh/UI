@@ -1,6 +1,8 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { UiButton, UiInput, UiSwitch, UiSnackbarHost, UiConfirmHost } from './index';
+import { UButton, UTextField, USwitch, USnackbarHost, UConfirmHost } from './index';
+import { useUiThemeWithFallback } from './theme';
+import { previewThemeOptions } from './docs/previewTheme';
 import Icon from '../components/Icon.vue';
 import { groups, pages, tokens } from './docs/content';
 import ExampleCard from './docs/ExampleCard.vue';
@@ -9,8 +11,12 @@ import ApiTable from './docs/ApiTable.vue';
 import LiveExample from './docs/LiveExample.vue';
 import packageInfo from '../../package.json';
 
-const theme = ref(document.documentElement.dataset.theme || 'light');
-const darkTheme = computed({ get: () => theme.value === 'dark', set: (value) => { theme.value = value ? 'dark' : 'light'; } });
+const theme = useUiThemeWithFallback(previewThemeOptions());
+const themeSwitch = ref();
+const darkTheme = computed({ get: () => theme.current.value.dark, set: (value) => {
+    theme.setTransitionOrigin(themeSwitch.value?.element ?? null);
+    void theme.change(value ? 'dark' : 'light');
+} });
 const componentCount = pages.filter((page) => page.kind === 'component').length;
 const search = ref('');
 const searchInput = ref();
@@ -31,7 +37,6 @@ const filteredGroups = computed(() => groups.map((name) => ({
 const toc = computed(() => current.value.sections?.map((item) => ({ id: item.id, title: item.title })) || [
     { id: 'examples', title: '交互示例' }, { id: 'api', title: 'API 参考' }, { id: 'usage', title: '使用约定' }
 ]);
-watch(theme, (value) => { document.documentElement.dataset.theme = value; });
 watch(current, (value) => { document.title = `${value.title} · UAH UI 文档`; });
 let observer;
 async function readRoute() {
@@ -86,20 +91,20 @@ onBeforeUnmount(() => {
         <a class="docs-skip" href="#docs-main" @click.prevent="content?.focus()">跳到文档内容</a>
         <header class="docs-header">
             <div class="docs-brand-wrap">
-                <UiButton ref="menuButton" class="docs-menu-button" icon variant="ghost" aria-label="切换文档导航" :aria-expanded="menuOpen" aria-controls="docs-navigation" @click="menuOpen = !menuOpen"><Icon name="panel" /></UiButton>
+                <u-button ref="menuButton" class="docs-menu-button" icon variant="ghost" aria-label="切换文档导航" :aria-expanded="menuOpen" aria-controls="docs-navigation" @click="menuOpen = !menuOpen"><Icon name="panel" /></u-button>
                 <a href="#/overview" class="docs-brand" aria-label="UAH UI 首页"><span class="docs-logo"><Icon name="spark" :size="21" /></span><strong>UAH <span>UI</span></strong></a>
                 <span class="docs-version">{{ packageInfo.version }} · 独立库</span>
             </div>
             <div class="docs-header-links"><a href="#/getting-started" :class="{ active: current.group === '开始使用' }">文档</a><a href="#/tokens" :class="{ active: current.group === '设计基础' }">设计基础</a></div>
             <div class="docs-header-actions">
-                <label class="docs-theme-switch"><Icon name="sun" :size="16" /><UiSwitch v-model="darkTheme" aria-label="深色主题" /><Icon name="moon" :size="16" /><span>{{ darkTheme ? '深色' : '浅色' }}</span></label>
+                <label class="docs-theme-switch"><Icon name="sun" :size="16" /><u-switch ref="themeSwitch" v-model="darkTheme" aria-label="深色主题" /><Icon name="moon" :size="16" /><span>{{ darkTheme ? '深色' : '浅色' }}</span></label>
                 <a class="docs-reference" href="https://0.vuetifyjs.com/introduction/getting-started" target="_blank" rel="noopener noreferrer" aria-label="Vuetify0 官方文档（新窗口）"><Icon name="external" :size="17" /></a>
             </div>
         </header>
         <div class="docs-workspace">
             <Transition name="docs-overlay"><button v-if="menuOpen" class="docs-nav-overlay" aria-label="关闭文档导航" @click="menuOpen = false"></button></Transition>
             <aside id="docs-navigation" class="docs-sidebar" :class="{ 'is-open': menuOpen }">
-                <div class="docs-search"><UiInput ref="searchInput" v-model="search" aria-label="搜索文档" placeholder="搜索文档…" @keydown.enter="searchEnter"><template #leading><Icon name="search" :size="15" /></template><template #trailing><kbd>Ctrl K</kbd></template></UiInput></div>
+                <div class="docs-search"><u-text-field ref="searchInput" v-model="search" aria-label="搜索文档" placeholder="搜索文档…" @keydown.enter="searchEnter"><template #leading><Icon name="search" :size="15" /></template><template #trailing><kbd>Ctrl K</kbd></template></u-text-field></div>
                 <nav aria-label="文档导航">
                     <div v-for="group in filteredGroups" :key="group.name" class="docs-nav-group">
                         <h2>{{ group.name }}<span>{{ group.pages.length }}</span></h2>
@@ -126,7 +131,7 @@ onBeforeUnmount(() => {
                                 <h2><a :href="`#/${current.id}/${item.id}`">{{ item.title }}<span aria-hidden="true">#</span></a></h2>
                                 <p v-if="item.text">{{ item.text }}</p><ul v-if="item.items" class="docs-prose-list"><li v-for="text in item.items" :key="text">{{ text }}</li></ul>
                                 <CodeBlock v-if="item.code" :code="item.code" :language="item.id === 'theme' || item.id === 'import' ? 'javascript' : 'vue'" /><LiveExample v-if="item.demo" :example="item.demo" />
-                                <div v-if="current.id === 'overview' && item.id === 'layers'" class="docs-note"><Icon name="info" :size="18" /><div><strong>行为与外观分开演进</strong><p>UiButton 与 UiTabs 已接入 @vuetify/v0。输入、选择、开关、字段、面板、折叠、提示和原生弹窗保留 UAH 实现；所有组件继续使用同一套设计变量。</p></div></div>
+                                <div v-if="current.id === 'overview' && item.id === 'layers'" class="docs-note"><Icon name="info" :size="18" /><div><strong>行为与外观分开演进</strong><p>UButton 与 UTabs 已接入 @vuetify/v0。输入、选择、开关、字段、面板、折叠、提示和原生弹窗保留 UAH 实现；所有组件继续使用同一套设计变量。</p></div></div>
                                 <div v-if="current.id === 'overview' && item.id === 'catalog'" class="docs-component-grid"><a v-for="page in pages.filter((entry) => entry.kind === 'component')" :key="page.id" :href="`#/${page.id}`"><code>{{ page.name }}</code><strong>{{ page.title }}</strong><Icon name="arrowRight" :size="15" /></a></div>
                                 <div v-if="current.id === 'tokens' && item.id === 'palette'" class="docs-token-grid"><div v-for="[token, label] in tokens" :key="token" class="docs-token"><span :style="{ background: `var(${token})` }"></span><div><strong>{{ label }}</strong><code>{{ token }}</code></div></div></div>
                             </section>
@@ -150,7 +155,7 @@ onBeforeUnmount(() => {
                 </div>
             </main>
         </div>
-        <UiSnackbarHost />
-        <UiConfirmHost />
+        <u-snackbar-host />
+        <u-confirm-host />
     </div>
 </template>

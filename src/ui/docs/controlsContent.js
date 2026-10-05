@@ -11,29 +11,29 @@ export const controlPages = [
                 "id": "checkbox-select-all",
                 "title": "全选与部分选中",
                 "description": "父级按子项计算 checked 与 indeterminate；点击全选会切换所有子项。列表行使用 label 扩大点击区域。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiCheckbox } from '@lingyzh/ui';\nconst items = ref([{ id: 'a', selected: true }, { id: 'b', selected: false }]);\nconst count = computed(() => items.value.filter((item) => item.selected).length);\nconst all = computed({ get: () => count.value === items.value.length, set: (value) => items.value.forEach((item) => { item.selected = value; }) });\n</script>\n\n<template>\n    <UiCheckbox v-model=\"all\" :indeterminate=\"count > 0 && count < items.length\">全选</UiCheckbox>\n    <UiCheckbox v-for=\"item in items\" :key=\"item.id\" v-model=\"item.selected\" :aria-label=\"`选择 ${item.id}`\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst items = ref([{ id: 'a', selected: true }, { id: 'b', selected: false }]);\nconst count = computed(() => items.value.filter((item) => item.selected).length);\nconst all = computed({ get: () => count.value === items.value.length, set: (value) => items.value.forEach((item) => { item.selected = value; }) });\n</script>\n\n<template>\n    <u-checkbox v-model=\"all\" :indeterminate=\"count > 0 && count < items.length\">全选</u-checkbox>\n    <u-checkbox v-for=\"item in items\" :key=\"item.id\" v-model=\"item.selected\" :aria-label=\"`选择 ${item.id}`\" />\n</template>",
                 "fullSource": true
             },
             {
                 "id": "checkbox-states",
                 "title": "标签与禁用",
                 "description": "传入默认插槽时渲染为可点击的 label；禁用状态同时作用于标签。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiCheckbox } from '@lingyzh/ui';\nconst include = ref(true);\n</script>\n\n<template>\n    <UiCheckbox v-model=\"include\">包含凭证</UiCheckbox>\n    <UiCheckbox :model-value=\"true\" disabled>禁用 · 已选</UiCheckbox>\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst include = ref(true);\n</script>\n\n<template>\n    <u-checkbox v-model=\"include\">包含凭证</u-checkbox>\n    <u-checkbox :model-value=\"true\" disabled>禁用 · 已选</u-checkbox>\n</template>",
                 "fullSource": true
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UiField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiInput, UiTextarea, UiRow, UiCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <UiForm label-position=\"left\" label-width=\"120px\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiInput v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiTextarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
             "indeterminate 只影响显示，用户点击后变为明确的选中或未选中，由调用方重新计算。",
             "ref 暴露 element 与 focus()。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。",
-            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UiForm 自动注册和管理控件。"
+            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UForm 自动注册和管理控件。"
         ]
     },
     {
@@ -48,21 +48,21 @@ export const controlPages = [
                 "id": "radio-cards",
                 "title": "分布在卡片中的单选",
                 "description": "三张路由卡片各放一个单选框，共享同一 name 与模型；方向键在组内切换。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiRadio } from '@lingyzh/ui';\nconst route = ref('sonnet');\n</script>\n\n<template>\n    <UiRadio v-model=\"route\" name=\"default-route\" value=\"opus\">设为默认</UiRadio>\n    <UiRadio v-model=\"route\" name=\"default-route\" value=\"sonnet\">设为默认</UiRadio>\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { URadio } from '@lingyzh/ui';\nconst route = ref('sonnet');\n</script>\n\n<template>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"opus\">设为默认</u-radio>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"sonnet\">设为默认</u-radio>\n</template>",
                 "fullSource": true
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UiField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiInput, UiTextarea, UiRow, UiCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <UiForm label-position=\"left\" label-width=\"120px\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiInput v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiTextarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
             "需要带标题的列表式单选组时，外层用 fieldset + legend 或 role=\"radiogroup\" 提供组名。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。",
-            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UiForm 自动注册和管理控件。"
+            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UForm 自动注册和管理控件。"
         ]
     },
     {
@@ -77,12 +77,12 @@ export const controlPages = [
                 "id": "progress-tones",
                 "title": "语气与过渡",
                 "description": "用量超过阈值时由页面切换 tone；数值变化平滑过渡，减少动效时直接跳到目标值。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiProgress } from '@lingyzh/ui';\nconst usage = ref(36);\n</script>\n\n<template>\n    <UiProgress :value=\"usage\" :tone=\"usage > 95 ? 'error' : usage > 80 ? 'warning' : 'accent'\" label=\"本月用量\" />\n    <UiProgress :value=\"60\" dense label=\"批量注册进度\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UProgress } from '@lingyzh/ui';\nconst usage = ref(36);\n</script>\n\n<template>\n    <u-progress :value=\"usage\" :tone=\"usage > 95 ? 'error' : usage > 80 ? 'warning' : 'accent'\" label=\"本月用量\" />\n    <u-progress :value=\"60\" dense label=\"批量注册进度\" />\n</template>",
                 "fullSource": true
             }
         ],
         "notes": [
-            "只表达确定进度；未知时长的等待使用 UiSpinner。",
+            "只表达确定进度；未知时长的等待使用 USpinner。",
             "百分比数字由页面在进度条旁显示，组件不内置文字。"
         ]
     },
@@ -98,7 +98,7 @@ export const controlPages = [
                 "id": "copy-inline",
                 "title": "行内复制",
                 "description": "长值截断显示，复制得到完整原文；复制成功 1.6 秒内显示绿色勾选，读屏播报“已复制”。",
-                "code": "<script setup>\nimport { UiCopyButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <UiCopyButton :text=\"token\" label=\"复制 Access Token\" @copied=\"notify\" />\n</template>",
+                "code": "<script setup>\nimport { UCopyButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-copy-button :text=\"token\" label=\"复制 Access Token\" @copied=\"notify\" />\n</template>",
                 "fullSource": true
             }
         ],
@@ -119,29 +119,29 @@ export const controlPages = [
                 "id": "swatches-tag",
                 "title": "标签颜色",
                 "description": "方向键在色块间移动并立即选中；已保存的大写十六进制值同样匹配色板。选中色块以表面色间隔加描边标记，任意颜色上都清晰。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiColorSwatches } from '@lingyzh/ui';\nconst color = ref('#4A78B8');\n</script>\n\n<template>\n    <UiColorSwatches v-model=\"color\" label=\"标签颜色\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#4A78B8');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"标签颜色\" />\n</template>",
                 "fullSource": true
             },
             {
                 "id": "swatches-legacy",
                 "title": "兼容已有颜色",
                 "description": "已保存但不在色板中的颜色显示为末尾的“当前颜色”，保留原值直到用户重新选择。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UiColorSwatches } from '@lingyzh/ui';\nconst color = ref('#2f6f9f');\n</script>\n\n<template>\n    <UiColorSwatches v-model=\"color\" label=\"已有标签颜色\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#2f6f9f');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"已有标签颜色\" />\n</template>",
                 "fullSource": true
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UiField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiInput, UiTextarea, UiRow, UiCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <UiForm label-position=\"left\" label-width=\"120px\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiInput v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiTextarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
             "比较颜色时忽略大小写，其余格式（ARGB、rgba 等）由调用方转换。",
             "颜色名称来自 locale，自定义色板请提供可读的 label。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。",
-            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UiForm 自动注册和管理控件。"
+            "ref 暴露 validate()、reset()、resetValidation() 与 errors；UForm 自动注册和管理控件。"
         ]
     },
     {
@@ -157,16 +157,16 @@ export const controlPages = [
                 "title": "级联选择与行列表单",
                 "description": "真实三级选项、禁用分支／叶节点、数字值、父级选择、完整路径显示、清空、状态变体和验证／重置。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiRow, UiCol, UiCascader, UiButton } from '@lingyzh/ui';\nconst region = ref([]);\nconst items = [{ value: 'east', label: '华东', children: [{ value: 'zhejiang', label: '浙江省', children: [{ value: 'hangzhou', label: '杭州市' }] }] }];\nfunction save() { console.log(region.value); }\n</script>\n\n<template>\n    <UiForm @submit=\"save\">\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiCascader v-model=\"region\" :items=\"items\" label=\"所属区域\" hint=\"逐级选择完整路径。\" required clearable /></UiCol>\n            <UiCol :cols=\"12\"><UiButton type=\"submit\" variant=\"primary\">保存区域</UiButton></UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UCascader, UButton } from '@lingyzh/ui';\nconst region = ref([]);\nconst items = [{ value: 'east', label: '华东', children: [{ value: 'zhejiang', label: '浙江省', children: [{ value: 'hangzhou', label: '杭州市' }] }] }];\nfunction save() { console.log(region.value); }\n</script>\n\n<template>\n    <u-form @submit=\"save\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-cascader v-model=\"region\" :items=\"items\" label=\"所属区域\" hint=\"逐级选择完整路径。\" required clearable /></u-col>\n            <u-col :cols=\"12\"><u-button type=\"submit\" variant=\"primary\">保存区域</u-button></u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
             "items 为 { value: string | number, label: string, disabled?: boolean, children?: CascaderItem[] }[]；同级 value 必须唯一，不同分支允许重复。",
             "v-model 为完整值路径数组，默认 []。默认只提交叶节点；changeOnSelect=true 允许显式选中父节点；按 → 始终导航下一级。",
-            "required 验证非空路径；失效／禁用路径在验证时显示错误。rules 与 errorMessages 接入 UiForm。",
+            "required 验证非空路径；失效／禁用路径在验证时显示错误。rules 与 errorMessages 接入 UForm。",
             "↑／↓、Home／End 同级移动，→ 展开下级，← 返回父级，Enter／Space 选择，Esc／Tab 关闭。指针选中释放焦点，键盘选中返回触发器。",
             "选中内容保持单行省略；弹层至少与控件同宽，多列超出视口时在弹层内部横向滚动。依赖原生 Popover 与 CSS anchor positioning。",
-            "label/hint 直接放控件，Row/Col 管理布局；标准级联选择器不需要 UiField。"
+            "label/hint 直接放控件，Row/Col 管理布局；标准级联选择器不需要 UField。"
         ]
     }
 ];

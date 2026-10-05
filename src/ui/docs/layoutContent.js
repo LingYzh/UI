@@ -20,24 +20,24 @@ export const layoutPages = [
             {
                 "id": "responsive",
                 "title": "断点与列宽",
-                "text": "cols 是默认宽度，sm600 / md960 / lg1280 / xl1920 / xxl2560 向上覆盖。数值按 Row.size（默认12）计算；2/5 等分数使用自己的分母。",
+                "text": "cols 是默认宽度，sm600 / md840 / lg1145 / xl1545 / xxl2138 向上覆盖。数值按 Row.size（默认12）计算；2/5 等分数使用自己的分母。",
                 "demo": "layout-grid",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiContainer, UiRow, UiCol, UiCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiContainer fluid>\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"基本信息\">内容</UiCard></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"运行设置\">内容</UiCard></UiCol>\n        </UiRow>\n    </UiContainer>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UContainer, URow, UCol, UCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-container fluid>\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"基本信息\">内容</u-card></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"运行设置\">内容</u-card></u-col>\n        </u-row>\n    </u-container>\n</template>"
             },
             {
                 "id": "forms",
                 "title": "规范表单",
                 "text": "Row 管理行列间距；Col 的 cols=12 占整行，md=6 在宽屏占半行。Form 可统一 labelPosition=top/left；左侧标签在 Form 宽度低于 560px 时显示在上方。",
                 "demo": "layout-form-grid",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiRow, UiCol, UiInput, UiSelect, UiTextarea, UiFormActions, UiButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <UiForm @submit=\"saved = true\">\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiInput v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiSelect v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></UiCol>\n            <UiCol :cols=\"12\"><UiTextarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></UiCol>\n            <UiCol :cols=\"12\"><UiFormActions><UiButton type=\"reset\">重置</UiButton><UiButton type=\"submit\" variant=\"primary\">保存行列表单</UiButton></UiFormActions></UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UTextField, USelect, UTextarea, UFormActions, UButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <u-form @submit=\"saved = true\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-text-field v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-select v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></u-col>\n            <u-col :cols=\"12\"><u-textarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></u-col>\n            <u-col :cols=\"12\"><u-form-actions><u-button type=\"reset\">重置</u-button><u-button type=\"submit\" variant=\"primary\">保存行列表单</u-button></u-form-actions></u-col>\n        </u-row>\n    </u-form>\n</template>"
             },
             {
                 "id": "acceptance",
                 "title": "约束与选型",
                 "items": [
                     "表单不要用 order 改键盘顺序，DOM 顺序与阅读顺序保持一致。",
-                    "UiForm 自动注册内部控件，rules 支持同步／异步验证，兼容原生 required 等约束。",
-                    "UiFormSection 使用 fieldset/legend，提供组名称；FormActions 只负责操作排列。",
+                    "UForm 自动注册内部控件，rules 支持同步／异步验证，兼容原生 required 等约束。",
+                    "UFormSection 使用 fieldset/legend，提供组名称；FormActions 只负责操作排列。",
                     "FormSection 仅分组；内部直接使用 Row/Col。标签和 hint 放在标准控件上，Field 用于自定义项目。",
                     "参考 Vuetify 4 的布局能力，UAH 保持自身 tokens、主题及控件尺寸。"
                 ]
@@ -57,7 +57,7 @@ export const layoutPages = [
                 "title": "响应式网格",
                 "description": "从完整宽度到 6/6、8/4，支持分数、偏移和视觉顺序；切换真实 Row 密度。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiContainer, UiRow, UiCol, UiCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiContainer fluid>\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"基本信息\">内容</UiCard></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"运行设置\">内容</UiCard></UiCol>\n        </UiRow>\n    </UiContainer>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UContainer, URow, UCol, UCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-container fluid>\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"基本信息\">内容</u-card></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"运行设置\">内容</u-card></u-col>\n        </u-row>\n    </u-container>\n</template>"
             }
         ],
         "notes": []
@@ -75,21 +75,21 @@ export const layoutPages = [
                 "title": "响应式网格",
                 "description": "从完整宽度到 6/6、8/4，支持分数、偏移和视觉顺序；切换真实 Row 密度。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiContainer, UiRow, UiCol, UiCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiContainer fluid>\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"基本信息\">内容</UiCard></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"运行设置\">内容</UiCard></UiCol>\n        </UiRow>\n    </UiContainer>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UContainer, URow, UCol, UCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-container fluid>\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"基本信息\">内容</u-card></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"运行设置\">内容</u-card></u-col>\n        </u-row>\n    </u-container>\n</template>"
             },
             {
                 "id": "layout-grid-advanced",
                 "title": "对齐、自动列与完整断点",
                 "description": "切换真实对齐和无间距行为；下方列覆盖sm到xxl全部断点。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiRow, UiCol } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiRow align=\"center\" justify=\"space-between\" no-gutters>\n        <UiCol cols=\"auto\">内容宽度</UiCol><UiCol :cols=\"4\">固定列</UiCol><UiCol>剩余空间</UiCol>\n    </UiRow>\n    <UiRow><UiCol :cols=\"12\" :sm=\"6\" :md=\"4\" :lg=\"3\" :xl=\"2\" :xxl=\"1\">全部断点</UiCol></UiRow>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URow, UCol } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-row align=\"center\" justify=\"space-between\" no-gutters>\n        <u-col cols=\"auto\">内容宽度</u-col><u-col :cols=\"4\">固定列</u-col><u-col>剩余空间</u-col>\n    </u-row>\n    <u-row><u-col :cols=\"12\" :sm=\"6\" :md=\"4\" :lg=\"3\" :xl=\"2\" :xxl=\"1\">全部断点</u-col></u-row>\n</template>"
             },
             {
                 "id": "layout-form-grid",
                 "title": "Row／Col 组织实际表单",
                 "description": "宽屏两列、窄屏一列，多行说明占整行；切换 Row 密度，体验验证、提交和重置。Form 不决定字段布局。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiRow, UiCol, UiInput, UiSelect, UiTextarea, UiFormActions, UiButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <UiForm @submit=\"saved = true\">\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiInput v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiSelect v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></UiCol>\n            <UiCol :cols=\"12\"><UiTextarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></UiCol>\n            <UiCol :cols=\"12\"><UiFormActions><UiButton type=\"reset\">重置</UiButton><UiButton type=\"submit\" variant=\"primary\">保存行列表单</UiButton></UiFormActions></UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UTextField, USelect, UTextarea, UFormActions, UButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <u-form @submit=\"saved = true\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-text-field v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-select v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></u-col>\n            <u-col :cols=\"12\"><u-textarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></u-col>\n            <u-col :cols=\"12\"><u-form-actions><u-button type=\"reset\">重置</u-button><u-button type=\"submit\" variant=\"primary\">保存行列表单</u-button></u-form-actions></u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
@@ -109,14 +109,14 @@ export const layoutPages = [
                 "title": "响应式网格",
                 "description": "从完整宽度到 6/6、8/4，支持分数、偏移和视觉顺序；切换真实 Row 密度。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiContainer, UiRow, UiCol, UiCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiContainer fluid>\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"基本信息\">内容</UiCard></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiCard title=\"运行设置\">内容</UiCard></UiCol>\n        </UiRow>\n    </UiContainer>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UContainer, URow, UCol, UCard } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-container fluid>\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"基本信息\">内容</u-card></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-card title=\"运行设置\">内容</u-card></u-col>\n        </u-row>\n    </u-container>\n</template>"
             },
             {
                 "id": "layout-form-grid",
                 "title": "Row／Col 组织实际表单",
                 "description": "宽屏两列、窄屏一列，多行说明占整行；切换 Row 密度，体验验证、提交和重置。Form 不决定字段布局。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiRow, UiCol, UiInput, UiSelect, UiTextarea, UiFormActions, UiButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <UiForm @submit=\"saved = true\">\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiInput v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiSelect v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></UiCol>\n            <UiCol :cols=\"12\"><UiTextarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></UiCol>\n            <UiCol :cols=\"12\"><UiFormActions><UiButton type=\"reset\">重置</UiButton><UiButton type=\"submit\" variant=\"primary\">保存行列表单</UiButton></UiFormActions></UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UTextField, USelect, UTextarea, UFormActions, UButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <u-form @submit=\"saved = true\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-text-field v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-select v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></u-col>\n            <u-col :cols=\"12\"><u-textarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></u-col>\n            <u-col :cols=\"12\"><u-form-actions><u-button type=\"reset\">重置</u-button><u-button type=\"submit\" variant=\"primary\">保存行列表单</u-button></u-form-actions></u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": []
@@ -134,7 +134,7 @@ export const layoutPages = [
                 "title": "工具栏占位",
                 "description": "真实Spacer将保存操作推到右侧。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiSpacer, UiButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <div class=\"d-flex align-center ga-3\">\n        <span>项目设置</span><UiSpacer /><UiButton>关闭</UiButton><UiButton variant=\"primary\">保存</UiButton>\n    </div>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USpacer, UButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <div class=\"d-flex align-center ga-3\">\n        <span>项目设置</span><u-spacer /><u-button>关闭</u-button><u-button variant=\"primary\">保存</u-button>\n    </div>\n</template>"
             }
         ],
         "notes": [
@@ -154,35 +154,35 @@ export const layoutPages = [
                 "title": "直接使用控件与统一验证",
                 "description": "直接传 label、hint 和 rules；统一切换状态与外观，体验异步验证、提交、重置和清除错误。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiInput, UiTextarea, UiSwitch, UiButton, UiRow, UiCol, UiFormActions } from '@lingyzh/ui';\nconst form = ref();\nconst valid = ref(null);\nconst name = ref('');\nconst description = ref('');\nconst enabled = ref(true);\nconst saved = ref(false);\nconst nameRules = [value => !!value.trim() || '请填写名称。', value => value.length >= 3 || '至少 3 个字符。'];\n</script>\n\n<template>\n    <UiForm ref=\"form\" v-model=\"valid\" @submit=\"saved = true\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiInput v-model=\"name\" label=\"名称\" hint=\"至少 3 个字符。\" :rules=\"nameRules\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiTextarea v-model=\"description\" label=\"说明\" :rows=\"3\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiSwitch v-model=\"enabled\" label=\"启用\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiFormActions>\n                    <UiButton type=\"reset\">重置</UiButton>\n                    <UiButton type=\"submit\" variant=\"primary\">保存</UiButton>\n                </UiFormActions>\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, USwitch, UButton, URow, UCol, UFormActions } from '@lingyzh/ui';\nconst form = ref();\nconst valid = ref(null);\nconst name = ref('');\nconst description = ref('');\nconst enabled = ref(true);\nconst saved = ref(false);\nconst nameRules = [value => !!value.trim() || '请填写名称。', value => value.length >= 3 || '至少 3 个字符。'];\n</script>\n\n<template>\n    <u-form ref=\"form\" v-model=\"valid\" @submit=\"saved = true\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"至少 3 个字符。\" :rules=\"nameRules\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" :rows=\"3\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-switch v-model=\"enabled\" label=\"启用\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-form-actions>\n                    <u-button type=\"reset\">重置</u-button>\n                    <u-button type=\"submit\" variant=\"primary\">保存</u-button>\n                </u-form-actions>\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UiField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiInput, UiTextarea, UiRow, UiCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <UiForm label-position=\"left\" label-width=\"120px\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiInput v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiTextarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             },
             {
                 "id": "layout-form",
                 "title": "分组表单与弹窗",
                 "description": "真实表单含两列、跨行多行文本、必填校验、重置和提交；弹窗根据自己的宽度排版。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiFormSection, UiInput, UiTextarea, UiFormActions, UiButton, UiRow, UiCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\nconst saved = ref(false);\n</script>\n\n<template>\n    <UiForm @submit=\"saved = true\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiFormSection title=\"基本信息\">\n                    <UiRow>\n                        <UiCol :cols=\"12\" :sm=\"6\">\n                            <UiInput v-model=\"name\"  label=\"工作区名称\" id=\"name\" required />\n                        </UiCol>\n                        <UiCol :cols=\"12\">\n                            <UiTextarea v-model=\"description\" :rows=\"3\" auto-grow counter maxlength=\"200\"  label=\"用途说明\" id=\"description\" />\n                        </UiCol>\n                    </UiRow>\n                </UiFormSection>\n            </UiCol>\n            <UiCol :cols=\"12\">\n                <UiFormActions>\n                    <UiButton type=\"submit\" variant=\"primary\">保存配置</UiButton>\n                </UiFormActions>\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UFormSection, UTextField, UTextarea, UFormActions, UButton, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\nconst saved = ref(false);\n</script>\n\n<template>\n    <u-form @submit=\"saved = true\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-form-section title=\"基本信息\">\n                    <u-row>\n                        <u-col :cols=\"12\" :sm=\"6\">\n                            <u-text-field v-model=\"name\"  label=\"工作区名称\" id=\"name\" required />\n                        </u-col>\n                        <u-col :cols=\"12\">\n                            <u-textarea v-model=\"description\" :rows=\"3\" auto-grow counter maxlength=\"200\"  label=\"用途说明\" id=\"description\" />\n                        </u-col>\n                    </u-row>\n                </u-form-section>\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-form-actions>\n                    <u-button type=\"submit\" variant=\"primary\">保存配置</u-button>\n                </u-form-actions>\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             },
             {
                 "id": "layout-form-grid",
                 "title": "Row／Col 组织实际表单",
                 "description": "宽屏两列、窄屏一列，多行说明占整行；切换 Row 密度，体验验证、提交和重置。Form 不决定字段布局。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiRow, UiCol, UiInput, UiSelect, UiTextarea, UiFormActions, UiButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <UiForm @submit=\"saved = true\">\n        <UiRow density=\"comfortable\">\n            <UiCol :cols=\"12\" :md=\"6\"><UiInput v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></UiCol>\n            <UiCol :cols=\"12\" :md=\"6\"><UiSelect v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></UiCol>\n            <UiCol :cols=\"12\"><UiTextarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></UiCol>\n            <UiCol :cols=\"12\"><UiFormActions><UiButton type=\"reset\">重置</UiButton><UiButton type=\"submit\" variant=\"primary\">保存行列表单</UiButton></UiFormActions></UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UTextField, USelect, UTextarea, UFormActions, UButton } from '@lingyzh/ui';\nconst name = ref('');\nconst choice = ref('default');\nconst description = ref('');\nconst saved = ref(false);\nconst items = [{ value: 'default', label: '默认方式' }, { value: 'other', label: '自定义方式' }];\n</script>\n\n<template>\n    <u-form @submit=\"saved = true\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-text-field v-model=\"name\" label=\"项目名称\" hint=\"必填；宽屏与运行方式并排。\" :rules=\"[value => !!value.trim() || '请填写名称。']\" /></u-col>\n            <u-col :cols=\"12\" :md=\"6\"><u-select v-model=\"choice\" label=\"运行方式\" :items=\"items\" /></u-col>\n            <u-col :cols=\"12\"><u-textarea v-model=\"description\" label=\"完整说明\" :rows=\"3\" auto-grow /></u-col>\n            <u-col :cols=\"12\"><u-form-actions><u-button type=\"reset\">重置</u-button><u-button type=\"submit\" variant=\"primary\">保存行列表单</u-button></u-form-actions></u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
             "validate(): Promise<{ valid, errors, cancelled? }>；rules 可返回 true、false 或错误文本，也可返回 Promise。过期异步结果不会提交。",
             "reset() 恢复初始模型并清除验证；resetValidation() 只清除验证；requestSubmit() 触发统一提交验证。",
             "ref 和默认插槽暴露 isValid、isValidating、errors 与验证／重置方法。错误列表为 { id, errorMessages }[]。",
-            "label、hint、rules 直接放在控件上；UiField 仅用于自定义表单项。不要嵌套 form。"
+            "label、hint、rules 直接放在控件上；UField 仅用于自定义表单项。不要嵌套 form。"
         ]
     },
     {
@@ -198,7 +198,7 @@ export const layoutPages = [
                 "title": "横排与长字段",
                 "description": "标签统一列宽，输入、textarea与开关各占控件列；窄容器降为竖排。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiForm, UiFormSection, UiInput, UiTextarea, UiRow, UiCol } from '@lingyzh/ui';\nconst path = ref('');\nconst args = ref('');\n</script>\n\n<template>\n    <UiForm label-position=\"left\">\n        <UiRow>\n            <UiCol :cols=\"12\">\n                <UiFormSection title=\"安装与启动\" description=\"所有标签使用同一列宽。\">\n                    <UiRow>\n                        <UiCol :cols=\"12\">\n                            <UiInput v-model=\"path\"  label=\"安装路径\" id=\"path\" />\n                        </UiCol>\n                        <UiCol :cols=\"12\">\n                            <UiTextarea v-model=\"args\" :rows=\"3\"  label=\"启动参数\" id=\"args\" />\n                        </UiCol>\n                    </UiRow>\n                </UiFormSection>\n            </UiCol>\n        </UiRow>\n    </UiForm>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UFormSection, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst path = ref('');\nconst args = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-form-section title=\"安装与启动\" description=\"所有标签使用同一列宽。\">\n                    <u-row>\n                        <u-col :cols=\"12\">\n                            <u-text-field v-model=\"path\"  label=\"安装路径\" id=\"path\" />\n                        </u-col>\n                        <u-col :cols=\"12\">\n                            <u-textarea v-model=\"args\" :rows=\"3\"  label=\"启动参数\" id=\"args\" />\n                        </u-col>\n                    </u-row>\n                </u-form-section>\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
             }
         ],
         "notes": [
@@ -218,11 +218,11 @@ export const layoutPages = [
                 "title": "状态与操作",
                 "description": "说明在左侧，取消及主要操作在右侧。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiFormActions, UiButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiFormActions>\n        <template #leading>配置尚未保存</template>\n        <UiButton>取消</UiButton>\n        <UiButton variant=\"primary\">保存更改</UiButton>\n    </UiFormActions>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UFormActions, UButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-form-actions>\n        <template #leading>配置尚未保存</template>\n        <u-button>取消</u-button>\n        <u-button variant=\"primary\">保存更改</u-button>\n    </u-form-actions>\n</template>"
             }
         ],
         "notes": [
-            "提交按钮需显式type=submit，UiButton默认仍为button。"
+            "提交按钮需显式type=submit，UButton默认仍为button。"
         ]
     },
     {
@@ -238,12 +238,12 @@ export const layoutPages = [
                 "title": "MDI与原型图标",
                 "description": "实际SVG图标；常用名称开箱可用，其他MDI从@mdi/js按需导入并传path。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiIcon, UiButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <UiIcon name=\"mdi-account\" :size=\"24\" />\n    <UiIcon name=\"folder\" label=\"文件夹\" />\n    <UiButton><UiIcon name=\"mdi-plus\" />新增配置</UiButton>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UIcon, UButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-icon name=\"mdi-account\" :size=\"24\" />\n    <u-icon name=\"folder\" label=\"文件夹\" />\n    <u-button><u-icon name=\"mdi-plus\" />新增配置</u-button>\n</template>"
             }
         ],
         "notes": [
             "新增应用图标优先path按需导入；registerIcons({ name: path })可集中注册，未知name保持原file回退。",
-            "不加载CDN、网络字体或整套MDI；图标按钮用UiButton提供行为及名称。"
+            "不加载CDN、网络字体或整套MDI；图标按钮用UButton提供行为及名称。"
         ]
     },
     {
@@ -259,11 +259,11 @@ export const layoutPages = [
                 "title": "菜单项状态",
                 "description": "在真实Menu里体验方向键、禁用、勾选及危险样式。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UiMenu, UiButton, UiMenuItem } from '@lingyzh/ui';\nconst enabled = ref(true);\n</script>\n\n<template>\n    <UiMenu>\n        <template #activator=\"{ props }\"><UiButton v-bind=\"props\">操作菜单</UiButton></template>\n        <UiMenuItem>编辑配置</UiMenuItem><UiMenuItem disabled>暂不可用</UiMenuItem>\n        <UiMenuItem :checked=\"enabled\" keep-open @click=\"enabled = !enabled\">启用</UiMenuItem>\n        <UiMenuItem danger>删除</UiMenuItem>\n    </UiMenu>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UMenu, UButton, UMenuItem } from '@lingyzh/ui';\nconst enabled = ref(true);\n</script>\n\n<template>\n    <u-menu>\n        <template #activator=\"{ props }\"><u-button v-bind=\"props\">操作菜单</u-button></template>\n        <u-menu-item>编辑配置</u-menu-item><u-menu-item disabled>暂不可用</u-menu-item>\n        <u-menu-item :checked=\"enabled\" keep-open @click=\"enabled = !enabled\">启用</u-menu-item>\n        <u-menu-item danger>删除</u-menu-item>\n    </u-menu>\n</template>"
             }
         ],
         "notes": [
-            "仅在UiMenu中使用，由Menu管理键盘与焦点。",
+            "仅在UMenu中使用，由Menu管理键盘与焦点。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。"
         ]
     },
@@ -280,7 +280,7 @@ export const layoutPages = [
                 "title": "真实确认服务",
                 "description": "文档根部已挂载Host，当前示例调用它；确认／取消／Esc均有结果。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UiConfirmHost, UiButton, confirmDialog } from '@lingyzh/ui';\nasync function confirm() { await confirmDialog({ title: '保存配置', message: '确认保存？' }); }\n</script>\n\n<template>\n    <UiConfirmHost />\n    <UiButton @click=\"confirm\">打开确认对话框</UiButton>\n</template>"
+                "code": "<script setup>\nimport { UConfirmHost, UButton, confirmDialog } from '@lingyzh/ui';\nasync function confirm() { await confirmDialog({ title: '保存配置', message: '确认保存？' }); }\n</script>\n\n<template>\n    <u-confirm-host />\n    <u-button @click=\"confirm\">打开确认对话框</u-button>\n</template>"
             }
         ],
         "notes": [

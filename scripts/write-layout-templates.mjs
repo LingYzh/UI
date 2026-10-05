@@ -1,0 +1,30 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const templates = {
+    UApp: `<div class="ui-app"><slot /></div>`,
+    ULayout: `<div class="ui-layout"><slot /></div>`,
+    UMain: `<main class="ui-main" :style="style"><slot /></main>`,
+    UAppBar: `<header ref="element" class="ui-app-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', top: offset + 'px', background: props.color }"><slot /></header>`,
+    UAppBarTitle: `<div class="ui-app-bar-title"><slot /></div>`,
+    UFooter: `<footer ref="element" class="ui-footer" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', bottom: offset + 'px' }"><slot /></footer>`,
+    USystemBar: `<div ref="element" class="ui-system-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', top: offset + 'px' }"><slot /></div>`,
+    UNavigationDrawer: `<div v-if="shown && overlay" class="ui-navigation-scrim" @click="close" /><nav class="ui-navigation-drawer" :class="{ 'is-open': shown, 'is-temporary': overlay, 'is-rail': props.rail, 'is-absolute': props.absolute }" :data-location="props.location" :style="{ width: size + 'px', [props.location]: offset + 'px', top: topOffset + 'px', bottom: bottomOffset + 'px' }" :aria-hidden="!shown" :inert="!shown" @keydown.esc="overlay && close()"><slot :close="close" /></nav>`,
+    UList: `<div ref="element" class="ui-list" :role="props.nav ? 'navigation' : 'listbox'" :aria-multiselectable="props.multiple || undefined"><slot :selected="selected" :activated="activated" :opened="opened"><UListItem v-for="(item, index) in normalizedItems" :key="index" :value="item.value" :title="item.title" v-bind="item.props"><template v-if="$slots.item" #title><slot name="item" :item="item.raw" :index="index" /></template></UListItem></slot></div>`,
+    UListItem: `<component :is="props.href ? 'a' : 'div'" ref="element" v-pointer-blur class="ui-list-item" :class="{ 'is-selected': selected, 'is-active': active }" :href="props.disabled ? undefined : props.href" data-ui-list-item :role="itemRole" :aria-selected="itemRole === 'option' ? selected : undefined" :aria-current="!itemRole && active ? 'page' : undefined" :aria-disabled="props.disabled" :tabindex="props.disabled ? -1 : 0" @click="choose" @keydown="keydown"><span v-if="$slots.prepend" class="ui-list-item-prepend"><slot name="prepend" /></span><span class="ui-list-item-content"><span class="ui-list-item-title"><slot name="title">{{ props.title }}<slot v-if="!props.title" /></slot></span><span v-if="props.subtitle || $slots.subtitle" class="ui-list-item-subtitle"><slot name="subtitle">{{ props.subtitle }}</slot></span></span><span v-if="$slots.append" class="ui-list-item-append"><slot name="append" /></span></component>`,
+    UVirtualScroll: `<div ref="element" class="ui-virtual-scroll" :style="{ height: typeof props.height === 'number' ? props.height + 'px' : props.height }" @scroll="onScroll"><div :style="{ height: windowRange.totalHeight + 'px', position: 'relative' }"><div v-for="(item, index) in visible" :key="key(item, start + index)" class="ui-virtual-scroll-item" :style="{ position: 'absolute', insetInline: 0, top: (start + index) * windowRange.rowHeight + 'px', height: windowRange.rowHeight + 'px' }"><slot :item="item" :index="start + index" /></div></div></div>`,
+    UBottomNavigation: `<nav class="ui-bottom-navigation" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', bottom: offset + 'px' }" aria-label="底部导航"><slot :selected="value" :select="select" /></nav>`,
+    UBottomSheet: `<UOverlay :model-value="props.modelValue" :persistent="props.persistent" location="bottom" @update:model-value="emit('update:modelValue', $event)"><template v-if="$slots.activator" #activator="scope"><slot name="activator" v-bind="scope" /></template><div class="ui-bottom-sheet" :style="{ maxHeight: typeof props.height === 'number' ? props.height + 'px' : props.height }"><slot /></div></UOverlay>`,
+    UBadge: `<span class="ui-attached-badge" :class="{ 'is-inline': props.inline }"><slot /><span v-if="props.modelValue" class="ui-attached-badge-content" :class="{ 'is-dot': props.dot }" :data-location="props.location" :style="{ background: props.color, '--ui-badge-offset-x': props.offsetX + 'px', '--ui-badge-offset-y': props.offsetY + 'px' }" :aria-label="props.dot ? '有新消息' : label">{{ props.dot ? '' : label }}</span></span>`,
+    UBanner: `<UTransition variant="expand"><aside v-if="shown" class="ui-banner" :class="{ 'is-sticky': props.sticky }" :style="{ borderColor: props.color }" role="status"><span v-if="props.icon || $slots.icon" class="ui-banner-icon"><slot name="icon"><UiIcon v-if="props.icon" :icon="props.icon" /></slot></span><div class="ui-banner-content"><slot>{{ props.text }}</slot></div><div v-if="$slots.actions" class="ui-banner-actions"><slot name="actions" /></div><button v-pointer-blur type="button" class="ui-banner-close" aria-label="关闭提示" @click="close">×</button></aside></UTransition>`,
+    UBreadcrumbs: `<nav class="ui-breadcrumbs" :aria-label="props.ariaLabel"><ol><slot /></ol></nav>`,
+};
+const imports = { UList: ['UListItem'], UListItem: ['vPointerBlur'], UBanner: ['UTransition', 'vPointerBlur'] };
+for (const [name, markup] of Object.entries(templates)) {
+    const path = new URL('../src/ui/' + name + '.vue', import.meta.url);
+    let source = await readFile(path, 'utf8');
+    for (const component of imports[name] ?? []) {
+        const statement = component === 'vPointerBlur' ? "import { vPointerBlur } from './pointer-focus';" : `import ${component} from './${component}.vue';`;
+        if (!source.includes(statement)) source = source.replace(/(<script setup[^>]*>)/, '$1\n' + statement);
+    }
+    source = source.replace(/<template>[\s\S]*?<\/template>\s*$/, '<template>\n    ' + markup + '\n</template>\n');
+    await writeFile(path, source, 'utf8');
+}

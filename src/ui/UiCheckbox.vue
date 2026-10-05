@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import { vPointerBlur } from './pointer-focus';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useAttrs } from 'vue';
 import UiControlFrame from './UiControlFrame.vue';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
+import { checkboxChecked, toggleCheckbox } from './selection';
 defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<FormControlProps & {
     /** 部分选中；与 checked 相互独立，用户点击后由原生控件清除，调用方按选择结果重新计算。 */
     indeterminate?: boolean;
-}>(), { indeterminate: false, disabled: false });
-const model = defineModel<boolean>({ default: false });
+    value?: unknown;
+    trueValue?: unknown;
+    falseValue?: unknown;
+}>(), { indeterminate: false, disabled: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const model = defineModel<any>({ default: false });
 const element = ref<HTMLInputElement>();
 const attrs = useAttrs();
 const control = useFormControl(props, model, element, attrs);
+const checked = computed(() => checkboxChecked(model.value, props.value, props.trueValue));
+function change(event: Event) {
+    if (control.disabled.value || control.readonly.value) { event.preventDefault(); return; }
+    control.editable.value = toggleCheckbox(model.value, (event.target as HTMLInputElement).checked, props);
+}
 // indeterminate 只能通过 DOM 属性设置，没有对应的 HTML 特性。
 function sync() {
     if (element.value) element.value.indeterminate = props.indeterminate;
@@ -26,9 +35,9 @@ defineExpose({ element, focus: () => element.value?.focus(), validate: control.v
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <!-- 有标签时整个 label 可点击；无标签时须通过 aria-label 等提供名称。 -->
         <label v-if="$slots.default" class="ui-checkbox" :class="[$attrs.class, { 'is-disabled': control.disabled.value }]" :style="$attrs.style as any">
-            <input v-pointer-blur ref="element" v-model="control.editable.value" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
+            <input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
             <span class="ui-checkbox-label"><slot /></span>
         </label>
-        <input v-pointer-blur v-else ref="element" v-model="control.editable.value" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
+        <input v-pointer-blur v-else ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
     </UiControlFrame>
 </template>

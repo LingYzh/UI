@@ -1,11 +1,13 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { UiActivity, UiButton, UiInput, UiSelect, UiSwitch, UiField, UiTabs, UiTabPanel, UiDialog, UiCollapse, UiCard, UiScrollArea, UiCodeBlock, UiIcon, UiTooltip, vRipple, snackbar } from '../index';
+import { UActivity, UButton, UTextField, USelect, USwitch, UField, UTabs, UTabPanel, UDialog, UCollapse, UCard, UScrollArea, UCodeBlock, UIcon, UTooltip, snackbar } from '../index';
 import Icon from '../../components/Icon.vue';
-import { UiTextarea } from '../index';
+import { UTextarea } from '../index';
 import VariantExample from './VariantExample.vue';
 import TableExample from './TableExample.vue';
 import DiffDemo from './DiffDemo.vue';
+import RippleDemo from './RippleDemo.vue';
+import ThemeDemo from './ThemeDemo.vue';
 import MarkdownDemo from './MarkdownDemo.vue';
 import ConversationDemo from './ConversationDemo.vue';
 import UsageMeterDemo from './UsageMeterDemo.vue';
@@ -15,6 +17,8 @@ import ControlsDemo from './ControlsDemo.vue';
 import CascaderDemo from './CascaderDemo.vue';
 import TabsDemo from './TabsDemo.vue';
 import LayoutDemo from './LayoutDemo.vue';
+import ButtonLoadingDemo from './ButtonLoadingDemo.vue';
+const componentDemos = import.meta.glob('./component-examples/*.vue', { eager: true, import: 'default' });
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
 
 const feedbackExamples = ['badge-tones', 'badge-custom', 'alert-tones', 'alert-actions', 'spinner-states', 'menu-items', 'menu-panel', 'confirm-basic', 'button-danger', 'dialog-sizes'];
@@ -42,9 +46,7 @@ const modeItems = [
 ];
 const project = ref('');
 const projectError = computed(() => project.value ? '' : '请选择项目。');
-const codeSample = '<script setup>\nimport { ref } from \'vue\';\nconst saved = ref(false);\n<\/script>\n\n<template>\n    <UiButton :disabled="saved" @click="saved = true">保存</UiButton>\n</template>';
-const rippleEnabled = ref(true);
-const rippleDense = ref(false);
+const codeSample = '<script setup>\nimport { ref } from \'vue\';\nconst saved = ref(false);\n<\/script>\n\n<template>\n    <u-button :disabled="saved" @click="saved = true">保存</u-button>\n</template>';
 const dense = ref(false);
 const ghost = ref(false);
 const square = ref(false);
@@ -94,213 +96,210 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
 
 <template>
     <div class="live-example">
-        <CascaderDemo v-if="example === 'cascader-form'" />
+        <component v-if="example.startsWith('component-')" :is="componentDemos[`./component-examples/${example.slice('component-'.length)}.vue`]" />
+        <ButtonLoadingDemo v-else-if="example === 'button-loading-size'" />
+        <CascaderDemo v-else-if="example === 'cascader-form'" />
         <TabsDemo v-else-if="['tabs-declarative', 'tabs-items', 'tabs-window', 'tabs-values', 'tabs-scroll'].includes(example)" :example="example" />
         <LayoutDemo v-else-if="example.startsWith('layout-') || example === 'textarea-grow'" :example="example" />
         <UsageMeterDemo v-else-if="example === 'usage-meter-basic'" />
         <ConversationDemo v-else-if="example.startsWith('conversation-')" :example="example" />
+        <RippleDemo v-else-if="example.startsWith('ripple-')" :example="example" />
+        <ThemeDemo v-else-if="example.startsWith('theme-')" :example="example" />
         <MarkdownDemo v-else-if="example.startsWith('markdown-')" :example="example" />
         <DiffDemo v-else-if="example === 'diff-content'" />
         <TableExample v-else-if="['table-basic', 'table-fixed', 'table-server', 'pagination-basic', 'table-variants', 'server-variants', 'pagination-variants'].includes(example)" :example="example" />
         <VariantExample v-else-if="example.endsWith('-shared-variants')" :component="example.replace('-shared-variants', '')" />
         <template v-else-if="example === 'activity-basic'">
-            <UiActivity v-model:open="activityOpen" title="思考过程" status="已完成"><p>先确认项目约束，再检查相关模块。这里展示服务返回的思考摘要，正文回答在活动之外。</p></UiActivity>
-            <UiActivity title="读取 src/main.ts" status="已完成" tone="success">读取 84 行，找到应用入口。</UiActivity>
-            <UiActivity title="运行 npm test" status="等待审批" tone="busy" :open="true">命令将在当前用户权限下运行。<template #actions><UiButton size="sm">批准本次</UiButton><UiButton size="sm" variant="ghost">拒绝</UiButton></template></UiActivity>
-            <UiActivity title="编辑 src/main.ts" status="失败" tone="error">文件内容已变化，请重新读取后再试。</UiActivity>
+            <u-activity v-model:open="activityOpen" title="思考过程" status="已完成"><p>先确认项目约束，再检查相关模块。这里展示服务返回的思考摘要，正文回答在活动之外。</p></u-activity>
+            <u-activity title="读取 src/main.ts" status="已完成" tone="success">读取 84 行，找到应用入口。</u-activity>
+            <u-activity title="运行 npm test" status="等待审批" tone="busy" :open="true">命令将在当前用户权限下运行。<template #actions><u-button size="sm">批准本次</u-button><u-button size="sm" variant="ghost">拒绝</u-button></template></u-activity>
+            <u-activity title="编辑 src/main.ts" status="失败" tone="error">文件内容已变化，请重新读取后再试。</u-activity>
         </template>
         <template v-else-if="example === 'style-variants'">
             <div class="d-flex flex-wrap ga-4 mb-4">
-                <label class="d-flex align-center ga-2"><UiSwitch v-model="dense" aria-label="密集布局" />dense</label>
-                <label class="d-flex align-center ga-2"><UiSwitch v-model="ghost" aria-label="幽灵表面" />ghost</label>
-                <label class="d-flex align-center ga-2"><UiSwitch v-model="square" aria-label="直角边界" />rounded=false</label>
+                <label class="d-flex align-center ga-2"><u-switch v-model="dense" aria-label="密集布局" />dense</label>
+                <label class="d-flex align-center ga-2"><u-switch v-model="ghost" aria-label="幽灵表面" />ghost</label>
+                <label class="d-flex align-center ga-2"><u-switch v-model="square" aria-label="直角边界" />rounded=false</label>
             </div>
-            <UiCard class="variants-card" title="统一样式变体" subtitle="切换上方开关，观察所有控件与容器。" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="统一样式变体预览">
-                <UiInput label="工作区名称" id="variants-name" v-model="name" :dense="dense" :ghost="ghost" :rounded="!square" placeholder="例如 UAH" />
-                <UiSelect label="显示密度" id="variants-select" v-model="density" :dense="dense" :ghost="ghost" :rounded="!square"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
-                <UiTabs v-model="selected" :items="items" id-prefix="variants" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="变体标签页" class="mt-4" />
-                <UiTabPanel :model-value="selected" value="overview" id-prefix="variants"><p class="text-muted my-4">所有变体保留原来的键盘操作、错误态与焦点。</p></UiTabPanel>
-                <UiTabPanel :model-value="selected" value="details" id-prefix="variants"><p class="text-muted my-4">通过相同属性控制密度、表面和圆角。</p></UiTabPanel>
-                <UiTabPanel :model-value="selected" value="unavailable" id-prefix="variants">尚未启用。</UiTabPanel>
-                <UiCodeBlock :code="codeSample" language="vue" :dense="dense" :ghost="ghost" :rounded="!square" />
-                <template #actions><UiButton :dense="dense" :ghost="ghost" :rounded="!square" @click="snackbar.show('样式设置示例。')">查看反馈</UiButton></template>
-            </UiCard>
+            <u-card class="variants-card" title="统一样式变体" subtitle="切换上方开关，观察所有控件与容器。" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="统一样式变体预览">
+                <u-text-field label="工作区名称" id="variants-name" v-model="name" :dense="dense" :ghost="ghost" :rounded="!square" placeholder="例如 UAH" />
+                <u-select label="显示密度" id="variants-select" v-model="density" :dense="dense" :ghost="ghost" :rounded="!square"><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
+                <u-tabs v-model="selected" :items="items" id-prefix="variants" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="变体标签页" class="mt-4" />
+                <u-tab-panel :model-value="selected" value="overview" id-prefix="variants"><p class="text-muted my-4">所有变体保留原来的键盘操作、错误态与焦点。</p></u-tab-panel>
+                <u-tab-panel :model-value="selected" value="details" id-prefix="variants"><p class="text-muted my-4">通过相同属性控制密度、表面和圆角。</p></u-tab-panel>
+                <u-tab-panel :model-value="selected" value="unavailable" id-prefix="variants">尚未启用。</u-tab-panel>
+                <u-code-block :code="codeSample" language="vue" :dense="dense" :ghost="ghost" :rounded="!square" />
+                <template #actions><u-button :dense="dense" :ghost="ghost" :rounded="!square" @click="snackbar.show('样式设置示例。')">查看反馈</u-button></template>
+            </u-card>
         </template>
         <FeedbackDemo v-else-if="feedbackExamples.includes(example)" :example="example" />
         <LocaleDemo v-else-if="example === 'locale-switch'" />
         <ControlsDemo v-else-if="controlExamples.includes(example)" :example="example" />
         <template v-else-if="example === 'input-number'">
-            <UiInput label="代理端口" :id="`${prefix}-port`" hint="type=number 时模型为数字，清空为 null。" v-model="port" type="number" min="1" max="65535" />
+            <u-text-field label="代理端口" :id="`${prefix}-port`" hint="type=number 时模型为数字，清空为 null。" v-model="port" type="number" min="1" max="65535" />
             <output>{{ port === null ? 'null' : `${typeof port} · ${port}` }}</output>
         </template>
         <template v-else-if="example === 'scroll-horizontal'">
-            <UiScrollArea label="横向项目" axis="horizontal" always><div class="d-flex ga-4 pa-4" style="width: max-content"><UiCard v-for="item in 12" :key="item" :title="`项目 ${item}`" density="compact" style="width: 160px">水平拖动查看。</UiCard></div></UiScrollArea>
+            <u-scroll-area label="横向项目" axis="horizontal" always><div class="d-flex ga-4 pa-4" style="width: max-content"><u-card v-for="item in 12" :key="item" :title="`项目 ${item}`" density="compact" style="width: 160px">水平拖动查看。</u-card></div></u-scroll-area>
         </template>
         <template v-else-if="example === 'textarea-instructions'">
-            <div class="d-flex flex-column ga-3"><label for="demo-instructions">Agent 指令</label><UiTextarea id="demo-instructions" v-model="query" placeholder="描述职责、回答方式与任务边界…" /><UiTextarea model-value="禁用状态" disabled aria-label="禁用指令" :rows="2" /><UiTextarea model-value="待修正指令" invalid aria-label="错误指令" :rows="2" /></div>
+            <div class="d-flex flex-column ga-3"><label for="demo-instructions">Agent 指令</label><u-textarea id="demo-instructions" v-model="query" placeholder="描述职责、回答方式与任务边界…" /><u-textarea model-value="禁用状态" disabled aria-label="禁用指令" :rows="2" /><u-textarea model-value="待修正指令" invalid aria-label="错误指令" :rows="2" /></div>
         </template>
         <template v-else-if="example === 'tooltip-capability'">
-            <div class="d-flex ga-4"><UiTooltip text="图片输入"><UiIcon name="image" /></UiTooltip><UiTooltip text="音频输入"><UiIcon name="volume" /></UiTooltip><UiTooltip text="PDF 输入"><UiIcon name="file" /></UiTooltip></div>
+            <div class="d-flex ga-4"><u-tooltip text="图片输入"><u-icon name="image" /></u-tooltip><u-tooltip text="音频输入"><u-icon name="volume" /></u-tooltip><u-tooltip text="PDF 输入"><u-icon name="file" /></u-tooltip></div>
         </template>
         <template v-else-if="example === 'card-provider'">
-            <UiCard density="compact" aria-label="紧凑服务卡片">
+            <u-card density="compact" aria-label="紧凑服务卡片">
                 <div class="d-flex align-center justify-space-between ga-3">
                     <strong class="ellipsis" title="Local Model Provider">Local Model Provider</strong>
-                    <label class="d-flex align-center ga-2 small"><span>启用</span><UiSwitch v-model="expanded" aria-label="启用示例服务" /></label>
+                    <label class="d-flex align-center ga-2 small"><span>启用</span><u-switch v-model="expanded" aria-label="启用示例服务" /></label>
                 </div>
                 <p class="muted small ellipsis my-2" title="http://localhost:5580/v1">http://localhost:5580/v1</p>
                 <div class="d-flex flex-wrap align-center justify-space-between ga-2">
                     <span class="muted small">OpenAI Chat · 25 个模型</span>
-                    <div class="d-flex ga-1"><UiButton size="sm" variant="ghost">编辑</UiButton><UiButton size="sm" variant="ghost">删除</UiButton></div>
+                    <div class="d-flex ga-1"><u-button size="sm" variant="ghost">编辑</u-button><u-button size="sm" variant="ghost">删除</u-button></div>
                 </div>
                 <div class="d-flex flex-wrap align-center ga-2 small muted" aria-label="模型能力示例">
-                    <span v-for="item in [['image','图片输入'],['file','PDF 输入'],['volume','音频输入'],['monitor','视频输入'],['puzzle','工具调用'],['spark','推理']]" :key="item[0]" role="img" :aria-label="item[1]" :title="item[1]"><UiIcon :name="item[0]" :size="16" /></span>
+                    <span v-for="item in [['image','图片输入'],['file','PDF 输入'],['volume','音频输入'],['monitor','视频输入'],['puzzle','工具调用'],['spark','推理']]" :key="item[0]" role="img" :aria-label="item[1]" :title="item[1]"><u-icon :name="item[0]" :size="16" /></span>
                     <span>上下文 128K</span>
                 </div>
-            </UiCard>
+            </u-card>
         </template>
         <template v-else-if="example === 'card-form'">
-            <UiCard title="工作区偏好" subtitle="保存当前工作区的显示选项。" aria-label="工作区偏好">
-                <UiInput label="名称" id="demo-card-name" v-model="name" placeholder="例如 UAH" />
-                <UiSelect label="显示密度" id="demo-card-density" v-model="density"><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
-                <template #actions><UiButton variant="ghost" @click="name = ''">清空</UiButton><UiButton variant="primary" @click="snackbar.show('示例偏好已保存。', { tone: 'success' })">保存</UiButton></template>
-            </UiCard>
+            <u-card title="工作区偏好" subtitle="保存当前工作区的显示选项。" aria-label="工作区偏好">
+                <u-text-field label="名称" id="demo-card-name" v-model="name" placeholder="例如 UAH" />
+                <u-select label="显示密度" id="demo-card-density" v-model="density"><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
+                <template #actions><u-button variant="ghost" @click="name = ''">清空</u-button><u-button variant="primary" @click="snackbar.show('示例偏好已保存。', { tone: 'success' })">保存</u-button></template>
+            </u-card>
         </template>
         <template v-else-if="example === 'card-variants'">
-            <div class="d-grid ga-4 demo-card-grid"><UiCard v-for="variant in ['outlined', 'elevated', 'tonal', 'flat']" :key="variant" :variant="variant" density="compact" :title="variant" :aria-label="variant">同一套内容与间距。</UiCard></div>
+            <div class="d-grid ga-4 demo-card-grid"><u-card v-for="variant in ['outlined', 'elevated', 'tonal', 'flat']" :key="variant" :variant="variant" density="compact" :title="variant" :aria-label="variant">同一套内容与间距。</u-card></div>
         </template>
         <template v-else-if="example === 'scroll-content'">
-            <div class="d-flex ga-2 mb-4"><UiButton size="sm" @click="lineCount += 8">增加日志</UiButton><UiButton size="sm" @click="lineCount = 3">缩短日志</UiButton></div>
-            <UiScrollArea label="运行日志" max-height="220px"><p v-for="line in lineCount" :key="line" class="px-4 py-2 ma-0">日志 {{ line }} · 等待任务</p></UiScrollArea>
+            <div class="d-flex ga-2 mb-4"><u-button size="sm" @click="lineCount += 8">增加日志</u-button><u-button size="sm" @click="lineCount = 3">缩短日志</u-button></div>
+            <u-scroll-area label="运行日志" max-height="220px"><p v-for="line in lineCount" :key="line" class="px-4 py-2 ma-0">日志 {{ line }} · 等待任务</p></u-scroll-area>
         </template>
-        <template v-else-if="example === 'code-highlight'"><UiCodeBlock :code="codeSample" language="vue" /></template>
-        <template v-else-if="example === 'ripple-feedback'">
-            <div class="d-flex flex-wrap align-center ga-4 mb-4">
-                <div class="d-flex align-center ga-2"><UiSwitch id="ripple-enabled" v-model="rippleEnabled" /><label for="ripple-enabled">启用涟漪</label></div>
-                <div class="d-flex align-center ga-2"><UiSwitch id="ripple-dense" v-model="rippleDense" /><label for="ripple-dense">紧凑按钮</label></div>
-            </div>
-            <div class="d-flex flex-wrap ga-4"><UiButton :ripple="rippleEnabled" :dense="rippleDense" variant="primary">指针位置扩散</UiButton><UiButton :ripple="rippleEnabled && { center: true }" :dense="rippleDense">居中扩散</UiButton><button v-ripple="rippleEnabled" class="pa-4 rounded" :class="{ 'text-muted': rippleDense }">原生按钮</button><UiButton disabled>禁用反馈</UiButton></div>
-        </template>
+        <template v-else-if="example === 'code-highlight'"><u-code-block :code="codeSample" language="vue" /></template>
         <template v-else-if="example === 'utility-layout'">
-            <div class="d-flex align-center justify-space-between ga-4 pa-4 demo-utility"><span class="flex-grow-1">工作区</span><UiButton size="sm" @click="snackbar.show('已打开示例工作区。')">打开</UiButton></div>
+            <div class="d-flex align-center justify-space-between ga-4 pa-4 demo-utility"><span class="flex-grow-1">工作区</span><u-button size="sm" @click="snackbar.show('已打开示例工作区。')">打开</u-button></div>
         </template>
         <template v-else-if="example === 'button-variants'">
             <div class="demo-row">
-                <UiButton variant="primary" @click="snackbar.show('更改已保存。', { tone: 'success' })"><Icon name="check" :size="16" />保存更改</UiButton>
-                <UiButton @click="snackbar.show('已执行次要操作。')">次要操作</UiButton>
-                <UiButton variant="ghost" @click="snackbar.show('已执行轻量操作。')">轻量操作</UiButton>
+                <u-button variant="primary" @click="snackbar.show('更改已保存。', { tone: 'success' })"><Icon name="check" :size="16" />保存更改</u-button>
+                <u-button @click="snackbar.show('已执行次要操作。')">次要操作</u-button>
+                <u-button variant="ghost" @click="snackbar.show('已执行轻量操作。')">轻量操作</u-button>
             </div>
         </template>
         <template v-else-if="example === 'button-states'">
             <div class="demo-row">
-                <UiButton size="sm" @click="snackbar.show('紧凑按钮已点击。')">紧凑按钮</UiButton>
-                <UiButton icon aria-label="添加项目" @click="snackbar.show('已添加示例项目。')"><Icon name="plus" /></UiButton>
-                <UiButton disabled>不可用</UiButton>
-                <UiButton :loading="saving" @click="save"><Icon :name="saving ? 'clock' : 'check'" :size="16" />{{ saving ? '正在保存…' : '模拟保存' }}</UiButton>
+                <u-button size="sm" @click="snackbar.show('紧凑按钮已点击。')">紧凑按钮</u-button>
+                <u-button icon aria-label="添加项目" @click="snackbar.show('已添加示例项目。')"><Icon name="plus" /></u-button>
+                <u-button disabled>不可用</u-button>
+                <u-button :loading="saving" @click="save"><Icon name="check" :size="16" />{{ saving ? '正在保存…' : '模拟保存' }}</u-button>
             </div>
             <output aria-live="polite">{{ saving ? '等待态 · disabled=true · aria-busy=true' : '就绪 · 点击“模拟保存”试验等待态' }}</output>
         </template>
         <template v-else-if="example === 'input-search'">
-            <UiInput label="搜索" :id="`${prefix}-search`" hint="支持前后插槽与原生输入属性。" ref="input" v-model="query" placeholder="搜索会话、项目与设置">
+            <u-text-field label="搜索" :id="`${prefix}-search`" hint="支持前后插槽与原生输入属性。" ref="input" v-model="query" placeholder="搜索会话、项目与设置">
                     <template #leading><Icon name="search" :size="16" /></template>
                     <template #trailing><span class="demo-count">{{ query.length }}</span></template>
-                </UiInput>
-            <div class="demo-row"><UiButton size="sm" @click="input?.focus()">聚焦输入</UiButton><UiButton size="sm" variant="ghost" @click="query = ''">清空</UiButton></div>
+                </u-text-field>
+            <div class="demo-row"><u-button size="sm" @click="input?.focus()">聚焦输入</u-button><u-button size="sm" variant="ghost" @click="query = ''">清空</u-button></div>
             <output>输入值：{{ query || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'input-states'">
-            <UiInput label="项目名称" error-messages="请输入项目名称。" placeholder="例如：我的工作区" />
-            <UiInput label="只读能力" readonly model-value="尚未接入" />
-            <UiInput label="禁用项目" disabled model-value="暂不可编辑" />
+            <u-text-field label="项目名称" error-messages="请输入项目名称。" placeholder="例如：我的工作区" />
+            <u-text-field label="只读能力" readonly model-value="尚未接入" />
+            <u-text-field label="禁用项目" disabled model-value="暂不可编辑" />
         </template>
         <template v-else-if="example === 'select-dynamic'">
-            <UiSelect v-model="planVersion" :items="planVersionItems" aria-label="动态计划版本" />
-            <UiButton class="mt-3" @click="planSubmitted = !planSubmitted">切换计划状态</UiButton>
+            <u-select v-model="planVersion" :items="planVersionItems" aria-label="动态计划版本" />
+            <u-button class="mt-3" @click="planSubmitted = !planSubmitted">切换计划状态</u-button>
             <output>选中值始终是 {{ planVersion }}，状态变更同步更新收起后的标签。</output>
         </template>
         <template v-else-if="example === 'select-described'">
-            <UiSelect v-model="permissionMode" :items="modeItems" menu-title="Mode" compact ghost aria-label="Permission mode" />
+            <u-select v-model="permissionMode" :items="modeItems" menu-title="Mode" compact ghost aria-label="Permission mode" />
             <output>Selected: {{ permissionMode }}</output>
         </template>
         <template v-else-if="example === 'select-groups'">
-            <UiSelect v-model="draft" placeholder="选择模型" aria-label="分组模型"><optgroup v-for="group in ['Provider A', 'Provider B']" :key="group" :label="group"><option v-for="n in 20" :key="n" :value="group + n">model-{{ n }}</option></optgroup></UiSelect>
+            <u-select v-model="draft" placeholder="选择模型" aria-label="分组模型"><optgroup v-for="group in ['Provider A', 'Provider B']" :key="group" :label="group"><option v-for="n in 20" :key="n" :value="group + n">model-{{ n }}</option></optgroup></u-select>
         </template>
         <template v-else-if="example === 'select-values'">
-            <UiSelect label="代码字号" :id="`${prefix}-size`" v-model="size"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></UiSelect>
-            <UiSelect label="显示密度" :id="`${prefix}-density`" v-model="density" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></UiSelect>
+            <u-select label="代码字号" :id="`${prefix}-size`" v-model="size"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></u-select>
+            <u-select label="显示密度" :id="`${prefix}-density`" v-model="density" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
             <output id="size-value">{{ typeof size }} · {{ size }}</output>
         </template>
         <template v-else-if="example === 'select-states'">
-            <UiSelect label="需要选择的项目" :id="`${prefix}-project`" :error-messages="projectError" v-model="project" :invalid="Boolean(projectError)"><option value="">请选择项目</option><option value="uah">UAH 工作台</option></UiSelect>
-            <UiSelect label="不可用的选择" :id="`${prefix}-disabled`" model-value="unavailable" disabled><option value="unavailable">尚未启用</option></UiSelect>
+            <u-select label="需要选择的项目" :id="`${prefix}-project`" :error-messages="projectError" v-model="project" :invalid="Boolean(projectError)"><option value="">请选择项目</option><option value="uah">UAH 工作台</option></u-select>
+            <u-select label="不可用的选择" :id="`${prefix}-disabled`" model-value="unavailable" disabled><option value="unavailable">尚未启用</option></u-select>
             <output>选中项目：{{ project || '（未选择）' }}</output>
         </template>
         <template v-else-if="example === 'switch-preference' || example === 'motion-toggle'">
-            <UiSwitch label="示例减少动效" :id="`${prefix}-motion`" hint="影响当前文档；与顶部偏好同步，系统偏好仍独立生效。" v-model="reduced" />
+            <u-switch label="示例减少动效" :id="`${prefix}-motion`" hint="影响当前文档；与顶部偏好同步，系统偏好仍独立生效。" v-model="reduced" />
             <output>应用减少动效：{{ reduced ? '已开启' : '未开启' }}</output>
         </template>
         <template v-else-if="example === 'switch-states'">
-            <UiSwitch label="启用通知" :id="`${prefix}-enabled`" v-model="enabled" />
-            <div class="demo-row"><span>禁用 · 关</span><UiSwitch :model-value="false" disabled aria-label="禁用的关闭状态" /><span>禁用 · 开</span><UiSwitch :model-value="true" disabled aria-label="禁用的开启状态" /></div>
+            <u-switch label="启用通知" :id="`${prefix}-enabled`" v-model="enabled" />
+            <div class="demo-row"><span>禁用 · 关</span><u-switch :model-value="false" disabled aria-label="禁用的关闭状态" /><span>禁用 · 开</span><u-switch :model-value="true" disabled aria-label="禁用的开启状态" /></div>
             <output>{{ enabled ? '通知已启用' : '通知已关闭' }}</output>
         </template>
         <template v-else-if="example === 'field-validation'">
-            <UiInput label="项目名称" :id="`${prefix}-name`" hint="2 个字符以上，便于识别。" :error-messages="error" v-model="name" :invalid="Boolean(error)" placeholder="给工作区起个名字" />
-            <div class="demo-row"><UiButton @click="error = name.trim().length < 2 ? '请至少输入 2 个字符。' : ''">校验名称</UiButton><span v-if="name.trim().length >= 2 && !error" class="demo-success">名称可用</span></div>
+            <u-text-field label="项目名称" :id="`${prefix}-name`" hint="2 个字符以上，便于识别。" :error-messages="error" v-model="name" :invalid="Boolean(error)" placeholder="给工作区起个名字" />
+            <div class="demo-row"><u-button @click="error = name.trim().length < 2 ? '请至少输入 2 个字符。' : ''">校验名称</u-button><span v-if="name.trim().length >= 2 && !error" class="demo-success">名称可用</span></div>
         </template>
         <template v-else-if="example === 'field-heading'">
-            <UiField label="运行环境" description="UAH 桌面工作台"><span class="demo-value">本地工作区</span></UiField>
+            <u-field label="运行环境" description="UAH 桌面工作台"><span class="demo-value">本地工作区</span></u-field>
         </template>
         <template v-else-if="['tabs-soft', 'tabs-variants', 'panel-persistence'].includes(example)">
-            <div v-if="example === 'tabs-variants'" class="demo-row"><UiSwitch v-model="vertical" :id="`${prefix}-vertical`" /><label :for="`${prefix}-vertical`">垂直布局</label></div>
-            <div v-if="example === 'tabs-variants' && vertical" class="demo-row"><UiSwitch v-model="indicatorStart" :id="`${prefix}-indicator`" /><label :for="`${prefix}-indicator`">内容放在左侧</label></div>
+            <div v-if="example === 'tabs-variants'" class="demo-row"><u-switch v-model="vertical" :id="`${prefix}-vertical`" /><label :for="`${prefix}-vertical`">垂直布局</label></div>
+            <div v-if="example === 'tabs-variants' && vertical" class="demo-row"><u-switch v-model="indicatorStart" :id="`${prefix}-indicator`" /><label :for="`${prefix}-indicator`">内容放在左侧</label></div>
             <div :class="{ 'demo-vertical': vertical, 'demo-content-first': vertical && indicatorStart }">
-                <UiTabs v-model="selected" :items="items" :id-prefix="prefix" variant="underline" :orientation="vertical ? 'vertical' : 'horizontal'" :indicator-side="indicatorStart ? 'start' : 'end'" aria-label="示例标签页">
+                <u-tabs v-model="selected" :items="items" :id-prefix="prefix" variant="underline" :orientation="vertical ? 'vertical' : 'horizontal'" :indicator-side="indicatorStart ? 'start' : 'end'" aria-label="示例标签页">
                     <template v-if="example === 'tabs-variants'" #default="{ item }"><Icon :name="item.icon" :size="15" />{{ item.label }}</template>
-                </UiTabs>
+                </u-tabs>
                 <div class="demo-panels">
-                    <UiTabPanel :model-value="selected" value="overview" :id-prefix="prefix"><p>概览内容 · 切换时保留组件状态。</p><UiInput v-if="example === 'panel-persistence'" v-model="draft" aria-label="面板草稿" placeholder="在这里输入，再切换面板" /></UiTabPanel>
-                    <UiTabPanel :model-value="selected" value="unavailable" :id-prefix="prefix">尚未启用。</UiTabPanel>
-                    <UiTabPanel :model-value="selected" value="details" :id-prefix="prefix"><p>详情内容 · 标签与面板通过 ARIA 关联。</p><span class="demo-value">当前工作区 · UAH</span></UiTabPanel>
+                    <u-tab-panel :model-value="selected" value="overview" :id-prefix="prefix"><p>概览内容 · 切换时保留组件状态。</p><u-text-field v-if="example === 'panel-persistence'" v-model="draft" aria-label="面板草稿" placeholder="在这里输入，再切换面板" /></u-tab-panel>
+                    <u-tab-panel :model-value="selected" value="unavailable" :id-prefix="prefix">尚未启用。</u-tab-panel>
+                    <u-tab-panel :model-value="selected" value="details" :id-prefix="prefix"><p>详情内容 · 标签与面板通过 ARIA 关联。</p><span class="demo-value">当前工作区 · UAH</span></u-tab-panel>
                 </div>
             </div>
             <output>选中：{{ selected }}{{ example === 'panel-persistence' ? ` · 草稿：${draft || '（空）'}` : '' }}</output>
         </template>
         <template v-else-if="example === 'dialog-scrollable'">
-            <UiButton @click="open = true; error = ''">打开长表单弹窗</UiButton>
-            <UiDialog v-model:open="open" scrollable :error="error" :aria-labelledby="`${prefix}-title`">
+            <u-button @click="open = true; error = ''">打开长表单弹窗</u-button>
+            <u-dialog v-model:open="open" scrollable :error="error" :aria-labelledby="`${prefix}-title`">
                 <template #header><h2 :id="`${prefix}-title`">固定提示与内部滚动</h2></template>
                 <div class="d-flex flex-column ga-4">
-                    <UiInput :label="`示例字段 ${number}`" :id="`${prefix}-field-${number}`" placeholder="滚动查看其余字段" />
-                    <UiButton @click="error = '读取失败：请检查服务地址与认证信息。此提示始终留在弹窗顶部。'">显示顶部错误</UiButton>
+                    <u-text-field :label="`示例字段 ${number}`" :id="`${prefix}-field-${number}`" placeholder="滚动查看其余字段" />
+                    <u-button @click="error = '读取失败：请检查服务地址与认证信息。此提示始终留在弹窗顶部。'">显示顶部错误</u-button>
                 </div>
-                <template #footer><div class="d-flex justify-end ga-2"><UiButton @click="error = ''">清除错误</UiButton><UiButton variant="primary" @click="open = false">关闭长表单</UiButton></div></template>
-            </UiDialog>
+                <template #footer><div class="d-flex justify-end ga-2"><u-button @click="error = ''">清除错误</u-button><u-button variant="primary" @click="open = false">关闭长表单</u-button></div></template>
+            </u-dialog>
         </template>
         <template v-else-if="example === 'dialog-lifecycle'">
-            <UiButton @click="open = true"><Icon name="panel" :size="16" />打开示例弹窗</UiButton>
+            <u-button @click="open = true"><Icon name="panel" :size="16" />打开示例弹窗</u-button>
             <output id="dialog-status" aria-live="polite">{{ present ? '弹窗占用中' : '已关闭' }} · {{ closes }}</output>
             <output>{{ dialogLog }}</output>
-            <UiDialog v-model:open="open" :aria-labelledby="`${prefix}-title`" class="docs-dialog" @present-change="present = $event" @opened="dialogLog = 'opened · 进入动效完成'" @closed="closed">
+            <u-dialog v-model:open="open" :aria-labelledby="`${prefix}-title`" class="docs-dialog" @present-change="present = $event" @opened="dialogLog = 'opened · 进入动效完成'" @closed="closed">
                 <p class="docs-dialog-kicker">UAH / DIALOG</p><h2 :id="`${prefix}-title`">共享弹窗</h2>
                 <p>按 Esc、点击遮罩或关闭按钮结束。键盘关闭后恢复触发器焦点，点击关闭后释放操作焦点。</p>
-                <UiInput autofocus aria-label="弹窗输入" placeholder="试试键盘操作" />
-                <div class="demo-row"><UiButton variant="primary" @click="open = false">关闭弹窗</UiButton></div>
-            </UiDialog>
+                <u-text-field autofocus aria-label="弹窗输入" placeholder="试试键盘操作" />
+                <div class="demo-row"><u-button variant="primary" @click="open = false">关闭弹窗</u-button></div>
+            </u-dialog>
         </template>
         <template v-else-if="example === 'collapse-content'">
-            <UiButton :aria-expanded="expanded" :aria-controls="`${prefix}-content`" @click="expanded = !expanded"><Icon :name="expanded ? 'minus' : 'plus'" :size="16" />{{ expanded ? '收起高级选项' : '展开高级选项' }}</UiButton>
-            <UiCollapse :id="`${prefix}-content`" :open="expanded"><div class="demo-collapse-body"><p>这个区域保留实例，关闭后立即阻止交互。</p><UiInput v-model="draft" aria-label="高级选项草稿" placeholder="输入会在折叠后保留" /></div></UiCollapse>
+            <u-button :aria-expanded="expanded" :aria-controls="`${prefix}-content`" @click="expanded = !expanded"><Icon :name="expanded ? 'minus' : 'plus'" :size="16" />{{ expanded ? '收起高级选项' : '展开高级选项' }}</u-button>
+            <u-collapse :id="`${prefix}-content`" :open="expanded"><div class="demo-collapse-body"><p>这个区域保留实例，关闭后立即阻止交互。</p><u-text-field v-model="draft" aria-label="高级选项草稿" placeholder="输入会在折叠后保留" /></div></u-collapse>
             <output>open={{ expanded }} · 草稿：{{ draft || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'snackbar-playground' || example === 'snackbar-service'">
-            <UiInput label="提示内容" :id="`${prefix}-message`" v-model="message" />
+            <u-text-field label="提示内容" :id="`${prefix}-message`" v-model="message" />
             <div class="demo-options">
-                <UiSelect label="提示方位" :id="`${prefix}-position`" v-model="position"><option v-for="value in positions" :key="value" :value="value">{{ value }}</option></UiSelect>
-                <UiSelect label="提示时长" :id="`${prefix}-duration`" v-model="duration"><option :value="6000">6 秒</option><option :value="800">0.8 秒</option><option :value="0">手动关闭</option></UiSelect>
-                <UiSelect label="提示类型" :id="`${prefix}-tone`" v-model="tone"><option value="success">成功</option><option value="info">信息</option><option value="error">错误</option></UiSelect>
+                <u-select label="提示方位" :id="`${prefix}-position`" v-model="position"><option v-for="value in positions" :key="value" :value="value">{{ value }}</option></u-select>
+                <u-select label="提示时长" :id="`${prefix}-duration`" v-model="duration"><option :value="6000">6 秒</option><option :value="800">0.8 秒</option><option :value="0">手动关闭</option></u-select>
+                <u-select label="提示类型" :id="`${prefix}-tone`" v-model="tone"><option value="success">成功</option><option value="info">信息</option><option value="error">错误</option></u-select>
             </div>
-            <div class="demo-row"><UiButton variant="primary" @click="showNotice">显示提示</UiButton><UiButton :disabled="lastId === null" @click="snackbar.dismiss(lastId)">撤销上一条</UiButton><UiButton variant="ghost" @click="snackbar.clear()">清空提示</UiButton></div>
+            <div class="demo-row"><u-button variant="primary" @click="showNotice">显示提示</u-button><u-button :disabled="lastId === null" @click="snackbar.dismiss(lastId)">撤销上一条</u-button><u-button variant="ghost" @click="snackbar.clear()">清空提示</u-button></div>
             <output aria-live="polite">{{ lastId === null ? '尚未创建提示' : `最近提示 id：${lastId}` }}</output>
         </template>
     </div>

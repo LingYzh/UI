@@ -151,9 +151,9 @@ try {
     await capture(app, '07-docs-200.png');
     const menu = page.getByRole('button', { name: '切换文档导航' });
     await menu.click();
-    await page.getByRole('textbox', { name: '搜索文档' }).fill('UiInput');
+    await page.getByRole('textbox', { name: '搜索文档' }).fill('UTextField');
     await page.getByRole('textbox', { name: '搜索文档' }).press('Enter');
-    await page.getByRole('heading', { name: '输入框 UiInput', level: 1 }).waitFor();
+    await page.getByRole('heading', { name: '输入框 UTextField', level: 1 }).waitFor();
     assert.equal(await menu.getAttribute('aria-expanded'), 'false');
     await menu.click();
     await page.getByRole('textbox', { name: '搜索文档' }).fill('no-component-exists');
@@ -370,21 +370,24 @@ try {
     await serverDemo.getByRole('combobox', { name: '每页', exact: true }).selectOption('10');
     await serverTable.getByRole('cell', { name: '工作区 01', exact: true }).waitFor();
     assert.equal(await serverTable.locator('tbody tr').count(), 10);
-    await serverTable.getByRole('button', { name: '文件数排序', exact: true }).click();
-    await serverDemo.locator('.ui-table[aria-busy="true"]').waitFor({ state: 'detached' });
+    const sortButton = serverTable.getByRole('button', { name: '文件数排序', exact: true });
+    await sortButton.click();
+    await serverDemo.locator('.u-data-table[aria-busy="true"]').waitFor({ state: 'detached' });
     assert.equal(await serverTable.getByRole('columnheader', { name: /文件数/ }).getAttribute('aria-sort'), 'ascending');
-    assert.equal(await serverTable.getByRole('button', { name: '文件数排序', exact: true }).locator('svg path.is-active').count(), 1);
-    assert.equal(await serverTable.getByRole('button', { name: '文件数排序', exact: true }).locator('svg path').count(), 2);
+    assert.equal(await sortButton.locator('svg path.is-active').count(), 1);
+    assert.equal(await sortButton.locator('svg path').count(), 2);
     const values = await serverTable.locator('tbody tr td:last-child').allTextContents();
     assert.deepEqual(values.map(Number), [...values.map(Number)].sort((a, b) => a - b));
-    await serverTable.getByRole('button', { name: '文件数排序', exact: true }).click();
-    await serverDemo.locator('.ui-table[aria-busy="true"]').waitFor({ state: 'detached' });
+    await sortButton.click();
+    await serverDemo.locator('.u-data-table[aria-busy="true"]').waitFor({ state: 'detached' });
     assert.equal(await serverTable.getByRole('columnheader', { name: /文件数/ }).getAttribute('aria-sort'), 'descending');
+    assert.equal(await sortButton.locator('svg path.is-active').count(), 1);
+    assert.equal(await sortButton.locator('svg path').count(), 2);
     await serverDemo.getByRole('button', { name: '模拟失败', exact: true }).click();
     await serverDemo.getByRole('alert').waitFor();
     await serverDemo.getByRole('button', { name: '重试', exact: true }).click();
     await serverDemo.getByRole('alert').waitFor({ state: 'detached' });
-    await serverDemo.locator('.ui-table[aria-busy="true"]').waitFor({ state: 'detached' });
+    await serverDemo.locator('.u-data-table[aria-busy="true"]').waitFor({ state: 'detached' });
     await serverDemo.getByRole('textbox', { name: '筛选项目', exact: true }).fill('不存在');
     await serverDemo.getByRole('button', { name: '查询', exact: true }).click();
     await serverTable.getByRole('status').filter({ hasText: '暂无数据' }).waitFor();
@@ -397,9 +400,9 @@ try {
     assert.equal(await serverTable.locator('tbody tr').count(), 1);
     await serverDemo.getByRole('textbox', { name: '筛选项目', exact: true }).fill('');
     await serverDemo.getByRole('button', { name: '查询', exact: true }).click();
-    await serverDemo.locator('.ui-table[aria-busy="true"]').waitFor({ state: 'detached' });
+    await serverDemo.locator('.u-data-table[aria-busy="true"]').waitFor({ state: 'detached' });
     await serverDemo.getByRole('combobox', { name: '每页', exact: true }).selectOption('5');
-    await serverDemo.locator('.ui-table[aria-busy="true"]').waitFor({ state: 'detached' });
+    await serverDemo.locator('.u-data-table[aria-busy="true"]').waitFor({ state: 'detached' });
     await serverDemo.scrollIntoViewIfNeeded();
     await capture(app, '20-server-table-light.png');
     await page.getByRole('checkbox', { name: '深色主题', exact: true }).check();
@@ -422,6 +425,61 @@ try {
     assert.ok(Math.abs(fixedPosition.top - fixedPosition.header) < 2);
     assert.ok(await page.locator('.docs-api-table.ui-table').count() > 0);
     passed.push('documentation API tables use UiTable and fixed headers remain anchored during keyboard scrolling');
+
+    await openDoc('data-table');
+    const standaloneDataTable = page.locator('.docs-example[aria-labelledby="component-data-table-heading"] .u-data-table');
+    await standaloneDataTable.waitFor({ state: 'visible' });
+    const standaloneFrame = await standaloneDataTable.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return { borderWidth: style.borderTopWidth, borderStyle: style.borderTopStyle, radius: style.borderTopLeftRadius };
+    });
+    assert.deepEqual(standaloneFrame, { borderWidth: '1px', borderStyle: 'solid', radius: '8px' }, 'standalone UDataTable keeps its own frame');
+
+    await openDoc('data-table-server');
+    const serverVariants = page.locator('.docs-example[aria-labelledby="server-variants-heading"]');
+    await serverVariants.scrollIntoViewIfNeeded();
+    const variantFrames = await serverVariants.locator('.docs-variant-sample').evaluateAll((samples) => samples.map((sample) => {
+        const frame = sample.querySelector('.ui-data-table-server');
+        const table = frame?.querySelector('.u-data-table');
+        const header = table?.querySelector('th');
+        const frameStyle = frame && getComputedStyle(frame);
+        const tableStyle = table && getComputedStyle(table);
+        const headerStyle = header && getComputedStyle(header);
+        return {
+            label: sample.querySelector('.docs-variant-label')?.textContent?.trim(),
+            frame: frameStyle && { borderWidth: frameStyle.borderTopWidth, borderStyle: frameStyle.borderTopStyle, borderColor: frameStyle.borderTopColor, background: frameStyle.backgroundColor, radius: frameStyle.borderTopLeftRadius },
+            table: tableStyle && { borderWidth: tableStyle.borderTopWidth, background: tableStyle.backgroundColor, radius: tableStyle.borderTopLeftRadius },
+            headerBackground: headerStyle?.backgroundColor
+        };
+    }));
+    assert.equal(variantFrames.length, 4, 'server variants should include default, dense, ghost and square samples');
+    const frameFor = (label) => {
+        const value = variantFrames.find((variant) => variant.label === label);
+        assert.ok(value, `missing server variant ${label}`);
+        return value;
+    };
+    for (const variant of variantFrames) {
+        assert.deepEqual(variant.frame && { borderWidth: variant.frame.borderWidth, borderStyle: variant.frame.borderStyle }, { borderWidth: '1px', borderStyle: 'solid' }, `${variant.label} outer server frame stays 1px`);
+        assert.deepEqual(variant.table && { borderWidth: variant.table.borderWidth, radius: variant.table.radius }, { borderWidth: '0px', radius: '0px' }, `${variant.label} does not add a second inner frame`);
+    }
+    assert.equal(frameFor('默认').frame.radius, '8px');
+    assert.equal(frameFor('dense · 紧凑').frame.radius, '8px');
+    assert.equal(frameFor('ghost · 透明表面').frame.borderColor, 'rgba(0, 0, 0, 0)');
+    assert.equal(frameFor('ghost · 透明表面').frame.background, 'rgba(0, 0, 0, 0)');
+    assert.equal(frameFor('ghost · 透明表面').table.background, 'rgba(0, 0, 0, 0)');
+    assert.equal(frameFor('ghost · 透明表面').headerBackground, 'rgba(0, 0, 0, 0)');
+    assert.equal(frameFor('rounded=false · 直角').frame.radius, '0px');
+    await page.getByRole('checkbox', { name: '深色主题', exact: true }).uncheck();
+    await capture(app, '25-server-variants-light.png');
+    await page.getByRole('checkbox', { name: '深色主题', exact: true }).check();
+    await capture(app, '26-server-variants-dark.png');
+    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(390, 844));
+    await serverVariants.scrollIntoViewIfNeeded();
+    await capture(app, '27-server-variants-390-dark.png');
+    await page.getByRole('checkbox', { name: '深色主题', exact: true }).uncheck();
+    await capture(app, '28-server-variants-390-light.png');
+    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1280, 1100));
+    passed.push('standalone data table retains its 1px frame; all four server variants keep one outer frame, zero inner frame, and correct ghost/square styling');
 
 
     await openDoc('button');

@@ -7,7 +7,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<ControlSizing & FormControlProps & {
     invalid?: boolean; rows?: number; autoGrow?: boolean;
     maxRows?: number; noResize?: boolean; counter?: boolean | number;
-}>(), { rows: 5, dense: undefined, ghost: undefined, rounded: undefined });
+}>(), { rows: 5, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const attrs = useAttrs();
 const model = defineModel<string>({ default: '' });
 const element = ref<HTMLTextAreaElement>();

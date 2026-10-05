@@ -59,7 +59,7 @@ function linkClick(event: MouseEvent) {
     if (href.startsWith(`#${prefix}-`)) {
         const anchor = Array.from(element.value.querySelectorAll<HTMLElement>('[id]')).find(node => node.id === href.slice(1));
         if (anchor) {
-            anchor.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+            anchor.scrollIntoView({ block: 'center', inline: 'nearest', behavior: motionDisabled() ? 'instant' : 'smooth' });
             const previous = anchor.getAttribute('tabindex');
             anchor.setAttribute('tabindex', '-1');
             anchor.focus({ preventScroll: true });

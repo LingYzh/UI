@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import UiScrollArea from './UiScrollArea.vue';
 import { uiText } from './locale';
 import { wasPointerActivated } from './pointer-focus';
-const props = withDefaults(defineProps<{
-    open: boolean;
+import { provideUiTheme } from './theme';
+import { useDefaults } from './defaults';
+const rawProps = withDefaults(defineProps<{
+    theme?: string;
+    open?: boolean;
+    modelValue?: boolean;
+    persistent?: boolean;
+    fullscreen?: boolean;
     scrollable?: boolean;
     error?: string;
     contentLabel?: string;
@@ -12,8 +18,12 @@ const props = withDefaults(defineProps<{
     size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
     /** end 为贴靠行内结束边的整高抽屉。 */
     placement?: 'center' | 'end';
-}>(), { scrollable: false, error: '', contentLabel: undefined, size: undefined, placement: 'center' });
-const emit = defineEmits<{ 'update:open': [value: boolean]; 'present-change': [value: boolean]; opened: []; closed: [] }>();
+}>(), { open: undefined, modelValue: undefined, scrollable: false, error: '', contentLabel: undefined, size: undefined, placement: 'center' });
+const props = useDefaults(rawProps, 'UDialog');
+const emit = defineEmits<{ 'update:open': [value: boolean]; 'update:modelValue': [value: boolean]; 'present-change': [value: boolean]; opened: []; closed: [] }>();
+const localOpen = ref(false);
+const isOpen = computed(() => props.modelValue ?? props.open ?? localOpen.value);
+const themeContext = provideUiTheme(() => props.theme);
 const element = ref<HTMLDialogElement>();
 const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
 const errorElement = ref<HTMLElement>();
@@ -28,12 +38,17 @@ let generation = 0;
 let backdropPressed = false;
 let returnFocus: HTMLElement | null = null;
 let restoreKeyboardFocus = true;
-function requestClose() { emit('update:open', false); }
+function requestClose() {
+    if (props.persistent) return;
+    localOpen.value = false;
+    emit('update:open', false);
+    emit('update:modelValue', false);
+}
 async function sync() {
     const dialog = element.value;
     if (!dialog) return;
     const current = ++generation;
-    if (props.open) {
+    if (isOpen.value) {
         if (!dialog.open) {
             returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             restoreKeyboardFocus = !wasPointerActivated(returnFocus);
@@ -50,7 +65,7 @@ async function sync() {
     getComputedStyle(dialog).opacity;
     await Promise.all(dialog.getAnimations().map((animation) => animation.finished.catch(() => {})));
     if (current !== generation) return;
-    if (props.open) {
+    if (isOpen.value) {
         state.value = 'open';
         emit('opened');
     } else {
@@ -74,7 +89,7 @@ function pointerUp(event: PointerEvent) {
     if (backdropPressed && outside(event)) requestClose();
     backdropPressed = false;
 }
-watch(() => props.open, sync, { flush: 'post' });
+watch(isOpen, sync, { flush: 'post' });
 onMounted(() => {
     errorObserver = new ResizeObserver(() => { errorSpace.value = errorElement.value ? errorElement.value.offsetHeight + 12 : 0; });
     if (errorElement.value) errorObserver.observe(errorElement.value);
@@ -85,12 +100,12 @@ defineExpose({ element });
 </script>
 
 <template>
-    <dialog ref="element" class="ui-dialog" :class="[{ 'ui-dialog--scrollable': scrollable, 'ui-dialog--end': placement === 'end' }, size ? `ui-dialog--${size}` : '']" :data-state="state" @cancel.prevent="requestClose" @pointerdown.capture="pointerDown" @keydown.capture="restoreKeyboardFocus = true" @pointerup="pointerUp">
-        <template v-if="scrollable">
+    <dialog ref="element" class="ui-dialog" :style="props.theme ? themeContext.styles.value : undefined" :data-ui-theme="props.theme ? themeContext.name.value : undefined" :data-theme="props.theme ? (themeContext.current.value.dark ? 'dark' : 'light') : undefined" :class="[{ 'ui-dialog--scrollable': props.scrollable, 'ui-dialog--end': props.placement === 'end' }, props.size ? `ui-dialog--${props.size}` : '']" :data-state="state" @cancel.prevent="requestClose" @pointerdown.capture="pointerDown" @keydown.capture="restoreKeyboardFocus = true" @pointerup="pointerUp">
+        <template v-if="props.scrollable">
             <header v-if="$slots.header" class="ui-dialog-header"><slot name="header" /></header>
             <div class="ui-dialog-content" :style="{ '--ui-dialog-error-space': `${errorSpace}px` }">
-                <div v-if="error" ref="errorElement" class="ui-dialog-error" role="alert">{{ error }}</div>
-                <UiScrollArea class="ui-dialog-scroll" :label="contentLabel ?? uiText('dialog.contentLabel')" :rounded="false"><div class="ui-dialog-body"><slot /></div></UiScrollArea>
+                <div v-if="props.error" ref="errorElement" class="ui-dialog-error" role="alert">{{ props.error }}</div>
+                <UiScrollArea class="ui-dialog-scroll" :label="props.contentLabel ?? uiText('dialog.contentLabel')" :rounded="false"><div class="ui-dialog-body"><slot /></div></UiScrollArea>
             </div>
             <footer v-if="$slots.footer" class="ui-dialog-footer"><slot name="footer" /></footer>
         </template>

@@ -158,3 +158,53 @@ UAH 已固定安装官方 npm 0.3.2，package／lockfile／实际 node_modules �
 UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
 
 消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。
+
+## 2026-10-05：主题、Markdown 与 Ripple（最新本地状态）
+
+新增 createUiTheme/useUiTheme 与 UiThemeProvider；支持 light/dark/system、自定义主题、响应式颜色／变量、颜色辅助类、变体、局部继承与可选切换动画。Card/Dialog 可覆盖 theme，Snackbar 和 Mermaid 遵循局部主题；默认浅深色沿用原 tokens。UiPreview 独立入口也能自动安装主题，并在卸载时恢复根变量／属性、清理样式和监听。当前48组件、62文档页，真实 demo 与全部 API 已同步。
+
+Markdown 行内 code 与 mark 使用 primary；补充说明支持可反转的展开／收起动画，脚注与返回平滑滚动并居中目标，键盘焦点保持可访问。系统和手动减少动效均有效。主题与 Markdown 计划见 docs/THEME-MARKDOWN-PLAN-2026-10-05.md。
+
+Ripple 对照 Vuetify 官方生命周期重写：扩散250ms／显现100ms、最短显示250ms后淡出300ms；快速松手、自动失焦和点击后 loading 不会截断，连续波纹独立。补齐触摸80ms延迟与滑动取消、键盘、自定义 keys/class、circle/center/stop、嵌套传播和宿主定位恢复；保留原 UAH 视觉强度。真实示例为5174的/#/ripple、/#/theme、/#/markdown。
+
+最终验证：typecheck/build、58单测、20全UI（62路由）、78项 Ripple 与43项激活断言、12组主题／Markdown、3组独立预览全部通过，无渲染错误。证据为 artifacts/ui-G5YeQ8、ripple-GVjh5S、ripple-activation-v0fBHd、theme-markdown-RA2pzB、theme-preview-BuAUCk；root复核浅深、390px、125%及快速松手仍在播放的波纹截图，详见 VALIDATION.md。
+
+本轮仅为 UI 本地更新，尚未提交或发布，package仍0.3.2；UAH工作区干净，HEAD97c43a9，继续固定消费已发布npm0.3.2。后续发布后再升级消费端，不复制源码。
+
+### 主题过渡默认开启与顶栏修复
+
+用户要求完整动效默认开启主题过渡，并与减少动效绑定。createUiTheme 的 transition 默认值改为 true；顶栏仍调用同一 change 路径，同时将开关元素中心作为揭示起点。ThemeDemo 删除独立 animate=false 参数，改用已有共享 reducedMotion 偏好；系统或手动减少动效会抑制下一次过渡，并立即结束正在播放的动画，恢复完整动效后自动恢复。宿主显式 transition=false 仍可按需使用。
+
+本地最新验证：typecheck/build、58单测、7组真实主题过渡、12组主题／Markdown、3组独立预览、20全UI（62路由）和78项Ripple全部通过。证据为 artifacts/theme-transitions-GRZOBH、theme-markdown-nm39sL、theme-preview-nOQb7p、ui-ooSTop、ripple-v1Z5kb。root复核1440×900动画中间帧，测试断言左侧仍为旧浅色、右侧已为新深色，确认实际播放400ms动画；支持播放中减少动效、键盘焦点及卸载清理。API默认值、README与demo同步；仍未提交或发布，UAH无改动。
+
+### Tabs 激活态 hover 修复
+
+普通Tabs的hover选择器覆盖aria-selected背景，ExampleCard额外选中样式掩盖了问题。共享hover规则现在仅作用于未选中且非禁用的项，选中项保持原背景与文字，ghost保留透明；文档重复选中覆盖已移除，示例／源码与普通Tabs共用库样式，无API变化。旧构建在新增实际交互检查中复现色值变化，修复后浅深、横纵、默认／dense／ghost／square、禁用项和示例／源码切换均通过。
+
+最新typecheck/build、58单测、6组Tabs及20全UI（62路由）全部通过，无pageerror；证据 artifacts/tabs-TW7NhX 和 artifacts/ui-wNNSzC。root复核1440×900浅深选中详情hover截图；测试断言真实:hover及前后背景／文字完全一致。UAH工作区干净；UI仍本地未发布，版本0.3.2。
+
+## 2026-10-06：Vuetify 4.2.3 全量对齐审计
+
+根据用户要求完成组件类型与使用方式盘点；官方 npm latest 为4.2.3，读取固定v4.2.3源码，不混入旧版或Labs。完整清单见 docs/VUETIFY-ALIGNMENT-AUDIT-2026-10-06.md，机器快照为同名.json。逐项记录102个稳定组件家族、10个Labs家族、8个指令与本地48组件/62文档页；家族与单组件计数单位不同，不计算覆盖率。
+
+优先缺口：v4断点已为600/840/1145/1545/2138，本地仍600/960/1280/1920/2560；缺统一display/defaults/完整响应式工具类。选择器缺multiple/search/对象映射，组控件和专门输入类型不足，客户端表格与Server的多排序/选择/展开/分组/虚拟化尚缺。UiInput实际对应TextField，UiBadge接近Chip而非附着徽标，UiField/UiTable等职责与上游不完全一致。
+
+静态复核发现Checkbox/Radio/Switch/ColorSwatches省略dense/ghost/rounded时，编译后的Boolean props会挡住Form的nullish继承，且模板未消费这些外观状态。编译/源码证据已记录，尚未浏览器专项复现或修复。已有Form验证、内置label/hint及标签方向、级联、Tabs、主题/Ripple不重复记作完全缺失。
+
+本轮仅新增审计资料与本交接记录，未改产品代码/依赖或发布。现有58单测通过，公开48组件均有文档/API映射。最近主题/Markdown/Ripple/Tabs仍是未发布工作区改动，UI package仍0.3.2；UAH干净、HEAD97c43a9，继续固定消费npm0.3.2。后续按审计顺序先UI能力与真实demo验收，再发布升级消费端。
+
+### 审计后的实现与用户修正（当前状态）
+
+上述48组件/62页面和“仅审计”是历史基线。当前工作区已有148个canonical U*组件、162页面；createUI注册 `<u-xxx>`，Ui*导出仍兼容。补充公共配置、选择器/组控件/专门输入、布局/Overlay/列表/树/虚拟化、数据表格、日期和步骤/窗口等基本能力；全部视觉模板、共享CSS及视觉demo由root直接实现。公开API同步源码，当前82单测及全部真实示例源码编译通过。
+
+用户指出组件页混入整组示例，已将新增demo拆成101个独立SFC，位于`src/ui/docs/component-examples`；LiveExample通过manifest对应id挂载，文档源码来自同一文件。`split-completion-demos.mjs`用于从root原始family demo生成独立模板，`generate-completion-docs.mjs`生成页面与源码，`sync-api-reference.mjs`同步API。以后修改独立案例时注意同步生成来源，避免再生成覆盖。4个family文件仅是作者源，不再直接挂在公共组件页。
+
+Button loading修复三个问题：单一loader、切换前宽高不变、原variant/color/透明度保持。服务端表格内核换成UDataTable后旧CSS未清除新内框，已统一只画外层边框；ghost/square/dense正确，独立UDataTable仍保留自己的框。Select包装层默认blurOnSelect和ref方法、组控件props传递、Chip组选择及ListGroup激活器嵌套也已修复。表格排序维持双三角SVG和本地化可访问名称。
+
+最新typecheck/build、82单测、完整UI21组（162路由）、独立demo专项全部通过，无pageerror/Vue warning。证据：`artifacts/ui-zoj9Oy`、`component-examples-PuXGlT`、`button-loading-QC8Ixq`。root已亲自复核12张独立输入示例浅深/宽窄图像、4张表格变体浅深/390截图及按钮loading浅深图像，详细范围和边界见VALIDATION.md。未把逐页smoke当成所有新组件全状态与Vuetify全属性对等验收；Code/SlideGroup/受控Snackbar与Queue、Labs、SSR/完整RTL等剩余差异已在原审计的实现进展处明确保留。
+
+当前仍为UI本地未提交/未发布修改，package0.3.2；UAH工作区干净并继续npm0.3.2。未做发布或消费端升级。下一轮先看本段及实际状态，保留已有主题/Markdown/Ripple/Tabs的未发布改动，不把版本号当作工作区发布状态。
+
+### 2026-10-06：提交检查点，暂不发布
+
+用户已授权按既有中文主题、逐文件组正文和 `Co-Authored-By: Codex/GPT-6` 格式提交并推送本轮累计UI改动。本检查点包含主题/Markdown/Ripple/Tabs修复、U*组件与u-模板迁移、独立示例/API以及按钮/表格修正，验证证据沿用上段。本次只推送普通main分支，不创建或推送发布标签，不修改0.3.2包版本，不发布npm或升级UAH。提交/远端结果以实际Git状态为准；之前“未提交”描述属于提交前的历史状态，“未发布”仍有效。

@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
-import { UiButton, UiInput, UiSelect, UiTabs, UiTabPanel, UiCard, UiScrollArea, UiCodeBlock } from '../index';
+import { UButton, UTextField, USelect, UTabs, UTabPanel, UCard, UScrollArea, UCodeBlock } from '../index';
 defineProps({ component: { type: String, required: true } });
 const variants = [
     { id: 'default', label: '默认', attrs: {} },
@@ -11,23 +11,23 @@ const variants = [
 const values = reactive(Object.fromEntries(variants.map(({ id }) => [id, 'UAH'])));
 const selected = reactive(Object.fromEntries(variants.map(({ id }) => [id, 'overview'])));
 const items = [{ id: 'overview', label: '概览' }, { id: 'details', label: '详情' }];
-const code = '<UiButton dense :rounded="false">保存更改</UiButton>';
+const code = '<u-button dense :rounded="false">保存更改</u-button>';
 </script>
 
 <template>
     <div class="docs-variant-list">
         <div v-for="variant in variants" :key="variant.id" class="docs-variant-sample" :data-sample="variant.id">
             <p class="docs-variant-label">{{ variant.label }}</p>
-            <UiButton v-if="component === 'button'" v-bind="variant.attrs">保存更改</UiButton>
-            <UiInput v-else-if="component === 'input'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}输入框`" />
-            <UiSelect v-else-if="component === 'select'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}选择器`"><option value="UAH">UAH 工作台</option><option value="personal">个人工作区</option></UiSelect>
+            <u-button v-if="component === 'button'" v-bind="variant.attrs">保存更改</u-button>
+            <u-text-field v-else-if="component === 'input'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}输入框`" />
+            <u-select v-else-if="component === 'select'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}选择器`"><option value="UAH">UAH 工作台</option><option value="personal">个人工作区</option></u-select>
             <template v-else-if="component === 'tabs'">
-                <UiTabs v-model="selected[variant.id]" :items="items" :id-prefix="`variant-tabs-${variant.id}`" v-bind="variant.attrs" :aria-label="`${variant.label}标签页`" />
-                <UiTabPanel v-for="item in items" :key="item.id" :model-value="selected[variant.id]" :value="item.id" :id-prefix="`variant-tabs-${variant.id}`"><p class="ma-0 py-3 text-muted">{{ item.label }}内容</p></UiTabPanel>
+                <u-tabs v-model="selected[variant.id]" :items="items" :id-prefix="`variant-tabs-${variant.id}`" v-bind="variant.attrs" :aria-label="`${variant.label}标签页`" />
+                <u-tab-panel v-for="item in items" :key="item.id" :model-value="selected[variant.id]" :value="item.id" :id-prefix="`variant-tabs-${variant.id}`"><p class="ma-0 py-3 text-muted">{{ item.label }}内容</p></u-tab-panel>
             </template>
-            <UiCard v-else-if="component === 'card'" title="工作区" subtitle="容器的间距与表面" v-bind="variant.attrs">项目、文件与最近使用的内容。<template #actions><UiButton v-bind="variant.attrs">打开工作区</UiButton></template></UiCard>
-            <UiScrollArea v-else-if="component === 'scroll-area'" :label="`${variant.label}滚动区域`" height="120px" always v-bind="variant.attrs"><p v-for="line in 10" :key="line" class="ma-0 pa-3">日志 {{ line }} · 保留原生滚动操作</p></UiScrollArea>
-            <UiCodeBlock v-else-if="component === 'code-block'" :code="code" language="vue" v-bind="variant.attrs" />
+            <u-card v-else-if="component === 'card'" title="工作区" subtitle="容器的间距与表面" v-bind="variant.attrs">项目、文件与最近使用的内容。<template #actions><u-button v-bind="variant.attrs">打开工作区</u-button></template></u-card>
+            <u-scroll-area v-else-if="component === 'scroll-area'" :label="`${variant.label}滚动区域`" height="120px" always v-bind="variant.attrs"><p v-for="line in 10" :key="line" class="ma-0 pa-3">日志 {{ line }} · 保留原生滚动操作</p></u-scroll-area>
+            <u-code-block v-else-if="component === 'code-block'" :code="code" language="vue" v-bind="variant.attrs" />
         </div>
     </div>
 </template>

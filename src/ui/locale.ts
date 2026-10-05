@@ -1,4 +1,12 @@
-import { readonly, ref } from 'vue';
+import { getCurrentInstance, inject, readonly, ref, type ComputedRef, type InjectionKey } from 'vue';
+
+export interface LocaleContext {
+    current: ComputedRef<string>;
+    isRtl: ComputedRef<boolean>;
+    t: (key: string, params?: Record<string, string | number>) => string;
+    n: (value: number, options?: Intl.NumberFormatOptions) => string;
+}
+export const localeKey: InjectionKey<LocaleContext> = Symbol('u-locale');
 
 /** 组件库内置文案语言。默认 zh，保持 UAH 现有中文界面不变。 */
 export type UiLocale = 'zh' | 'en';
@@ -240,6 +248,10 @@ export function uiNumberLocale(): string {
  * 在模板或 computed 中调用时会追踪 uiLocale，因此语言切换后自动重渲染。
  */
 export function uiText(key: UiMessageKey, params?: Params): string {
+    if (getCurrentInstance()) {
+        const scoped = inject(localeKey, undefined);
+        if (scoped) return scoped.t(key, params);
+    }
     const template = uiMessages[current.value][key];
     if (!params) return template;
     return template.replace(/\{(\w+)\}/g, (match, name: string) => (name in params ? String(params[name]) : match));

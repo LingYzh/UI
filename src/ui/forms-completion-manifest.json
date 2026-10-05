@@ -1,0 +1,36 @@
+{
+    "components": [
+        { "name": "UAutocomplete", "file": "UAutocomplete.vue", "behavior": "受控 model/search；标准化 items；过滤、键盘选择、多选、清除、芯片、禁用和只读" },
+        { "name": "UCombobox", "file": "UCombobox.vue", "behavior": "复用搜索选择；允许 Enter 提交自由文本" },
+        { "name": "USelectionControlGroup", "file": "USelectionControlGroup.vue", "behavior": "组级模型、验证、multiple、mandatory、max 和继承状态" },
+        { "name": "USelectionControl", "file": "USelectionControl.vue", "behavior": "checkbox/radio/switch 组合项，继承组模型或使用独立 trueValue/falseValue" },
+        { "name": "URadioGroup", "file": "URadioGroup.vue", "behavior": "单选组模型包装" },
+        { "name": "UCheckboxGroup", "file": "UCheckboxGroup.vue", "behavior": "数组复选组模型包装" },
+        { "name": "UItemGroup", "file": "UItemGroup.vue", "behavior": "组合项 multiple、mandatory、max、比较器与组验证" },
+        { "name": "UItem", "file": "UItem.vue", "behavior": "组项选中与切换" },
+        { "name": "UChip", "file": "UChip.vue", "behavior": "组项选中、关闭事件" },
+        { "name": "UChipGroup", "file": "UChipGroup.vue", "behavior": "UItemGroup 的芯片组包装" },
+        { "name": "UBtnGroup", "file": "UBtnGroup.vue", "behavior": "UItemGroup 的按钮组包装" },
+        { "name": "UBtnToggle", "file": "UBtnToggle.vue", "behavior": "UItemGroup 的按钮切换包装" },
+        { "name": "UNumberInput", "file": "UNumberInput.vue", "behavior": "数字解析、上下步进、最小最大与精度约束、Form 注册" },
+        { "name": "UFileInput", "file": "UFileInput.vue", "behavior": "文件接收、accept/size/multiple 验证、拒绝事件、Form 注册" },
+        { "name": "UFileUpload", "file": "UFileUpload.vue", "behavior": "拖放接收、追加或单文件、移除与清除、Form 注册" },
+        { "name": "USlider", "file": "USlider.vue", "behavior": "范围步进归一化、百分比、Form 注册" },
+        { "name": "URangeSlider", "file": "URangeSlider.vue", "behavior": "双端范围归一化、防交叉与百分比、Form 注册" },
+        { "name": "UOtpInput", "file": "UOtpInput.vue", "behavior": "长度及数字过滤、粘贴、退格与方向键、完成事件、Form 注册" },
+        { "name": "UColorInput", "file": "UColorInput.vue", "behavior": "HEX 校验与规范化、原生颜色输入状态、Form 注册" },
+        { "name": "UColorPicker", "file": "UColorPicker.vue", "behavior": "HSV 通道与 HEX 双向变换、Form 注册" },
+        { "name": "URating", "file": "URating.vue", "behavior": "长度与精度、清除、方向键/Home/End、Form 注册" }
+    ],
+    "legacy": [
+        { "name": "UiSelect", "file": "UiSelect.vue", "behavior": "单值原生控件与扩展搜索选择器分支" },
+        { "name": "UiInput", "file": "UiInput.vue", "behavior": "文本输入、clear/counter/prefix/suffix/loading 状态" },
+        { "name": "UiCheckbox", "file": "UiCheckbox.vue", "behavior": "trueValue/falseValue 和数组 value 脚本状态，模板待接线" },
+        { "name": "UiSwitch", "file": "UiSwitch.vue", "behavior": "trueValue/falseValue 和数组 value 脚本状态，模板待接线" },
+        { "name": "UiRadio", "file": "UiRadio.vue", "behavior": "Boolean 外观三态默认继承" },
+        { "name": "UiColorSwatches", "file": "UiColorSwatches.vue", "behavior": "Boolean 外观三态默认继承" }
+    ],
+    "helpers": ["selection.ts", "selection-context.ts", "specialized-inputs.ts"],
+    "visualDraft": "forms-components.css and existing templates require root visual acceptance",
+    "pendingRoot": "Nine specialized components currently have script setup and placeholder slots; root supplies templates, CSS, documentation and public exports."
+}

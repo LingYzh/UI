@@ -28,7 +28,7 @@ test('tab tokens distinguish numeric and string values and encode unsafe charact
 });
 
 test('published Tabs API documents manual activation, optional models and all slot payloads', () => {
-    const tabs = componentApi.UiTabs;
+    const tabs = componentApi.UTabs;
     const prop = (name: string) => tabs.props.find(item => item.name === name)!;
     assert.deepEqual(prop('items').declaredDefault, { kind: 'factory', source: '() => []' });
     assert.equal(prop('items').required, false);
@@ -49,9 +49,9 @@ test('published Tabs API documents manual activation, optional models and all sl
 });
 
 test('declarative Tab and Window contracts expose optional index values and lazy-preserve defaults', () => {
-    const tab = componentApi.UiTab;
-    const window = componentApi.UiTabsWindow;
-    const windowItem = componentApi.UiTabsWindowItem;
+    const tab = componentApi.UTab;
+    const window = componentApi.UTabsWindow;
+    const windowItem = componentApi.UTabsWindowItem;
     assert.deepEqual(tab.props.find(item => item.name === 'value')?.declaredDefault, { kind: 'undefined' });
     assert.deepEqual(tab.props.find(item => item.name === 'ripple')?.declaredDefault, { kind: 'explicit-undefined', source: 'undefined' });
     assert.ok(tab.methods.some(method => method.name === 'focus'));
@@ -59,7 +59,7 @@ test('declarative Tab and Window contracts expose optional index values and lazy
     assert.equal(window.props.find(item => item.name === 'modelValue')?.type, 'TabValue | null | undefined');
     assert.equal(window.events.find(event => event.name === 'update:modelValue')?.type, 'value: TabValue | null | undefined');
     assert.ok(window.events.some(event => event.name === 'update:modelValue'));
-    assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /仅在 UiTabs 后代或 #window 上下文中/);
-    assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /相邻兄弟 UiTabs 配对时需绑定同一模型/);
+    assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /仅在 UTabs 后代或 #window 上下文中/);
+    assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /相邻兄弟 UTabs 配对时需绑定同一模型/);
     assert.deepEqual(windowItem.props.find(item => item.name === 'eager')?.declaredDefault, { kind: 'vue-boolean-false' });
 });

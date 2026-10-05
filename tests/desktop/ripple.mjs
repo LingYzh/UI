@@ -42,8 +42,8 @@ async function geometry(target, clientX, clientY, centered) {
             parentIsTarget: layer?.offsetParent === element,
             layerInside: !!layerRect && layerRect.left >= targetRect.left - 1 && layerRect.top >= targetRect.top - 1
                 && layerRect.right <= targetRect.right + 1 && layerRect.bottom <= targetRect.bottom + 1,
-            waveAtClick: Math.abs(waveX - (centered ? targetRect.width / 2 : clientX - targetRect.left)) < 1
-                && Math.abs(waveY - (centered ? targetRect.height / 2 : clientY - targetRect.top)) < 1
+            waveAtClick: Math.abs(waveX - (centered ? element.clientWidth / 2 : clientX - targetRect.left)) < 1
+                && Math.abs(waveY - (centered ? element.clientHeight / 2 : clientY - targetRect.top)) < 1
         };
     }, { clientX, clientY, centered });
 }
@@ -85,6 +85,31 @@ async function keyboardHold(page, target, key) {
     check(`${key}: key release clears layer`, await target.locator('.ui-ripple-layer').count(), 0);
 }
 
+async function quickReleaseFrame(page, target, theme) {
+    await page.getByRole('checkbox', { name: '深色主题', exact: true }).setChecked(theme === 'dark');
+    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setContentSize(1440, 900));
+    await page.waitForFunction(() => ![...document.head.querySelectorAll('style')].some(style => style.textContent.includes('@keyframes ui-theme-reveal')));
+    await target.scrollIntoViewIfNeeded();
+    const bounds = await target.boundingBox();
+    await page.mouse.move(bounds.x + bounds.width * .18, bounds.y + bounds.height * .4);
+    await page.mouse.down();
+    await page.mouse.up();
+    await page.waitForTimeout(90);
+    check(`${theme}: quick release still renders its wave`, await target.locator('.ui-ripple-wave').count(), 1);
+    check(`${theme}: pointer blur does not retain focus`, await target.evaluate(element => element === document.activeElement), false);
+    check(`${theme}: quick release wave has visible opacity`, await target.locator('.ui-ripple-wave').evaluate(element => Number(getComputedStyle(element).opacity) > 0), true);
+    const captured = await app.evaluate(async ({ BrowserWindow }) => {
+        const window = BrowserWindow.getAllWindows()[0];
+        return { png: (await window.webContents.capturePage()).toPNG().toString('base64'), size: window.getContentSize() };
+    });
+    const png = Buffer.from(captured.png, 'base64');
+    check(`${theme}: native capture dimensions`, [png.readUInt32BE(16), png.readUInt32BE(20), ...captured.size], [1440, 900, 1440, 900]);
+    const file = path.join(evidence, `ripple-${theme}-quick-release.png`);
+    await writeFile(file, png);
+    report.screenshots.push(file);
+    await target.locator('.ui-ripple-layer').waitFor({ state: 'detached' });
+}
+
 try {
     server = await preview({ build: { outDir: path.resolve('dist/docs') }, preview: { host: '127.0.0.1', port: 0, strictPort: false } });
     const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'userData'), UAH_UI_PREVIEW_URL: `${server.resolvedUrls.local[0]}index.html#/ripple` };
@@ -123,6 +148,20 @@ try {
     for (const [name, target, centered] of targets) await pointerHold(page, target, `dark, dense false, ${name}`, centered);
     await keyboardHold(page, targets[0][1], 'Enter');
     await keyboardHold(page, targets[0][1], 'Space');
+    await quickReleaseFrame(page, targets[0][1], 'light');
+    await quickReleaseFrame(page, targets[0][1], 'dark');
+    const loading = demo.getByRole('button', { name: '点击后进入等待', exact: true });
+    await loading.click();
+    await page.waitForTimeout(90);
+    check('action enters disabled loading state', await loading.isDisabled(), true);
+    check('action loading does not truncate its quick ripple', await loading.locator('.ui-ripple-wave').count(), 1);
+    await loading.locator('.ui-ripple-layer').waitFor({ state: 'detached' });
+    const tab = demo.getByRole('tab', { name: '标签二', exact: true });
+    await tab.click();
+    await page.waitForTimeout(90);
+    check('Tab selection class update and blur preserve a quick ripple', await tab.locator('.ui-ripple-wave').count(), 1);
+    await tab.locator('.ui-ripple-layer').waitFor({ state: 'detached' });
+    check('native static host positioning is restored after feedback', await targets[2][1].evaluate(element => ({ inline: element.style.position, computed: getComputedStyle(element).position })), { inline: '', computed: 'static' });
     const disabled = demo.getByRole('button', { name: '禁用反馈', exact: true });
     await disabled.click({ force: true });
     check('disabled button has no layer', await disabled.locator('.ui-ripple-layer').count(), 0);

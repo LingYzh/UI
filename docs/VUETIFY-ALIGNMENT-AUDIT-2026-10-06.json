@@ -1,0 +1,4526 @@
+{
+    "schemaVersion": 1,
+    "date": "2026-10-06",
+    "upstream": {
+        "package": "vuetify",
+        "version": "4.2.3",
+        "registry": "https://registry.npmjs.org",
+        "distTag": "latest",
+        "stableFamilyCount": 102,
+        "labsFamilyCount": 10,
+        "directiveCount": 8,
+        "sources": [
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/index.ts",
+                "sha256": "52a7042a2b7d89d02c01f50e9b6ac5514c34173150591afa555f60b342bae71d"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/components.ts",
+                "sha256": "e8700e759f1bc38afe6c4071d39f6a3c74c1e6d882b33de271e9632c370d0ca3"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/directives/index.ts",
+                "sha256": "94f299a621277282dae2fc6c16044632d8e37cf86ca484d6e0f238b026614504"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/composables/display.ts",
+                "sha256": "3ba05c6aa6680408d9f54a4072a06c915362768764366108ea68a37dce48bf5e"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VGrid/VRow.ts",
+                "sha256": "d2f1f920993a505473ba1e91632dccfde2b05760119be672bda7de6c45c935ce"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/composables/validation.ts",
+                "sha256": "04995426498f573261dd31fafb0d1282f13ed8c3a81009dbcb8df1e9b8b0c9e4"
+            },
+            {
+                "url": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/styles/settings/_variables.scss",
+                "sha256": "1e16fe8156ef3941d435dc5c2304ff0b3cf3998f58e0f184eab2022d885cc81e"
+            }
+        ]
+    },
+    "local": {
+        "repository": "D:/UI",
+        "head": "084f68476aa3dd64bada21635a137aa43d1172dc",
+        "packageVersion": "0.3.2",
+        "scope": "current working tree, including unpublished changes",
+        "publicVueComponents": 48,
+        "documentationPages": 62,
+        "consumingUAHVersion": "0.3.2",
+        "consumingUAHHead": "97c43a9"
+    },
+    "implementationAfterAudit": {
+        "scope": "unpublished local working tree; original local/stableComponents/labsComponents entries remain the pre-implementation audit snapshot",
+        "canonicalVueComponents": 148,
+        "documentationPages": 162,
+        "independentCompletionExamples": 101,
+        "templatePrefix": "u-",
+        "compatibilityExports": "Ui*",
+        "unitTestsPassed": 82,
+        "verified": ["current source API contracts", "all example source compilation", "162 documentation routes", "101 example markers", "nine specialized input demos isolated"],
+        "remainingAlignment": ["Code component", "public SlideGroup", "controlled Snackbar and SnackbarQueue", "10 Labs families", "complete upstream prop parity", "SSR and full RTL acceptance"],
+        "validation": "../VALIDATION.md",
+        "published": false
+    },
+    "interpretation": {
+        "basic": "基础职责和常用组合已有，不代表全部上游 API 一致",
+        "partial": "有公共近似组件，仍有明确契约或功能缺口",
+        "internal": "仅内部或其他组件局部包含能力，不构成独立公共对应组件",
+        "missing": "无可证明的公共对等组件；不以原生 type/透传属性算完整实现",
+        "counts": "Upstream entries are component families; local entries are individual Vue components. No cross-unit percentage."
+    },
+    "stableComponents": [
+        {
+            "name": "VApp",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VApp/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VAppBar",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VAppBar/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VAlert",
+            "status": "部分覆盖",
+            "local": [
+                "UiAlert"
+            ],
+            "priority": "P2",
+            "note": "已有反馈提示；统一图标、边框、密度与关闭模型等契约仍需逐项扩展。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VAlert/index.ts"
+        },
+        {
+            "name": "VAutocomplete",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VAutocomplete/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VAvatar",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VAvatar/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VBadge",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBadge/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VBanner",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBanner/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VBottomNavigation",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBottomNavigation/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VBottomSheet",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBottomSheet/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VBreadcrumbs",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBreadcrumbs/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VBtn",
+            "status": "部分覆盖",
+            "local": [
+                "UiButton"
+            ],
+            "priority": "P0",
+            "note": "自有 variant/size/dense；缺统一颜色/密度契约及 href/to 按钮链接。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBtn/index.ts"
+        },
+        {
+            "name": "VBtnGroup",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBtnGroup/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VBtnToggle",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VBtnToggle/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VCalendar",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCalendar/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VCard",
+            "status": "部分覆盖",
+            "local": [
+                "UiCard"
+            ],
+            "priority": "P2",
+            "note": "已有表面变体和内容槽；独立标题/正文/操作子组件、导航与通用配置不齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCard/index.ts"
+        },
+        {
+            "name": "VCarousel",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCarousel/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VCheckbox",
+            "status": "部分覆盖",
+            "local": [
+                "UiCheckbox"
+            ],
+            "priority": "P1",
+            "note": "boolean + indeterminate；无数组模型/自定义选中值映射。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCheckbox/index.ts"
+        },
+        {
+            "name": "VChip",
+            "status": "部分覆盖",
+            "local": [
+                "UiBadge"
+            ],
+            "priority": "P1",
+            "note": "行内可关闭标签职责接近 Chip；无正式 Chip/选择模型/ChipGroup。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VChip/index.ts"
+        },
+        {
+            "name": "VChipGroup",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VChipGroup/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VCode",
+            "status": "部分覆盖",
+            "local": [
+                "UiCodeBlock"
+            ],
+            "priority": "P2",
+            "note": "已有代码块；不是同契约的通用行内代码组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCode/index.ts"
+        },
+        {
+            "name": "VColorInput",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VColorInput/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VColorPicker",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VColorPicker/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VCombobox",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCombobox/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VConfirmEdit",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VConfirmEdit/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VCounter",
+            "status": "内部能力",
+            "local": [
+                "UiTextarea"
+            ],
+            "priority": "P1",
+            "note": "Textarea 内置计数器；无独立 Counter 导出，未覆盖全部输入类型。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VCounter/index.ts"
+        },
+        {
+            "name": "VDataIterator",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺公共列表/树/虚拟化/数据迭代器。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDataIterator/index.ts",
+            "group": "列表与数据"
+        },
+        {
+            "name": "VDataTable",
+            "status": "部分覆盖",
+            "local": [
+                "UiTable",
+                "UiDataTableServer"
+            ],
+            "priority": "P1",
+            "note": "包含 Server 家族基础；客户端过滤分页、多列排序、选择/展开/分组/虚拟表格缺失。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDataTable/index.ts"
+        },
+        {
+            "name": "VDateInput",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺专门输入控件；原生 Input type 透传不等于组件能力。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDateInput/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VDatePicker",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺专门输入控件；原生 Input type 透传不等于组件能力。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDatePicker/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VDefaultsProvider",
+            "status": "缺失",
+            "local": [],
+            "priority": "P0",
+            "note": "缺全局/局部按组件名称设置默认 props 的公共容器。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDefaultsProvider/index.ts",
+            "group": "全局配置"
+        },
+        {
+            "name": "VDialog",
+            "status": "部分覆盖",
+            "local": [
+                "UiDialog"
+            ],
+            "priority": "P1",
+            "note": "原生 Dialog；v-model:open，无完整 persistent/fullscreen/activator/策略契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDialog/index.ts"
+        },
+        {
+            "name": "VDivider",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VDivider/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VEmptyState",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VEmptyState/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VExpansionPanel",
+            "status": "部分覆盖",
+            "local": [
+                "UiCollapse",
+                "UiActivity"
+            ],
+            "priority": "P2",
+            "note": "已有局部折叠；无完整 Panels 组模型、互斥/多开和子组件体系。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VExpansionPanel/index.ts"
+        },
+        {
+            "name": "VFab",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VFab/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VField",
+            "status": "部分覆盖",
+            "local": [
+                "UiField"
+            ],
+            "priority": "P0",
+            "note": "自定义表单项容器；VField 的输入表面、变体与状态槽未完整提供。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VField/index.ts"
+        },
+        {
+            "name": "VFileInput",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺专门输入控件；原生 Input type 透传不等于组件能力。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VFileInput/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VFileUpload",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VFileUpload/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VFooter",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VFooter/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VForm",
+            "status": "基础已覆盖",
+            "local": [
+                "UiForm",
+                "UiFormSection",
+                "UiFormActions"
+            ],
+            "priority": "P0",
+            "note": "验证、注册/状态、reset 已有；不负责列布局。外观继承及验证时机/reset/提交契约仍有差异。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VForm/index.ts"
+        },
+        {
+            "name": "VGrid",
+            "status": "部分覆盖",
+            "local": [
+                "UiContainer",
+                "UiRow",
+                "UiCol",
+                "UiSpacer"
+            ],
+            "priority": "P0",
+            "note": "有响应式 12 列与 density；旧断点、固定 Container 上限、gap/工具类/useDisplay 未齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VGrid/index.ts"
+        },
+        {
+            "name": "VHotkey",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VHotkey/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VHover",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VHover/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VIcon",
+            "status": "基础已覆盖",
+            "local": [
+                "UiIcon"
+            ],
+            "priority": "P2",
+            "note": "MDI SVG + 自定义注册；缺 icon sets/aliases/defaultSet 的统一配置。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VIcon/index.ts"
+        },
+        {
+            "name": "VIconBtn",
+            "status": "部分覆盖",
+            "local": [
+                "UiButton"
+            ],
+            "priority": "P2",
+            "note": "UiButton icon 模式覆盖基础操作；没有独立图标按钮完整契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VIconBtn/index.ts"
+        },
+        {
+            "name": "VImg",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VImg/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VInfiniteScroll",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VInfiniteScroll/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VInput",
+            "status": "内部能力",
+            "local": [
+                "UiInput"
+            ],
+            "priority": "P0",
+            "note": "UiInput 实为 TextField；UiControlFrame/useFormControl 仅内部承担部分基座职责。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VInput/index.ts"
+        },
+        {
+            "name": "VItemGroup",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VItemGroup/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VKbd",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VKbd/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VLabel",
+            "status": "内部能力",
+            "local": [],
+            "priority": "P2",
+            "note": "控件框架内置 label；没有公共 Label 组件导出。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VLabel/index.ts"
+        },
+        {
+            "name": "VLayout",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VLayout/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VLazy",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VLazy/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VList",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺公共列表/树/虚拟化/数据迭代器。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VList/index.ts",
+            "group": "列表与数据"
+        },
+        {
+            "name": "VLocaleProvider",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "只有全局 zh/en；缺局部 locale/fallback/RTL 配置。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VLocaleProvider/index.ts",
+            "group": "本地化"
+        },
+        {
+            "name": "VMain",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VMain/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VMenu",
+            "status": "部分覆盖",
+            "local": [
+                "UiMenu",
+                "UiMenuItem"
+            ],
+            "priority": "P1",
+            "note": "原生 Popover + activatorProps；受控模型/触发方式/位置滚动策略与上游不齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VMenu/index.ts"
+        },
+        {
+            "name": "VMessages",
+            "status": "内部能力",
+            "local": [],
+            "priority": "P1",
+            "note": "控件框架内置 hint/error；无公共 Messages 及统一详情槽体系。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VMessages/index.ts"
+        },
+        {
+            "name": "VNavigationDrawer",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VNavigationDrawer/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VNoSsr",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VNoSsr/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VNumberInput",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺专门输入控件；原生 Input type 透传不等于组件能力。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VNumberInput/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VOtpInput",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VOtpInput/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VOverlay",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VOverlay/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VPagination",
+            "status": "基础已覆盖",
+            "local": [
+                "UiPagination"
+            ],
+            "priority": "P2",
+            "note": "基础分页模型及禁用/紧凑；统一颜色、密度、图标及按钮配置仍有差异。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VPagination/index.ts"
+        },
+        {
+            "name": "VParallax",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VParallax/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VPicker",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VPicker/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VProgressCircular",
+            "status": "部分覆盖",
+            "local": [
+                "UiSpinner"
+            ],
+            "priority": "P2",
+            "note": "仅不定进度旋转器；无可控数值的圆形进度。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VProgressCircular/index.ts"
+        },
+        {
+            "name": "VProgressLinear",
+            "status": "部分覆盖",
+            "local": [
+                "UiProgress"
+            ],
+            "priority": "P2",
+            "note": "基础 determinate 数值进度；indeterminate/buffer/stream 等模式未齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VProgressLinear/index.ts"
+        },
+        {
+            "name": "VPullToRefresh",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VPullToRefresh/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VRadio",
+            "status": "部分覆盖",
+            "local": [
+                "UiRadio"
+            ],
+            "priority": "P1",
+            "note": "string/number 单值，通过 name 手工组装；统一 group API 缺失。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VRadio/index.ts"
+        },
+        {
+            "name": "VRadioGroup",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VRadioGroup/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VRangeSlider",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VRangeSlider/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VRating",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VRating/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VResponsive",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；内部逻辑不能当作公共复用契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VResponsive/index.ts",
+            "group": "内容与体验"
+        },
+        {
+            "name": "VSelect",
+            "status": "部分覆盖",
+            "local": [
+                "UiSelect"
+            ],
+            "priority": "P1",
+            "note": "单值/扁平 items/native option；multiple、对象映射、chips/搜索、虚拟列表未齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSelect/index.ts"
+        },
+        {
+            "name": "VSelectionControl",
+            "status": "内部能力",
+            "local": [
+                "UiCheckbox",
+                "UiRadio",
+                "UiSwitch"
+            ],
+            "priority": "P1",
+            "note": "三个实际控件存在；没有公共 SelectionControl 基座与完整值模型。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSelectionControl/index.ts"
+        },
+        {
+            "name": "VSelectionControlGroup",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立组件与组级模型/状态/验证契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSelectionControlGroup/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VSheet",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSheet/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VSkeletonLoader",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺独立公共组件；现有 UiBadge 为行内标签，不等于附着 Badge。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSkeletonLoader/index.ts",
+            "group": "通用展示"
+        },
+        {
+            "name": "VSlideGroup",
+            "status": "内部能力",
+            "local": [
+                "UiTabs"
+            ],
+            "priority": "P2",
+            "note": "Tabs 内部有滚动条带；没有公共 SlideGroup 可独立组合。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSlideGroup/index.ts"
+        },
+        {
+            "name": "VSlider",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件；ConfirmHost/色板不等于确认编辑/完整颜色选择。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSlider/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VSnackbar",
+            "status": "部分覆盖",
+            "local": [
+                "UiSnackbarHost"
+            ],
+            "priority": "P2",
+            "note": "通过 snackbar 服务调用；非独立 v-model Snackbar 完整契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSnackbar/index.ts"
+        },
+        {
+            "name": "VSnackbarQueue",
+            "status": "部分覆盖",
+            "local": [
+                "UiSnackbarHost"
+            ],
+            "priority": "P2",
+            "note": "服务管理通知队列；没有对等 Queue 组件/受控模型。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSnackbarQueue/index.ts"
+        },
+        {
+            "name": "VSparkline",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSparkline/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VSpeedDial",
+            "status": "缺失",
+            "local": [],
+            "priority": "按需",
+            "note": "缺独立公共组件；根据实际消费场景推进。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSpeedDial/index.ts",
+            "group": "重型展示与移动体验"
+        },
+        {
+            "name": "VStepper",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VStepper/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VStepperVertical",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VStepperVertical/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VSwitch",
+            "status": "部分覆盖",
+            "local": [
+                "UiSwitch"
+            ],
+            "priority": "P1",
+            "note": "boolean 开关，指针自动释放焦点；值映射/inset/loading 等未齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSwitch/index.ts"
+        },
+        {
+            "name": "VSystemBar",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VSystemBar/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VTabs",
+            "status": "基础已覆盖",
+            "local": [
+                "UiTabs",
+                "UiTab"
+            ],
+            "priority": "P2",
+            "note": "共享模型、mandatory、方向/箭头/布局/slider 已有；继续统一控件基础配置。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTabs/index.ts"
+        },
+        {
+            "name": "VTable",
+            "status": "部分覆盖",
+            "local": [
+                "UiTable"
+            ],
+            "priority": "P1",
+            "note": "目前 headers/items 驱动，不具备简单 HTML table 默认槽模式。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTable/index.ts"
+        },
+        {
+            "name": "VTextarea",
+            "status": "基础已覆盖",
+            "local": [
+                "UiTextarea"
+            ],
+            "priority": "P1",
+            "note": "autoGrow/maxRows/counter/表单框架已有；通用 clear/详情/表面 API 不齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTextarea/index.ts"
+        },
+        {
+            "name": "VTextField",
+            "status": "部分覆盖",
+            "local": [
+                "UiInput"
+            ],
+            "priority": "P1",
+            "note": "字符串/数值、原生属性、leading/trailing；通用 clear/counter/prefix/suffix 未齐。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTextField/index.ts"
+        },
+        {
+            "name": "VThemeProvider",
+            "status": "基础已覆盖",
+            "local": [
+                "UiThemeProvider"
+            ],
+            "priority": "P2",
+            "note": "局部主题与 service 已有；全组件可配置主题和算法仍有差异。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VThemeProvider/index.ts"
+        },
+        {
+            "name": "VTimeline",
+            "status": "缺失",
+            "local": [],
+            "priority": "P2",
+            "note": "缺独立公共组件及其分组/导航契约。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTimeline/index.ts",
+            "group": "导航与结构"
+        },
+        {
+            "name": "VTimePicker",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺专门输入控件；原生 Input type 透传不等于组件能力。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTimePicker/index.ts",
+            "group": "选择与输入"
+        },
+        {
+            "name": "VToolbar",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺协调布局或浮层的公共基础及对等组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VToolbar/index.ts",
+            "group": "浮层与应用布局"
+        },
+        {
+            "name": "VTooltip",
+            "status": "部分覆盖",
+            "local": [
+                "UiTooltip"
+            ],
+            "priority": "P1",
+            "note": "text/focusable、自适应上下位置；无显示模型/位置/延迟/统一 activator。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTooltip/index.ts"
+        },
+        {
+            "name": "VTreeview",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺公共列表/树/虚拟化/数据迭代器。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VTreeview/index.ts",
+            "group": "列表与数据"
+        },
+        {
+            "name": "VValidation",
+            "status": "内部能力",
+            "local": [
+                "UiForm"
+            ],
+            "priority": "P1",
+            "note": "useFormControl/validation 内部实现；无公共 Validation 包装组件。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VValidation/index.ts"
+        },
+        {
+            "name": "VVirtualScroll",
+            "status": "缺失",
+            "local": [],
+            "priority": "P1",
+            "note": "缺公共列表/树/虚拟化/数据迭代器。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VVirtualScroll/index.ts",
+            "group": "列表与数据"
+        },
+        {
+            "name": "VWindow",
+            "status": "部分覆盖",
+            "local": [
+                "UiTabsWindow",
+                "UiTabsWindowItem",
+                "UiTabPanel"
+            ],
+            "priority": "P2",
+            "note": "Tabs 面板共享值、lazy/eager；不含通用触摸/滑动与方向过渡。",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/components/VWindow/index.ts"
+        }
+    ],
+    "labsComponents": [
+        {
+            "name": "VAvatarGroup",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VAvatarGroup/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VCommandPalette",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VCommandPalette/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VDateRangePicker",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VDateRangePicker/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VMonthPicker",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VMonthPicker/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VHeatmap",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VHeatmap/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VHighlight",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VHighlight/index.ts",
+            "note": "代码语法高亮不等于该通用文字高亮组件。"
+        },
+        {
+            "name": "VMaskInput",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VMaskInput/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VPie",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VPie/index.ts",
+            "note": "与稳定家族分开记录。"
+        },
+        {
+            "name": "VProgress",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VProgress/index.ts",
+            "note": "UiProgress 为线性进度，不等于 Labs Progress 公共契约。"
+        },
+        {
+            "name": "VVideo",
+            "status": "缺独立对等组件",
+            "priority": "按需/实验",
+            "source": "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.3/packages/vuetify/src/labs/VVideo/index.ts",
+            "note": "与稳定家族分开记录。"
+        }
+    ],
+    "directives": [
+        {
+            "name": "ClickOutside",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Intersect",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Mutate",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Resize",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Ripple",
+            "status": "基础已覆盖",
+            "local": [
+                "vRipple"
+            ],
+            "note": "生命周期与配置已对照更新，保持 UAH 视觉。"
+        },
+        {
+            "name": "Scroll",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Touch",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        },
+        {
+            "name": "Tooltip",
+            "status": "缺公共指令",
+            "local": [],
+            "note": "组件内部可能有同类逻辑，不计作公共导出。"
+        }
+    ],
+    "publicComponents": [
+        {
+            "name": "UiButton",
+            "file": "src/ui/UiButton.vue",
+            "docsRoute": "/#/button",
+            "upstreamFamilies": [
+                "VBtn",
+                "VIconBtn"
+            ],
+            "props": [
+                {
+                    "name": "variant",
+                    "type": "'secondary' | 'primary' | 'ghost' | 'danger'",
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "type": "'sm' | 'md'",
+                    "required": false
+                },
+                {
+                    "name": "loading",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "icon",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "type": "'button' | 'submit' | 'reset'",
+                    "required": false
+                },
+                {
+                    "name": "ripple",
+                    "type": "RippleOptions",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "(options?: FocusOptions) => element.value?.focus(options)"
+                }
+            ]
+        },
+        {
+            "name": "UiInput",
+            "file": "src/ui/UiInput.vue",
+            "docsRoute": "/#/input",
+            "upstreamFamilies": [
+                "VInput",
+                "VTextField"
+            ],
+            "props": [
+                {
+                    "name": "width",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "minWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "maxWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "inline",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "invalid",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "string | number | null",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "''"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "leading",
+                "trailing"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "select",
+                    "kind": "method",
+                    "expression": "() => element.value?.select()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiTextarea",
+            "file": "src/ui/UiTextarea.vue",
+            "docsRoute": "/#/textarea",
+            "upstreamFamilies": [
+                "VCounter",
+                "VTextarea"
+            ],
+            "props": [
+                {
+                    "name": "width",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "minWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "maxWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "inline",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "invalid",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rows",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "autoGrow",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "maxRows",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "noResize",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "counter",
+                    "type": "boolean | number",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "string",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "''"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiSelect",
+            "file": "src/ui/UiSelect.vue",
+            "docsRoute": "/#/select",
+            "upstreamFamilies": [
+                "VSelect"
+            ],
+            "props": [
+                {
+                    "name": "width",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "minWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "maxWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "inline",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "type": "SelectItem[]",
+                    "required": false
+                },
+                {
+                    "name": "menuTitle",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "compact",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "invalid",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "blurOnSelect",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "string | number | null",
+                    "required": false,
+                    "default": {
+                        "kind": "undefined"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiSwitch",
+            "file": "src/ui/UiSwitch.vue",
+            "docsRoute": "/#/switch",
+            "upstreamFamilies": [
+                "VSelectionControl",
+                "VSwitch"
+            ],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "boolean",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "false"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiTooltip",
+            "file": "src/ui/UiTooltip.vue",
+            "docsRoute": "/#/tooltip",
+            "upstreamFamilies": [
+                "VTooltip"
+            ],
+            "props": [
+                {
+                    "name": "text",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "focusable",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiField",
+            "file": "src/ui/UiField.vue",
+            "docsRoute": "/#/field",
+            "upstreamFamilies": [
+                "VField"
+            ],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "for",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "error",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "layout",
+                    "type": "FieldLayout",
+                    "required": false
+                },
+                {
+                    "name": "required",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiContainer",
+            "file": "src/ui/UiContainer.vue",
+            "docsRoute": "/#/container",
+            "upstreamFamilies": [
+                "VGrid"
+            ],
+            "props": [
+                {
+                    "name": "fluid",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "tag",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiRow",
+            "file": "src/ui/UiRow.vue",
+            "docsRoute": "/#/row",
+            "upstreamFamilies": [
+                "VGrid"
+            ],
+            "props": [
+                {
+                    "name": "tag",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "density",
+                    "type": "LayoutDensity",
+                    "required": false
+                },
+                {
+                    "name": "noGutters",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "align",
+                    "type": "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
+                    "required": false
+                },
+                {
+                    "name": "justify",
+                    "type": "'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly'",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiCol",
+            "file": "src/ui/UiCol.vue",
+            "docsRoute": "/#/col",
+            "upstreamFamilies": [
+                "VGrid"
+            ],
+            "props": [
+                {
+                    "name": "tag",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "cols",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "sm",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "md",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "lg",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "xl",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "xxl",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offset",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offsetSm",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offsetMd",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offsetLg",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offsetXl",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "offsetXxl",
+                    "type": "GridSize",
+                    "required": false
+                },
+                {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "orderSm",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "orderMd",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "orderLg",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "orderXl",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "orderXxl",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "alignSelf",
+                    "type": "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiSpacer",
+            "file": "src/ui/UiSpacer.vue",
+            "docsRoute": "/#/spacer",
+            "upstreamFamilies": [
+                "VGrid"
+            ],
+            "props": [],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiForm",
+            "file": "src/ui/UiForm.vue",
+            "docsRoute": "/#/form",
+            "upstreamFamilies": [
+                "VForm",
+                "VValidation"
+            ],
+            "props": [
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "fastFail",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "boolean | null",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "null"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "submit",
+                "invalid",
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "isValid",
+                    "kind": "property",
+                    "expression": "isValid"
+                },
+                {
+                    "name": "isValidating",
+                    "kind": "property",
+                    "expression": "isValidating"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "errors"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "resetValidation"
+                },
+                {
+                    "name": "requestSubmit",
+                    "kind": "method",
+                    "expression": "() => element.value?.requestSubmit()"
+                }
+            ]
+        },
+        {
+            "name": "UiFormSection",
+            "file": "src/ui/UiFormSection.vue",
+            "docsRoute": "/#/form-section",
+            "upstreamFamilies": [
+                "VForm"
+            ],
+            "props": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiFormActions",
+            "file": "src/ui/UiFormActions.vue",
+            "docsRoute": "/#/form-actions",
+            "upstreamFamilies": [
+                "VForm"
+            ],
+            "props": [
+                {
+                    "name": "align",
+                    "type": "'start' | 'end' | 'between'",
+                    "required": false
+                },
+                {
+                    "name": "divided",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "leading",
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiTabs",
+            "file": "src/ui/UiTabs.vue",
+            "docsRoute": "/#/tabs",
+            "upstreamFamilies": [
+                "VSlideGroup",
+                "VTabs"
+            ],
+            "props": [
+                {
+                    "name": "items",
+                    "type": "readonly TabItem[]",
+                    "required": false
+                },
+                {
+                    "name": "idPrefix",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "direction",
+                    "type": "'horizontal' | 'vertical'",
+                    "required": false
+                },
+                {
+                    "name": "orientation",
+                    "type": "'horizontal' | 'vertical'",
+                    "required": false
+                },
+                {
+                    "name": "activation",
+                    "type": "'manual' | 'automatic'",
+                    "required": false
+                },
+                {
+                    "name": "mandatory",
+                    "type": "boolean | 'force'",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "alignTabs",
+                    "type": "'start' | 'center' | 'end' | 'title'",
+                    "required": false
+                },
+                {
+                    "name": "grow",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "fixedTabs",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "stacked",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "hideSlider",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "centerActive",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "showArrows",
+                    "type": "boolean | 'always' | 'desktop' | 'mobile' | 'never'",
+                    "required": false
+                },
+                {
+                    "name": "indicatorSide",
+                    "type": "'start' | 'end'",
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "type": "'soft' | 'underline'",
+                    "required": false
+                },
+                {
+                    "name": "ripple",
+                    "type": "RippleOptions",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "TabValue | null | undefined",
+                    "required": false,
+                    "default": {
+                        "kind": "undefined"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "tab",
+                "default",
+                "item",
+                "window"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiTab",
+            "file": "src/ui/UiTab.vue",
+            "docsRoute": "/#/tab",
+            "upstreamFamilies": [
+                "VTabs"
+            ],
+            "props": [
+                {
+                    "name": "value",
+                    "type": "TabValue",
+                    "required": false
+                },
+                {
+                    "name": "text",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "ripple",
+                    "type": "RippleOptions",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                }
+            ]
+        },
+        {
+            "name": "UiTabsWindow",
+            "file": "src/ui/UiTabsWindow.vue",
+            "docsRoute": "/#/tabs-window",
+            "upstreamFamilies": [
+                "VWindow"
+            ],
+            "props": [
+                {
+                    "name": "idPrefix",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "TabValue | null | undefined",
+                    "required": false,
+                    "default": {
+                        "kind": "undefined"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                }
+            ]
+        },
+        {
+            "name": "UiTabsWindowItem",
+            "file": "src/ui/UiTabsWindowItem.vue",
+            "docsRoute": "/#/tabs-window-item",
+            "upstreamFamilies": [
+                "VWindow"
+            ],
+            "props": [
+                {
+                    "name": "value",
+                    "type": "TabValue",
+                    "required": false
+                },
+                {
+                    "name": "eager",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiTabPanel",
+            "file": "src/ui/UiTabPanel.vue",
+            "docsRoute": "/#/tab-panel",
+            "upstreamFamilies": [
+                "VWindow"
+            ],
+            "props": [
+                {
+                    "name": "value",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "modelValue",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "idPrefix",
+                    "type": "string",
+                    "required": true
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiDialog",
+            "file": "src/ui/UiDialog.vue",
+            "docsRoute": "/#/dialog",
+            "upstreamFamilies": [
+                "VDialog"
+            ],
+            "props": [
+                {
+                    "name": "theme",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "open",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "scrollable",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "error",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "contentLabel",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "type": "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+                    "required": false
+                },
+                {
+                    "name": "placement",
+                    "type": "'center' | 'end'",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "update:open",
+                "present-change",
+                "opened",
+                "closed"
+            ],
+            "slots": [
+                "header",
+                "default",
+                "footer"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                }
+            ]
+        },
+        {
+            "name": "UiCollapse",
+            "file": "src/ui/UiCollapse.vue",
+            "docsRoute": "/#/collapse",
+            "upstreamFamilies": [
+                "VExpansionPanel"
+            ],
+            "props": [
+                {
+                    "name": "open",
+                    "type": "boolean",
+                    "required": true
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiSnackbarHost",
+            "file": "src/ui/UiSnackbarHost.vue",
+            "docsRoute": "/#/snackbar-host",
+            "upstreamFamilies": [
+                "VSnackbar",
+                "VSnackbarQueue"
+            ],
+            "props": [],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiCard",
+            "file": "src/ui/UiCard.vue",
+            "docsRoute": "/#/card",
+            "upstreamFamilies": [
+                "VCard"
+            ],
+            "props": [
+                {
+                    "name": "theme",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "subtitle",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "type": "'outlined' | 'elevated' | 'tonal' | 'flat'",
+                    "required": false
+                },
+                {
+                    "name": "density",
+                    "type": "'comfortable' | 'compact'",
+                    "required": false
+                },
+                {
+                    "name": "flush",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "as",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "header",
+                "media",
+                "default",
+                "actions"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiScrollArea",
+            "file": "src/ui/UiScrollArea.vue",
+            "docsRoute": "/#/scroll-area",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "focusable",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "height",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "maxHeight",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "axis",
+                    "type": "'vertical' | 'horizontal' | 'both'",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "always",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "scroll"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "update",
+                    "kind": "method",
+                    "expression": "update"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "scrollTo",
+                    "kind": "method",
+                    "expression": "(options: ScrollToOptions) => element.value?.scrollTo(options)"
+                }
+            ]
+        },
+        {
+            "name": "UiCodeBlock",
+            "file": "src/ui/UiCodeBlock.vue",
+            "docsRoute": "/#/code-block",
+            "upstreamFamilies": [
+                "VCode"
+            ],
+            "props": [
+                {
+                    "name": "code",
+                    "type": "String",
+                    "required": true
+                },
+                {
+                    "name": "language",
+                    "type": "String",
+                    "required": false
+                },
+                {
+                    "name": "maxHeight",
+                    "type": "String",
+                    "required": false
+                },
+                {
+                    "name": "streaming",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "Boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiTable",
+            "file": "src/ui/UiTable.vue",
+            "docsRoute": "/#/table",
+            "upstreamFamilies": [
+                "VDataTable",
+                "VTable"
+            ],
+            "props": [
+                {
+                    "name": "headers",
+                    "type": "readonly TableHeader[]",
+                    "required": true
+                },
+                {
+                    "name": "items",
+                    "type": "readonly Record<string, unknown>[]",
+                    "required": true
+                },
+                {
+                    "name": "itemValue",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "loading",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "emptyText",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "sortBy",
+                    "type": "readonly TableSort[]",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "height",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "fixedHeader",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "sort"
+            ],
+            "slots": [
+                "<dynamic>",
+                "loading",
+                "<dynamic>",
+                "no-data"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiDataTableServer",
+            "file": "src/ui/UiDataTableServer.vue",
+            "docsRoute": "/#/data-table-server",
+            "upstreamFamilies": [
+                "VDataTable"
+            ],
+            "props": [
+                {
+                    "name": "headers",
+                    "type": "readonly TableHeader[]",
+                    "required": true
+                },
+                {
+                    "name": "items",
+                    "type": "readonly Record<string, unknown>[]",
+                    "required": true
+                },
+                {
+                    "name": "itemsLength",
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "name": "itemValue",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "loading",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "error",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "itemsPerPageOptions",
+                    "type": "readonly number[]",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "height",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "fixedHeader",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "page",
+                    "propName": "page",
+                    "type": "number",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "1"
+                    },
+                    "origin": "defineModel"
+                },
+                {
+                    "name": "itemsPerPage",
+                    "propName": "itemsPerPage",
+                    "type": "number",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "10"
+                    },
+                    "origin": "defineModel"
+                },
+                {
+                    "name": "sortBy",
+                    "propName": "sortBy",
+                    "type": "TableSort[]",
+                    "required": false,
+                    "default": {
+                        "kind": "factory",
+                        "source": "() => []"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:options",
+                "retry",
+                "update:page",
+                "update:itemsPerPage",
+                "update:sortBy"
+            ],
+            "slots": [
+                "<forwarded-dynamic>",
+                "error",
+                "no-data"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiPagination",
+            "file": "src/ui/UiPagination.vue",
+            "docsRoute": "/#/pagination",
+            "upstreamFamilies": [
+                "VPagination"
+            ],
+            "props": [
+                {
+                    "name": "length",
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "name": "totalVisible",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "number",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "1"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiIcon",
+            "file": "src/components/Icon.vue",
+            "docsRoute": "/#/icons",
+            "upstreamFamilies": [
+                "VIcon"
+            ],
+            "props": [
+                {
+                    "name": "name",
+                    "type": "String",
+                    "required": false
+                },
+                {
+                    "name": "path",
+                    "type": "String",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "String",
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "type": "Number",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiActivity",
+            "file": "src/ui/UiActivity.vue",
+            "docsRoute": "/#/activity",
+            "upstreamFamilies": [
+                "VExpansionPanel"
+            ],
+            "props": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "status",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "tone",
+                    "type": "'neutral' | 'busy' | 'error' | 'success'",
+                    "required": false
+                },
+                {
+                    "name": "scrollable",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "type": "'default' | 'inline'",
+                    "required": false
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "filename",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "added",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "removed",
+                    "type": "number",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "open",
+                    "propName": "open",
+                    "type": "boolean",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "false"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:open"
+            ],
+            "slots": [
+                "default",
+                "actions"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiDiff",
+            "file": "src/ui/UiDiff.vue",
+            "docsRoute": "/#/diff",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "before",
+                    "type": "string | null",
+                    "required": true
+                },
+                {
+                    "name": "after",
+                    "type": "string | null",
+                    "required": true
+                },
+                {
+                    "name": "path",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "proposed",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "compact",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "inspectable",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "inspect"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiMarkdown",
+            "file": "src/ui/UiMarkdown.vue",
+            "docsRoute": "/#/markdown",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "source",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "streaming",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "link-click",
+                "rendered"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiFileChanges",
+            "file": "src/ui/UiFileChanges.vue",
+            "docsRoute": "/#/file-changes",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "items",
+                    "type": "FileChangeItem[]",
+                    "required": true
+                }
+            ],
+            "models": [],
+            "emits": [
+                "select",
+                "view-all"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiMessageActions",
+            "file": "src/ui/UiMessageActions.vue",
+            "docsRoute": "/#/message-actions",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "actions",
+                    "type": "MessageActionItem[]",
+                    "required": true
+                }
+            ],
+            "models": [],
+            "emits": [
+                "action"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiUsageMeter",
+            "file": "src/ui/UiUsageMeter.vue",
+            "docsRoute": "/#/usage-meter",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "used",
+                    "type": "number | null",
+                    "required": false
+                },
+                {
+                    "name": "capacity",
+                    "type": "number | null",
+                    "required": false
+                },
+                {
+                    "name": "estimated",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "compact",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "segments",
+                    "type": "UsageSegment[]",
+                    "required": false
+                },
+                {
+                    "name": "compositionLabel",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "compositionEstimated",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "inspect"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiBadge",
+            "file": "src/ui/UiBadge.vue",
+            "docsRoute": "/#/badge",
+            "upstreamFamilies": [
+                "VChip"
+            ],
+            "props": [
+                {
+                    "name": "tone",
+                    "type": "'neutral' | 'accent' | 'success' | 'warning' | 'error'",
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "type": "'soft' | 'outline'",
+                    "required": false
+                },
+                {
+                    "name": "color",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "closable",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "closeLabel",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "close"
+            ],
+            "slots": [
+                "icon",
+                "default"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiAlert",
+            "file": "src/ui/UiAlert.vue",
+            "docsRoute": "/#/alert",
+            "upstreamFamilies": [
+                "VAlert"
+            ],
+            "props": [
+                {
+                    "name": "tone",
+                    "type": "'info' | 'success' | 'warning' | 'error'",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "icon",
+                "default",
+                "actions"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiSpinner",
+            "file": "src/ui/UiSpinner.vue",
+            "docsRoute": "/#/spinner",
+            "upstreamFamilies": [
+                "VProgressCircular"
+            ],
+            "props": [
+                {
+                    "name": "size",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiMenu",
+            "file": "src/ui/UiMenu.vue",
+            "docsRoute": "/#/menu",
+            "upstreamFamilies": [
+                "VMenu"
+            ],
+            "props": [
+                {
+                    "name": "placement",
+                    "type": "MenuPlacement",
+                    "required": false
+                },
+                {
+                    "name": "panel",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "open",
+                    "propName": "open",
+                    "type": "boolean",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "false"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:open"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "close",
+                    "kind": "method",
+                    "expression": "close"
+                }
+            ]
+        },
+        {
+            "name": "UiMenuItem",
+            "file": "src/ui/UiMenuItem.vue",
+            "docsRoute": "/#/menu-item",
+            "upstreamFamilies": [
+                "VMenu"
+            ],
+            "props": [
+                {
+                    "name": "checked",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "danger",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "keepOpen",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "click"
+            ],
+            "slots": [
+                "icon",
+                "default",
+                "trailing"
+            ],
+            "expose": []
+        },
+        {
+            "name": "UiConfirmHost",
+            "file": "src/ui/UiConfirmHost.vue",
+            "docsRoute": "/#/confirm-host",
+            "upstreamFamilies": [],
+            "props": [],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiCheckbox",
+            "file": "src/ui/UiCheckbox.vue",
+            "docsRoute": "/#/checkbox",
+            "upstreamFamilies": [
+                "VCheckbox",
+                "VSelectionControl"
+            ],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "indeterminate",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "boolean",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "false"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiRadio",
+            "file": "src/ui/UiRadio.vue",
+            "docsRoute": "/#/radio",
+            "upstreamFamilies": [
+                "VRadio",
+                "VSelectionControl"
+            ],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "value",
+                    "type": "T",
+                    "required": true
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "T | null",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "null"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiProgress",
+            "file": "src/ui/UiProgress.vue",
+            "docsRoute": "/#/progress",
+            "upstreamFamilies": [
+                "VProgressLinear"
+            ],
+            "props": [
+                {
+                    "name": "value",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "max",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "tone",
+                    "type": "'accent' | 'success' | 'warning' | 'error'",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiCopyButton",
+            "file": "src/ui/UiCopyButton.vue",
+            "docsRoute": "/#/copy-button",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "text",
+                    "type": "string | (() => string)",
+                    "required": true
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "copiedLabel",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [
+                "copied",
+                "error"
+            ],
+            "slots": [],
+            "expose": []
+        },
+        {
+            "name": "UiColorSwatches",
+            "file": "src/ui/UiColorSwatches.vue",
+            "docsRoute": "/#/color-swatches",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "colors",
+                    "type": "ColorSwatch[]",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "string | null",
+                    "required": false,
+                    "default": {
+                        "kind": "explicit",
+                        "source": "null"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.querySelector<HTMLInputElement>('input:checked, input:not(:disabled)')?.focus()"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiCascader",
+            "file": "src/ui/UiCascader.vue",
+            "docsRoute": "/#/cascader",
+            "upstreamFamilies": [],
+            "props": [
+                {
+                    "name": "width",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "minWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "maxWidth",
+                    "type": "string | number",
+                    "required": false
+                },
+                {
+                    "name": "inline",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "hint",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "labelPosition",
+                    "type": "'top' | 'left'",
+                    "required": false
+                },
+                {
+                    "name": "labelWidth",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "dense",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "ghost",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rounded",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "rules",
+                    "type": "readonly ValidationRule[]",
+                    "required": false
+                },
+                {
+                    "name": "errorMessages",
+                    "type": "string | readonly string[]",
+                    "required": false
+                },
+                {
+                    "name": "maxErrors",
+                    "type": "number",
+                    "required": false
+                },
+                {
+                    "name": "validateOn",
+                    "type": "ValidateOn",
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "type": "readonly CascaderItem[]",
+                    "required": true
+                },
+                {
+                    "name": "placeholder",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "clearable",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "changeOnSelect",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "showAllLevels",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "separator",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "invalid",
+                    "type": "boolean",
+                    "required": false
+                }
+            ],
+            "models": [
+                {
+                    "name": "modelValue",
+                    "propName": "modelValue",
+                    "type": "CascaderValue[]",
+                    "required": false,
+                    "default": {
+                        "kind": "factory",
+                        "source": "() => []"
+                    },
+                    "origin": "defineModel"
+                }
+            ],
+            "emits": [
+                "update:modelValue"
+            ],
+            "slots": [],
+            "expose": [
+                {
+                    "name": "element",
+                    "kind": "property",
+                    "expression": "element"
+                },
+                {
+                    "name": "focus",
+                    "kind": "method",
+                    "expression": "() => element.value?.focus()"
+                },
+                {
+                    "name": "close",
+                    "kind": "method",
+                    "expression": "close"
+                },
+                {
+                    "name": "validate",
+                    "kind": "method",
+                    "expression": "control.validate"
+                },
+                {
+                    "name": "reset",
+                    "kind": "method",
+                    "expression": "control.reset"
+                },
+                {
+                    "name": "resetValidation",
+                    "kind": "method",
+                    "expression": "control.resetValidation"
+                },
+                {
+                    "name": "errors",
+                    "kind": "property",
+                    "expression": "control.errors"
+                }
+            ]
+        },
+        {
+            "name": "UiThemeProvider",
+            "file": "src/ui/UiThemeProvider.vue",
+            "docsRoute": "/#/theme-provider",
+            "upstreamFamilies": [
+                "VThemeProvider"
+            ],
+            "props": [
+                {
+                    "name": "theme",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "withBackground",
+                    "type": "boolean",
+                    "required": false
+                },
+                {
+                    "name": "as",
+                    "type": "string",
+                    "required": false
+                }
+            ],
+            "models": [],
+            "emits": [],
+            "slots": [
+                "default"
+            ],
+            "expose": []
+        }
+    ],
+    "features": [
+        {
+            "name": "display/grid",
+            "status": "部分覆盖",
+            "priority": "P0",
+            "note": "旧断点、无统一 useDisplay、gap/响应式工具类不足"
+        },
+        {
+            "name": "defaults/aliases/blueprints",
+            "status": "缺失",
+            "priority": "P0",
+            "note": "无全局/局部 DefaultsProvider 或统一插件配置"
+        },
+        {
+            "name": "control surface and common props",
+            "status": "部分覆盖",
+            "priority": "P0",
+            "note": "内置 label/hint/rules；统一 density/variant/color/slots 仍不齐"
+        },
+        {
+            "name": "form appearance inheritance",
+            "status": "静态缺口已确认",
+            "priority": "P0",
+            "note": "SFC 编译确认省略 Boolean props 阻断 nullish 继承；四类控件模板未消费外观状态"
+        },
+        {
+            "name": "validation timing/rules service",
+            "status": "部分覆盖",
+            "priority": "P1",
+            "note": "无 invalid-input/lazy/eager/规则别名；reset 恢复初始值而非清空，resetValidation 与提交事件生命周期不同"
+        },
+        {
+            "name": "selection values and groups",
+            "status": "部分覆盖",
+            "priority": "P1",
+            "note": "Select 单值、Checkbox/Switch 布尔、Radio 手工成组"
+        },
+        {
+            "name": "overlay/activator/location/scroll",
+            "status": "部分覆盖",
+            "priority": "P1",
+            "note": "原生 Dialog/Popover 已有；公共 Overlay 和完整策略未齐"
+        },
+        {
+            "name": "client/server data pipelines",
+            "status": "部分覆盖",
+            "priority": "P1",
+            "note": "Server 基础模型已有，无 multiSort/选择/展开/分组/虚拟表格"
+        },
+        {
+            "name": "application layout",
+            "status": "缺失",
+            "priority": "P1",
+            "note": "只有基础栅格，无布局项注册与占位协调"
+        },
+        {
+            "name": "virtualization/lazy/infinite",
+            "status": "缺失",
+            "priority": "P1",
+            "note": "ScrollArea 不等于 VirtualScroll"
+        },
+        {
+            "name": "theme",
+            "status": "基础已覆盖",
+            "priority": "P2",
+            "note": "自定义/浅深/system/provider/过渡；统一 props、颜色算法及直接写入过渡有差异"
+        },
+        {
+            "name": "icons",
+            "status": "部分覆盖",
+            "priority": "P2",
+            "note": "MDI SVG 注册，无通用 icon sets/defaultSet/aliases 服务"
+        },
+        {
+            "name": "locale/RTL/date",
+            "status": "部分覆盖",
+            "priority": "P2",
+            "note": "全局 zh/en，无 LocaleProvider/fallback/完整 RTL/date adapter"
+        },
+        {
+            "name": "routing/button links",
+            "status": "缺失",
+            "priority": "P1",
+            "note": "Button 没有 href/to 与路由链接行为"
+        },
+        {
+            "name": "goTo",
+            "status": "内部能力",
+            "priority": "P2",
+            "note": "Markdown 内有平滑定位，无公共 goTo 服务"
+        },
+        {
+            "name": "transitions",
+            "status": "内部能力",
+            "priority": "P2",
+            "note": "组件内部及主题动效，无完整公共过渡组件体系"
+        },
+        {
+            "name": "directives",
+            "status": "部分覆盖",
+            "priority": "P2",
+            "note": "只公开 vRipple；其他观察/触摸/滚动等指令无公共契约"
+        },
+        {
+            "name": "SSR/hydration",
+            "status": "未验收",
+            "priority": "P2",
+            "note": "没有对等库级 SSR 验收，模块防护不能代替支持保证"
+        },
+        {
+            "name": "styling and accessibility policy",
+            "status": "保留设计",
+            "priority": "P2",
+            "note": "UAH tokens/字号/标签方向/指针释放焦点继续保留，键盘可访问性不降低"
+        }
+    ],
+    "formInheritanceEvidence": [
+        {
+            "name": "UiInput",
+            "compiledBooleanProps": [
+                "dense: { type: Boolean, required: false, default: undefined },",
+                "ghost: { type: Boolean, required: false, default: undefined },",
+                "rounded: { type: Boolean, required: false, default: undefined },"
+            ],
+            "templateConsumesAppearanceState": true,
+            "browserReproductionInThisAudit": false
+        },
+        {
+            "name": "UiSwitch",
+            "compiledBooleanProps": [
+                "dense: { type: Boolean, required: false },",
+                "ghost: { type: Boolean, required: false },",
+                "rounded: { type: Boolean, required: false },"
+            ],
+            "templateConsumesAppearanceState": false,
+            "browserReproductionInThisAudit": false
+        },
+        {
+            "name": "UiCheckbox",
+            "compiledBooleanProps": [
+                "dense: { type: Boolean, required: false },",
+                "ghost: { type: Boolean, required: false },",
+                "rounded: { type: Boolean, required: false },"
+            ],
+            "templateConsumesAppearanceState": false,
+            "browserReproductionInThisAudit": false
+        },
+        {
+            "name": "UiRadio",
+            "compiledBooleanProps": [
+                "dense: { type: Boolean, required: false },",
+                "ghost: { type: Boolean, required: false },",
+                "rounded: { type: Boolean, required: false },"
+            ],
+            "templateConsumesAppearanceState": false,
+            "browserReproductionInThisAudit": false
+        },
+        {
+            "name": "UiColorSwatches",
+            "compiledBooleanProps": [
+                "dense: { type: Boolean, required: false },",
+                "ghost: { type: Boolean, required: false },",
+                "rounded: { type: Boolean, required: false },"
+            ],
+            "templateConsumesAppearanceState": false,
+            "browserReproductionInThisAudit": false
+        }
+    ],
+    "validation": {
+        "unitTests": {
+            "passed": 58,
+            "failed": 0,
+            "log": "artifacts/vuetify-audit/local-tests.log"
+        },
+        "docsApi": "48 exported components matched one component page and one API record each; source-contract tests passed",
+        "browserAcceptanceForNewFeatures": "not performed: this is an audit, no product implementation changes"
+    }
+}

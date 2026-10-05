@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import type { LayoutDensity } from './layout';
-withDefaults(defineProps<{
+import { computed } from 'vue';
+import { useDefaults } from './defaults';
+const rawProps = withDefaults(defineProps<{
     tag?: string;
-    size?: number;
+    size?: number | string;
+    gap?: number | string | (number | string)[];
     density?: LayoutDensity;
     noGutters?: boolean;
     align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
     justify?: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly';
-}>(), { tag: 'div', size: 12, density: 'default', align: 'stretch', justify: 'start' });
+}>(), { tag: 'div', size: 12, density: 'default' });
+const props = useDefaults(rawProps, 'URow');
+const gapLength = (value: number | string | undefined) => typeof value === 'number' ? `${Math.max(0, value)}px` : value;
+const styles = computed(() => ({
+    '--ui-grid-size': Number.isFinite(Number(props.size)) && Number(props.size) > 0 ? Number(props.size) : 12,
+    '--ui-grid-gap': gapLength(Array.isArray(props.gap) ? props.gap[0] : props.gap),
+    rowGap: gapLength(Array.isArray(props.gap) ? props.gap[1] ?? props.gap[0] : props.gap),
+    alignItems: props.align, justifyContent: props.justify
+}));
 </script>
 
 <template>
-    <component :is="tag" class="ui-row" :data-density="density" :class="{ 'has-no-gutters': noGutters }"
-        :style="{ '--ui-grid-size': Number.isFinite(size) && size > 0 ? size : 12, alignItems: align, justifyContent: justify }"><slot /></component>
+    <component :is="props.tag" class="ui-row" :data-density="props.density" :class="{ 'has-no-gutters': props.noGutters }" :style="styles"><slot /></component>
 </template>

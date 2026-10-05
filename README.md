@@ -19,11 +19,29 @@ import { UiButton, UiTable, UiDataTableServer, UiPagination } from '@lingyzh/ui'
 import '@lingyzh/ui/styles.css';
 ```
 
-For local development with UAH, check out both repositories side by side and use `"@lingyzh/ui": "file:../UI"`. Run `npm ci` in UI first and then UAH. Vite consumers using the local link must deduplicate Vue (`resolve.dedupe: ['vue']`) to share the host Vue instance. For CI, clone both repositories at their recorded checkpoint revisions into sibling directories.
+UAH installs a fixed published npm version of `@lingyzh/ui` and deduplicates Vue (`resolve.dedupe: ['vue']`). Verify shared changes in this repository's demos, publish an accepted version, then upgrade the consumer dependency.
 
 The npm package includes the library source and documentation components, not the generated `dist` output. Headless behavior uses `@vuetify/v0`. There is no Electron runtime dependency in the components; Electron is used only as the test host.
 
 Design tokens, components, icons and their demos are owned here. UAH keeps its application layout, business state and prototype. Update this library and visually verify the docs before changing consuming screens. See [component contracts](src/ui/README.md).
+
+## Themes
+
+The default light/dark themes retain the existing UAH palette. Register themes once per app; `system` follows the OS appearance. See the interactive `/#/theme` and `/#/theme-provider` docs for the complete options and methods.
+
+```js
+import { createApp } from 'vue';
+import { createUiTheme } from '@lingyzh/ui';
+const theme = createUiTheme({
+    defaultTheme: 'system',
+    themes: { ocean: { colors: { primary: '#246a91' } } }
+});
+createApp(App).use(theme).mount('#app');
+```
+
+Use `useUiTheme()` in setup, then `theme.change('dark')`, `theme.toggle()` or `theme.cycle()`. `mode.value` retains the requested mode; `name.value` resolves `system` to `light` or `dark`. Edit `theme.themes.value` to update colors reactively. `primary` is the readable accent color; `primary-surface` is the filled accent and defaults to a custom `primary` when omitted. Theme colors expose `--ui-theme-{color}` and `--{color}`, with `text-primary`, `bg-primary`, and `border-primary` utilities. Explicit `on-{color}` overrides the automatically chosen black/white text.
+
+Wrap a region with `<UiThemeProvider theme="dark" with-background>…</UiThemeProvider>` or set `theme` on `UiCard` / `UiDialog`. Nested components and teleported notifications inherit that region's theme. The provider adds no spacing. Theme transitions are enabled by default; system or application reduced motion disables them and ends an active transition. Set `transition: false` to opt out explicitly. Markdown details animations and smooth centered footnote navigation also respect reduced motion. Scroll boundaries may constrain anchor centering.
 
 长表单弹窗：UiDialog 的 `scrollable` 模式使用 UiScrollArea，`header` / `footer` 插槽固定，`error` 为固定顶部错误，`content-label` 命名滚动区域。默认模式保持兼容。真实演示见 `/#/dialog`。
 

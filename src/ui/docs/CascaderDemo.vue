@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { UiCascader, UiForm, UiRow, UiCol, UiInput, UiCheckbox, UiButton, UiFormActions } from '../index';
+import { UCascader, UForm, URow, UCol, UTextField, UCheckbox, UButton, UFormActions } from '../index';
 
 const disabled = ref(false);
 const readonly = ref(false);
@@ -30,17 +30,17 @@ const items = computed(() => choices);
 <template>
     <div class="cascader-demo">
         <div class="cascader-demo-toolbar">
-            <UiCheckbox v-model="disabled">统一禁用</UiCheckbox><UiCheckbox v-model="readonly">统一只读</UiCheckbox>
-            <UiCheckbox v-model="dense">紧凑控件</UiCheckbox><UiCheckbox v-model="ghost">透明控件</UiCheckbox><UiCheckbox v-model="rounded">圆角</UiCheckbox>
-            <UiCheckbox v-model="changeOnSelect">允许选择父级</UiCheckbox><UiCheckbox v-model="showAllLevels">显示完整路径</UiCheckbox>
+            <u-checkbox v-model="disabled">统一禁用</u-checkbox><u-checkbox v-model="readonly">统一只读</u-checkbox>
+            <u-checkbox v-model="dense">紧凑控件</u-checkbox><u-checkbox v-model="ghost">透明控件</u-checkbox><u-checkbox v-model="rounded">圆角</u-checkbox>
+            <u-checkbox v-model="changeOnSelect">允许选择父级</u-checkbox><u-checkbox v-model="showAllLevels">显示完整路径</u-checkbox>
         </div>
-        <UiForm v-model="valid" :disabled="disabled" :readonly="readonly" :dense="dense" :ghost="ghost" :rounded="rounded" aria-label="级联选择表单" @submit="status = '已保存区域配置'" @invalid="status = '请先选择区域'">
-            <UiRow density="comfortable">
-                <UiCol :cols="12" :md="6"><UiCascader v-model="path" :items="items" label="所属区域" hint="逐级点击或用方向键导航；默认选择完整叶节点路径。" required clearable :change-on-select="changeOnSelect" :show-all-levels="showAllLevels" /></UiCol>
-                <UiCol :cols="12" :md="6"><UiInput v-model="name" label="项目名称" hint="与级联选择器使用相同高度、边框和标签间距。" /></UiCol>
-                <UiCol :cols="12"><UiFormActions><template #leading><span role="status">{{ status }} · {{ valid === null ? '未验证' : valid ? '有效' : '无效' }}</span></template><UiButton type="reset">重置级联表单</UiButton><UiButton type="submit" variant="primary">保存区域</UiButton></UiFormActions></UiCol>
-            </UiRow>
-        </UiForm>
+        <u-form v-model="valid" :disabled="disabled" :readonly="readonly" :dense="dense" :ghost="ghost" :rounded="rounded" aria-label="级联选择表单" @submit="status = '已保存区域配置'" @invalid="status = '请先选择区域'">
+            <u-row density="comfortable">
+                <u-col :cols="12" :md="6"><u-cascader v-model="path" :items="items" label="所属区域" hint="逐级点击或用方向键导航；默认选择完整叶节点路径。" required clearable :change-on-select="changeOnSelect" :show-all-levels="showAllLevels" /></u-col>
+                <u-col :cols="12" :md="6"><u-text-field v-model="name" label="项目名称" hint="与级联选择器使用相同高度、边框和标签间距。" /></u-col>
+                <u-col :cols="12"><u-form-actions><template #leading><span role="status">{{ status }} · {{ valid === null ? '未验证' : valid ? '有效' : '无效' }}</span></template><u-button type="reset">重置级联表单</u-button><u-button type="submit" variant="primary">保存区域</u-button></u-form-actions></u-col>
+            </u-row>
+        </u-form>
         <p class="cascader-demo-value">值路径：<code>{{ JSON.stringify(path) }}</code></p>
         <p class="cascader-demo-help">Tab 聚焦触发器；Enter／↓ 打开，↑／↓、Home／End 在同级移动，→ 展开下级，← 返回父级，Enter／Space 选择，Esc／Tab 关闭。禁用分支与叶节点不可选。</p>
     </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { createVNode, getCurrentInstance, onBeforeUnmount, ref, render, watch } from 'vue';
+import { createVNode, getCurrentInstance, onBeforeUnmount, onMounted, ref, render, watch } from 'vue';
+import { createMarkdownDetailsMotion } from './markdownDetails';
 import { patchMarkdownDom, sanitizedMarkdown } from './markdownDom';
 import UiCodeBlock from './UiCodeBlock.vue';
 import 'katex/dist/katex.min.css';
@@ -10,6 +11,17 @@ let version = 0;
 let disposed = false;
 const context = getCurrentInstance()?.appContext;
 const codeRoots = new Set<HTMLElement>();
+const reduced = () => document.documentElement.dataset.reducedMotion === 'true' || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const detailsMotion = createMarkdownDetailsMotion();
+let motionObserver: MutationObserver | undefined;
+let motionMedia: MediaQueryList | undefined;
+function settleMotion() { if (reduced()) detailsMotion.settle(); }
+onMounted(() => {
+    motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+    motionMedia.addEventListener('change', settleMotion);
+    motionObserver = new MutationObserver(settleMotion);
+    motionObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-reduced-motion'] });
+});
 watch([() => props.html, element], async () => {
     if (!element.value) return;
     const target = element.value;
@@ -38,9 +50,9 @@ watch([() => props.html, element], async () => {
         } catch { /* Keep readable source for unsupported math. */ }
     });
 }, { flush: 'post', immediate: true });
-onBeforeUnmount(() => { disposed = true; version++; codeRoots.forEach(root => render(null, root)); codeRoots.clear(); });
+onBeforeUnmount(() => { disposed = true; version++; detailsMotion.dispose(); motionObserver?.disconnect(); motionMedia?.removeEventListener('change', settleMotion); codeRoots.forEach(root => render(null, root)); codeRoots.clear(); });
 </script>
 
 <template>
-    <div ref="element" class="ui-markdown-content"></div>
+    <div ref="element" class="ui-markdown-content" @click="detailsMotion.click"></div>
 </template>

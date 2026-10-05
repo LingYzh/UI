@@ -26,9 +26,9 @@
 .ui-markdown-content li > p { margin: 4px 0; }
 .ui-markdown-content .task-list-item { list-style: none; }
 .ui-markdown-content .task-list-item-checkbox { margin: 0 7px 0 -20px; accent-color: var(--accent); vertical-align: middle; }
-.ui-markdown-content code { padding: 2px 5px; border-radius: 4px; background: var(--soft); font-family: var(--mono); font-size: .9em; }
+.ui-markdown-content code { padding: 2px 5px; border-radius: 4px; background: var(--soft); color: var(--primary, var(--accent-text)); font-family: var(--mono); font-size: .9em; }
 .ui-markdown-content pre { max-width: 100%; overflow: auto; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); font-family: var(--mono); line-height: 1.65; }
-.ui-markdown-content pre code { padding: 0; background: transparent; }
+.ui-markdown-content pre code { padding: 0; background: transparent; color: inherit; }
 .ui-markdown-content hr { margin: 20px 0; border: 0; border-top: 1px solid var(--line); }
 .ui-markdown-content table { min-width: max-content; width: 100%; border-collapse: collapse; font-size: 13px; }
 .ui-markdown-content th, .ui-markdown-content td { padding: 9px 14px; border: 1px solid var(--border); text-align: left; }
@@ -36,10 +36,10 @@
 .ui-markdown-content [align="center"] { text-align: center; }
 .ui-markdown-content [align="right"] { text-align: right; }
 .ui-markdown-content img { display: block; max-width: 100%; height: auto; margin: 12px 0; border-radius: 8px; }
-.ui-markdown-content details { margin: 12px 0; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; }
+.ui-markdown-content details { box-sizing: border-box; margin: 12px 0; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; }
 .ui-markdown-content summary { cursor: pointer; font-weight: 600; }
 .ui-markdown-content details[open] > summary { margin-bottom: 10px; }
-.ui-markdown-content mark { padding: 1px 3px; border-radius: 3px; background: var(--amber-background); color: var(--text); }
+.ui-markdown-content mark { padding: 1px 3px; border-radius: 3px; background: var(--amber-background); color: var(--primary, var(--accent-text)); }
 .ui-markdown-content dt { font-weight: 600; }
 .ui-markdown-content dd { margin: 4px 0 12px 20px; color: var(--muted); }
 .ui-markdown-content .footnotes { font-size: 12px; color: var(--muted); }

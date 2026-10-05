@@ -28,9 +28,8 @@
 .ui-code-block .ui-scroll-area pre { max-height: none; overflow: visible; }
 @media (prefers-reduced-motion: reduce) { .ui-scroll-track { transition: none; } }
 :root[data-reduced-motion="true"] .ui-scroll-track { transition: none; }
-.ui-ripple-target { position: relative; }
-.ui-ripple-layer { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 1; }
-.ui-ripple-wave { position: absolute; border-radius: 50%; pointer-events: none; }
+.ui-ripple-layer { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; color: inherit; contain: strict; z-index: 1; }
+.ui-ripple-wave { position: absolute; border-radius: 50%; pointer-events: none; background: currentColor; opacity: 0; will-change: transform, opacity; }
 .ui-card { --card-padding: 24px; min-width: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); overflow: clip; }
 .ui-card--compact { --card-padding: 16px; }
 .ui-card--elevated { border-color: transparent; box-shadow: var(--shadow); }

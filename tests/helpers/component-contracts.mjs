@@ -45,6 +45,17 @@ function createTypeResolver(root) {
             (ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement)) && statement.name.text === imported.name);
         return declaration ? { sf: imported.sf, declaration } : undefined;
     };
+    const documentation = (node) => {
+        const comments = node.jsDoc || [];
+        return comments.map((doc) => typeof doc.comment === 'string' ? doc.comment : ts.displayPartsToString(doc.comment || []))
+            .map((value) => value.trim()).filter(Boolean).join(' ');
+    };
+    const literalKeys = (node) => {
+        if (!node) return [];
+        if (ts.isUnionTypeNode(node)) return node.types.flatMap(literalKeys);
+        if (ts.isLiteralTypeNode(node) && (ts.isStringLiteral(node.literal) || ts.isNumericLiteral(node.literal))) return [node.literal.text];
+        return [];
+    };
     function typeMembers(typeNode, sf, origins = []) {
         if (!typeNode) return [];
         if (ts.isParenthesizedTypeNode(typeNode)) return typeMembers(typeNode.type, sf, origins);
@@ -53,13 +64,21 @@ function createTypeResolver(root) {
             name: member.name.getText(sf).replace(/^['"]|['"]$/g, ''),
             type: member.type?.getText(sf) || 'unknown',
             required: !member.questionToken,
+            documentation: documentation(member),
             origin: relative(root, sf.fileName),
             declaration: member.getText(sf),
             originStack: origins,
         }));
         if (!ts.isTypeReferenceNode(typeNode)) return [];
         const name = typeNode.typeName.getText(sf);
-        if (['Pick', 'Omit', 'Partial', 'Required', 'Readonly'].includes(name) || origins.includes(`${relative(root, sf.fileName)}#${name}`)) return [];
+        if (origins.includes(`${relative(root, sf.fileName)}#${name}`)) return [];
+        if (['Pick', 'Omit', 'Partial', 'Required', 'Readonly'].includes(name)) {
+            const members = typeMembers(typeNode.typeArguments?.[0], sf, origins);
+            if (name === 'Readonly') return members;
+            if (name === 'Partial' || name === 'Required') return members.map((member) => ({ ...member, required: name === 'Required' }));
+            const keys = new Set(literalKeys(typeNode.typeArguments?.[1]));
+            return members.filter((member) => name === 'Pick' ? keys.has(member.name) : !keys.has(member.name));
+        }
         const found = findDeclaration(sf, name);
         if (!found) return [];
         const nextOrigins = [...origins, `${relative(root, found.sf.fileName)}#${name}`];
@@ -69,6 +88,7 @@ function createTypeResolver(root) {
             name: member.name.getText(found.sf).replace(/^['"]|['"]$/g, ''),
             type: member.type?.getText(found.sf) || 'unknown',
             required: !member.questionToken,
+            documentation: documentation(member),
             origin: relative(root, found.sf.fileName),
             declaration: member.getText(found.sf),
             originStack: nextOrigins,
@@ -110,7 +130,8 @@ function defaultValue(prop, node, sf) {
         return { kind: factory ? 'factory' : 'explicit', source };
     }
     if (prop.required) return { kind: 'required' };
-    if (!prop.model && /^(boolean|Boolean)$/.test(prop.type.trim())) return { kind: 'vue-boolean-false' };
+    const unionParts = prop.type.split('|').map((part) => part.trim().replace(/^\(|\)$/g, ''));
+    if (!prop.model && unionParts.some((part) => part === 'boolean' || part === 'Boolean')) return { kind: 'vue-boolean-false' };
     return { kind: 'undefined' };
 }
 
@@ -154,6 +175,7 @@ function propsFor(root, scriptFile, sf, formContextAware) {
         const apiProp = {
             name, type: last.type, required: last.required,
             default: defaultValue(last, defaults.get(name), sf),
+            documentation: last.documentation || '',
             origin: last.origin,
             declaredFrom: entries.map((entry) => ({ origin: entry.origin, declaration: entry.declaration, originStack: entry.originStack })),
         };
@@ -310,20 +332,106 @@ export function extractComponentContract(root, componentName, componentFile) {
     const models = modelsFor(sf);
     const emits = emitsFor(sf);
     for (const model of models) emits.push({ name: `update:${model.name}`, parameters: [{ name: 'value', type: model.type, optional: false, rest: false }], origin: 'defineModel' });
+    const uniqueEmits = [...new Map(emits.map((event) => [event.name, event])).values()];
+    const slots = templateSlots(parsed.descriptor.template?.content);
     return {
         name: componentName,
         file: relative(root, filename),
         props,
         models,
-        emits,
-        slots: templateSlots(parsed.descriptor.template?.content),
+        emits: uniqueEmits,
+        slots,
+        slotForwarding: slotForwarding(root, filename, sf, parsed.descriptor.template?.content),
         expose: exposeFor(sf),
     };
 }
 
-export function extractPublicComponentContracts(root) {
+function slotForwarding(root, filename, sf, template) {
+    if (!template) return [];
+    const imported = new Map();
+    for (const statement of sf.statements) {
+        if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier) || !statement.moduleSpecifier.text.endsWith('.vue')) continue;
+        const specifier = path.resolve(path.dirname(filename), statement.moduleSpecifier.text);
+        const target = [specifier, `${specifier}.vue`, `${specifier}.ts`, path.join(specifier, 'index.vue')].find(existsSync);
+        if (!target) continue;
+        const clause = statement.importClause;
+        if (clause?.name) imported.set(clause.name.text, relative(root, target));
+        const bindings = clause?.namedBindings;
+        if (bindings && ts.isNamedImports(bindings)) for (const binding of bindings.elements) imported.set(binding.name.text, relative(root, target));
+    }
+    if (!imported.size) return [];
+    const ast = parseTemplate(template, { comments: false });
+    const hasOutlet = (node) => node.type === 1 && node.tag === 'slot' || (node.children || []).some(hasOutlet);
+    const slotProp = (node) => node.props?.find((prop) => prop.type === 7 && prop.name === 'slot');
+    const found = [];
+    const walk = (node, componentTag) => {
+        if (node.type === 1 && imported.has(node.tag)) componentTag = node.tag;
+        if (componentTag && node.type === 1 && node.tag === 'template' && hasOutlet(node)) {
+            const directive = slotProp(node);
+            if (directive) {
+                const iteration = node.props?.find((prop) => prop.type === 7 && prop.name === 'for')?.exp?.content || '';
+                const dynamic = !!directive.arg && !directive.arg.isStatic;
+                const name = dynamic ? '*' : directive.arg?.content || 'default';
+                const exclusions = [...iteration.matchAll(/(?:key|name)\s*!==?\s*['"]([^'"]+)['"]/g)].map((match) => match[1]);
+                found.push({ component: componentTag, file: imported.get(componentTag), name, dynamic, exclusions, iterationExpression: iteration });
+            }
+        }
+        for (const child of node.children || []) walk(child, componentTag);
+    };
+    walk(ast, undefined);
+    const unique = new Map();
+    for (const edge of found) unique.set(`${edge.file}:${edge.name}:${edge.dynamic}`, edge);
+    return [...unique.values()];
+}
+
+function resolveForwardedSlots(contracts) {
+    const byFile = new Map(contracts.map((contract) => [contract.file, contract]));
+    const cache = new Map();
+    const resolving = new Set();
+    const identity = (slot) => slot.name === '<dynamic>' ? `dynamic:${slot.pattern}` : `named:${slot.name}`;
+    const resolve = (contract) => {
+        if (cache.has(contract.name)) return cache.get(contract.name);
+        if (resolving.has(contract.name)) throw new Error(`Cyclic slot forwarding involving ${contract.name}`);
+        resolving.add(contract.name);
+        const slots = new Map();
+        for (const slot of contract.slots.filter((entry) => entry.kind !== 'forwarded')) slots.set(identity(slot), structuredClone(slot));
+        for (const edge of contract.slotForwarding || []) {
+            const target = byFile.get(edge.file);
+            if (!target) continue;
+            const childSlots = resolve(target);
+            for (const childSlot of childSlots) {
+                if (!edge.dynamic && childSlot.name !== edge.name && childSlot.pattern !== edge.name) continue;
+                if (edge.dynamic && edge.exclusions.includes(childSlot.name)) continue;
+                const key = identity(childSlot);
+                const existing = slots.get(key);
+                if (!existing) {
+                    slots.set(key, structuredClone(childSlot));
+                    continue;
+                }
+                const localBindings = existing.payload || [];
+                const inheritedBindings = childSlot.payload || [];
+                const onlyForwardedPayload = localBindings.every((binding) => binding.name === '<scope>' || binding.name === '<spread>');
+                const payload = onlyForwardedPayload ? inheritedBindings : [...inheritedBindings, ...localBindings.filter((binding) => binding.name !== '<scope>' && binding.name !== '<spread')];
+                existing.payload = payload.filter((binding, index) => payload.findIndex((item) => item.name === binding.name) === index);
+                existing.hasFallback = existing.hasFallback || childSlot.hasFallback;
+            }
+        }
+        resolving.delete(contract.name);
+        const result = [...slots.values()];
+        cache.set(contract.name, result);
+        return result;
+    };
+    for (const contract of contracts) contract.slots = resolve(contract);
+    return contracts;
+}
+
+export function extractPublicComponentContracts(root, { includeLegacy = false } = {}) {
     const indexFile = path.resolve(root, 'src/ui/index.ts');
     const index = read(indexFile);
     const components = [...index.matchAll(/export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"]([^'"]+\.vue)['"]/g)];
-    return components.map((match) => extractComponentContract(root, match[1], path.relative(root, path.resolve(path.dirname(indexFile), match[2]))));
+    const canonical = components.some(match => /^U(?!i[A-Z])/.test(match[1]));
+    const selected = components.filter(match => !canonical || includeLegacy || /^U(?!i[A-Z])/.test(match[1]));
+    const names = selected.map((match) => match[1]);
+    if (new Set(names).size !== names.length) throw new Error('src/ui/index.ts contains duplicate public component names');
+    return resolveForwardedSlots(selected.map((match) => extractComponentContract(root, match[1], path.relative(root, path.resolve(path.dirname(indexFile), match[2])))));
 }

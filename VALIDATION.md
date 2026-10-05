@@ -210,3 +210,45 @@ select-initialization 专项增加更新已选中 option 文字、断言 selecte
 UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
 
 消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。
+
+## 2026-10-05：主题、Markdown 与 Ripple 本地验收
+
+- root 先盘点 tokens、Card/Dialog、Markdown、Snackbar、Button/Tabs 和指令，再对照 Vuetify 官方 theme/ripple 文档与 Ripple 源码。主题及 Markdown 计划、Ripple 缺陷原因和行为边界见 docs/THEME-MARKDOWN-PLAN-2026-10-05.md。全部产品实现、样式、真实 demo 和视觉验收由 root 完成，辅助代理仅承担专项测试。
+- 新增主题服务和局部 Provider，保留原浅深 palette。覆盖响应式自定义颜色、on-color、辅助类、system变化、切换动画／减少动效、局部Card和Dialog、并行Mermaid独立配色；测试同一配置创建多个实例不共享可变定义。fallback 使用 detached effect scope，独立 UiPreview 离开 setup 后仍有效，卸载恢复根变量／主题属性并清理生成样式与监听。
+- Markdown code/mark 使用 primary；details 正反向高度动画可快速反转且支持键盘，脚注与返回平滑居中并转移焦点；手动／系统减少动态效果立即完成。滚动边界可能限制居中，文档明确说明，真实 demo 使用 ScrollArea 和足够的上下空间验证精确居中。
+- Ripple 原 blur 清空与 vPointerBlur 冲突，start 清空也破坏连续点击。现在每个波纹独立完成250ms扩散／100ms显现、最少250ms显示、300ms淡出。触摸延迟80ms，快速tap提交，延迟内滑动取消；键盘居中并忽略重复，嵌套最内层响应，.stop不产生自身波纹且click正常冒泡。点击后 loading 或动态关闭不截断既有波纹；减少动效、页面隐藏、卸载立即清理。仅静态宿主临时定位，退场后恢复，避免覆盖绝对／固定定位。
+- typecheck、58/58单测及文档／库build通过；日志 artifacts/ripple-{typecheck,unit,build}.log。API测试逐项对照48组件的props／类型／默认值／模型事件／插槽／expose，并编译全部组件源码示例。
+- 最终全UI20/20通过（62路由无页面横向溢出）：artifacts/ui-G5YeQ8。Ripple几何／旧组件与快速松手回归78项通过：artifacts/ripple-GVjh5S；激活专项43项通过：artifacts/ripple-activation-v0fBHd。主题／Markdown12组通过：artifacts/theme-markdown-RA2pzB；独立预览3组通过：artifacts/theme-preview-BuAUCk。全部报告无pageerror。
+- root亲自复核最终浅深快速松手截图、局部浅深Card、390px窄屏、900px/125%和独立Mermaid配色；默认主题、圆角裁剪、可读文字、焦点和布局正常。快速松手90ms时真实页面仍有可见波纹，NativeImage截图PNG尺寸与1440×900窗口尺寸一致，失焦不影响反馈；点击后禁用的等待按钮和选中Tab也保留波纹。验收通过，无阻断项。
+- npm pack --dry-run 为190个文件，主题服务／Provider／Markdown动效／真实demo均包含，无tests/artifacts/dist/工作区docs泄漏；报告 artifacts/theme-ripple-pack.json。UI仍为未提交的本地修改，版本0.3.2，尚未发包。UAH工作区再次核对干净，HEAD97c43a9，未升级或修改消费端。
+
+### 主题过渡默认开启与减少动效联动
+
+- 复用现有主题服务、顶栏UiSwitch和文档reducedMotion偏好；缺陷是服务默认transition=false且ThemeDemo额外传入false。改为默认true，顶栏通过setTransitionOrigin指定开关中心，ThemeDemo直接使用change/toggle/cycle默认策略，减少动效开关与其他demo同步。公开API默认值及README已更新，无新增组件或依赖。
+- 系统prefers-reduced-motion或根data-reduced-motion=true任一启用，都立即切换并终止活动过渡；关闭减少动效后后续切换自动恢复。即使调用方明确传true，也不能覆盖减少动效。未支持ViewTransition时直接切换；宿主可显式false关闭。
+- typecheck、58单测、文档／库build通过，日志artifacts/theme-transition-{typecheck,unit,build}.log。真实Electron专项7组通过：artifacts/theme-transitions-GRZOBH，覆盖顶栏默认400ms动画／起点、共享手动偏好、系统偏好、恢复、change/toggle/cycle默认策略、显式false、播放中手动及系统减少动效、键盘焦点、无API回退与卸载清理，无pageerror。
+- root复核theme-topbar-transition-midpoint.png及最终深色图像。NativeImage截图为1440×900，暂停180ms后等待两次requestAnimationFrame再捕获，额外采样左／右像素，断言旧浅色和新深色确实同时存在，避免把未绘制的首帧当作动画证据。圆形揭示从右上开关中心扩散，无布局跳动，指针失焦与键盘焦点均保留原规范。
+- 原有主题／Markdown12组通过artifacts/theme-markdown-nm39sL；独立UiPreview3组通过artifacts/theme-preview-nOQb7p；完整UI20/20（62路由）通过artifacts/ui-ooSTop。原Ripple专项等待真实主题过渡完成后继续测试，78项通过artifacts/ripple-v1Z5kb；未降低既有波纹断言。UAH再次核对干净，HEAD97c43a9；所有更新仍仅在UI本地，未发布。
+
+### Tabs 激活背景被 hover 覆盖
+
+- root盘点UiTabs/UiTab、共享styles.css与ExampleCard，复用现有真实demo。普通hover规则优先级高于aria-selected，文档专用选中覆盖又掩盖了缺陷。三处共享hover选择器限定为未激活且非禁用，保留激活背景／文字及ghost透明状态；docs.css两处重复激活规则移除，文档与消费端一致，无API变更。
+- 新增既有tabs.mjs交互检查，对真实控件hover前后的计算背景／文字做比较，确认:pointer位置实际匹配:hover、hover不改选择。旧构建失败：激活背景rgb(243,231,222)变为rgb(244,243,237)，负例日志artifacts/tabs-hover-before.log；修复后通过。新增hover检查结束后reload隔离模型，原有首次默认选择、键盘、面板持久化和滚动断言全部保留。
+- typecheck、58单测、文档／库build通过，日志artifacts/tabs-hover-{typecheck,unit,build}.log。Tabs六组通过artifacts/tabs-TW7NhX：覆盖浅深、横纵、默认／dense／ghost／square、激活与未激活hover、禁用项、示例／源码真实切换及原五组行为。全UI20/20通过artifacts/ui-wNNSzC，62路由无横向溢出、无pageerror。
+- root复核tabs-selected-hover-1440x900-light.png与dark.png，选中详情在真实hover时保持主色背景／文字和指示条，示例标签风格一致，完整PNG与窗口尺寸有断言。UAH仍干净；本轮为UI本地源码更新，未提交或发布。
+
+## 2026-10-06：u- 组件补充、独立示例与按钮/表格修复
+
+- root依据审计盘点公共组件、真实 demo 和 API，扩展至 148 个 canonical U* 导出、162 个文档页面。模板统一使用 `<u-xxx>`，createUI 支持全局注册，旧 Ui* 导出保留兼容。新增视觉模板、共享样式和所有视觉 demo 由 root 直接实现；辅助代理仅负责模型逻辑、测试和非视觉核对。当前 API 对照源码生成：1267 props/models、118 events、190 slots、262 exposed members，所有示例源码都经过 SFC 编译检查。
+- 拆除四个 family demo 在多个组件页重复挂载的方式，生成 101 个独立 SFC 与 manifest。每页只挂载当前组件及必要容器/子组件，源码来自同一真实 SFC。保留 Chip 原有专属样例并追加独立 ChipGroup 接入样例。新增严格盘点限制缺页、重复 id、源码不一致和专门输入示例串页。
+- Button 使用单一居中 loader，保留原内容的布局尺寸，并在切换前记录宽高，防止动态 loading 文案撑宽；loading 不套用 disabled 的统一配色，保留原 variant/自定义 color/ghost-danger。真实 ButtonLoadingDemo 包含 12 种外观和 5 个尺寸/插槽案例。桌面专项 3 组通过 `artifacts/button-loading-QC8Ixq`，验证浅深颜色/边框/透明度、宽高、单 loader、自定义 loader 替代、busy/disabled 和恢复。root亲自复核浅深完整窗口图像，视觉通过。
+- 包装层回归修复：Select 的省略 blurOnSelect 恢复默认 true，鼠标选中释放焦点、键盘选中保留焦点，并转发 ref 方法；组控件转发自身 props；Chip 保留旧颜色/变体/关闭契约并支持组选择；ListGroup 自定义 activator 不再嵌套按钮。完整 UI 保留原焦点、排序、分页、失败重试、过期请求和滚动条行为断言。
+- 服务端表格更换 UDataTable 内核后，旧去边框样式只命中 UiTable，导致内外各一层边框/圆角。共享样式现在去掉服务端直接子表格的边框、圆角和表面，统一由外框绘制；ghost 表头透明，square 内部不残留圆角。独立 UDataTable 仍保留 1px/8px 外框。排序图标保持统一双三角 SVG、aria-sort 和本地化排序名称。4 个服务端变体计算样式回归通过；root复核 `artifacts/ui-zoj9Oy/25-server-variants-light.png`、`26-server-variants-dark.png`、`27-server-variants-390-dark.png`、`28-server-variants-390-light.png`，边框、表面、页脚换行通过。
+- typecheck、82/82 单测、文档/库 build、git diff --check 通过。最新完整 UI **21/21** 通过，162 路由无页面横向溢出，含 200% 缩放、键盘和减少动效；证据 `artifacts/ui-zoj9Oy`，无 pageerror。测试只迁移 canonical 名称和真实内核 selector，保留原行为断言，并新增边框回归。
+- 独立文档桌面专项 `artifacts/component-examples-PuXGlT`：162/162 路由、101/101 示例 marker、9 种专门输入隔离通过，pageerror/Vue warnings/console errors 均为 0。root亲自复核数字输入/验证码/滑块的 12 张浅深、宽屏/390px 截图，label/hint、间距、独立内容和窄屏布局通过；PNG 为窗口内容区，实际尺寸1264×1035或374×779。此项不冒充所有新增组件的完整状态或上游 API 对等验收。
+- 文档同步纠正旧断点为600/840/1145/1545/2138，移除 Server“无选择/分组/多排序”的旧说明；表格 label 明确为可访问名称而非内置表单标签，sortBy 说明反映 multi-sort。原审计保留历史基线，新增实现进展和未对齐边界，Labs、SSR/完整RTL及逐属性对等未宣称完成。
+- UI package 仍为0.3.2，本次全部是本地未提交、未发布修改；UAH再次确认工作区干净，固定消费npm0.3.2，未复制源码或升级依赖。
+
+### 提交推送检查点
+
+用户于2026-10-06授权提交推送，暂不发布。提交前核对既有中文提交格式、UI/main与origin/main、UAH干净状态及发布workflow仅由v*标签触发；源码与上述验收版本一致。本次只推送分支提交，不创建/推送标签，package和lockfile版本仍为0.3.2，npm及UAH消费版本不变。以上“本地未提交”保留为验收时的历史记录，最终提交与远端状态见Git。

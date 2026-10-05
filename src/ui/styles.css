@@ -8,12 +8,17 @@
 @import "./controls.css";
 @import "./layout.css";
 @import "./cascader.css";
+@import "./responsive.css";
+@import "./common-components.css";
+@import "./forms-components.css";
+@import "./data-components.css";
+@import "./layout-components.css";
 
-:root {
+:root, [data-ui-theme][data-theme="light"] {
     --form-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2366645e' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"], [data-ui-theme][data-theme="dark"] {
     --form-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b2afa3' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
@@ -128,19 +133,21 @@
 .ui-button.primary:hover:not(:disabled) {
     border-color: var(--accent);
     background: var(--accent);
-    color: #fff;
+    color: var(--on-primary-surface, #fff);
 }
 
 .ui-button.primary:hover:not(:disabled) {
     filter: brightness(1.08);
 }
 
-.ui-button:disabled {
+.ui-button:disabled:not(.is-loading) {
     border-color: var(--border);
     background: var(--soft);
     color: var(--muted);
     opacity: .6;
 }
+
+.ui-button.is-loading { cursor: progress; opacity: 1; }
 
 .ui-switch {
     width: 36px;
@@ -329,7 +336,7 @@
 .ui-tabs { display: flex; gap: 4px; }
 .ui-tabs[aria-orientation="vertical"] { flex-direction: column; }
 .ui-tabs > button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; padding: 7px 11px; border-radius: 7px; color: var(--muted); font-size: 12px; }
-.ui-tabs > button:hover:not(:disabled) { background: var(--hover); color: var(--text); }
+.ui-tabs > button:hover:not(:disabled):not([aria-selected="true"]) { background: var(--hover); color: var(--text); }
 .ui-tabs > button[aria-selected="true"] { background: var(--selected); color: var(--text); }
 .ui-tabs > button:disabled { opacity: .5; }
 .ui-dialog {
@@ -442,7 +449,7 @@
 .ui-tabs > button { transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast); }
 .ui-tabs[data-variant="underline"] > button { height: 46px; border-bottom: 2px solid transparent; border-radius: 7px 7px 0 0; padding: 10px 9px; background: transparent; }
 .ui-tabs[data-variant="underline"] > button[aria-selected="true"] { border-bottom-color: var(--accent-text); background: var(--soft); }
-.ui-tabs[data-variant="underline"] > button:hover:not(:disabled) { background: var(--hover); }
+.ui-tabs[data-variant="underline"] > button:hover:not(:disabled):not([aria-selected="true"]) { background: var(--hover); }
 .ui-tabs[data-variant="underline"] .prototype-icon { width: 14px; height: 14px; }
 .ui-tab-panel.is-active { animation: ui-content-in var(--motion-normal) var(--ease); }
 @keyframes ui-content-in { from { opacity: .35; } to { opacity: 1; } }
@@ -491,7 +498,7 @@
 .ui-tabs > button { flex: 0 0 auto; position: relative; }
 .ui-tabs[data-variant="underline"] > button { min-height: 44px; height: auto; padding: 12px 18px; border: 0; border-radius: 6px 6px 0 0; background: transparent; font-weight: 500; }
 .ui-tabs[data-variant="underline"] > button[aria-selected="true"] { border: 0; background: var(--accent-soft); color: var(--accent-text); }
-.ui-tabs[data-variant="underline"] > button:hover:not(:disabled) { background: var(--soft); }
+.ui-tabs[data-variant="underline"] > button:hover:not(:disabled):not([aria-selected="true"]) { background: var(--soft); }
 .ui-tabs[data-variant="underline"] > button:focus-visible { outline-offset: -3px; }
 .ui-tabs[aria-orientation="vertical"] { overflow-x: hidden; flex-direction: column; align-items: stretch; }
 .ui-tabs[aria-orientation="vertical"] > button { justify-content: flex-start; text-align: start; border-radius: 6px 0 0 6px; padding-inline: 14px 20px; }
@@ -543,7 +550,8 @@
 .ui-table .ui-table-state { text-align: center; height: 144px; color: var(--muted); }
 .ui-table-error { display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--red); }
 .ui-data-table-server { min-width: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
-.ui-data-table-server > .ui-table { border: 0; }
+.ui-data-table-server > :is(.ui-table, .u-data-table) { border: 0; border-radius: 0; background: transparent; }
+.ui-data-table-server.is-ghost > :is(.ui-table, .u-data-table) th { background: transparent; }
 .ui-table-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); }
 .ui-table-page-size { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .ui-table-page-size .ui-select { width: 82px; }
@@ -638,7 +646,7 @@
 @media (prefers-reduced-motion: reduce) { .ui-activity-chevron { transition: none; } }
 
 /* Danger actions: red text on the normal surface, so they never read as the accent-filled primary action. */
-.ui-button.danger:not(:disabled) { border-color: color-mix(in srgb, var(--red) 28%, var(--border)); color: var(--red); }
+.ui-button.danger:not(:disabled), .ui-button.danger.is-loading { border-color: color-mix(in srgb, var(--red) 28%, var(--border)); color: var(--red); }
 .ui-button.danger:hover:not(:disabled) { border-color: color-mix(in srgb, var(--red) 45%, var(--border)); background: color-mix(in srgb, var(--red) 8%, var(--surface)); }
 .ui-button.danger:active:not(:disabled) { background: color-mix(in srgb, var(--red) 14%, var(--surface)); }
 .ui-button.danger:focus-visible { outline-color: var(--red); }
@@ -683,3 +691,6 @@
 .ui-input > input[type="number"] { font-variant-numeric: tabular-nums; }
 .ui-input > input[type="number"]::-webkit-inner-spin-button { opacity: .55; cursor: pointer; }
 .ui-input > input[type="number"]:hover::-webkit-inner-spin-button { opacity: .9; }
+
+.ui-theme-provider { min-width: 0; color: var(--text); }
+.ui-theme-provider--background { background: var(--background); }

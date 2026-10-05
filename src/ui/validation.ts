@@ -1,6 +1,12 @@
 /** Rules can be synchronous or asynchronous. false uses the library's fallback message. */
-export type ValidationRule<T = any> = (value: T) => boolean | string | Promise<boolean | string>;
-export type ValidateOn = 'input' | 'blur' | 'submit';
+export type ValidationRule<T = any> = boolean | string | PromiseLike<boolean | string> | ((value: T) => boolean | string | PromiseLike<boolean | string>);
+export type ValidateOnTrigger = 'input' | 'blur' | 'submit' | 'invalid-input';
+export type ValidateOn = ValidateOnTrigger | 'lazy' | 'eager' | `${ValidateOnTrigger} lazy` | `${ValidateOnTrigger} eager` | `lazy ${ValidateOnTrigger}` | `eager ${ValidateOnTrigger}`;
+export function parseValidateOn(value: ValidateOn = 'input') {
+    const parts = value.split(/\s+/);
+    const trigger = parts.find(part => !['lazy', 'eager'].includes(part)) ?? 'input';
+    return { trigger, lazy: parts.includes('lazy'), eager: parts.includes('eager') };
+}
 export interface ValidationResult {
     valid: boolean;
     errorMessages: string[];
@@ -36,7 +42,7 @@ export function createValidationRunner<T>(options: {
             for (const rule of rules) {
                 if (errors.length >= maximum) break;
                 try {
-                    const result = await rule(value);
+                    const result = await (typeof rule === 'function' ? rule(value) : rule);
                     if (stale()) return { valid: false, errorMessages: [], cancelled: true };
                     if (result !== true) errors.push(typeof result === 'string' && result ? result : options.fallback());
                 } catch {

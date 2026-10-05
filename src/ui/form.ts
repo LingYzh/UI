@@ -1,6 +1,8 @@
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowReactive, useId, watch, type ComputedRef, type InjectionKey, type Ref } from 'vue';
-import { createValidationRunner, type ValidateOn, type ValidationRule, type ValidationResult } from './validation';
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowReactive, useId, watch, type ComputedRef, type CSSProperties, type InjectionKey, type Ref } from 'vue';
+import { createValidationRunner, parseValidateOn, type ValidateOn, type ValidationRule, type ValidationResult } from './validation';
 import { uiText } from './locale';
+import { useDefaults } from './defaults';
+import { useRules } from './rules';
 
 export interface FormControlProps {
     label?: string;
@@ -16,6 +18,16 @@ export interface FormControlProps {
     errorMessages?: string | readonly string[];
     maxErrors?: number;
     validateOn?: ValidateOn;
+    density?: 'default' | 'comfortable' | 'compact';
+    variant?: 'outlined' | 'filled' | 'underlined' | 'plain';
+    color?: string;
+    clearable?: boolean;
+    persistentHint?: boolean;
+    hideDetails?: boolean | 'auto';
+    loading?: boolean;
+    prefix?: string;
+    suffix?: string;
+    counter?: boolean | number;
 }
 export interface FormError { id: string; errorMessages: string[]; }
 export interface FormValidationResult { valid: boolean; errors: FormError[]; cancelled?: boolean; }
@@ -39,6 +51,11 @@ export interface FormContext {
     labelPosition: ComputedRef<'top' | 'left'>;
     labelWidth: ComputedRef<string>;
     validateOn: ComputedRef<ValidateOn>;
+    density?: ComputedRef<'default' | 'comfortable' | 'compact'>;
+    variant?: ComputedRef<'outlined' | 'filled' | 'underlined' | 'plain'>;
+    color?: ComputedRef<string | undefined>;
+    hideDetails?: ComputedRef<boolean | 'auto'>;
+    resetMode?: ComputedRef<'initial' | 'empty'>;
     resetting: Ref<boolean>;
     register: (control: RegisteredControl) => void;
     unregister: (control: RegisteredControl) => void;
@@ -57,18 +74,26 @@ export function mergeControlAttrs(attrs: Record<string, unknown>, fieldAttrs: Re
 }
 
 export function useFormControl<T>(props: FormControlProps, model: Ref<T>, element: Ref<HTMLElement | undefined>, attrs: Record<string, unknown> = {}) {
+    props = useDefaults(props);
     const form = inject(formContextKey, undefined);
     const field = inject(fieldContextKey, undefined);
     const uid = useId();
     const framed = computed(() => Boolean(props.label || props.hint || props.rules || props.errorMessages !== undefined || (form && !field)));
     const disabled = computed(() => Boolean(form?.disabled.value || props.disabled));
     const readonly = computed(() => Boolean(form?.readonly.value || props.readonly));
-    const dense = computed(() => props.dense ?? form?.dense.value ?? false);
+    const density = computed(() => props.density ?? (props.dense !== undefined ? props.dense ? 'compact' : 'default' : form?.density?.value ?? (form?.dense.value ? 'compact' : 'default')));
+    const dense = computed(() => density.value === 'compact');
     const ghost = computed(() => props.ghost ?? form?.ghost.value ?? false);
     const rounded = computed(() => props.rounded ?? form?.rounded.value ?? true);
+    const variant = computed(() => props.variant ?? (ghost.value ? 'plain' : form?.variant?.value ?? 'outlined'));
+    const color = computed(() => props.color ?? form?.color?.value);
+    const styles = computed<CSSProperties>(() => ({ '--ui-control-color': color.value ? `var(--ui-theme-${color.value}, ${color.value})` : 'var(--accent)' }));
+    const classes = computed(() => ({ 'is-dense': dense.value, 'is-comfortable': density.value === 'comfortable', 'is-ghost': ghost.value || variant.value === 'plain', 'is-square': !rounded.value, 'is-filled': variant.value === 'filled', 'is-underlined': variant.value === 'underlined', 'is-disabled': disabled.value, 'is-invalid': state.value === false }));
     const labelPosition = computed(() => props.labelPosition ?? form?.labelPosition.value ?? 'top');
     const labelWidth = computed(() => props.labelWidth ?? form?.labelWidth.value ?? '180px');
     const validateOn = computed(() => props.validateOn ?? form?.validateOn.value ?? 'input');
+    const validationMode = computed(() => parseValidateOn(validateOn.value));
+    const aliases = useRules();
     const ownErrors = ref<string[]>([]);
     const ownValid = ref<boolean | null>(null);
     const externalErrors = computed(() => [...new Set([
@@ -82,7 +107,7 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     let disposed = false;
     const runner = createValidationRunner({
         value: () => model.value,
-        rules: () => props.rules ?? [],
+        rules: () => (props.rules ?? []).map(rule => typeof rule === 'string' && aliases[rule.replace(/^\$/, '')] ? aliases[rule.replace(/^\$/, '')]() : rule),
         nativeError: () => {
             const control = element.value as HTMLInputElement | undefined;
             return control?.willValidate && !control.validity.valid ? control.validationMessage : '';
@@ -100,7 +125,10 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
         ownErrors.value = [];
         ownValid.value = null;
     }
-    function reset() { model.value = initialValue; resetValidation(); }
+    function reset() {
+        model.value = (form?.resetMode?.value === 'empty' ? Array.isArray(initialValue) ? [] : typeof initialValue === 'boolean' ? false : typeof initialValue === 'string' ? '' : null : initialValue) as T;
+        resetValidation();
+    }
     const control: RegisteredControl = {
         id: () => String(attrs.id ?? uid),
         element: () => element.value,
@@ -111,21 +139,22 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     form?.register(control);
     field?.register(control);
     watch(model, () => {
+        const invalid = state.value === false;
         resetValidation();
-        if (!form?.resetting.value && validateOn.value === 'input') void runner.validate();
+        if (!form?.resetting.value && (validationMode.value.trigger === 'input' || (validationMode.value.trigger === 'invalid-input' && invalid))) void runner.validate();
     }, { flush: 'sync' });
     watch(() => [props.rules, disabled.value, readonly.value], () => {
         resetValidation();
     }, { deep: true, flush: 'sync' });
-    onMounted(() => { void nextTick(() => { initialValue = model.value; }); });
+    onMounted(() => { void nextTick(() => { initialValue = model.value; if (validationMode.value.eager) void runner.validate(); }); });
     onBeforeUnmount(() => { disposed = true; runner.invalidate(); form?.unregister(control); field?.unregister(control); });
-    function blur() { if (validateOn.value === 'blur' && !form?.resetting.value) void runner.validate(); }
+    function blur() { if (['blur', 'input', 'invalid-input'].includes(validationMode.value.trigger) && !form?.resetting.value) void runner.validate(); }
     function guard(event: Event) { if (readonly.value || disabled.value) event.preventDefault(); }
     function guardKeys(event: KeyboardEvent) {
         if (readonly.value && event.key !== 'Tab' && event.key !== 'Escape' && !event.ctrlKey && !event.metaKey) event.preventDefault();
     }
     const editable = computed({ get: () => model.value, set: (value: T) => { if (!readonly.value && !disabled.value) model.value = value; } });
-    return { ...control, framed, disabled, readonly, dense, ghost, rounded, labelPosition, labelWidth, editable, blur, guard, guardKeys };
+    return { ...control, framed, disabled, readonly, dense, ghost, rounded, density, variant, color, classes, styles, labelPosition, labelWidth, editable, blur, guard, guardKeys };
 }
 
 export function createControlRegistry() { return shallowReactive(new Set<RegisteredControl>()); }

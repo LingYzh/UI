@@ -1,0 +1,507 @@
+[
+    {
+        "name": "UAutocomplete",
+        "example": "component-autocomplete",
+        "file": "autocomplete.vue"
+    },
+    {
+        "name": "UCombobox",
+        "example": "component-combobox",
+        "file": "combobox.vue"
+    },
+    {
+        "name": "UNumberInput",
+        "example": "component-number-input",
+        "file": "number-input.vue"
+    },
+    {
+        "name": "UFileInput",
+        "example": "component-file-input",
+        "file": "file-input.vue"
+    },
+    {
+        "name": "UFileUpload",
+        "example": "component-file-upload",
+        "file": "file-upload.vue"
+    },
+    {
+        "name": "USlider",
+        "example": "component-slider",
+        "file": "slider.vue"
+    },
+    {
+        "name": "URangeSlider",
+        "example": "component-range-slider",
+        "file": "range-slider.vue"
+    },
+    {
+        "name": "UOtpInput",
+        "example": "component-otp-input",
+        "file": "otp-input.vue"
+    },
+    {
+        "name": "UColorInput",
+        "example": "component-color-input",
+        "file": "color-input.vue"
+    },
+    {
+        "name": "UColorPicker",
+        "example": "component-color-picker",
+        "file": "color-picker.vue"
+    },
+    {
+        "name": "URating",
+        "example": "component-rating",
+        "file": "rating.vue"
+    },
+    {
+        "name": "USelectionControlGroup",
+        "example": "component-selection-control-group",
+        "file": "selection-control-group.vue"
+    },
+    {
+        "name": "USelectionControl",
+        "example": "component-selection-control",
+        "file": "selection-control.vue"
+    },
+    {
+        "name": "URadioGroup",
+        "example": "component-radio-group",
+        "file": "radio-group.vue"
+    },
+    {
+        "name": "UCheckboxGroup",
+        "example": "component-checkbox-group",
+        "file": "checkbox-group.vue"
+    },
+    {
+        "name": "UItemGroup",
+        "example": "component-item-group",
+        "file": "item-group.vue"
+    },
+    {
+        "name": "UItem",
+        "example": "component-item",
+        "file": "item.vue"
+    },
+    {
+        "name": "UChip",
+        "example": "component-chip",
+        "file": "chip.vue"
+    },
+    {
+        "name": "UChipGroup",
+        "example": "component-chip-group",
+        "file": "chip-group.vue"
+    },
+    {
+        "name": "UBtnGroup",
+        "example": "component-btn-group",
+        "file": "btn-group.vue"
+    },
+    {
+        "name": "UBtnToggle",
+        "example": "component-btn-toggle",
+        "file": "btn-toggle.vue"
+    },
+    {
+        "name": "ULabel",
+        "example": "component-label",
+        "file": "label.vue"
+    },
+    {
+        "name": "UMessages",
+        "example": "component-messages",
+        "file": "messages.vue"
+    },
+    {
+        "name": "UCounter",
+        "example": "component-counter",
+        "file": "counter.vue"
+    },
+    {
+        "name": "UInput",
+        "example": "component-input",
+        "file": "input.vue"
+    },
+    {
+        "name": "UValidation",
+        "example": "component-validation",
+        "file": "validation.vue"
+    },
+    {
+        "name": "UDefaultsProvider",
+        "example": "component-defaults-provider",
+        "file": "defaults-provider.vue"
+    },
+    {
+        "name": "ULocaleProvider",
+        "example": "component-locale-provider",
+        "file": "locale-provider.vue"
+    },
+    {
+        "name": "UApp",
+        "example": "component-app",
+        "file": "app.vue"
+    },
+    {
+        "name": "ULayout",
+        "example": "component-layout",
+        "file": "layout.vue"
+    },
+    {
+        "name": "UMain",
+        "example": "component-main",
+        "file": "main.vue"
+    },
+    {
+        "name": "UAppBar",
+        "example": "component-app-bar",
+        "file": "app-bar.vue"
+    },
+    {
+        "name": "UAppBarTitle",
+        "example": "component-app-bar-title",
+        "file": "app-bar-title.vue"
+    },
+    {
+        "name": "UToolbar",
+        "example": "component-toolbar",
+        "file": "toolbar.vue"
+    },
+    {
+        "name": "UToolbarTitle",
+        "example": "component-toolbar-title",
+        "file": "toolbar-title.vue"
+    },
+    {
+        "name": "UToolbarItems",
+        "example": "component-toolbar-items",
+        "file": "toolbar-items.vue"
+    },
+    {
+        "name": "UFooter",
+        "example": "component-footer",
+        "file": "footer.vue"
+    },
+    {
+        "name": "USystemBar",
+        "example": "component-system-bar",
+        "file": "system-bar.vue"
+    },
+    {
+        "name": "UNavigationDrawer",
+        "example": "component-navigation-drawer",
+        "file": "navigation-drawer.vue"
+    },
+    {
+        "name": "UList",
+        "example": "component-list",
+        "file": "list.vue"
+    },
+    {
+        "name": "UListItem",
+        "example": "component-list-item",
+        "file": "list-item.vue"
+    },
+    {
+        "name": "UListGroup",
+        "example": "component-list-group",
+        "file": "list-group.vue"
+    },
+    {
+        "name": "UListSubheader",
+        "example": "component-list-subheader",
+        "file": "list-subheader.vue"
+    },
+    {
+        "name": "UListItemTitle",
+        "example": "component-list-item-title",
+        "file": "list-item-title.vue"
+    },
+    {
+        "name": "UListItemSubtitle",
+        "example": "component-list-item-subtitle",
+        "file": "list-item-subtitle.vue"
+    },
+    {
+        "name": "UTreeview",
+        "example": "component-treeview",
+        "file": "treeview.vue"
+    },
+    {
+        "name": "UVirtualScroll",
+        "example": "component-virtual-scroll",
+        "file": "virtual-scroll.vue"
+    },
+    {
+        "name": "UAvatar",
+        "example": "component-avatar",
+        "file": "avatar.vue"
+    },
+    {
+        "name": "UBadge",
+        "example": "component-badge",
+        "file": "badge.vue"
+    },
+    {
+        "name": "UDivider",
+        "example": "component-divider",
+        "file": "divider.vue"
+    },
+    {
+        "name": "USheet",
+        "example": "component-sheet",
+        "file": "sheet.vue"
+    },
+    {
+        "name": "UEmptyState",
+        "example": "component-empty-state",
+        "file": "empty-state.vue"
+    },
+    {
+        "name": "USkeletonLoader",
+        "example": "component-skeleton-loader",
+        "file": "skeleton-loader.vue"
+    },
+    {
+        "name": "UBanner",
+        "example": "component-banner",
+        "file": "banner.vue"
+    },
+    {
+        "name": "UTransition",
+        "example": "component-transition",
+        "file": "transition.vue"
+    },
+    {
+        "name": "UBreadcrumbs",
+        "example": "component-breadcrumbs",
+        "file": "breadcrumbs.vue"
+    },
+    {
+        "name": "UBreadcrumbsItem",
+        "example": "component-breadcrumbs-item",
+        "file": "breadcrumbs-item.vue"
+    },
+    {
+        "name": "UBreadcrumbsDivider",
+        "example": "component-breadcrumbs-divider",
+        "file": "breadcrumbs-divider.vue"
+    },
+    {
+        "name": "UBottomNavigation",
+        "example": "component-bottom-navigation",
+        "file": "bottom-navigation.vue"
+    },
+    {
+        "name": "UBottomSheet",
+        "example": "component-bottom-sheet",
+        "file": "bottom-sheet.vue"
+    },
+    {
+        "name": "UOverlay",
+        "example": "component-overlay",
+        "file": "overlay.vue"
+    },
+    {
+        "name": "UDataTable",
+        "example": "component-data-table",
+        "file": "data-table.vue"
+    },
+    {
+        "name": "UDataTableVirtual",
+        "example": "component-data-table-virtual",
+        "file": "data-table-virtual.vue"
+    },
+    {
+        "name": "UDataIterator",
+        "example": "component-data-iterator",
+        "file": "data-iterator.vue"
+    },
+    {
+        "name": "UDateInput",
+        "example": "component-date-input",
+        "file": "date-input.vue"
+    },
+    {
+        "name": "UDatePicker",
+        "example": "component-date-picker",
+        "file": "date-picker.vue"
+    },
+    {
+        "name": "UTimePicker",
+        "example": "component-time-picker",
+        "file": "time-picker.vue"
+    },
+    {
+        "name": "UCalendar",
+        "example": "component-calendar",
+        "file": "calendar.vue"
+    },
+    {
+        "name": "UPicker",
+        "example": "component-picker",
+        "file": "picker.vue"
+    },
+    {
+        "name": "UConfirmEdit",
+        "example": "component-confirm-edit",
+        "file": "confirm-edit.vue"
+    },
+    {
+        "name": "UProgressCircular",
+        "example": "component-progress-circular",
+        "file": "progress-circular.vue"
+    },
+    {
+        "name": "UProgressLinear",
+        "example": "component-progress-linear",
+        "file": "progress-linear.vue"
+    },
+    {
+        "name": "UExpansionPanels",
+        "example": "component-expansion-panels",
+        "file": "expansion-panels.vue"
+    },
+    {
+        "name": "UExpansionPanel",
+        "example": "component-expansion-panel",
+        "file": "expansion-panel.vue"
+    },
+    {
+        "name": "UExpansionPanelTitle",
+        "example": "component-expansion-panel-title",
+        "file": "expansion-panel-title.vue"
+    },
+    {
+        "name": "UExpansionPanelText",
+        "example": "component-expansion-panel-text",
+        "file": "expansion-panel-text.vue"
+    },
+    {
+        "name": "UStepper",
+        "example": "component-stepper",
+        "file": "stepper.vue"
+    },
+    {
+        "name": "UStepperVertical",
+        "example": "component-stepper-vertical",
+        "file": "stepper-vertical.vue"
+    },
+    {
+        "name": "UStepperItem",
+        "example": "component-stepper-item",
+        "file": "stepper-item.vue"
+    },
+    {
+        "name": "UStepperWindow",
+        "example": "component-stepper-window",
+        "file": "stepper-window.vue"
+    },
+    {
+        "name": "UStepperWindowItem",
+        "example": "component-stepper-window-item",
+        "file": "stepper-window-item.vue"
+    },
+    {
+        "name": "UStepperActions",
+        "example": "component-stepper-actions",
+        "file": "stepper-actions.vue"
+    },
+    {
+        "name": "UWindow",
+        "example": "component-window",
+        "file": "window.vue"
+    },
+    {
+        "name": "UWindowItem",
+        "example": "component-window-item",
+        "file": "window-item.vue"
+    },
+    {
+        "name": "UCarousel",
+        "example": "component-carousel",
+        "file": "carousel.vue"
+    },
+    {
+        "name": "UCarouselItem",
+        "example": "component-carousel-item",
+        "file": "carousel-item.vue"
+    },
+    {
+        "name": "UImg",
+        "example": "component-img",
+        "file": "img.vue"
+    },
+    {
+        "name": "UResponsive",
+        "example": "component-responsive",
+        "file": "responsive.vue"
+    },
+    {
+        "name": "UHover",
+        "example": "component-hover",
+        "file": "hover.vue"
+    },
+    {
+        "name": "UHotkey",
+        "example": "component-hotkey",
+        "file": "hotkey.vue"
+    },
+    {
+        "name": "UKbd",
+        "example": "component-kbd",
+        "file": "kbd.vue"
+    },
+    {
+        "name": "ULazy",
+        "example": "component-lazy",
+        "file": "lazy.vue"
+    },
+    {
+        "name": "UNoSsr",
+        "example": "component-no-ssr",
+        "file": "no-ssr.vue"
+    },
+    {
+        "name": "UParallax",
+        "example": "component-parallax",
+        "file": "parallax.vue"
+    },
+    {
+        "name": "UInfiniteScroll",
+        "example": "component-infinite-scroll",
+        "file": "infinite-scroll.vue"
+    },
+    {
+        "name": "UPullToRefresh",
+        "example": "component-pull-to-refresh",
+        "file": "pull-to-refresh.vue"
+    },
+    {
+        "name": "USparkline",
+        "example": "component-sparkline",
+        "file": "sparkline.vue"
+    },
+    {
+        "name": "UTimeline",
+        "example": "component-timeline",
+        "file": "timeline.vue"
+    },
+    {
+        "name": "UTimelineItem",
+        "example": "component-timeline-item",
+        "file": "timeline-item.vue"
+    },
+    {
+        "name": "USpeedDial",
+        "example": "component-speed-dial",
+        "file": "speed-dial.vue"
+    },
+    {
+        "name": "UFab",
+        "example": "component-fab",
+        "file": "fab.vue"
+    }
+]

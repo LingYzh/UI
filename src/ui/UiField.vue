@@ -4,7 +4,7 @@ import { formLayoutKey } from './layout';
 import { provide } from 'vue';
 import { createControlRegistry, fieldContextKey } from './form';
 import type { FieldLayout } from './layout';
-const props = defineProps<{ label: string; for?: string; description?: string; error?: string; layout?: FieldLayout; required?: boolean }>();
+const props = defineProps<{ label?: string; for?: string; description?: string; error?: string; layout?: FieldLayout; required?: boolean; hideDetails?: boolean | 'auto' }>();
 const id = useId();
 const formLayout = inject(formLayoutKey, undefined);
 const layout = computed(() => props.layout ?? formLayout?.value);
@@ -26,7 +26,7 @@ const controlAttrs = computed(() => ({
             <span v-else>{{ label }}<span v-if="required" class="ui-field-required" aria-hidden="true"> *</span></span>
         </div>
         <slot :control-attrs="controlAttrs" />
-        <div v-if="description || errorText" class="ui-field-details">
+        <div v-if="hideDetails !== true && (description || errorText)" class="ui-field-details">
             <p v-if="description" :id="`${id}-description`">{{ description }}</p>
             <p v-if="errorText" :id="`${id}-error`" class="ui-field-error" role="alert">{{ errorText }}</p>
         </div>

@@ -17,6 +17,10 @@ import '@lingyzh/ui/styles.css';
 
 Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolation`、sandbox 或 Node 集成设置。当前项目 Vue 3.5 与 Node 24 满足该版本要求。
 
+主题：应用入口 `app.use(createUiTheme({ defaultTheme: 'system', themes: { ocean: { colors: { primary: '#246a91' } } } }))`；组件 setup 使用 `useUiTheme()`，通过 `change / toggle / cycle` 切换。主题过渡默认开启；系统或应用 `data-reduced-motion="true"` 关闭过渡并结束播放中的动画，恢复完整动效后自动开启，可显式配置 `transition: false`。内置 light/dark 继续使用现有色值。局部区域使用 `UiThemeProvider`，Card/Dialog 的 `theme` 可覆盖并向子组件提供上下文；主题定义、颜色辅助类、响应式字段与过渡配置见真实文档 `/#/theme`、`/#/theme-provider`。
+
+Markdown 的行内代码与 mark 使用主题 primary，details 支持可中断的展开／收起过渡，脚注与返回链接平滑居中并移交焦点；滚动边界可能限制最终位置。系统和手动减少动态效果时立即更新。Mermaid 图表继承当前作用域并保留安全 SVG 文字，多个作用域的图表串行配置渲染，避免共享配置污染。真实交互见 `/#/markdown`。
+
 ## 实施顺序
 
 统一风格的项目先从原型整理 tokens、可复用组件和真实预览文档，由主代理完成视觉验收并记录结果，再迁移业务页面与实现系统。后续共用外观和交互修改也先更新本库及 demo。引入 headless 依赖不改变这一顺序。
@@ -125,7 +129,7 @@ import { UiCard, UiButton, vRipple } from '@lingyzh/ui';
 
 Card 支持 outlined/elevated/tonal/flat，comfortable/compact 的 24/16px 内容间距。flush 可让 Tabs 和代码贴齐内容边缘；actions 独立分隔且自动换行。示例文档全部使用真实 UiCard。
 
-`utilities.css` 全局随共享样式加载：`d-flex`、对齐、宽高、文本、overflow 与圆角；`ma/pa` 等 0–16 级间距（每级 4px）、x/y/t/b/l/r/s/e 方向、margin-auto 和 `ga` 间距。显示与 flex 方向支持 sm(600)/md(960)/lg(1280) 断点。工具类使用 !important，不宣称兼容 Vuetify 全量类名。
+`utilities.css` 与 `responsive.css` 全局随共享样式加载：`d-flex`、对齐、宽高、文本、overflow 与圆角；`ma/pa` 等 0–16 级间距（每级 4px）、x/y/t/b/l/r/s/e 方向、margin-auto 和 `ga` 间距。显示、flex、对齐和间距支持 sm(600)/md(840)/lg(1145)/xl(1545)/xxl(2138) 断点。工具类使用 !important，不宣称兼容 Vuetify 全量类名。
 
 代码高亮只注册 XML/Vue、JavaScript、TypeScript、CSS 和 JSON。使用高亮器转义后的 HTML，未知语言转义为纯文本；复制始终取原字符串。语法色由 `--code-*` tokens 定义，没有 CDN 依赖。
 
@@ -147,12 +151,12 @@ Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `den
 ## 表格、服务端表格与分页器
 
 - `UiTable`：headers/items/item-value/label 描述数据，保留原生 table/th 语义；支持 loading、空数据、固定表头、横向滚动，以及 `item.[key]`、`header.[key]`、loading/no-data 插槽。所有文档 API 表格已迁移。
-- `UiDataTableServer`：接收当前页 items 与总数 items-length，通过 `v-model:page`、`v-model:items-per-page`、`v-model:sort-by` 管理参数；初始化和参数变化触发 `update:options`。单列排序按升序/降序/取消循环，点击排序或修改每页条数回到第一页。加载期间锁定分页和排序，支持 error/retry；不发请求、不对当前页二次排序或切片。
+- `UDataTableServer`（兼容 `UiDataTableServer`）：接收当前页 items 与总数 items-length，通过 `v-model:page`、`v-model:items-per-page`、`v-model:sort-by` 管理参数；初始化和参数变化触发 `update:options`。排序按升序/降序/取消循环，`multi-sort` 支持多列；提供选择、展开和分组模型。点击排序或修改每页条数回到第一页。加载期间锁定分页和排序，支持 error/retry；不发请求、不对当前页二次排序或切片。
 - `UiPagination`：独立 `v-model` 页码，length 表示总页数；自动校正越界值，首尾页、省略号、前后页和 aria-current。total-visible 控制 3–9 个连续页码，首尾页额外保留。原生按钮支持 Tab/Enter/Space。
 
 三者均提供 dense/ghost/rounded 变体及各自文档演示。服务端表格复用分页器和 UiSelect：每页条数、记录范围、页码在窄容器自动换行。公开类型由 ui/index.ts 导出 TableHeader/TableSort/TableOptions。
 
-服务端示例用本地 450ms 延迟模拟查询，带失败重试和请求序号保护；示例源码提供 fetch + AbortController 的接入方式，实际项目应使用自身 API 模块。调用方负责过期响应隔离和卸载取消。未实现行选择、分组、多列排序或虚拟滚动，也不宣称兼容 Vuetify 全量 API。
+服务端示例用本地 450ms 延迟模拟查询，带失败重试和请求序号保护；示例源码提供 fetch + AbortController 的接入方式，实际项目应使用自身 API 模块。调用方负责过期响应隔离和卸载取消。客户端处理使用 `UDataTable`，虚拟滚动使用 `UDataTableVirtual`；服务端负责排序、筛选和分组后的数据，不宣称兼容 Vuetify 全量 API。
 
 参考 [Vuetify 服务端表格](https://vuetifyjs.com/en/components/data-tables/server-side-tables/) 与 [分页器](https://vuetifyjs.com/en/components/paginations/)，保持 UAH 主题，没有引入 Vuetify Material 组件库依赖。
 
@@ -172,7 +176,7 @@ UiIcon 保留原型名称，支持常用 mdi-* 名称、按需 path 与 register
 
 鼠标或触摸完成离散操作后释放该控件焦点；键盘操作保留焦点与焦点标记，文本输入保留编辑焦点。统一应用于 Switch、Checkbox、Radio、ColorSwatches、Button、TabTrigger、MenuItem、Activity、Badge 关闭、Table 排序、文件／差异／用量入口，以及复用 Button 的分页、复制和消息操作。菜单与弹窗关闭时按操作方式恢复触发器焦点；动作移动到输入或弹窗的新焦点不会被清除。Select 保留 blurOnSelect=true 的指针选择策略。预览 `/#/focus`。
 
-47 个公开组件均有独立文档路由、真实组件 demo、源码和 API；文档共 60 页。自动盘点测试限制漏页和不可见导航组。
+148 个公开组件均有独立文档路由、真实组件 demo、源码和 API；新增组件使用各自的独立示例文件，不将整组组件重复展示在每个页面。自动盘点测试限制漏页、示例串页和不可见导航组。
 
 
 ### 简化表单与验证
@@ -199,7 +203,7 @@ UiIcon 保留原型名称，支持常用 mdi-* 名称、按需 path 与 register
 
 UiCascader 与其他表单控件使用相同的 label/hint/rules、labelPosition、宽度和状态属性；通过 UiRow/UiCol 组合。items 为 { value: string | number, label, disabled?, children? }[]，v-model 是完整值路径数组，默认 []。默认只选择叶节点，changeOnSelect 允许父级选择；showAllLevels=false 只显示最后一级，separator 设置显示分隔符，clearable 提供清空操作。required 与同步／异步 rules 都参与 UiForm 验证。真实示例和 API 位于 `/#/cascader`。
 
-API 参考集中于 docs/apiReference.js；测试直接对照全部 47 个公开组件源码，检查属性、类型、默认值、模型事件、插槽及暴露成员，并编译所有组件示例源码。更新组件 API 时必须同时更新该参考。
+API 参考集中于 docs/apiReference.js；测试直接对照全部 148 个 canonical U* 组件源码，检查属性、类型、默认值、模型事件、插槽及暴露成员，并编译所有组件示例源码。更新组件 API 时必须同时更新该参考。
 
 ### 标签页与内容容器
 
@@ -217,3 +221,9 @@ API 参考集中于 docs/apiReference.js；测试直接对照全部 47 个公开
 模型可省略；默认选择首个可用标签，值支持 string/number，未传 value 时使用索引。默认 activation=manual：方向键、Home/End 移动焦点，Enter/Space 确认；automatic 可在聚焦时选择。UiTabsWindow 统一控制所有内容项，首次访问挂载并保留状态，eager 预先挂载。相邻 Tabs/Window 自动关联 ID，分开到不同容器时使用一致 idPrefix。
 
 Tabs 的 #window 内直接放 WindowItem，可自动继承模型和 ID；items 支持 value/text 对象或字符串／数字，#item 提供对应内容，#tab 可返回自定义 UiTab。旧 id/label 数组、orientation 与 UiTabPanel 仍兼容；旧面板始终挂载。direction、alignTabs、grow、fixedTabs、stacked、hideSlider 配置布局；centerActive 将选中项居中，showArrows 配置滚动入口。箭头仅滚动，不改变选择。预览 `/#/tabs`。
+
+## Ripple 生命周期与配置
+
+`vRipple`、UiButton / UiTab / UiTabs 的 ripple 以 Vuetify 的入场与退场生命周期为参照：扩散 250ms、显现 100ms，至少显示 250ms 后淡出 300ms；快速松开与指针自动失焦都不会删除尚未完成的波纹。连续点击保留各自波纹；键盘自动重复不叠加，Enter / Space 默认居中，失焦释放键盘保持态。
+
+公开配置为 `boolean | { center?: boolean; circle?: boolean; class?: string; color?: string; keys?: string[] }`；原生指令支持 `.center`、`.circle`、`.stop`。`.stop` 不显示自己的波纹并阻止祖先波纹，不阻止事件传播；普通嵌套仅最内层响应。class 可使用主题颜色辅助类，color 保留既有兼容用法；默认 UAH 强度 .14，可用 --ripple-opacity 调整。触摸延迟 80ms，短点按仍显示，延迟内滑动取消；禁用或动态关闭阻止新波纹，已有波纹完整退场，点击后进入 loading 也不会截断反馈。减少动效、页面隐藏及卸载立即清理。真实 demo：`/#/ripple`。

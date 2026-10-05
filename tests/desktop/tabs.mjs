@@ -39,6 +39,26 @@ async function setTheme(theme) {
     }
     await toggle.setChecked(target);
     await page.waitForFunction(expected => document.documentElement.dataset.theme === expected, theme);
+    await page.waitForFunction(() => ![...document.head.querySelectorAll('style')].some(style => style.textContent.includes('@keyframes ui-theme-reveal')));
+}
+
+async function hoverStyle(tab, unchanged, context) {
+    await tab.scrollIntoViewIfNeeded();
+    await page.mouse.move(2, 75);
+    async function style() {
+        return tab.evaluate(async element => {
+            await Promise.all(element.getAnimations().map(animation => animation.finished.catch(() => {})));
+            const computed = getComputedStyle(element);
+            return { background: computed.backgroundColor, color: computed.color, selected: element.getAttribute('aria-selected') };
+        });
+    }
+    const before = await style();
+    await tab.hover();
+    assert.equal(await tab.evaluate(element => element.matches(':hover')), true, `${context}: pointer really hovers the tab`);
+    const after = await style();
+    assert.equal(after.selected, before.selected, `${context}: hovering does not change selection`);
+    if (unchanged) assert.deepEqual(after, before, `${context}: active/disabled appearance survives hover`);
+    else assert.notEqual(after.background, before.background, `${context}: an inactive enabled tab still has hover feedback`);
 }
 
 async function openExample(example) {
@@ -104,6 +124,40 @@ async function waitForEmptySelection(demo) {
 try {
     await page.locator('.docs-shell').waitFor();
     await setWindow(1440, 900);
+    await setTheme('light');
+
+    for (const theme of ['light', 'dark']) {
+        await setTheme(theme);
+        const card = page.locator('.docs-example[aria-labelledby="tabs-declarative-heading"]');
+        const list = card.getByRole('tablist', { name: '声明式标签页', exact: true });
+        const active = list.getByRole('tab', { name: '详情', exact: true });
+        await active.click();
+        await hoverStyle(active, true, `${theme}: declarative selected tab`);
+        await hoverStyle(list.getByRole('tab', { name: '概览', exact: true }), false, `${theme}: unselected tab`);
+        await hoverStyle(list.getByRole('tab', { name: '尚未启用', exact: true }), true, `${theme}: disabled tab`);
+        const exampleTabs = card.locator('.docs-example-tabs');
+        await hoverStyle(exampleTabs.getByRole('tab', { name: '交互示例', exact: true }), true, `${theme}: selected preview tab uses library styles`);
+        const source = exampleTabs.getByRole('tab', { name: '源码', exact: true });
+        await hoverStyle(source, false, `${theme}: inactive source tab`);
+        await source.click();
+        await hoverStyle(source, true, `${theme}: selected source tab uses library styles`);
+        await exampleTabs.getByRole('tab', { name: '交互示例', exact: true }).click();
+        const variants = page.locator('.docs-example[aria-labelledby="tabs-shared-variants-heading"]');
+        for (const variant of ['default', 'dense', 'ghost', 'square']) {
+            const sample = variants.locator(`[data-sample="${variant}"]`);
+            await hoverStyle(sample.getByRole('tab', { name: '概览', exact: true }), true, `${theme}: selected ${variant}`);
+            await hoverStyle(sample.getByRole('tab', { name: '详情', exact: true }), false, `${theme}: unselected ${variant}`);
+        }
+        const axisExample = page.locator('.docs-example[aria-labelledby="tabs-variants-heading"]');
+        await axisExample.getByRole('checkbox', { name: '垂直布局', exact: true }).check();
+        await hoverStyle(axisExample.locator('.live-example [role="tab"][aria-selected="true"]'), true, `${theme}: vertical selected tab`);
+        await axisExample.getByRole('checkbox', { name: '垂直布局', exact: true }).uncheck();
+        await active.hover();
+        await capture(`tabs-selected-hover-1440x900-${theme}`, { width: 1440, height: 900 }, theme);
+    }
+    passed.push('selected tabs retain background and color on hover across light/dark, both axes and all shared variants; inactive tabs still react, disabled tabs do not, and docs preview/source share the library style');
+    await page.reload();
+    await page.locator('.docs-shell').waitFor();
     await setTheme('light');
 
     const declarative = await openExample('tabs-declarative');

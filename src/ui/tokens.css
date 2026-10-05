@@ -100,3 +100,5 @@
 
 :root { --scrollbar-thumb: #66645e66; --scrollbar-thumb-hover: #66645e99; }
 :root[data-theme="dark"] { --scrollbar-thumb: #b2afa366; --scrollbar-thumb-hover: #b2afa399; }
+
+:root { --primary: var(--accent-text); --primary-surface: var(--accent); --on-primary-surface: #fff; }

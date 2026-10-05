@@ -2,12 +2,14 @@
 import { computed } from 'vue';
 import { gridBasis } from './layout';
 import type { GridSize } from './layout';
-const props = withDefaults(defineProps<{
+import { useDefaults } from './defaults';
+const rawProps = withDefaults(defineProps<{
     tag?: string; cols?: GridSize; sm?: GridSize; md?: GridSize; lg?: GridSize; xl?: GridSize; xxl?: GridSize;
     offset?: GridSize; offsetSm?: GridSize; offsetMd?: GridSize; offsetLg?: GridSize; offsetXl?: GridSize; offsetXxl?: GridSize;
     order?: number; orderSm?: number; orderMd?: number; orderLg?: number; orderXl?: number; orderXxl?: number;
     alignSelf?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
 }>(), { tag: 'div' });
+const props = useDefaults(rawProps, 'UCol');
 const styles = computed(() => {
     const result: Record<string, string | number | undefined> = { alignSelf: props.alignSelf };
     const widths = [props.cols, props.sm, props.md, props.lg, props.xl, props.xxl];
@@ -25,5 +27,5 @@ const styles = computed(() => {
 </script>
 
 <template>
-    <component :is="tag" class="ui-col" :style="styles"><slot /></component>
+    <component :is="props.tag" class="ui-col" :style="styles"><slot /></component>
 </template>

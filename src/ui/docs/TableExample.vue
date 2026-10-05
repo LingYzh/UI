@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { UiTable, UiDataTableServer, UiPagination, UiInput, UiButton } from '../index';
+import { UTable, UDataTableServer, UPagination, UTextField, UButton } from '../index';
 defineProps({ example: { type: String, required: true } });
 const headers = [{ key: 'name', title: '项目', sortable: true }, { key: 'status', title: '状态' }, { key: 'files', title: '文件数', sortable: true, align: 'end' }];
 const staticHeaders = headers.map((header) => ({ ...header, sortable: false }));
@@ -52,29 +52,29 @@ const requestText = computed(() => JSON.stringify(options.value));
 
 <template>
     <template v-if="example === 'table-basic'">
-        <UiTable :headers="staticHeaders" :items="database.slice(0, 4)" label="项目概览"><template #item.status="{ value }"><span class="demo-value">{{ value }}</span></template></UiTable>
+        <u-table :headers="staticHeaders" :items="database.slice(0, 4)" label="项目概览"><template #item.status="{ value }"><span class="demo-value">{{ value }}</span></template></u-table>
     </template>
     <template v-else-if="example === 'table-fixed'">
-        <UiTable :headers="staticHeaders" :items="database.slice(0, 12)" label="固定表头项目" height="220px" fixed-header dense />
+        <u-table :headers="staticHeaders" :items="database.slice(0, 12)" label="固定表头项目" height="220px" fixed-header dense />
     </template>
     <template v-else-if="example === 'table-server'">
-        <form class="demo-table-search d-flex flex-wrap ga-2 mb-4" @submit.prevent="filter"><UiInput v-model="search" placeholder="例如 工作区 01" aria-label="筛选项目" /><UiButton type="submit">查询</UiButton><UiButton @click="failNext = true; load()">模拟失败</UiButton></form>
-        <UiDataTableServer v-model:page="page" v-model:items-per-page="perPage" v-model:sort-by="sortBy" :headers="headers" :items="rows" :items-length="total" :loading="loading" :error="error" :items-per-page-options="[5, 10, 25]" label="服务端项目" @update:options="load" @retry="load()"><template #item.status="{ value }"><span class="demo-value">{{ value }}</span></template></UiDataTableServer>
+        <form class="demo-table-search d-flex flex-wrap ga-2 mb-4" @submit.prevent="filter"><u-text-field v-model="search" placeholder="例如 工作区 01" aria-label="筛选项目" /><u-button type="submit">查询</u-button><u-button @click="failNext = true; load()">模拟失败</u-button></form>
+        <u-data-table-server v-model:page="page" v-model:items-per-page="perPage" v-model:sort-by="sortBy" :headers="headers" :items="rows" :items-length="total" :loading="loading" :error="error" :items-per-page-options="[5, 10, 25]" label="服务端项目" @update:options="load" @retry="load()"><template #item.status="{ value }"><span class="demo-value">{{ value }}</span></template></u-data-table-server>
         <output>请求参数：{{ requestText }}</output>
         <p class="text-muted small">本地模拟 450ms 请求；排序、筛选和切片在请求处理端执行。这里只传入当前页，组件不再次排序或分页。</p>
     </template>
     <template v-else-if="example === 'pagination-basic'">
-        <UiPagination v-model="paginationPage" :length="paginationLength" label="示例分页" />
+        <u-pagination v-model="paginationPage" :length="paginationLength" label="示例分页" />
         <output>第 {{ paginationPage }} / {{ paginationLength }} 页</output>
-        <div class="d-flex ga-2 mt-4"><UiButton dense @click="paginationPage = 12; paginationLength = 24">跳到中段</UiButton><UiButton dense @click="paginationLength = 2">缩减为 2 页</UiButton></div>
-        <UiPagination :length="1" disabled dense class="mt-4" label="禁用分页" />
+        <div class="d-flex ga-2 mt-4"><u-button dense @click="paginationPage = 12; paginationLength = 24">跳到中段</u-button><u-button dense @click="paginationLength = 2">缩减为 2 页</u-button></div>
+        <u-pagination :length="1" disabled dense class="mt-4" label="禁用分页" />
     </template>
     <div v-else class="docs-variant-list">
         <div v-for="variant in variants" :key="variant.id" class="docs-variant-sample">
             <p class="docs-variant-label">{{ variant.label }}</p>
-            <UiTable v-if="example === 'table-variants'" :headers="staticHeaders" :items="database.slice(0, 2)" :label="`${variant.label}表格`" v-bind="variant.props" />
-            <UiDataTableServer v-else-if="example === 'server-variants'" :headers="staticHeaders" :items="database.slice(0, 2)" :items-length="2" :label="`${variant.label}服务端表格`" v-bind="variant.props" />
-            <UiPagination v-else :length="6" :label="`${variant.label}分页器`" v-bind="variant.props" />
+            <u-table v-if="example === 'table-variants'" :headers="staticHeaders" :items="database.slice(0, 2)" :label="`${variant.label}表格`" v-bind="variant.props" />
+            <u-data-table-server v-else-if="example === 'server-variants'" :headers="staticHeaders" :items="database.slice(0, 2)" :items-length="2" :label="`${variant.label}服务端表格`" v-bind="variant.props" />
+            <u-pagination v-else :length="6" :label="`${variant.label}分页器`" v-bind="variant.props" />
         </div>
     </div>
 </template>
