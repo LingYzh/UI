@@ -44,7 +44,10 @@ function syncSelectedContent() {
     const option = select?.selectedOptions[0];
     // Chromium can retain the old clone when an existing option's Vue subtree changes.
     // Refresh only the browser-owned display; preserve the select, value and focus.
-    if (selectedContent && option) selectedContent.replaceChildren(...Array.from(option.childNodes, node => node.cloneNode(true)));
+    if (selectedContent && option && (selectedContent.childNodes.length !== option.childNodes.length
+        || Array.from(option.childNodes).some((node, index) => !node.isEqualNode(selectedContent.childNodes[index])))) {
+        selectedContent.replaceChildren(...Array.from(option.childNodes, node => node.cloneNode(true)));
+    }
 }
 onMounted(syncSelectedContent);
 onUpdated(syncSelectedContent);

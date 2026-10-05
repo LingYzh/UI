@@ -128,3 +128,13 @@ Tabs 已支持声明式 UiTab、统一 UiTabsWindow/UiTabsWindowItem、数组 it
 ## 2026-10-05：准备发布 0.3.0
 
 用户已授权发布最新版。本轮包含布局、表单接口调整及新增组件，版本升级为0.3.0，package.json与lockfile一致；以v0.3.0标签触发既有GitHub Actions/OIDC正式发布。发布前再次通过typecheck、48单测、build及pack182文件白名单检查；此前最终20全UI、11布局、14表单、14级联与5组Tabs专项及root视觉验收保持有效。发布成功后核对官方npm latest、tarball/integrity，再固定升级UAH依赖并验证兼容性。此段是发布准备记录，实际发布结果另追加。
+
+## 2026-10-05：0.3.0 已发布，准备 0.3.1 兼容修复
+
+0.3.0 发布提交为 a7ea191a1166e842ea4018b246ff0a28a25bc1e7，注释标签 v0.3.0 已推送；GitHub Actions 37287893853 成功，官方 npm registry 确认版本和 latest。tarball 为 https://registry.npmjs.org/@lingyzh/ui/-/ui-0.3.0.tgz，integrity 为 sha512-MrxVpXbQrqGvVFrqTmmU2ieS/OZ7uHAmceqAw7hX/D+ejNi2ApHAb7TjPutcwyHDblsMMniR9DTjlQJfpb4c7A==。
+
+UAH 固定安装官方 npm 0.3.0 后，实际端点编辑器的嵌套模型能力弹窗触发 Vue 更新循环。UiSelect 每次 updated 都重建相同 selectedcontent，UiScrollArea 的内容观察器每次都生成相同几何的新响应式对象，造成重复更新。0.3.1 在内容／几何实际改变时才更新，保留动态选项文字、选择值及滚动能力，无 API 或样式变更。
+
+新增 tests/desktop/select-initialization.mjs 使用真实组件复现关闭状态的八个选择器，在打开嵌套弹窗时同时初始化模型，覆盖浅深主题、选择、关闭及重新打开。原始版本复现卡住，修复后通过，证据 artifacts/select-initialization-eZNDNF。root 已检查浅深截图。0.3.1 发布前继续完整回归，发布结果另追加；消费端必须固定安装最终 npm 版本。
+
+0.3.1 最终发布前验证已通过：typecheck、48 单测、build、20 全 UI、嵌套选择器专项；最终证据 artifacts/ui-4XLID7 与 artifacts/select-initialization-Shg8O8，root 已复核主题截图。修复源码恢复后重新 pack 为182文件，无测试／artifacts／dist／docs泄漏。公开 API 无变动。推送 v0.3.1 后核对 Actions 与官方 registry，再将 UAH 固定升级并完成实际端点回归。

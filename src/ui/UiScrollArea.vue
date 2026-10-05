@@ -34,7 +34,9 @@ const bars = computed(() => {
 function update() {
     const view = element.value;
     if (!view) return;
-    metrics.value = { width: view.clientWidth, height: view.clientHeight, scrollWidth: view.scrollWidth, scrollHeight: view.scrollHeight, left: view.scrollLeft, top: view.scrollTop };
+    const next = { width: view.clientWidth, height: view.clientHeight, scrollWidth: view.scrollWidth, scrollHeight: view.scrollHeight, left: view.scrollLeft, top: view.scrollTop };
+    // Content observers can run after a slot renders without changing its geometry.
+    if (Object.keys(next).some(key => next[key as keyof typeof next] !== metrics.value[key as keyof typeof next])) metrics.value = next;
 }
 function scroll() {
     update();

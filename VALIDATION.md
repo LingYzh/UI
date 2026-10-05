@@ -184,3 +184,11 @@ UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 ty
 ## 2026-10-05：0.3.0 发布前核对
 
 用户授权发布本轮完整组件更新。package.json与lockfile均为0.3.0；正式标签v0.3.0沿用GitHub Actions的npm Trusted Publishing。再次运行typecheck、48/48单测、文档与库build、npm pack --dry-run；182个发布文件，无tests/artifacts/dist/工作区文档泄漏。对应日志为artifacts/release-0.3.0-unit.log、release-0.3.0-build.log与release-0.3.0-pack.json。此前最终交互与视觉证据见以上Tabs、Form/Row/Col与级联记录；版本变更未修改组件行为。
+
+## 2026-10-05：发布后消费端兼容与 0.3.1 修复
+
+0.3.0 已通过 GitHub Actions 37287893853 正式发布，官方 registry 版本及 latest 核对成功。UAH 实际安装后 typecheck、build、1043 个单测通过（2 个跳过），完整 UI 文档、外观和扩展专项通过；端点专项发现嵌套弹窗中批量初始化选择器会造成 Vue 更新循环，属于阻断兼容问题。
+
+修复限定于 UiSelect 的相同 selectedcontent 不再重复替换，以及 UiScrollArea 的相同几何不再赋新响应式对象，不改变公开 API／样式。新增真实组件桌面回归 select-initialization.mjs：原始 0.3.0 卡住，修复后浅深主题、八个模型初始化、选择和弹窗重开均通过，无 pageerror；证据 artifacts/select-initialization-eZNDNF。root 亲自复核完整窗口浅深截图；发布前完整回归及最终消费端结果另追加。
+
+0.3.1 最终发布前：typecheck、48/48 单测、build、20/20 全 UI 回归通过，60 路由无溢出，动态选项文字及滚动条调整断言保留。日志 artifacts/release-0.3.1-{typecheck,npm-test,build,ui}.log；全 UI 证据 artifacts/ui-4XLID7。嵌套选择器最终证据 artifacts/select-initialization-Shg8O8，root 复核浅深完整窗口截图。最终在修复源码恢复后重新 pack，182 个文件，无 tests/artifacts/dist/docs 泄漏；JSON 为 artifacts/release-0.3.1-pack.json。负例运行复现原始版本在点击打开能力弹窗后停止响应，cleanup 经主进程检查独立 profile 与 fixture URL 后退出该测试实例，未关闭用户 dev 服务。
