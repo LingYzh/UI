@@ -5,5 +5,5 @@ const props = useDefaults(rawProps, 'ULabel');
 </script>
 
 <template>
-    <label class="ui-label" :class="{ 'is-disabled': props.disabled }" :for="props.for"><slot /><span v-if="props.required" aria-hidden="true"> *</span></label>
+    <label class="ui-label" :class="{ 'is-disabled': props.disabled }" :for="props.for"><slot /><span v-if="props.required" class="ui-label-required" aria-hidden="true"> *</span></label>
 </template>

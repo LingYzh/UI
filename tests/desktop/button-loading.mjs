@@ -62,7 +62,7 @@ try {
     await loadingDemo.waitFor();
     const startAll = loadingDemo.getByRole('button', { name: '开始全部加载', exact: true });
     const endAll = loadingDemo.getByRole('button', { name: '结束全部加载', exact: true });
-    const variants = ['secondary', 'primary', 'ghost', 'danger', 'elevated', 'flat', 'tonal', 'outlined', 'text', 'plain', 'custom-color', 'ghost-danger'];
+    const variants = ['elevated', 'flat', 'tonal', 'outlined', 'text', 'plain', 'custom-color', 'text-danger'];
     const caseNames = ['plain', 'compact', 'icon', 'explicit', 'custom-loader'];
 
     for (const theme of ['light', 'dark']) {
@@ -71,7 +71,7 @@ try {
 
         const variantButtons = loadingDemo.locator('[data-loading-variant]');
         const caseButtons = loadingDemo.locator('[data-loading-case]');
-        assert.deepEqual(await variantButtons.evaluateAll(elements => elements.map(element => element.dataset.loadingVariant)), variants, `${theme}: all eleven variant cases are present in order`);
+        assert.deepEqual(await variantButtons.evaluateAll(elements => elements.map(element => element.dataset.loadingVariant)), variants, `${theme}: all eight canonical variant/color cases are present in order`);
         assert.deepEqual(await caseButtons.evaluateAll(elements => elements.map(element => element.dataset.loadingCase)), caseNames, `${theme}: all five content and loader cases are present`);
 
         const initialVariants = await measureMany(variantButtons);
@@ -83,7 +83,7 @@ try {
         await startAll.click();
         await page.waitForFunction(() => {
             const buttons = [...document.querySelectorAll('[data-loading-variant], [data-loading-case]')];
-            return buttons.length === 17 && buttons.every(button => button.getAttribute('aria-busy') === 'true');
+            return buttons.length === 13 && buttons.every(button => button.getAttribute('aria-busy') === 'true');
         });
         await page.waitForTimeout(220);
 
@@ -96,6 +96,7 @@ try {
             assert.equal(after.disabled, true, `${theme}/${before.key} is disabled while loading`);
             assert.equal(after.busy, 'true', `${theme}/${before.key} exposes aria-busy`);
             assert.equal(after.contentOpacity, '0', `${theme}/${before.key} hides the original content`);
+            assert.equal(after.opacity, before.key === 'plain' ? '0.62' : '1', `${theme}/${before.key} preserves its intended loading opacity`);
             assert.ok(after.text.length > before.text.length, `${theme}/${before.key} grows its loading text`);
             assertSameVisualState(before, after, `${theme}/${before.key} keeps color, opacity and size while loading`);
         }
@@ -123,7 +124,7 @@ try {
         await endAll.click();
         await page.waitForFunction(() => {
             const buttons = [...document.querySelectorAll('[data-loading-variant], [data-loading-case]')];
-            return buttons.length === 17 && buttons.every(button => button.getAttribute('aria-busy') !== 'true' && !button.querySelector('.ui-button-loader'));
+            return buttons.length === 13 && buttons.every(button => button.getAttribute('aria-busy') !== 'true' && !button.querySelector('.ui-button-loader'));
         });
         const restoredVariants = await measureMany(variantButtons);
         const restoredCases = await measureMany(caseButtons);
@@ -137,7 +138,7 @@ try {
             assert.equal(restoredCases[index].disabled, false, `${theme}/${initialCases[index].key} is enabled after loading`);
             assert.equal(restoredCases[index].loaderCount, 0, `${theme}/${initialCases[index].key} removes its loader`);
         }
-        passed.push(`${theme} loading variants preserve 12 color/state combinations and five size/loader boundaries, then restore`);
+        passed.push(`${theme} loading preserves eight variant/color combinations and five size/loader boundaries, then restores`);
     }
 
     assert.deepEqual(errors, []);

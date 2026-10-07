@@ -13,7 +13,8 @@ watch([element, () => props.lazy], () => {
     observer?.disconnect();
     observer = undefined;
     if (!props.lazy) { visible.value = true; return; }
-    if (!element.value || typeof IntersectionObserver === 'undefined') { visible.value = true; return; }
+    if (typeof IntersectionObserver === 'undefined') { visible.value = true; return; }
+    if (!element.value) return;
     observer = new IntersectionObserver((entries) => { if (entries.some((entry) => entry.isIntersecting)) { visible.value = true; observer?.disconnect(); observer = undefined; } }, { rootMargin: '200px' });
     observer.observe(element.value);
 }, { flush: 'post', immediate: true });

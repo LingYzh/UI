@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
+import { vRipple, type RippleOptions } from './ripple';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRefs, useAttrs, useId, watch, type CSSProperties } from 'vue';
 import UiControlFrame from './UiControlFrame.vue';
 import UiIcon from '../components/Icon.vue';
@@ -17,7 +19,7 @@ const props = withDefaults(defineProps<ControlSizing & FormControlProps & {
     showAllLevels?: boolean;
     separator?: string;
     invalid?: boolean;
-}>(), { showAllLevels: true, separator: ' / ', dense: undefined, ghost: undefined, rounded: undefined });
+} & { ripple?: RippleOptions }>(), { ripple: true, showAllLevels: true, separator: ' / ', dense: undefined, ghost: undefined, rounded: undefined });
 const model = defineModel<CascaderValue[]>({ default: () => [] });
 const attrs = useAttrs();
 const element = ref<HTMLButtonElement>();
@@ -143,19 +145,19 @@ defineExpose({ element, focus: () => element.value?.focus(), close, validate: co
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="required" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div class="ui-cascader" :class="[$attrs.class, { 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': inline }]" :style="[control.framed.value ? undefined : controlSizeStyles(props), $attrs.style as CSSProperties]" @focusout="fieldBlur">
-            <button ref="element" v-bind="mergeControlAttrs(triggerAttrs(), controlAttrs, control.id())" type="button" class="ui-cascader-trigger" role="combobox"
+            <button v-focus-modality v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" ref="element" v-bind="mergeControlAttrs(triggerAttrs(), controlAttrs, control.id())" type="button" class="ui-cascader-trigger" role="combobox"
                 :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-required="required || undefined" :aria-invalid="invalid || undefined"
                 aria-haspopup="dialog" :aria-expanded="open" :aria-controls="popupId" :popovertarget="popupId" :style="{ anchorName: anchor }"
                 @pointerdown="keyboardInteraction = false" @keydown="triggerKey" @click="control.guard">
                 <span class="ui-cascader-value" :class="{ 'is-placeholder': !display }" :title="display || undefined">{{ display || placeholder || uiText('cascader.placeholder') }}</span>
-                <UiIcon name="mdi-chevron-down" :size="14" />
+                <UiIcon name="mdi-chevron-down" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': open }" />
             </button>
-            <button v-if="clearable && model.length && !control.readonly.value" v-pointer-blur type="button" class="ui-cascader-clear" :disabled="control.disabled.value" :aria-label="uiText('cascader.clear')" @click="clear"><UiIcon name="mdi-close" :size="14" /></button>
+            <button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-if="clearable && model.length && !control.readonly.value" v-pointer-blur type="button" class="ui-cascader-clear" :disabled="control.disabled.value" :aria-label="uiText('cascader.clear')" @click="clear"><UiIcon name="mdi-close" :size="14" /></button>
             <div :id="popupId" ref="surface" popover="auto" class="ui-menu-surface ui-cascader-panel" data-placement="bottom-start" role="dialog" :aria-label="`${label || uiText('cascader.placeholder')} ${uiText('common.options')}`" tabindex="-1" :style="{ positionAnchor: anchor }"
                 @toggle="toggled" @pointerdown.capture="keyboardInteraction = false" @keydown="popupKey">
                 <div class="ui-cascader-columns">
                     <div v-for="(items, level) in columns" :key="level" class="ui-cascader-column" role="listbox" :aria-label="uiText('cascader.level', { level: level + 1 })" :data-level="level">
-                        <button v-for="(item, index) in items" :key="item.value" type="button" role="option" class="ui-cascader-option" :data-index="index" :disabled="item.disabled" :aria-selected="draft[level] === item.value" :aria-label="item.children?.length ? `${item.label} ${uiText('cascader.branch')}` : item.label"
+                        <button v-focus-modality v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-for="(item, index) in items" :key="item.value" type="button" role="option" class="ui-cascader-option" :data-index="index" :disabled="item.disabled" :aria-selected="draft[level] === item.value" :aria-label="item.children?.length ? `${item.label} ${uiText('cascader.branch')}` : item.label"
                             @click="choose(item, level, $event.detail === 0)" @keydown="keydown($event, level, item)">
                             <span :title="item.label">{{ item.label }}</span><UiIcon v-if="item.children?.length" name="mdi-chevron-right" :size="14" /><UiIcon v-else-if="draft[level] === item.value" name="mdi-check" :size="14" />
                         </button>

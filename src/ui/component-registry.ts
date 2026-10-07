@@ -66,6 +66,7 @@ import UCarousel from './UCarousel.vue';
 import UCarouselItem from './UCarouselItem.vue';
 import UCheckboxGroup from './UCheckboxGroup.vue';
 import UChipGroup from './UChipGroup.vue';
+import UCode from './UCode.vue';
 import UColorInput from './UColorInput.vue';
 import UColorPicker from './UColorPicker.vue';
 import UCombobox from './UCombobox.vue';
@@ -125,7 +126,11 @@ import USelectionControl from './USelectionControl.vue';
 import USelectionControlGroup from './USelectionControlGroup.vue';
 import USheet from './USheet.vue';
 import USkeletonLoader from './USkeletonLoader.vue';
+import USlideGroup from './USlideGroup.vue';
+import USlideGroupItem from './USlideGroupItem.vue';
 import USlider from './USlider.vue';
+import USnackbar from './USnackbar.vue';
+import USnackbarQueue from './USnackbarQueue.vue';
 import USparkline from './USparkline.vue';
 import USpeedDial from './USpeedDial.vue';
 import UStepper from './UStepper.vue';
@@ -264,6 +269,7 @@ export const components = {
     UCarouselItem,
     UCheckboxGroup,
     UChipGroup,
+    UCode,
     UColorInput,
     UColorPicker,
     UCombobox,
@@ -323,7 +329,11 @@ export const components = {
     USelectionControlGroup,
     USheet,
     USkeletonLoader,
+    USlideGroup,
+    USlideGroupItem,
     USlider,
+    USnackbar,
+    USnackbarQueue,
     USparkline,
     USpeedDial,
     UStepper,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 const props = withDefaults(defineProps<{
     focusable?: boolean;
@@ -90,7 +91,7 @@ defineExpose({ element, update, focus: () => element.value?.focus(), scrollTo: (
 
 <template>
     <div class="ui-scroll-area" :class="{ 'is-dragging': dragging, 'is-scrolling': scrolling, 'is-always': always, 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded }" :data-axis="axis">
-        <div ref="element" class="ui-scroll-viewport" :style="{ height, maxHeight }" :tabindex="focusable ? 0 : -1" role="region" :aria-label="label" @scroll="scroll">
+        <div v-focus-modality ref="element" class="ui-scroll-viewport" :style="{ height, maxHeight }" :tabindex="focusable ? 0 : -1" role="region" :aria-label="label" @scroll="scroll">
             <div ref="content" class="ui-scroll-content"><slot /></div>
         </div>
         <div v-if="bars.y.visible && axis !== 'horizontal'" class="ui-scroll-track is-vertical" aria-hidden="true" @pointerdown="start($event, 'y')" @pointermove="move" @pointerup="stop" @pointercancel="stop" @lostpointercapture="stop"><div class="ui-scroll-thumb" :style="{ height: `${bars.y.size}px`, transform: `translateY(${bars.y.offset}px)` }"></div></div>

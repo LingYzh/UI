@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
 import { getCurrentInstance, h, onBeforeUnmount, onMounted, onUpdated, ref, useAttrs, type CSSProperties } from 'vue';
 import UiControlFrame from './UiControlFrame.vue';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
@@ -92,7 +93,7 @@ defineExpose({ element, focus: () => element.value?.focus(), validate: control.v
 
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
-        <select ref="element" v-model="control.editable.value" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-select" :class="{ 'is-described': Boolean(items), 'is-compact': compact, 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': inline }" :style="[control.framed.value ? undefined : controlSizeStyles(props), attrs.style as CSSProperties]" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="invalid || control.state.value === false || $attrs['aria-invalid'] === true || $attrs['aria-invalid'] === 'true' || undefined" @pointerdown="pointerSelection = true; control.guard($event)" @keydown="keyboardSelection" @change="commit" @click="control.guard($event); optionClick($event)" @blur="pointerSelection = false; control.blur()">
+        <select v-focus-modality ref="element" v-model="control.editable.value" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-select" :class="{ 'is-described': Boolean(items), 'is-compact': compact, 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': inline }" :style="[control.framed.value ? undefined : controlSizeStyles(props), attrs.style as CSSProperties]" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="invalid || control.state.value === false || $attrs['aria-invalid'] === true || $attrs['aria-invalid'] === 'true' || undefined" @pointerdown="pointerSelection = true; control.guard($event)" @keydown="keyboardSelection" @change="commit" @click="control.guard($event); optionClick($event)" @blur="pointerSelection = false; control.blur()">
             <button v-if="customPicker" type="button"><SelectedContent /></button>
             <option v-if="placeholder" value="" disabled hidden>{{ placeholder }}</option>
             <UiScrollArea v-if="customPicker" class="ui-select-options" :label="uiText('common.options')" :max-height="items ? 'min(420px, 65dvh)' : 'min(320px, 50dvh)'" :focusable="false">

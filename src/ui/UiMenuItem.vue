@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { inject } from 'vue';
 import { menuContextKey } from './menu';
@@ -10,7 +11,7 @@ const props = withDefaults(defineProps<{
     danger?: boolean;
     /** 选择后保持菜单打开，适用于多选勾选。 */
     keepOpen?: boolean;
-}>(), { checked: undefined, disabled: false, danger: false, keepOpen: false });
+} & { ripple?: RippleOptions }>(), { ripple: true, checked: undefined, disabled: false, danger: false, keepOpen: false });
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
 const menu = inject(menuContextKey, null);
 
@@ -22,7 +23,7 @@ function select(event: MouseEvent) {
 
 <template>
     <!-- 菜单项不进入 Tab 顺序，由 UiMenu 统一处理方向键漫游焦点。 -->
-    <button v-pointer-blur
+    <button v-ripple="props.ripple" v-pointer-blur
         type="button"
         class="ui-menu-item"
         :class="{ 'is-danger': danger }"

@@ -33,7 +33,7 @@ defineExpose({ element, focus: () => element.value?.querySelector<HTMLElement>('
 
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
-        <div ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="u-selection-group" :class="[$attrs.class, `is-${props.direction}`, { 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value }]" :style="$attrs.style as any" :role="multiple ? 'group' : 'radiogroup'" :aria-label="label" :aria-disabled="control.disabled.value || undefined" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @focusout="!($event.currentTarget as HTMLElement).contains($event.relatedTarget as Node) && control.blur()">
+        <div ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="u-selection-group" :class="[$attrs.class, `is-${props.direction}`, { 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value }]" :style="$attrs.style as any" :role="multiple ? 'group' : 'radiogroup'" :aria-label="props.label ?? attrs['aria-label'] as string" :aria-disabled="control.disabled.value || undefined" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @focusout="!($event.currentTarget as HTMLElement).contains($event.relatedTarget as Node) && control.blur()">
             <slot :selected="selected" :toggle="toggle" />
         </div>
     </UiControlFrame>

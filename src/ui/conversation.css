@@ -1,30 +1,30 @@
-.ui-activity.is-inline { font-size: 12px; margin: 8px 0; }
+.ui-activity.is-inline { font-size: 14px; margin: 8px 0; }
 .ui-activity.is-inline .ui-activity-heading { width: fit-content; gap: 8px; padding: 5px 0; border-radius: 0; line-height: 1.6; }
 .ui-activity.is-inline .ui-activity-heading:hover { background: transparent; color: var(--text); }
 .ui-activity.is-inline .ui-activity-chevron { width: 12px; height: 12px; }
 .ui-activity.is-inline .ui-activity-title { white-space: nowrap; }
 .ui-activity.is-inline .ui-activity-body { margin: 6px 0 12px; padding: 0; border: 0; }
 .ui-activity.is-inline .ui-activity-content { padding: 0; white-space: normal; }
-.ui-activity-filename { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 12px/1.6 var(--mono); }
+.ui-activity-filename { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 14px/1.6 var(--mono); }
 .ui-activity-added { color: var(--green); flex-shrink: 0; white-space: nowrap; }
 .ui-activity-removed { color: var(--red); flex-shrink: 0; white-space: nowrap; }
-.ui-file-changes { margin-top: 21px; padding-top: 12px; border-top: 1px solid var(--line); min-width: 0; font-size: 12px; color: var(--text); }
-.ui-file-changes-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.ui-file-changes { margin-top: 21px; padding-top: 12px; border-top: 1px solid var(--line); min-width: 0; font-size: 14px; color: var(--text); }
+.ui-file-changes-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; color: var(--muted); font-size: var(--ui-font-body-small); line-height: 1.6; }
 .ui-file-changes-view-all { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: var(--muted); font: inherit; cursor: pointer; white-space: nowrap; }
 .ui-file-changes-view-all:hover { color: var(--text); }
-.ui-file-change-row { display: flex; align-items: center; width: 100%; max-width: 100%; gap: 8px; padding: 5px 6px; margin-left: -6px; border: 0; border-radius: 5px; background: transparent; text-align: left; color: var(--text); font: 12px/1.6 var(--font); cursor: pointer; }
+.ui-file-change-row { display: flex; align-items: center; width: 100%; max-width: 100%; gap: 8px; padding: 5px 6px; margin-left: -6px; border: 0; border-radius: 5px; background: transparent; text-align: left; color: var(--text); font: 14px/1.6 var(--font); cursor: pointer; }
 .ui-file-change-row:hover { background: var(--soft); }
 .ui-file-change-row > .icon { flex-shrink: 0; color: var(--muted); }
-.ui-file-change-status { width: 12px; flex: 0 0 12px; color: var(--muted); font-size: 9px; }
+.ui-file-change-status { width: 12px; flex: 0 0 12px; color: var(--muted); font-size: 11px; }
 .ui-file-change-name { min-width: 0; max-width: 62%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); }
-.ui-file-change-stats { flex-shrink: 0; display: flex; gap: 7px; margin-left: auto; font: 11px var(--mono); }
+.ui-file-change-stats { flex-shrink: 0; display: flex; gap: 7px; margin-left: auto; font: var(--ui-font-body-small) var(--mono); }
 .ui-file-change-added { color: var(--green); }
 .ui-file-change-removed { color: var(--red); }
-.ui-file-change-unavailable { color: var(--muted); font: 11px var(--font); }
+.ui-file-change-unavailable { color: var(--muted); font: var(--ui-font-body-small) var(--font); }
 .ui-file-changes-empty { margin: 0; padding: 7px 0; color: var(--muted); }
-.ui-file-changes-view-all:focus-visible, .ui-file-change-row:focus-visible, .ui-diff-inspect:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ui-file-changes-view-all:focus-visible:not([data-ui-pointer-focus]), .ui-file-change-row:focus-visible:not([data-ui-pointer-focus]), .ui-diff-inspect:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .ui-message-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; padding-top: 10px; color: var(--faint); }
 .ui-message-actions > .ui-tooltip-trigger { display: inline-flex; }
 .ui-message-actions .ui-button.is-icon.sm { width: 28px; height: 28px; min-height: 28px; padding: 0; border: 0; border-radius: 6px; color: var(--muted); }
 .ui-message-actions .ui-button.is-icon.sm:hover { color: var(--text); }
-.ui-message-actions-label { margin-left: 7px; color: var(--faint); font: 10px/1.6 var(--font); }
+.ui-message-actions-label { margin-left: 7px; color: var(--faint); font: 12px/1.6 var(--font); }

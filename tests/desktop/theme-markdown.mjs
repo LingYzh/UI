@@ -35,7 +35,171 @@ async function capture(name, width = 1440, height = 900) {
     await writeFile(path.join(evidence, `${name}.png`), png);
 }
 async function color(locator) { return locator.evaluate(element => getComputedStyle(element).color); }
-async function centerDelta(locator) { return locator.evaluate(element => { const bounds = element.getBoundingClientRect(); return Math.abs((bounds.top + bounds.bottom) / 2 - innerHeight / 2); }); }
+async function centerDelta(locator, scrollerSelector) {
+    return locator.evaluate((element, selector) => {
+        const scroller = selector === '__document__' ? document.scrollingElement : document.querySelector(selector);
+        const bounds = element.getBoundingClientRect();
+        const documentScroller = scroller === document.scrollingElement;
+        const viewportTop = documentScroller ? 0 : scroller.getBoundingClientRect().top + scroller.clientTop;
+        const viewportHeight = documentScroller ? innerHeight : scroller.clientHeight;
+        return Math.abs((bounds.top + bounds.bottom) / 2 - (viewportTop + viewportHeight / 2));
+    }, scrollerSelector);
+}
+async function waitCentered(locator, scrollerSelector) {
+    const id = await locator.getAttribute('id');
+    assert.ok(id, 'footnote destination and reference need stable ids');
+    await page.waitForFunction(({ targetId, selector }) => {
+        const element = document.getElementById(targetId);
+        const scroller = selector === '__document__' ? document.scrollingElement : document.querySelector(selector);
+        if (!element || !scroller) return false;
+        const bounds = element.getBoundingClientRect();
+        const documentScroller = scroller === document.scrollingElement;
+        const viewportTop = documentScroller ? 0 : scroller.getBoundingClientRect().top + scroller.clientTop;
+        const viewportHeight = documentScroller ? innerHeight : scroller.clientHeight;
+        return Math.abs((bounds.top + bounds.bottom) / 2 - (viewportTop + viewportHeight / 2)) < 3;
+    }, { targetId: id, selector: scrollerSelector }, { timeout: 10000 });
+}
+async function layoutSnapshot() {
+    return page.evaluate(() => {
+        const content = document.querySelector('.docs-content-scroll');
+        const sidebar = document.querySelector('.docs-sidebar');
+        const header = document.querySelector('.docs-header');
+        const rect = header.getBoundingClientRect();
+        return {
+            contentScrollTop: content?.scrollTop ?? 0,
+            sidebarScrollTop: sidebar?.scrollTop ?? 0,
+            htmlScrollTop: document.documentElement.scrollTop,
+            bodyScrollTop: document.body.scrollTop,
+            documentScrollTop: document.scrollingElement?.scrollTop ?? 0,
+            windowScrollY: window.scrollY,
+            header: { x: rect.x, y: rect.y, top: rect.top, right: rect.right, bottom: rect.bottom, left: rect.left, width: rect.width, height: rect.height }
+        };
+    });
+}
+async function scrollTop(selector) { return page.locator(selector).evaluate(element => element.scrollTop); }
+async function setTheme(theme) {
+    const control = page.getByRole('checkbox', { name: '深色主题', exact: true });
+    const checked = await control.isChecked();
+    if ((theme === 'dark') !== checked) {
+        if (theme === 'dark') await control.check(); else await control.uncheck();
+    }
+    await page.waitForFunction(expected => document.documentElement.dataset.theme === expected, theme);
+    await page.waitForFunction(() => ![...document.head.querySelectorAll('style')].some(style => style.textContent.includes('@keyframes ui-theme-reveal')));
+    await frames();
+}
+async function prepareTargetForPointer(locator, scrollerSelector, label) {
+    await locator.evaluate((target, { selector, label }) => {
+        const scrollport = document.querySelector(selector);
+        const outer = document.querySelector('.docs-content-scroll');
+        const header = document.querySelector('.docs-header');
+        if (!scrollport || !outer || !header) throw new Error(`${label}: expected documentation scroll containers`);
+
+        if (scrollport !== outer) {
+            const safeTop = header.getBoundingClientRect().bottom + 8;
+            const safeBottom = innerHeight - 8;
+            const bounds = scrollport.getBoundingClientRect();
+            if (bounds.top < safeTop) outer.scrollTop += bounds.top - safeTop;
+            else if (bounds.bottom > safeBottom) outer.scrollTop += bounds.bottom - safeBottom;
+        }
+
+        const bounds = target.getBoundingClientRect();
+        const viewport = scrollport.getBoundingClientRect();
+        const viewportTop = viewport.top + scrollport.clientTop;
+        const viewportBottom = viewportTop + scrollport.clientHeight;
+        if (bounds.top < viewportTop) scrollport.scrollTop += bounds.top - viewportTop;
+        else if (bounds.bottom > viewportBottom) scrollport.scrollTop += bounds.bottom - viewportBottom;
+    }, { selector: scrollerSelector, label });
+    await frames();
+    const geometry = await locator.evaluate((target, selector) => {
+        const scrollport = document.querySelector(selector);
+        const outer = document.querySelector('.docs-content-scroll');
+        const header = document.querySelector('.docs-header');
+        const targetRect = target.getBoundingClientRect();
+        const viewportRect = scrollport.getBoundingClientRect();
+        const headerRect = header.getBoundingClientRect();
+        return {
+            target: { left: targetRect.left, right: targetRect.right, top: targetRect.top, bottom: targetRect.bottom },
+            viewport: { left: viewportRect.left + scrollport.clientLeft, right: viewportRect.left + scrollport.clientLeft + scrollport.clientWidth, top: viewportRect.top + scrollport.clientTop, bottom: viewportRect.top + scrollport.clientTop + scrollport.clientHeight },
+            scrollport: { top: viewportRect.top, bottom: viewportRect.bottom },
+            header: { top: headerRect.top, bottom: headerRect.bottom },
+            outerScrollTop: outer.scrollTop,
+            rootScrollTop: document.scrollingElement?.scrollTop ?? 0,
+            windowScrollY: window.scrollY,
+            innerWidth,
+            innerHeight
+        };
+    }, scrollerSelector);
+    assert.equal(geometry.header.top, 0, `${label}: fixed header remains at the viewport top before pointer input`);
+    assert.ok(geometry.target.left >= geometry.viewport.left - 1 && geometry.target.right <= geometry.viewport.right + 1, `${label}: target is visible inside its owning scrollport`);
+    assert.ok(geometry.target.top >= geometry.viewport.top - 1 && geometry.target.bottom <= geometry.viewport.bottom + 1, `${label}: target is visible inside its owning scrollport`);
+    assert.ok(geometry.target.top >= geometry.header.bottom - 1 && geometry.target.bottom <= geometry.innerHeight + 1, `${label}: target is visible in the window`);
+    if (scrollerSelector !== '.docs-content-scroll') {
+        assert.ok(geometry.scrollport.top >= geometry.header.bottom - 1 && geometry.scrollport.bottom <= geometry.innerHeight + 1, `${label}: inner reading viewport is fully visible before pointer input`);
+    }
+    const box = await locator.boundingBox();
+    assert.ok(box && box.x >= 0 && box.y >= geometry.header.bottom && box.x + box.width <= geometry.innerWidth && box.y + box.height <= geometry.innerHeight, `${label}: pointer target has an on-screen bounding box`);
+    return box;
+}
+async function jumpToFootnote(markdownDemo, scrollerSelector, { keyboard = false, smooth = false, label = 'footnote' } = {}) {
+    const reference = markdownDemo.locator('.footnote-ref a');
+    const destination = markdownDemo.locator('.footnotes li');
+    assert.equal(await reference.count(), 1, `${label}: exactly one footnote reference`);
+    assert.equal(await destination.count(), 1, `${label}: exactly one footnote destination`);
+    const pointerBox = await prepareTargetForPointer(reference, scrollerSelector, label);
+    if (keyboard) await reference.focus();
+    const beforeLayout = await layoutSnapshot();
+    const before = await scrollTop(scrollerSelector);
+    if (keyboard) await page.keyboard.press('Enter'); else await page.mouse.click(pointerBox.x + pointerBox.width / 2, pointerBox.y + pointerBox.height / 2);
+    const early = await scrollTop(scrollerSelector);
+    await waitCentered(destination, scrollerSelector);
+    const after = await scrollTop(scrollerSelector);
+    assert.ok(Math.abs(after - before) > 40, `${label}: the intended scroller moved`);
+    if (smooth) {
+        assert.ok(after > before + 100, `${label}: destination is below the reference`);
+        assert.ok(early < after - 50, `${label}: footnote navigation scrolls smoothly`);
+    }
+    assert.ok(await centerDelta(destination, scrollerSelector) < 3, `${label}: target centers in its scrollport`);
+    assert.equal(await destination.evaluate(element => element === document.activeElement), true, `${label}: focus transfers to destination`);
+    await assertScrollIsolation(beforeLayout, scrollerSelector, `${label} forward`);
+    return { reference, destination, before, early, after };
+}
+async function returnFromFootnote(markdownDemo, reference, scrollerSelector, label = 'footnote') {
+    const backref = markdownDemo.locator('.footnote-backref');
+    const pointerBox = await prepareTargetForPointer(backref, scrollerSelector, `${label} return link`);
+    const beforeLayout = await layoutSnapshot();
+    const before = await scrollTop(scrollerSelector);
+    await page.mouse.click(pointerBox.x + pointerBox.width / 2, pointerBox.y + pointerBox.height / 2);
+    await waitCentered(reference, scrollerSelector);
+    const after = await scrollTop(scrollerSelector);
+    assert.ok(Math.abs(after - before) > 40, `${label}: return scrolls the intended scroller`);
+    assert.ok(await centerDelta(reference, scrollerSelector) < 3, `${label}: return target centers in its scrollport`);
+    assert.equal(await reference.evaluate(element => element === document.activeElement), true, `${label}: focus returns to reference`);
+    await assertScrollIsolation(beforeLayout, scrollerSelector, `${label} return`);
+}
+async function assertScrollIsolation(before, localSelector, label) {
+    const after = await layoutSnapshot();
+    assert.deepEqual({
+        sidebarScrollTop: after.sidebarScrollTop,
+        htmlScrollTop: after.htmlScrollTop,
+        bodyScrollTop: after.bodyScrollTop,
+        documentScrollTop: after.documentScrollTop,
+        windowScrollY: after.windowScrollY,
+        header: after.header
+    }, {
+        sidebarScrollTop: before.sidebarScrollTop,
+        htmlScrollTop: before.htmlScrollTop,
+        bodyScrollTop: before.bodyScrollTop,
+        documentScrollTop: before.documentScrollTop,
+        windowScrollY: before.windowScrollY,
+        header: before.header
+    }, `${label}: sidebar, document, window and fixed header must not move`);
+    if (localSelector === '.docs-content-scroll') {
+        assert.notEqual(after.contentScrollTop, before.contentScrollTop, `${label}: docs-content-scroll should perform the local scroll`);
+    } else {
+        assert.equal(after.contentScrollTop, before.contentScrollTop, `${label}: outer docs-content-scroll must stay fixed`);
+    }
+    return after;
+}
 try {
     await page.locator('.docs-shell').waitFor();
     await windowSize(1440, 900);
@@ -130,61 +294,38 @@ try {
     await route('markdown');
     await page.getByRole('checkbox', { name: '深色主题', exact: true }).uncheck();
     const markdown = demo('markdown-navigation');
-    const scroller = markdown.locator('.ui-scroll-viewport');
     const details = markdown.locator('details');
     const summary = details.locator('summary');
     await summary.scrollIntoViewIfNeeded();
     const closed = await details.evaluate(element => element.getBoundingClientRect().height);
     await summary.click();
-    await page.waitForFunction(element => element.getAnimations().length > 0, await details.elementHandle());
+    await page.waitForFunction(element => element.getAnimations().length > 0, await details.elementHandle(), { timeout: 10000 });
     const duringOpen = await details.evaluate(element => ({ height: element.getBoundingClientRect().height, end: parseFloat(element.getAnimations()[0].effect.getKeyframes().at(-1).height) }));
     assert.ok(duringOpen.end > closed + 20);
     assert.ok(duringOpen.height < duringOpen.end);
-    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle());
+    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle(), { timeout: 10000 });
     const open = await details.evaluate(element => element.getBoundingClientRect().height);
     await summary.click();
-    await page.waitForFunction(element => element.open && element.getAnimations().length > 0, await details.elementHandle());
+    await page.waitForFunction(element => element.open && element.getAnimations().length > 0, await details.elementHandle(), { timeout: 10000 });
     assert.ok(await details.evaluate(element => element.getBoundingClientRect().height) > closed);
-    await page.waitForFunction(element => !element.open && element.getAnimations().length === 0, await details.elementHandle());
+    await page.waitForFunction(element => !element.open && element.getAnimations().length === 0, await details.elementHandle(), { timeout: 10000 });
     assert.ok(open > closed + 20);
     passed.push('details has real height transitions for opening and closing');
     await summary.focus();
     await page.keyboard.press('Enter');
-    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle());
+    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle(), { timeout: 10000 });
     await page.keyboard.press('Space');
-    await page.waitForFunction(element => !element.open && element.getAnimations().length === 0, await details.elementHandle());
+    await page.waitForFunction(element => !element.open && element.getAnimations().length === 0, await details.elementHandle(), { timeout: 10000 });
     await summary.evaluate(element => { element.click(); element.click(); element.click(); });
-    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle());
+    await page.waitForFunction(element => element.open && element.getAnimations().length === 0, await details.elementHandle(), { timeout: 10000 });
     passed.push('details keyboard activation and rapid reversal retain the final requested state');
     await capture('markdown-navigation-light');
-
-    const reference = markdown.locator('.footnote-ref a');
-    const destination = markdown.locator('.footnotes li');
-    await reference.scrollIntoViewIfNeeded();
-    const before = await scroller.evaluate(element => element.scrollTop);
-    await reference.click();
-    const early = await scroller.evaluate(element => element.scrollTop);
-    await page.waitForFunction(element => Math.abs((element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2 - innerHeight / 2) < 3, await destination.elementHandle());
-    const after = await scroller.evaluate(element => element.scrollTop);
-    assert.ok(after > before + 100);
-    assert.ok(early < after - 50, 'footnotes scroll smoothly instead of jumping instantly');
-    assert.ok(await centerDelta(destination) < 3);
-    assert.equal(await destination.evaluate(element => element === document.activeElement), true);
-    await markdown.locator('.footnote-backref').click();
-    // markdown-it assigns the return target id to the reference link.
-    const returnTarget = reference;
-    await page.waitForFunction(element => Math.abs((element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2 - innerHeight / 2) < 3, await returnTarget.elementHandle());
-    assert.equal(await returnTarget.evaluate(element => element === document.activeElement), true);
-    passed.push('footnote and return smoothly center the destination in the viewport and transfer focus');
 
     await markdown.getByRole('checkbox', { name: '减少动态效果', exact: true }).check();
     await summary.scrollIntoViewIfNeeded();
     await summary.click();
     assert.equal(await details.evaluate(element => element.open), false);
     assert.equal(await details.evaluate(element => element.getAnimations().length), 0);
-    await reference.scrollIntoViewIfNeeded();
-    await reference.click();
-    assert.ok(await centerDelta(destination) < 3);
     await markdown.getByRole('checkbox', { name: '减少动态效果', exact: true }).uncheck();
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await summary.scrollIntoViewIfNeeded();
@@ -192,10 +333,75 @@ try {
     assert.equal(await details.evaluate(element => element.open), true);
     assert.equal(await details.evaluate(element => element.getAnimations().length), 0);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
-    passed.push('manual and system reduced motion disable details and footnote animations');
-    await page.getByRole('checkbox', { name: '深色主题', exact: true }).check();
-    await summary.scrollIntoViewIfNeeded();
-    await capture('markdown-navigation-dark');
+    passed.push('manual and system reduced motion disable details animations');
+
+    // Reset the docs route after Playwright's native-details scrolling so the
+    // footnote checks start with the header at the actual viewport origin.
+    await route('markdown');
+    await windowSize(1440, 900);
+    await setTheme('light');
+    const navScrollerSelector = '.docs-example[aria-labelledby="markdown-navigation-heading"] .live-example .ui-scroll-viewport';
+
+    const navigationJump = await jumpToFootnote(markdown, navScrollerSelector, { smooth: true, label: 'markdown-navigation initial' });
+    await returnFromFootnote(markdown, navigationJump.reference, navScrollerSelector, 'markdown-navigation initial');
+    passed.push('footnote and return smoothly center the destination in the viewport and transfer focus');
+
+    const manualReduceControl = markdown.getByRole('checkbox', { name: '减少动态效果', exact: true });
+    let manualReduceBox = await prepareTargetForPointer(manualReduceControl, '.docs-content-scroll', 'manual reduced-motion control');
+    await page.mouse.click(manualReduceBox.x + manualReduceBox.width / 2, manualReduceBox.y + manualReduceBox.height / 2);
+    assert.equal(await manualReduceControl.isChecked(), true);
+    const manualReduceJump = await jumpToFootnote(markdown, navScrollerSelector, { label: 'markdown-navigation manual reduced motion' });
+    assert.ok(Math.abs(manualReduceJump.early - manualReduceJump.after) <= 1, 'manual reduced motion jumps without scrolling animation');
+    await returnFromFootnote(markdown, manualReduceJump.reference, navScrollerSelector, 'markdown-navigation manual reduced motion');
+    manualReduceBox = await prepareTargetForPointer(manualReduceControl, '.docs-content-scroll', 'manual reduced-motion control reset');
+    await page.mouse.click(manualReduceBox.x + manualReduceBox.width / 2, manualReduceBox.y + manualReduceBox.height / 2);
+    assert.equal(await manualReduceControl.isChecked(), false);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    const systemReduceJump = await jumpToFootnote(markdown, navScrollerSelector, { label: 'markdown-navigation system reduced motion' });
+    assert.ok(Math.abs(systemReduceJump.early - systemReduceJump.after) <= 1, 'system reduced motion jumps without scrolling animation');
+    await returnFromFootnote(markdown, systemReduceJump.reference, navScrollerSelector, 'markdown-navigation system reduced motion');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    passed.push('manual and system reduced motion make footnote navigation immediate and keep scroll isolation');
+
+    const viewportCases = [{ suffix: 'wide', width: 1440, height: 900 }, { suffix: '390', width: 390, height: 844 }];
+    for (const viewport of viewportCases) {
+        await windowSize(viewport.width, viewport.height);
+        for (const theme of ['light', 'dark']) {
+            await setTheme(theme);
+            const jumped = await jumpToFootnote(markdown, navScrollerSelector, { label: `markdown-navigation ${theme} ${viewport.suffix}` });
+            await capture(`markdown-navigation-footnote-${theme}-${viewport.suffix}`, viewport.width, viewport.height);
+            await returnFromFootnote(markdown, jumped.reference, navScrollerSelector, `markdown-navigation ${theme} ${viewport.suffix}`);
+        }
+    }
+    passed.push('markdown-navigation forward/return isolation and screenshots in light/dark at 1440px and 390px');
+
+    await windowSize(1440, 900);
+    await route('markdown');
+    const richDemo = demo('markdown-rich');
+    const richScrollerSelector = '.docs-content-scroll';
+    const richKeyboardJump = await jumpToFootnote(richDemo, richScrollerSelector, { keyboard: true, label: 'markdown-rich Enter' });
+    await returnFromFootnote(richDemo, richKeyboardJump.reference, richScrollerSelector, 'markdown-rich Enter');
+    passed.push('markdown-rich Enter navigation and return keep the outer page, sidebar and header fixed');
+
+    const currentUrl = page.url();
+    const externalLink = richDemo.getByRole('link', { name: 'Markdown 文档', exact: true });
+    await externalLink.evaluate(element => element.focus({ preventScroll: true }));
+    await page.keyboard.press('Enter');
+    await page.getByRole('status').filter({ hasText: '应用收到链接：https://spec.commonmark.org/' }).waitFor();
+    assert.equal(page.url(), currentUrl, 'external Markdown links are emitted without browser navigation');
+    passed.push('Markdown external link emits link-click without leaving the docs route');
+
+    for (const viewport of viewportCases) {
+        await windowSize(viewport.width, viewport.height);
+        for (const theme of ['light', 'dark']) {
+            await setTheme(theme);
+            const jumped = await jumpToFootnote(richDemo, richScrollerSelector, { label: `markdown-rich ${theme} ${viewport.suffix}` });
+            await capture(`markdown-rich-footnote-${theme}-${viewport.suffix}`, viewport.width, viewport.height);
+            await returnFromFootnote(richDemo, jumped.reference, richScrollerSelector, `markdown-rich ${theme} ${viewport.suffix}`);
+        }
+    }
+    passed.push('markdown-rich forward/return isolation and screenshots in light/dark at 1440px and 390px');
+
     await route('theme-provider');
     await demo('theme-scoped').waitFor();
     assert.deepEqual(errors, []);

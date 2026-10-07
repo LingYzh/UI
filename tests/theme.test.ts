@@ -3,6 +3,28 @@ import test from 'node:test';
 import { createApp, createRenderer, defineComponent, h, isReadonly, nextTick, ref } from 'vue';
 import { createUiTheme, provideUiTheme } from '../src/ui/theme';
 
+test('danger follows error and its explicit foreground through live theme edits', () => {
+    const theme = createUiTheme({ themes: { light: { colors: { error: '#982e35', 'on-error': '#faf9f5' } } } });
+    assert.equal(theme.current.value.colors.danger, '#982e35');
+    assert.equal(theme.current.value.colors['on-danger'], '#faf9f5');
+    theme.themes.value.light.colors!.error = '#e5a69c';
+    theme.themes.value.light.colors!['on-error'] = '#262624';
+    assert.equal(theme.current.value.colors.danger, '#e5a69c');
+    assert.equal(theme.current.value.colors['on-danger'], '#262624');
+    assert.equal(theme.styles.value['--ui-theme-danger' as keyof typeof theme.styles.value], '#e5a69c');
+    theme.dispose();
+});
+
+test('a separate danger color and foreground remain independent of error', () => {
+    const theme = createUiTheme({ themes: { light: { colors: { danger: '#6f3149', 'on-danger': '#fff4eb', error: '#982e35' } } } });
+    theme.themes.value.light.colors!.error = '#e5a69c';
+    theme.themes.value.light.colors!['on-error'] = '#262624';
+    assert.equal(theme.current.value.colors.error, '#e5a69c');
+    assert.equal(theme.current.value.colors.danger, '#6f3149');
+    assert.equal(theme.current.value.colors['on-danger'], '#fff4eb');
+    theme.dispose();
+});
+
 function withBrowserGlobals<T>(values: Record<string, unknown>, run: () => T): T {
     const previous = new Map<string, PropertyDescriptor | undefined>();
     for (const [key, value] of Object.entries(values)) {

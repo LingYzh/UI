@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useAttrs } from 'vue';
@@ -12,7 +13,7 @@ const props = withDefaults(defineProps<FormControlProps & {
     value?: unknown;
     trueValue?: unknown;
     falseValue?: unknown;
-}>(), { indeterminate: false, disabled: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+} & { ripple?: RippleOptions }>(), { ripple: true, indeterminate: false, disabled: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const model = defineModel<any>({ default: false });
 const element = ref<HTMLInputElement>();
 const attrs = useAttrs();
@@ -35,9 +36,9 @@ defineExpose({ element, focus: () => element.value?.focus(), validate: control.v
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <!-- 有标签时整个 label 可点击；无标签时须通过 aria-label 等提供名称。 -->
         <label v-if="$slots.default" class="ui-checkbox" :class="[$attrs.class, { 'is-disabled': control.disabled.value }]" :style="$attrs.style as any">
-            <input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
+            <span class="ui-selection-ripple is-checkbox" v-ripple.center.circle="control.disabled.value || control.readonly.value ? false : props.ripple"><input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" /></span>
             <span class="ui-checkbox-label"><slot /></span>
         </label>
-        <input v-pointer-blur v-else ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" />
+        <span v-else class="ui-selection-ripple is-checkbox" v-ripple.center.circle="control.disabled.value || control.readonly.value ? false : props.ripple"><input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="control.guard" @keydown="control.guardKeys" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" /></span>
     </UiControlFrame>
 </template>

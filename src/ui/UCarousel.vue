@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
+import Icon from '../components/Icon.vue';
 import { vPointerBlur } from './pointer-focus';
 import { onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue';
 import { createGroup, windowKey, type GroupValue } from './group-state';
 import { attachWindowMotion, windowContextKey, type WindowContext } from './window-state';
 import { useReducedMotion } from './motion';
-const rawProps = withDefaults(defineProps<{ interval?: number; cycle?: boolean; disabled?: boolean; label?: string; touch?: boolean; keyboard?: boolean }>(), { interval: 6000, cycle: true, touch: true, keyboard: true });
+const rawProps = withDefaults(defineProps<{ interval?: number; cycle?: boolean; disabled?: boolean; label?: string; touch?: boolean; keyboard?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, interval: 6000, cycle: true, touch: true, keyboard: true });
 const props = useDefaults(rawProps, 'UCarousel');
 const model = defineModel<GroupValue | null>({ default: null });
 const group = createGroup(model, { mandatory: true, disabled: props.disabled });
@@ -39,7 +41,7 @@ defineExpose({ next, prev });
 <template>
     <section class="u-carousel" role="region" aria-roledescription="轮播" :aria-label="props.label || '轮播内容'" @mouseenter="paused = true" @mouseleave="paused = false" @focusin="paused = true" @focusout="onFocusOut" @keydown="props.keyboard && motion.onKeydown($event)" @touchstart.passive="props.touch && motion.onTouchStart($event)" @touchend.passive="props.touch && motion.onTouchEnd($event)" @touchcancel="motion.onTouchCancel">
             <div class="u-carousel-content"><slot :next="next" :prev="prev" :model-value="model" /></div>
-            <button v-pointer-blur type="button" class="u-carousel-prev" aria-label="上一项" :disabled="props.disabled" @click="prev">‹</button><button v-pointer-blur type="button" class="u-carousel-next" aria-label="下一项" :disabled="props.disabled" @click="next">›</button>
-            <div class="u-carousel-controls"><button v-for="(value, index) in context.values" :key="value" v-pointer-blur type="button" :aria-label="'前往第 ' + (index + 1) + ' 项'" :aria-pressed="model === value" :disabled="props.disabled" @click="context.select(value)"><span /></button></div>
+            <button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-prev" aria-label="上一项" :disabled="props.disabled" @click="prev"><Icon name="mdi-chevron-left" :size="20" /></button><button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-next" aria-label="下一项" :disabled="props.disabled" @click="next"><Icon name="mdi-chevron-right" :size="20" /></button>
+            <div class="u-carousel-controls"><button v-ripple.center.circle="props.ripple" v-for="(value, index) in context.values" :key="value" v-pointer-blur type="button" :aria-label="'前往第 ' + (index + 1) + ' 项'" :aria-pressed="model === value" :disabled="props.disabled" @click="context.select(value)"><span class="u-carousel-dot" aria-hidden="true" /></button></div>
         </section>
 </template>

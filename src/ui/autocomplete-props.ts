@@ -1,9 +1,11 @@
 import type { ControlSizing } from './control-sizing';
 import type { FormControlProps } from './form';
 import type { ItemProperty, SelectionItem, ValueComparator } from './selection';
+import type { RippleOptions } from './ripple';
 
 /** Shared selection API for UAutocomplete and UCombobox. */
 export interface AutocompleteProps extends ControlSizing, FormControlProps {
+    ripple?: RippleOptions;
     items?: readonly unknown[];
     itemTitle?: ItemProperty;
     itemValue?: ItemProperty;

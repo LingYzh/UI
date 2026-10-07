@@ -18,6 +18,9 @@ import CascaderDemo from './CascaderDemo.vue';
 import TabsDemo from './TabsDemo.vue';
 import LayoutDemo from './LayoutDemo.vue';
 import ButtonLoadingDemo from './ButtonLoadingDemo.vue';
+import ButtonAppearanceDemo from './ButtonAppearanceDemo.vue';
+import CodeBlockHeightDemo from './CodeBlockHeightDemo.vue';
+import TypographyDemo from './TypographyDemo.vue';
 const componentDemos = import.meta.glob('./component-examples/*.vue', { eager: true, import: 'default' });
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
 
@@ -30,7 +33,7 @@ const props = defineProps({ example: { type: String, required: true } });
 const query = ref('');
 const input = ref();
 const saving = ref(false);
-const size = ref(13);
+const size = ref(15);
 const density = ref('comfortable');
 const permissionMode = ref('default');
 const planVersion = ref('v1');
@@ -53,6 +56,7 @@ const square = ref(false);
 const lineCount = ref(24);
 const enabled = ref(true);
 const name = ref('');
+const cardClicks = ref(0);
 const error = ref('');
 const selected = ref('overview');
 const draft = ref('');
@@ -98,6 +102,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
     <div class="live-example">
         <component v-if="example.startsWith('component-')" :is="componentDemos[`./component-examples/${example.slice('component-'.length)}.vue`]" />
         <ButtonLoadingDemo v-else-if="example === 'button-loading-size'" />
+        <ButtonAppearanceDemo v-else-if="example === 'button-variant-color'" />
         <CascaderDemo v-else-if="example === 'cascader-form'" />
         <TabsDemo v-else-if="['tabs-declarative', 'tabs-items', 'tabs-window', 'tabs-values', 'tabs-scroll'].includes(example)" :example="example" />
         <LayoutDemo v-else-if="example.startsWith('layout-') || example === 'textarea-grow'" :example="example" />
@@ -112,7 +117,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <template v-else-if="example === 'activity-basic'">
             <u-activity v-model:open="activityOpen" title="思考过程" status="已完成"><p>先确认项目约束，再检查相关模块。这里展示服务返回的思考摘要，正文回答在活动之外。</p></u-activity>
             <u-activity title="读取 src/main.ts" status="已完成" tone="success">读取 84 行，找到应用入口。</u-activity>
-            <u-activity title="运行 npm test" status="等待审批" tone="busy" :open="true">命令将在当前用户权限下运行。<template #actions><u-button size="sm">批准本次</u-button><u-button size="sm" variant="ghost">拒绝</u-button></template></u-activity>
+            <u-activity title="运行 npm test" status="等待审批" tone="busy" :open="true">命令将在当前用户权限下运行。<template #actions><u-button size="sm">批准本次</u-button><u-button size="sm" variant="text">拒绝</u-button></template></u-activity>
             <u-activity title="编辑 src/main.ts" status="失败" tone="error">文件内容已变化，请重新读取后再试。</u-activity>
         </template>
         <template v-else-if="example === 'style-variants'">
@@ -157,7 +162,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <p class="muted small ellipsis my-2" title="http://localhost:5580/v1">http://localhost:5580/v1</p>
                 <div class="d-flex flex-wrap align-center justify-space-between ga-2">
                     <span class="muted small">OpenAI Chat · 25 个模型</span>
-                    <div class="d-flex ga-1"><u-button size="sm" variant="ghost">编辑</u-button><u-button size="sm" variant="ghost">删除</u-button></div>
+                    <div class="d-flex ga-1"><u-button size="sm" variant="text">编辑</u-button><u-button size="sm" variant="text">删除</u-button></div>
                 </div>
                 <div class="d-flex flex-wrap align-center ga-2 small muted" aria-label="模型能力示例">
                     <span v-for="item in [['image','图片输入'],['file','PDF 输入'],['volume','音频输入'],['monitor','视频输入'],['puzzle','工具调用'],['spark','推理']]" :key="item[0]" role="img" :aria-label="item[1]" :title="item[1]"><u-icon :name="item[0]" :size="16" /></span>
@@ -169,8 +174,16 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <u-card title="工作区偏好" subtitle="保存当前工作区的显示选项。" aria-label="工作区偏好">
                 <u-text-field label="名称" id="demo-card-name" v-model="name" placeholder="例如 UAH" />
                 <u-select label="显示密度" id="demo-card-density" v-model="density"><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
-                <template #actions><u-button variant="ghost" @click="name = ''">清空</u-button><u-button variant="primary" @click="snackbar.show('示例偏好已保存。', { tone: 'success' })">保存</u-button></template>
+                <template #actions><u-button variant="text" @click="name = ''">清空</u-button><u-button variant="flat" color="primary" @click="snackbar.show('示例偏好已保存。', { tone: 'success' })">保存</u-button></template>
             </u-card>
+        </template>
+        <template v-else-if="example === 'card-clickable'">
+            <div class="d-grid ga-4">
+                <u-card as="button" type="button" density="compact" @click="cardClicks++">打开工作区 · 默认涟漪</u-card>
+                <u-card as="button" type="button" density="compact" :ripple="false" @click="cardClicks++">打开工作区 · 关闭涟漪</u-card>
+                <u-card density="compact" aria-label="静态卡片">静态说明 · 点击不触发涟漪</u-card>
+                <output class="muted small">已打开 {{ cardClicks }} 次</output>
+            </div>
         </template>
         <template v-else-if="example === 'card-variants'">
             <div class="d-grid ga-4 demo-card-grid"><u-card v-for="variant in ['outlined', 'elevated', 'tonal', 'flat']" :key="variant" :variant="variant" density="compact" :title="variant" :aria-label="variant">同一套内容与间距。</u-card></div>
@@ -180,14 +193,16 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <u-scroll-area label="运行日志" max-height="220px"><p v-for="line in lineCount" :key="line" class="px-4 py-2 ma-0">日志 {{ line }} · 等待任务</p></u-scroll-area>
         </template>
         <template v-else-if="example === 'code-highlight'"><u-code-block :code="codeSample" language="vue" /></template>
+        <template v-else-if="example === 'code-height'"><CodeBlockHeightDemo /></template>
+        <template v-else-if="example === 'typography-scale'"><TypographyDemo /></template>
         <template v-else-if="example === 'utility-layout'">
             <div class="d-flex align-center justify-space-between ga-4 pa-4 demo-utility"><span class="flex-grow-1">工作区</span><u-button size="sm" @click="snackbar.show('已打开示例工作区。')">打开</u-button></div>
         </template>
         <template v-else-if="example === 'button-variants'">
             <div class="demo-row">
-                <u-button variant="primary" @click="snackbar.show('更改已保存。', { tone: 'success' })"><Icon name="check" :size="16" />保存更改</u-button>
+                <u-button variant="flat" color="primary" @click="snackbar.show('更改已保存。', { tone: 'success' })"><Icon name="check" :size="16" />保存更改</u-button>
                 <u-button @click="snackbar.show('已执行次要操作。')">次要操作</u-button>
-                <u-button variant="ghost" @click="snackbar.show('已执行轻量操作。')">轻量操作</u-button>
+                <u-button variant="text" @click="snackbar.show('已执行轻量操作。')">轻量操作</u-button>
             </div>
         </template>
         <template v-else-if="example === 'button-states'">
@@ -204,7 +219,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                     <template #leading><Icon name="search" :size="16" /></template>
                     <template #trailing><span class="demo-count">{{ query.length }}</span></template>
                 </u-text-field>
-            <div class="demo-row"><u-button size="sm" @click="input?.focus()">聚焦输入</u-button><u-button size="sm" variant="ghost" @click="query = ''">清空</u-button></div>
+            <div class="demo-row"><u-button size="sm" @click="input?.focus()">聚焦输入</u-button><u-button size="sm" variant="text" @click="query = ''">清空</u-button></div>
             <output>输入值：{{ query || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'input-states'">
@@ -225,7 +240,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <u-select v-model="draft" placeholder="选择模型" aria-label="分组模型"><optgroup v-for="group in ['Provider A', 'Provider B']" :key="group" :label="group"><option v-for="n in 20" :key="n" :value="group + n">model-{{ n }}</option></optgroup></u-select>
         </template>
         <template v-else-if="example === 'select-values'">
-            <u-select label="代码字号" :id="`${prefix}-size`" v-model="size"><option v-for="value in [12, 13, 14, 16]" :key="value" :value="value">{{ value }} px</option></u-select>
+            <u-select label="代码字号" :id="`${prefix}-size`" v-model="size"><option v-for="value in [14, 15, 16, 18]" :key="value" :value="value">{{ value }} px</option></u-select>
             <u-select label="显示密度" :id="`${prefix}-density`" v-model="density" compact><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
             <output id="size-value">{{ typeof size }} · {{ size }}</output>
         </template>
@@ -273,7 +288,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                     <u-text-field :label="`示例字段 ${number}`" :id="`${prefix}-field-${number}`" placeholder="滚动查看其余字段" />
                     <u-button @click="error = '读取失败：请检查服务地址与认证信息。此提示始终留在弹窗顶部。'">显示顶部错误</u-button>
                 </div>
-                <template #footer><div class="d-flex justify-end ga-2"><u-button @click="error = ''">清除错误</u-button><u-button variant="primary" @click="open = false">关闭长表单</u-button></div></template>
+                <template #footer><div class="d-flex justify-end ga-2"><u-button @click="error = ''">清除错误</u-button><u-button variant="flat" color="primary" @click="open = false">关闭长表单</u-button></div></template>
             </u-dialog>
         </template>
         <template v-else-if="example === 'dialog-lifecycle'">
@@ -284,7 +299,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <p class="docs-dialog-kicker">UAH / DIALOG</p><h2 :id="`${prefix}-title`">共享弹窗</h2>
                 <p>按 Esc、点击遮罩或关闭按钮结束。键盘关闭后恢复触发器焦点，点击关闭后释放操作焦点。</p>
                 <u-text-field autofocus aria-label="弹窗输入" placeholder="试试键盘操作" />
-                <div class="demo-row"><u-button variant="primary" @click="open = false">关闭弹窗</u-button></div>
+                <div class="demo-row"><u-button variant="flat" color="primary" @click="open = false">关闭弹窗</u-button></div>
             </u-dialog>
         </template>
         <template v-else-if="example === 'collapse-content'">
@@ -299,7 +314,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <u-select label="提示时长" :id="`${prefix}-duration`" v-model="duration"><option :value="6000">6 秒</option><option :value="800">0.8 秒</option><option :value="0">手动关闭</option></u-select>
                 <u-select label="提示类型" :id="`${prefix}-tone`" v-model="tone"><option value="success">成功</option><option value="info">信息</option><option value="error">错误</option></u-select>
             </div>
-            <div class="demo-row"><u-button variant="primary" @click="showNotice">显示提示</u-button><u-button :disabled="lastId === null" @click="snackbar.dismiss(lastId)">撤销上一条</u-button><u-button variant="ghost" @click="snackbar.clear()">清空提示</u-button></div>
+            <div class="demo-row"><u-button variant="flat" color="primary" @click="showNotice">显示提示</u-button><u-button :disabled="lastId === null" @click="snackbar.dismiss(lastId)">撤销上一条</u-button><u-button variant="text" @click="snackbar.clear()">清空提示</u-button></div>
             <output aria-live="polite">{{ lastId === null ? '尚未创建提示' : `最近提示 id：${lastId}` }}</output>
         </template>
     </div>

@@ -1,5 +1,10 @@
+import { typography } from '../src/ui/typography.js';
 import { readFile, writeFile } from 'node:fs/promises';
+import { formatDemoSource } from './demo-source-format.mjs';
 const families = [
+    ['内容组件', 'alignment-code', '', '行内代码', ['UCode']],
+    ['导航组件', 'alignment-slide', '', '通用滑动选择', ['USlideGroup', 'USlideGroupItem']],
+    ['反馈组件', 'alignment-notice', '', '受控消息与队列', ['USnackbar', 'USnackbarQueue']],
     ['表单组件', 'completion-selection', 'FormCompletionDemo', '搜索、创建与对象选择', ['UAutocomplete', 'UCombobox']],
     ['表单组件', 'completion-inputs', 'FormCompletionDemo', '专门输入与统一表单状态', ['UNumberInput', 'UFileInput', 'UFileUpload', 'USlider', 'URangeSlider', 'UOtpInput', 'UColorInput', 'UColorPicker', 'URating']],
     ['表单组件', 'completion-groups', 'FormCompletionDemo', '组管理选择模型', ['USelectionControlGroup', 'USelectionControl', 'URadioGroup', 'UCheckboxGroup', 'UItemGroup', 'UItem', 'UChip', 'UChipGroup', 'UBtnGroup', 'UBtnToggle', 'ULabel', 'UMessages', 'UCounter']],
@@ -31,15 +36,39 @@ const titles = {
 };
 const pages = [];
 titles.ULocaleProvider = '局部语言容器';
+titles.UCode = '行内代码';
+titles.USlideGroup = '滑动选择组';
+titles.USlideGroupItem = '滑动选择项';
+titles.USnackbar = '受控消息';
+titles.USnackbarQueue = '消息队列';
+const focusNotes = {
+    UToolbar: '标题和操作区内置：title属性或title插槽配置标题，actions插槽直接放按钮（也支持append），无需额外标题/操作组件。extension显示扩展内容；四种密度采用64/56/48/128px。保留本库字体、间距、圆角和按钮尺寸，不注册应用布局占位。',
+    UToolbarTitle: '此组件保留用于兼容自定义组合；常用标题直接使用UToolbar的title属性或title插槽。text属性、text插槽与默认插槽均支持，长文本省略，不挤掉操作。',
+    UToolbarItems: '此组件保留用于兼容自定义组合；常用操作直接放入UToolbar的actions插槽。color/variant统一下发给按钮，显式属性优先；按钮使用本库圆角、尺寸和间距。',
+    USlider: '鼠标点击或拖动不显示焦点外框；Tab 进入后显示焦点提示，方向键调整数值。',
+    URangeSlider: '鼠标拖动不显示焦点外框；Tab 分别进入两个手柄时显示焦点提示，方向键调整范围。',
+    UColorPicker: '颜色通道滑块仅在键盘操作时显示焦点外框；十六进制文本输入保留编辑提示。',
+    UFileInput: '鼠标选择文件不显示键盘焦点框；Tab 进入时显示焦点提示。',
+    UFileUpload: '上传区域仅在键盘焦点或拖放文件时高亮；鼠标点击选择文件不保持焦点高亮。',
+    UColorInput: '颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。'
+};
 for (const [group, example, demo, title, names] of families) {
     for (const name of names) {
         const slug = kebab(name).slice(2);
-        const source = await readFile(new URL('../src/ui/docs/component-examples/' + slug + '.vue', import.meta.url), 'utf8');
+        const file = new URL('../src/ui/docs/component-examples/' + slug + '.vue', import.meta.url);
+        const original = await readFile(file, 'utf8');
+        const source = await formatDemoSource(original);
+        if (original !== source) await writeFile(file, source);
         const code = source.replaceAll("from '../../index'", "from '@lingyzh/ui'");
-        pages.push({ id: name === 'UInput' ? 'input-base' : slug, title: titles[name], name, kind: 'component', group, description: `${titles[name]}的独立用法与交互。`, examples: [{ id: 'component-' + slug, title: `${titles[name]}的基本用法`, description: '只演示当前组件及其所需的容器或子组件，源码与此示例一致。', fullSource: true, code }], notes: ['公开属性、模型、事件和插槽以本页 API 为准。', '组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。'] });
+        pages.push({ id: name === 'UInput' ? 'input-base' : slug, title: titles[name], name, kind: 'component', group, description: `${titles[name]}的独立用法与交互。`, examples: [{ id: 'component-' + slug, title: `${titles[name]}的基本用法`, description: focusNotes[name] ?? '只演示当前组件及其所需的容器或子组件，源码与此示例一致。', fullSource: true, code }], notes: ['公开属性、模型、事件和插槽以本页 API 为准。', '组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。', ...(focusNotes[name] ? [focusNotes[name]] : [])] });
     }
 }
 await writeFile(new URL('../src/ui/docs/completionContent.js', import.meta.url), '// Generated from root-authored real demos.\nexport const completionPages = ' + JSON.stringify(pages, null, 4) + ';\n');
-const buttonSource = await readFile(new URL('../src/ui/docs/ButtonLoadingDemo.vue', import.meta.url), 'utf8');
-await writeFile(new URL('../src/ui/docs/buttonContent.js', import.meta.url), 'export const buttonLoadingExample = ' + JSON.stringify({ id: 'button-loading-size', title: '加载时保留尺寸和动作层级', description: '切换加载，比较不同 variant、紧凑、图标、指定宽度与自定义 loader。加载前后保持大小、底色、边框和文字颜色，阻止重复操作。', fullSource: true, code: buttonSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+const buttonSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonLoadingDemo.vue', import.meta.url), 'utf8'));
+const buttonAppearanceSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonAppearanceDemo.vue', import.meta.url), 'utf8'));
+await writeFile(new URL('../src/ui/docs/buttonContent.js', import.meta.url), 'export const buttonAppearanceExample = ' + JSON.stringify({ id: 'button-variant-color', title: '样式变体与颜色独立配置', description: '六种 variant 与主题颜色独立组合；也可输入 CSS 颜色。切换禁用和加载，比较表面、边框、前景与尺寸。', fullSource: true, code: buttonAppearanceSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n\nexport const buttonLoadingExample = ' + JSON.stringify({ id: 'button-loading-size', title: '加载时保留尺寸和样式', description: '六种 variant、独立颜色、紧凑、图标、指定宽度与自定义 loader。加载前后保持大小、底色、边框和文字颜色，阻止重复操作。', fullSource: true, code: buttonSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
 function kebab(name) { return 'u-' + name.slice(1).replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase(); }
+const heightSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/CodeBlockHeightDemo.vue', import.meta.url), 'utf8'));
+const typographySource = await formatDemoSource(await readFile(new URL('../src/ui/docs/TypographyDemo.vue', import.meta.url), 'utf8'));
+await writeFile(new URL('../src/ui/docs/typographyContent.js', import.meta.url), 'export const typographyPage = ' + JSON.stringify({ id: 'typography', title: '字体排版', name: 'Typography', kind: 'guide', group: '设计基础', description: '采用 Vuetify 4.2.4 的15级字号体系：正文16/14/12px，标题22/16/14px。保留现有中文字体、技术字体与主题。', apiKind: 'utilities', props: typography.map(role => ({ name: 'text-' + role.name, type: 'CSS class', fallback: role.size + 'px', description: '行高' + role.lineHeight + 'px，字重' + role.weight + '；以16px根字号计算。' })), examples: [{ id: 'typography-scale', title: '字号层级与真实控件', description: '按真实工具类展示全部字号；响应式字号随视口变化，输入与按钮使用对应字号。以16px根字号计算，浏览器缩放会等比例调整。', fullSource: true, code: typographySource.replaceAll("from '../index'", "from '@lingyzh/ui'") }], notes: ['text-display-*、text-headline-*、text-title-*、text-body-*、text-label-*与Vuetify4命名一致，large/medium/small各三级。', 'text-sm-* / text-md-* / text-lg-* / text-xl-* / text-xxl-*支持响应式字号。旧text-body-1/2、text-caption、text-subtitle与text-title映射到新层级。', '默认按钮14px，x-small/small/default/large/x-large为10/12/14/16/18px；输入16px，表单辅助12px，表格14px，工具栏标题20px、prominent24px。', '字号使用rem单位，随浏览器缩放等比例变化；字体家族、配色与控件圆角由现有设计tokens控制。'] }, null, 4) + ';\n');
+await writeFile(new URL('../src/ui/docs/codeBlockContent.js', import.meta.url), 'export const codeBlockHeightExample = ' + JSON.stringify({ id: 'code-height', title: '自然高度与显式高度上限', description: '默认完整展开代码；只在传入 max-height 时限制高度，保留横向滚动与自动换行。', fullSource: true, code: heightSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');

@@ -11,14 +11,14 @@ export const feedbackPages = [
                 "id": "badge-tones",
                 "title": "语义与外观",
                 "description": "tone 表达状态含义，variant 在弱底与描边之间选择；dense 适合表格与卡片角落。",
-                "code": "<script setup>\nimport { UChip } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-chip tone=\"success\">正常</u-chip>\n    <u-chip tone=\"warning\" variant=\"outline\">即将到期</u-chip>\n    <u-chip tone=\"accent\" dense>PRO</u-chip>\n</template>",
+                "code": "<script setup>\nimport { UChip } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-chip tone=\"success\">正常</u-chip>\n    <u-chip tone=\"warning\" variant=\"outline\">即将到期</u-chip>\n    <u-chip tone=\"accent\" dense>PRO</u-chip>\n</template>\n",
                 "fullSource": true
             },
             {
                 "id": "badge-custom",
                 "title": "自定义颜色与移除",
                 "description": "用户标签传入任意 CSS 颜色，底色与文字由组件按主题混合；closable 提供可访问的移除按钮。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UChip } from '@lingyzh/ui';\nconst tags = ref([{ id: 'work', label: '工作', color: '#3b82f6' }]);\n</script>\n\n<template>\n    <u-chip v-for=\"tag in tags\" :key=\"tag.id\" :color=\"tag.color\" closable @close=\"tags = tags.filter((item) => item.id !== tag.id)\">{{ tag.label }}</u-chip>\n</template>",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UChip } from '@lingyzh/ui';\nconst tags = ref([{ id: 'work', label: '工作', color: '#3b82f6' }]);\n</script>\n\n<template>\n    <u-chip\n        v-for=\"tag in tags\"\n        :key=\"tag.id\"\n        :color=\"tag.color\"\n        closable\n        @close=\"tags = tags.filter((item) => item.id !== tag.id)\"\n    >\n        {{ tag.label }}\n    </u-chip>\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -41,14 +41,14 @@ export const feedbackPages = [
                 "id": "alert-tones",
                 "title": "四种语气",
                 "description": "info、success、warning、error 使用对应的弱底与状态标记，正文保持主文字对比度。",
-                "code": "<script setup>\nimport { UAlert } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-alert tone=\"warning\" title=\"额度即将用尽\">当前账号本月剩余额度低于 10%。</u-alert>\n</template>",
+                "code": "<script setup>\nimport { UAlert } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-alert tone=\"warning\" title=\"额度即将用尽\">当前账号本月剩余额度低于 10%。</u-alert>\n</template>\n",
                 "fullSource": true
             },
             {
                 "id": "alert-actions",
                 "title": "操作、紧凑与语义",
                 "description": "actions 插槽放置与提示相关的操作；dense 适合表单内；静态说明可透传 role=\"note\"。",
-                "code": "<script setup>\nimport { UAlert, UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-alert tone=\"error\" title=\"代理启动失败\">\n        端口 5580 已被占用。\n        <template #actions><u-button size=\"sm\" @click=\"retry\">重试</u-button></template>\n    </u-alert>\n    <u-alert tone=\"info\" role=\"note\">静态说明。</u-alert>\n</template>",
+                "code": "<script setup>\nimport { UAlert, UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-alert tone=\"error\" title=\"代理启动失败\">\n        端口 5580 已被占用。\n        <template #actions><u-button size=\"sm\" @click=\"retry\">重试</u-button></template>\n    </u-alert>\n    <u-alert tone=\"info\" role=\"note\">静态说明。</u-alert>\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -69,7 +69,7 @@ export const feedbackPages = [
                 "id": "spinner-states",
                 "title": "尺寸与按钮中的等待态",
                 "description": "UButton 的 loading 负责禁用与 aria-busy，指示器由业务按需放入插槽，保持现有按钮外观不变。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, USpinner } from '@lingyzh/ui';\nconst busy = ref(false);\n</script>\n\n<template>\n    <u-spinner label=\"正在刷新账号\" />\n    <u-button :loading=\"busy\" @click=\"run\"><u-spinner v-if=\"busy\" :size=\"14\" />{{ busy ? '检测中…' : '批量检测' }}</u-button>\n</template>",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, USpinner } from '@lingyzh/ui';\nconst busy = ref(false);\n</script>\n\n<template>\n    <u-spinner label=\"正在刷新账号\" />\n    <u-button :loading=\"busy\" @click=\"run\">\n        <u-spinner v-if=\"busy\" :size=\"14\" />\n        {{ busy ? '检测中…' : '批量检测' }}\n    </u-button>\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -90,14 +90,14 @@ export const feedbackPages = [
                 "id": "menu-items",
                 "title": "操作与勾选菜单",
                 "description": "方向键在菜单项间移动，Home/End 跳到首尾，Esc 或点击外部关闭并把焦点还给触发按钮。keep-open 用于多选。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UMenu, UMenuItem } from '@lingyzh/ui';\nconst group = ref('all');\n</script>\n\n<template>\n    <u-menu>\n        <template #activator=\"{ props }\"><u-button v-bind=\"props\">移动到分组</u-button></template>\n        <u-menu-item :checked=\"group === 'all'\" @click=\"group = 'all'\">全部账号</u-menu-item>\n        <u-menu-item :checked=\"group === 'work'\" @click=\"group = 'work'\">工作分组</u-menu-item>\n        <hr class=\"ui-menu-divider\" />\n        <u-menu-item danger @click=\"remove\">删除账号</u-menu-item>\n    </u-menu>\n</template>",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UMenu, UMenuItem } from '@lingyzh/ui';\nconst group = ref('all');\n</script>\n\n<template>\n    <u-menu>\n        <template #activator=\"{ props }\">\n            <u-button v-bind=\"props\">移动到分组</u-button>\n        </template>\n        <u-menu-item :checked=\"group === 'all'\" @click=\"group = 'all'\">全部账号</u-menu-item>\n        <u-menu-item :checked=\"group === 'work'\" @click=\"group = 'work'\">工作分组</u-menu-item>\n        <hr class=\"ui-menu-divider\" />\n        <u-menu-item danger @click=\"remove\">删除账号</u-menu-item>\n    </u-menu>\n</template>\n",
                 "fullSource": true
             },
             {
                 "id": "menu-panel",
                 "title": "自由内容面板",
                 "description": "panel 模式为 role=dialog，内部表单使用正常 Tab 顺序；应用后由业务关闭面板。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UTextField, UMenu } from '@lingyzh/ui';\nconst open = ref(false);\nconst keyword = ref('');\n</script>\n\n<template>\n    <u-menu v-model:open=\"open\" panel label=\"筛选账号\">\n        <template #activator=\"{ props }\"><u-button v-bind=\"props\">筛选</u-button></template>\n        <u-text-field v-model=\"keyword\" aria-label=\"关键字\" />\n        <u-button variant=\"primary\" @click=\"open = false\">应用</u-button>\n    </u-menu>\n</template>",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UTextField, UMenu } from '@lingyzh/ui';\nconst open = ref(false);\nconst keyword = ref('');\n</script>\n\n<template>\n    <u-menu v-model:open=\"open\" panel label=\"筛选账号\">\n        <template #activator=\"{ props }\">\n            <u-button v-bind=\"props\">筛选</u-button>\n        </template>\n        <u-text-field v-model=\"keyword\" aria-label=\"关键字\" />\n        <u-button variant=\"flat\" color=\"primary\" @click=\"open = false\">应用</u-button>\n    </u-menu>\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -122,7 +122,7 @@ export const feedbackPages = [
                 "id": "confirm-basic",
                 "title": "确认、危险操作与排队",
                 "description": "危险确认使用红色操作；默认焦点在取消按钮。多次调用按顺序排队，Promise 在弹窗真正关闭、焦点恢复后才 resolve。",
-                "code": "<script setup>\nimport { confirmDialog, snackbar, UConfirmHost, UButton } from '@lingyzh/ui';\nasync function remove() {\n    const ok = await confirmDialog({ title: '删除账号', message: '确定删除该账号？', confirmText: '删除', tone: 'danger' });\n    if (ok) snackbar.show('账号已删除。', { tone: 'success' });\n}\n</script>\n\n<template>\n    <!-- 根组件中挂载一次 -->\n    <u-confirm-host />\n    <u-button variant=\"danger\" @click=\"remove\">删除账号</u-button>\n</template>",
+                "code": "<script setup>\nimport { confirmDialog, snackbar, UConfirmHost, UButton } from '@lingyzh/ui';\nasync function remove() {\n    const ok = await confirmDialog({\n        title: '删除账号',\n        message: '确定删除该账号？',\n        confirmText: '删除',\n        tone: 'danger',\n    });\n    if (ok) snackbar.show('账号已删除。', { tone: 'success' });\n}\n</script>\n\n<template>\n    <!-- 根组件中挂载一次 -->\n    <u-confirm-host />\n    <u-button variant=\"outlined\" color=\"danger\" @click=\"remove\">删除账号</u-button>\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -179,7 +179,7 @@ export const feedbackPages = [
                 "title": "切换内置文案",
                 "demo": "locale-switch",
                 "text": "切换后分页器、表格空状态、代码块工具栏和确认对话框的按钮同步更新；业务传入的文字不受影响。",
-                "code": "import { setLocale, getLocale } from '@lingyzh/ui';\n\nsetLocale('en');\nconsole.log(getLocale()); // 'en'"
+                "code": "import { setLocale, getLocale } from '@lingyzh/ui';\n\nsetLocale('en');\nconsole.log(getLocale()); // 'en'\n"
             },
             {
                 "id": "scope",

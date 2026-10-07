@@ -1,21 +1,4 @@
-const scopedCode = `<script setup>
-import { ref } from 'vue';
-import { UThemeProvider, UCard, UTextField, UButton, UMarkdown, UDialog } from '@lingyzh/ui';
-const name = ref('工作空间');
-const open = ref(false);
-</script>
-
-<template>
-    <u-theme-provider theme="dark" with-background>
-        <u-card title="继承深色主题">
-            <u-text-field v-model="name" label="名称" />
-            <u-markdown source="\`行内代码\` 与 ==标记== 使用主题主色。" />
-            <u-button variant="primary" @click="open = true">打开继承主题弹窗</u-button>
-        </u-card>
-        <u-card theme="light" title="独立浅色卡片">嵌套区域可覆盖主题。</u-card>
-        <u-dialog v-model:open="open"><h3>继承深色主题</h3><u-button @click="open = false">关闭</u-button></u-dialog>
-    </u-theme-provider>
-</template>`;
+const scopedCode = "<script setup>\nimport { ref } from 'vue';\nimport { UThemeProvider, UCard, UTextField, UButton, UMarkdown, UDialog } from '@lingyzh/ui';\nconst name = ref('工作空间');\nconst open = ref(false);\n</script>\n\n<template>\n    <u-theme-provider theme=\"dark\" with-background>\n        <u-card title=\"继承深色主题\">\n            <u-text-field v-model=\"name\" label=\"名称\" />\n            <u-markdown source=\"`行内代码` 与 ==标记== 使用主题主色。\" />\n            <u-button variant=\"flat\" color=\"primary\" @click=\"open = true\">打开继承主题弹窗</u-button>\n        </u-card>\n        <u-card theme=\"light\" title=\"独立浅色卡片\">嵌套区域可覆盖主题。</u-card>\n        <u-dialog v-model:open=\"open\"><h3>继承深色主题</h3><u-button @click=\"open = false\">关闭</u-button></u-dialog>\n    </u-theme-provider>\n</template>";
 const setupCode = `import { createApp } from 'vue';
 import { createUiTheme } from '@lingyzh/ui';
 import '@lingyzh/ui/styles.css';
@@ -50,7 +33,7 @@ export const themePages = [
             { id: 'theme-switch', title: '全局切换与跟随系统', description: '模式保留 system，实际主题随系统明暗变化。切换默认播放过渡，减少动态效果时立即更新；与顶栏明暗开关使用相同策略。', code: switchingCode },
             { id: 'theme-custom', title: '自定义主题与实时配色', description: '注册主题继承对应明暗默认值；修改响应式 themes 即时更新所有使用该主题的区域。', code: setupCode },
             { id: 'theme-scoped', title: '局部主题与嵌套覆盖', description: 'Provider、Card 和 Dialog 的主题沿组件树继承；局部切换不改变全局选择。', code: scopedCode },
-            { id: 'theme-diagrams', title: 'Markdown 图表继承主题', description: '同一图表并行显示于两个主题区域，SVG 配色与文字继承各自作用域；动态修改主题后重新呈现。', code: '<script setup>\nimport { UThemeProvider, UMarkdown } from \'@lingyzh/ui\';\nconst diagram = \'```mermaid\\nflowchart LR\\n    A[主题颜色] --> B[安全图表]\\n```\';\n</script>\n\n<template>\n    <u-theme-provider theme="ocean" with-background><u-markdown :source="diagram" /></u-theme-provider>\n    <u-theme-provider theme="midnight" with-background><u-markdown :source="diagram" /></u-theme-provider>\n</template>' }
+            { id: 'theme-diagrams', title: 'Markdown 图表继承主题', description: '同一图表并行显示于两个主题区域，SVG 配色与文字继承各自作用域；动态修改主题后重新呈现。', code: "<script setup>\nimport { UThemeProvider, UMarkdown } from '@lingyzh/ui';\nconst diagram = '```mermaid\\nflowchart LR\\n    A[主题颜色] --> B[安全图表]\\n```';\n</script>\n\n<template>\n    <u-theme-provider theme=\"ocean\" with-background>\n        <u-markdown :source=\"diagram\" />\n    </u-theme-provider>\n    <u-theme-provider theme=\"midnight\" with-background>\n        <u-markdown :source=\"diagram\" />\n    </u-theme-provider>\n</template>\n" }
         ],
         props: [
             row('defaultTheme', 'string', "'light'", '初始主题名；system 跟随系统 prefers-color-scheme。'),

@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useLayoutItem } from './layout-completion';
 import { useDisplay } from './display';
 import { useDefaults } from './defaults';
+import UTransition from './UTransition.vue';
 const rawProps = withDefaults(defineProps<{ modelValue?: boolean; location?: 'left' | 'right'; width?: number; rail?: boolean; railWidth?: number; temporary?: boolean; mobileBreakpoint?: number; absolute?: boolean; order?: number }>(), {
     modelValue: undefined, location: 'left', width: 256, rail: false, railWidth: 56, temporary: false, absolute: false, order: 0
 });
@@ -45,5 +46,5 @@ onBeforeUnmount(() => { if (media && mediaHandler) media.removeEventListener('ch
 </script>
 
 <template>
-    <div v-if="shown && overlay" class="ui-navigation-scrim" @click="close" /><nav class="ui-navigation-drawer" :class="{ 'is-open': shown, 'is-temporary': overlay, 'is-rail': props.rail, 'is-absolute': props.absolute }" :data-location="props.location" :style="{ width: size + 'px', [props.location]: offset + 'px', top: topOffset + 'px', bottom: bottomOffset + 'px' }" :aria-hidden="!shown" :inert="!shown" @keydown.esc="overlay && close()"><slot :close="close" /></nav>
+    <UTransition variant="fade"><div v-if="shown && overlay" class="ui-navigation-scrim" @click="close" /></UTransition><nav class="ui-navigation-drawer" :class="{ 'is-open': shown, 'is-temporary': overlay, 'is-rail': props.rail, 'is-absolute': props.absolute }" :data-location="props.location" :style="{ width: size + 'px', [props.location]: offset + 'px', top: topOffset + 'px', bottom: bottomOffset + 'px' }" :aria-hidden="!shown" :inert="!shown" @keydown.esc="overlay && close()"><slot :close="close" /></nav>
 </template>

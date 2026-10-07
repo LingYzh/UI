@@ -1,4 +1,5 @@
 import type { ObjectDirective } from 'vue';
+import { trackFocusModality } from './focus-modality';
 
 const pointerTargets = new WeakSet<HTMLElement>();
 const cleanups = new WeakMap<HTMLElement, () => void>();
@@ -10,6 +11,7 @@ export function wasPointerActivated(element: HTMLElement | null) {
 /** Release only the activated control; never steal focus moved by its action. */
 export const vPointerBlur: ObjectDirective<HTMLElement> = {
     mounted(element) {
+        const releaseModality = trackFocusModality(element);
         let frame = 0;
         let pointer = false;
         const pointerDown = () => {
@@ -34,6 +36,7 @@ export const vPointerBlur: ObjectDirective<HTMLElement> = {
         element.addEventListener('keydown', keydown);
         element.addEventListener('click', click);
         cleanups.set(element, () => {
+            releaseModality();
             cancelAnimationFrame(frame);
             element.removeEventListener('pointerdown', pointerDown);
             element.removeEventListener('keydown', keydown);

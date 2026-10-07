@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -24,7 +25,7 @@ defineExpose({ element, value, percent, control, update, input, focus: () => ele
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div class="ui-slider-control" :class="control.classes.value" :style="control.styles.value">
-            <input ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="range" :value="value" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :style="{ '--ui-slider-progress': percent + '%' }" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input" @blur="control.blur" />
+            <input v-focus-modality ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" type="range" :value="value" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :style="{ '--ui-slider-progress': percent + '%' }" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input" @blur="control.blur" />
             <output v-if="props.thumbLabel">{{ value }}</output><div v-if="props.showTicks" class="ui-slider-ticks"><span>{{ props.min }}</span><span>{{ props.max }}</span></div>
         </div>
     </UiControlFrame>

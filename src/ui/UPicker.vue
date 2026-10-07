@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import { vPointerBlur } from './pointer-focus';
 import { computed } from 'vue';
@@ -6,7 +7,7 @@ import { getPath, type DataItem } from './data-pipeline';
 
 type PickerItem = string | number | DataItem;
 type PickerValue = PickerItem | boolean | null | undefined;
-const rawProps = withDefaults(defineProps<{ items: readonly PickerItem[]; itemTitle?: string; itemValue?: string; multiple?: boolean; disabled?: boolean; readonly?: boolean; returnObject?: boolean }>(), { itemTitle: 'title', itemValue: 'value' });
+const rawProps = withDefaults(defineProps<{ items: readonly PickerItem[]; itemTitle?: string; itemValue?: string; multiple?: boolean; disabled?: boolean; readonly?: boolean; returnObject?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, itemTitle: 'title', itemValue: 'value' });
 const props = useDefaults(rawProps, 'UPicker');
 const model = defineModel<PickerValue | PickerValue[]>({ default: null });
 const entries = computed(() => props.items.map((item) => ({ item, title: typeof item === 'object' ? String(getPath(item, props.itemTitle) ?? '') : String(item), value: typeof item === 'object' ? getPath(item, props.itemValue) : item })));
@@ -21,5 +22,5 @@ function choose(item: PickerItem): void {
 }
 </script>
 <template>
-    <div class="u-picker" role="listbox" :aria-multiselectable="props.multiple || undefined"><button v-for="(entry, index) in entries" :key="index" v-pointer-blur type="button" class="u-picker-item" role="option" :aria-selected="selected(entry.value)" :class="{ 'is-selected': selected(entry.value) }" :disabled="props.disabled || props.readonly" @click="choose(entry.item)"><slot name="item" :item="entry.item" :selected="selected(entry.value)">{{ entry.title }}</slot></button><slot :items="entries" :selected="selected" :choose="choose" :model-value="model" /></div>
+    <div class="u-picker" role="listbox" :aria-multiselectable="props.multiple || undefined"><button v-ripple="props.ripple" v-for="(entry, index) in entries" :key="index" v-pointer-blur type="button" class="u-picker-item" role="option" :aria-selected="selected(entry.value)" :class="{ 'is-selected': selected(entry.value) }" :disabled="props.disabled || props.readonly" @click="choose(entry.item)"><slot name="item" :item="entry.item" :selected="selected(entry.value)">{{ entry.title }}</slot></button><slot :items="entries" :selected="selected" :choose="choose" :model-value="model" /></div>
 </template>

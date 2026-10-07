@@ -8,7 +8,7 @@ import UiIcon from '../components/Icon.vue';
 import { normalizeTabItems, tabsKey, tabToken, type TabItem, type TabRegistration, type TabValue } from './tabs';
 import { vPointerBlur } from './pointer-focus';
 import { uiText } from './locale';
-import type { RippleOptions } from './ripple';
+import { vRipple, type RippleOptions } from './ripple';
 
 defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<{
@@ -133,7 +133,7 @@ onBeforeUnmount(() => { observer?.disconnect(); window.removeEventListener('resi
 <template>
     <Tabs.Root v-model="model" :orientation="axis" :activation="activation" :mandatory="mandatory" :disabled="disabled" circular>
         <div class="ui-tabs-shell" :data-direction="axis">
-            <button v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atStart" :aria-label="uiText('tabs.previous')" @click="scroll(-1)"><UiIcon name="mdi-chevron-left" :size="16" /></button>
+            <button v-ripple="props.ripple" v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atStart" :aria-label="uiText('tabs.previous')" @click="scroll(-1)"><UiIcon name="mdi-chevron-left" :size="16" /></button>
             <Tabs.List v-slot="{ attrs }" :label="$attrs['aria-label'] as string" renderless>
                 <div ref="list" v-bind="{ ...attrs, ...$attrs }" class="ui-tabs" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded, 'is-grow': grow, 'is-fixed': fixedTabs, 'is-stacked': stacked }"
                     :data-variant="variant" :data-ready="ready" :data-indicator-side="indicatorSide" :data-align="alignTabs" :data-overflow="overflow" :data-ui-tabs-prefix="prefix" :data-ui-tabs-legacy="legacy" @scroll="measure" @focusin="focused">
@@ -146,7 +146,7 @@ onBeforeUnmount(() => { observer?.disconnect(); window.removeEventListener('resi
                     <span v-if="variant === 'underline' && !hideSlider" class="ui-tabs-slider" :style="slider" aria-hidden="true"></span>
                 </div>
             </Tabs.List>
-            <button v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atEnd" :aria-label="uiText('tabs.next')" @click="scroll(1)"><UiIcon name="mdi-chevron-right" :size="16" /></button>
+            <button v-ripple="props.ripple" v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atEnd" :aria-label="uiText('tabs.next')" @click="scroll(1)"><UiIcon name="mdi-chevron-right" :size="16" /></button>
         </div>
         <UiTabsWindow v-if="slots.item || slots.window">
             <UiTabsWindowItem v-for="item in slots.item ? items : []" :key="item.value" :value="item.value"><slot name="item" :item="item" /></UiTabsWindowItem>

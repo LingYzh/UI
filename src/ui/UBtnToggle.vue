@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, useAttrs } from 'vue';
+import { provide, ref, useAttrs } from 'vue';
+import { buttonToggleScopeKey } from './button-group';
 import UItemGroup from './UItemGroup.vue';
 import { useDefaults } from './defaults';
 import type { ItemGroupProps } from './group-props';
@@ -10,6 +11,7 @@ const props = useDefaults(rawProps, 'UBtnToggle');
 const attrs = useAttrs();
 const model = defineModel<unknown>();
 const child = ref<InstanceType<typeof UItemGroup>>();
+provide(buttonToggleScopeKey, true);
 defineExpose({
     focus: () => child.value?.focus(),
     validate: () => child.value?.validate(),

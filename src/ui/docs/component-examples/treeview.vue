@@ -3,8 +3,34 @@ import { ref } from 'vue';
 import { UTreeview } from '../../index';
 const tree = ref([]);
 const opened = ref(['components']);
-const items = Array.from({ length: 5000 }, (_, index) => ({ id: index, title: `项目 ${index + 1}` }));
-const nodes = [{ title: '组件库', value: 'components', children: [{ title: '表单控件', value: 'forms' }, { title: '布局组件', value: 'layout' }, { title: '归档组件', value: 'archive', disabled: true }] }, { title: '文档与示例', value: 'docs' }];
+const items = Array.from({ length: 5000 }, (_, index) => ({
+    id: index,
+    title: `项目 ${index + 1}`,
+}));
+const nodes = [
+    {
+        title: '组件库',
+        value: 'components',
+        children: [
+            {
+                title: '表单控件',
+                value: 'forms',
+                children: [
+                    { title: '输入与选择', value: 'inputs' },
+                    { title: '验证与提交', value: 'validation' },
+                ],
+            },
+            { title: '布局组件', value: 'layout' },
+            {
+                title: '归档组件',
+                value: 'archive',
+                disabled: true,
+                children: [{ title: '历史组件', value: 'history' }],
+            },
+        ],
+    },
+    { title: '文档与示例', value: 'docs' },
+];
 </script>
 
 <template>
@@ -14,8 +40,17 @@ const nodes = [{ title: '组件库', value: 'components', children: [{ title: '�
 </template>
 
 <style scoped>
-.component-demo { display: grid; justify-items: stretch; gap: 16px; min-width: 0; }
-.component-demo > output { color: var(--muted); font-size: 12px; }
-.component-demo > .ui-button { justify-self: start; }
-
+.component-demo {
+    display: grid;
+    justify-items: stretch;
+    gap: 16px;
+    min-width: 0;
+}
+.component-demo > output {
+    color: var(--muted);
+    font-size: 14px;
+}
+.component-demo > .ui-button {
+    justify-self: start;
+}
 </style>

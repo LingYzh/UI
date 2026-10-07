@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
+import Icon from '../components/Icon.vue';
 import { useDefaults } from './defaults';
 import { computed, ref, watch } from 'vue';
 import { addDays, addMonths, isAllowedDate, isoDate, monthDays, parseIsoDate, selectedDates, selectDate, type AllowedDates, type DateMode, type DateSelection } from './date-model';
@@ -14,7 +16,7 @@ const rawProps = withDefaults(defineProps<{
     disabled?: boolean;
     readonly?: boolean;
     label?: string;
-}>(), { mode: 'single', locale: undefined, firstDayOfWeek: 0, label: 'Choose date' });
+} & { ripple?: RippleOptions }>(), { ripple: true, mode: 'single', locale: undefined, firstDayOfWeek: 0, label: 'Choose date' });
 const props = useDefaults(rawProps, 'UDatePicker');
 const model = defineModel<DateSelection>({ default: null });
 const today = isoDate(new Date());
@@ -52,10 +54,10 @@ function onKeydown(event: KeyboardEvent, value: string): void {
 
 <template>
     <div class="u-date-picker" :aria-label="props.label">
-        <div class="u-date-picker-header"><button v-pointer-blur type="button" :disabled="props.disabled" aria-label="Previous month" @click="moveMonth(-1)">‹</button><strong aria-live="polite">{{ monthLabel }}</strong><button v-pointer-blur type="button" :disabled="props.disabled" aria-label="Next month" @click="moveMonth(1)">›</button></div>
+        <div class="u-date-picker-header"><button v-ripple="props.readonly ? false : props.ripple" v-pointer-blur type="button" :disabled="props.disabled" aria-label="Previous month" @click="moveMonth(-1)"><Icon name="mdi-chevron-left" :size="18" /></button><strong aria-live="polite">{{ monthLabel }}</strong><button v-ripple="props.readonly ? false : props.ripple" v-pointer-blur type="button" :disabled="props.disabled" aria-label="Next month" @click="moveMonth(1)"><Icon name="mdi-chevron-right" :size="18" /></button></div>
         <div class="u-date-picker-grid" role="grid" :aria-label="monthLabel">
             <span v-for="(day, index) in weekdays" :key="index" class="u-date-weekday" role="columnheader">{{ day }}</span>
-            <button v-for="day in days" :key="day.date" v-pointer-blur type="button" role="gridcell" :data-date="day.date" :class="{ 'is-outside': !day.current, 'is-selected': selection.has(day.date), 'is-today': day.date === today }" :disabled="props.disabled || !isAllowedDate(day.date, props.min, props.max, props.allowedDates)" :aria-selected="selection.has(day.date)" :aria-label="new Intl.DateTimeFormat(props.locale, { dateStyle: 'full' }).format(parseIsoDate(day.date)!)" :tabindex="focused === day.date ? 0 : -1" @click="choose(day.date)" @keydown="onKeydown($event, day.date)">{{ Number(day.date.slice(-2)) }}</button>
+            <button v-ripple="props.readonly ? false : props.ripple" v-for="day in days" :key="day.date" v-pointer-blur type="button" role="gridcell" :data-date="day.date" :class="{ 'is-outside': !day.current, 'is-selected': selection.has(day.date), 'is-today': day.date === today }" :disabled="props.disabled || !isAllowedDate(day.date, props.min, props.max, props.allowedDates)" :aria-selected="selection.has(day.date)" :aria-label="new Intl.DateTimeFormat(props.locale, { dateStyle: 'full' }).format(parseIsoDate(day.date)!)" :tabindex="focused === day.date ? 0 : -1" @click="choose(day.date)" @keydown="onKeydown($event, day.date)">{{ Number(day.date.slice(-2)) }}</button>
         </div>
     </div>
 </template>

@@ -1,5 +1,38 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-08：Toolbar 整合与 Vuetify4 字号
+
+- root直接实现标题/操作内置、密度/扩展/折叠/主题/动画，更新三个真实Toolbar示例；全局字号采用Vuetify4的15级rem体系和响应式工具类，新增Typography真实控件示例与15行工具类参考。字号新要求替代此前小字号增量；字体家族与现有设计tokens保留。
+- 最终typecheck/build/diff-check通过，日志artifacts/toolbar-typography-{typecheck,build,diff-check}-final.log；87/87单测、API/源码同步通过。153 canonical、1386 props/models、213 slots、281 exposed，168页；240源码重复格式化updated0。
+- Toolbar最终8/8：artifacts/toolbar-oQoLUT/report.json；Typography最终4/4：artifacts/typography-e7zwLh/report.json；复制字体改动后6/6：artifacts/copy-icons-NbGjaD/report.json。root验收其中8+5+4张原生截图，确认浅深宽窄、实际控件、标题/操作、动画与125%缩放。早期Typography底部截图落到页脚，已修测试定位并由最终截图替代。
+- 完整UI21组/168页：ui-7faSb6；Forms14组：forms-p6VOoc；ButtonLoading3组：button-loading-x3Dokh。root另复核卡片表单、表格、浅深代码与200%截图。完整UI/按钮回归早于最后折叠角与文档收尾；Toolbar/Typography最终专项覆盖收尾。无页面或产品控制台错误，Electron开发CSP提示单列。
+- UI未提交/推送/发布，UAH未变；源码依据、具体范围与验收边界见docs/TOOLBAR-TYPOGRAPHY-2026-10-08.md。
+
+## 2026-10-08：复制按钮图标
+
+- root修复UiCopyButton图标尺寸选择器与按钮内容包裹层不匹配，使用固定15px MDI复制/勾选图标；动画和减少动效规则匹配专用类。原文复制、绿色成功态、status播报和1.6秒恢复不变，现有真实demo与API继续适用。
+- typecheck与build通过，日志artifacts/copy-icons-{typecheck,build}.log。现有控件回归6/6，证据artifacts/controls-JxQNSI/report.json，日志artifacts/copy-icons-controls.log。root亲自验收其中copy-light.png、copy-dark.png，图标均可见。
+- git diff --check通过；未提交/推送/发布，未修改UAH。详细范围见docs/COPY-ICON-2026-10-08.md。
+
+## 2026-10-08：代码块自然高度与源码排版
+
+- root移除CodeBlock.maxHeight默认580px与pre冗余上限，显式限制保留；新增真实48行自然高度/240px对照、源码/API/README。全部示例源码采用四空格及Vue层级分行，真实SFC、显示和复制共用同一来源。Prettier3.9.9仅devDependency，格式化通过npm run docs:sync与split/generate持续保持；239源码片段整理，重复执行updated0。
+- typecheck、87/87单测、文档/库build通过，日志artifacts/code-source-{typecheck,unit,build}.log；153 canonical契约、1366 props/models不变，maxHeight默认未定义且文案明确无默认上限。API与源码同步/重复日志见code-source-{api-sync,sync,sync-repeat}.log。
+- 最终build后专项3/3通过artifacts/code-source-OuwW1g/report.json，验证默认computed maxHeight=none/48行无纵向溢出，显式240px限制/滚至末行，真实横滚与换行按钮，以及App源码Tab与example.code/剪贴板逐空白一致。pageErrors、console error/Vue warning为空；Electron测试宿主CSP提示独立记录。
+- 完整UI21/21、167路由通过artifacts/ui-MR4M3W/report.json，errors为空；独立示例回归artifacts/component-examples-71TbPD覆盖167路由、106 manifest、9隔离输入。两项执行于最后等效CSS冗余清理/API文案之前；收尾后build和代码专项已重跑。
+- root验收OuwW1g三张最终原生PNG（浅色1440×900自然高度/App源码、深色390×844显式高度/末行），以及71TbPD的12张NumberInput/OTP/Slider浅深宽窄图像。代码随内容增高、内部显式滚动与顶栏、缩进/高亮/复制反馈、示例排布通过。脚本语法与git diff --check通过。
+- UI a8220aa/package0.3.2未提交/推送/发布，UAH97c43a9干净且固定npm0.3.2不变。详细记录docs/CODE-SOURCE-2026-10-08.md。
+
+## 2026-10-08：字号可读性与稳定组件补齐
+
+- root完成所有产品代码、样式、独立真实demo与视觉验收；辅助代理承担只读审计和测试。14px→15px，13px及以下+2px，代码token/主题/示例默认15px；字号层级和原UAH浅深主题保留。新增UCode、USlideGroup/Item、USnackbar/Queue，修正直接UButton/value与BtnToggle组合、aria-label/aria-pressed透传、文档路由冲突及受控Queue消费循环。范围见docs/READABILITY-ALIGNMENT-2026-10-08.md。
+- 最终typecheck、87/87单测、文档/库build通过；153个canonical契约、1366 props/models、126 events、205 slots、278 exposed members，与167文档页面/106独立示例同步。日志artifacts/readability-{typecheck,unit,build,api-sync}.log。
+- 新组件交互13/13通过artifacts/readability-alignment-GQEmNn/report.json：真实Arrow/Enter/Space、多选/mandatory/max、禁用/只读、索引值0、当前项居中边界、垂直滚动、消息颜色/位置/暂停/重开、FIFO/2或3条不同消息并发/overflow/clear/promise。pageErrors、console error与Vue warning均为0。测试宿主标准Electron CSP提示单独记录。
+- 完整UI21/21与167路由通过artifacts/ui-cSmvXL/report.json，errors为空；Forms14/14通过artifacts/forms-x7kekT，按钮加载态3组通过artifacts/button-loading-XGjsob（浅深各8组颜色/变体、5组尺寸/loader边界）。全局服务旧测试路由改为snackbar-service，服务断言没有删除。
+- root逐张验收artifacts/readability-visual-1C2586的36张原生PNG，覆盖9页×浅深×1440×900/390×844。标签/说明、按钮、表格、Markdown、代码、组选择与消息字号及窄屏排布通过；rootScroll/headerTop为0，无页面横溢出，代码token为15px，pageErrors/consoleErrors为空。最终Queue循环修正后，另验收GQEmNn的5张垂直禁用/右上outlined消息/3条不同消息/error结果/窄屏状态PNG，间距与文字可读。
+- 最新4.2.4机器入口清单docs/VUETIFY-ALIGNMENT-AUDIT-2026-10-08.json记录102稳定家族、8指令和10 Labs；基础实现/职责映射不推定逐属性、全SSR/RTL或实验家族兼容。历史4.2.3审计明确标为旧基线。脚本语法、git diff --check通过。
+- UI main a8220aa、package0.3.2，改动未提交/推送/发布；UAH97c43a9、工作区干净，消费端固定npm0.3.2不变。
+
 ## 2026-10-01 Ripple 动态 class 修复（0.2.2 已发布）
 
 - 工作树 `D:/UI-ripple-fix`，分支 `codex/fix-ripple-update`，基于 `origin/main` 的 `059f785`；原 `D:/UI` main 的旧四个本地提交已撤回并另存备份。用户已确认发布本修复，正式发布状态以 Actions 与官方 npm 核验记录为准。
@@ -252,3 +285,58 @@ UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4
 ### 提交推送检查点
 
 用户于2026-10-06授权提交推送，暂不发布。提交前核对既有中文提交格式、UI/main与origin/main、UAH干净状态及发布workflow仅由v*标签触发；源码与上述验收版本一致。本次只推送分支提交，不创建/推送标签，package和lockfile版本仍为0.3.2，npm及UAH消费版本不变。以上“本地未提交”保留为验收时的历史记录，最终提交与远端状态见Git。
+
+## 2026-10-07：Markdown 脚注跳转的滚动范围
+
+- root 盘点并复用 UMarkdown、UScrollArea 与文档正文滚动容器，无新增组件、依赖或公开 API。原 scrollIntoView 会滚动全部祖先，包括 overflow:hidden 的页面根；原回归只检查屏幕居中，未约束祖先位置。现在仅对目标最近的纵向 auto/scroll/overlay 容器 scrollTo，以该容器内容视口居中，没有局部容器才使用文档滚动根。保留前往/返回、平滑滚动、边界钳制、preventScroll 焦点移交与减少动效立即定位。
+- 旧构建对照 `artifacts/footnote-repro-AMdwnp/report.json`：root/window 从0变33，顶栏 top 从0变−33，外层正文从1345变1501。修复后的内层阅读示例 `artifacts/footnote-repro-7GtMQw`：仅内层从220变860，root/window、外层正文、侧栏及顶栏位置全部不变。普通正文示例 `artifacts/footnote-repro-6ZrOEs` 前往/返回仅正文从833变1013再回833，其余位置不变。root 亲自查看旧缺陷和两组修复后完整窗口截图，顶栏保持完整可见。
+- typecheck、82/82 单测、文档/库 build 通过。README、真实 MarkdownDemo、页面说明与设计记录已同步滚动范围；辅助代理仅修改桌面回归，root 负责实现、demo及视觉验收。
+- 最终真实 Electron 专项17组通过，无 pageerror，证据 `artifacts/theme-markdown-1tL79b/report.json`。覆盖普通正文/内部阅读区 × 浅深 × 1440px/390px 的16次前往/返回、Enter、手动/系统减少动效及外链 link-click；保留既有主题、Mermaid、details 动画与键盘断言。滚动中心按所属视口计算，比较 html/body/document/window、侧栏与顶栏完整矩形，内层跳转同时断言外层正文不变。root 亲自复核8张最终脚注截图，顶栏完整、目标居中、浅深可读、窄屏布局通过。
+- 测试诊断 `artifacts/theme-markdown-e0CjSm/click-trial-diagnostic.json` 证明 Playwright locator.click 的准备阶段也会自动滚动祖先；最终脚注用显式显露链接后真实 mouse.click 坐标，Enter用真实键盘，操作前要求顶栏位于0，操作后比较所有外层位置。没有重置根节点掩盖事件引起的滚动；details旧断言执行完后重新打开路由隔离测试准备状态。
+- git diff --check 通过。本轮脚注修复仍为本地未提交、未发布修改；此前累计更新的 main 检查点为a8220aa，UI包仍0.3.2，UAH工作区干净且依赖未改。
+
+## 2026-10-07：MDI 图标与展开/退出过渡
+
+- root 先盘点公开组件、实现/API与真实 demo，复用 Icon/MDI、Collapse、Transition、减少动效与原生弹层生命周期，没有新增公共组件或依赖。产品图标、样式、动画、视觉示例和源码文档由 root 实现；辅助代理只编写独立 disclosure-motion.mjs 回归。
+- 指示图标统一为 MDI chevron 路径，展开状态旋转；原生 Select 用同一路径的主题色 SVG 背景。表格排序保留已验收的双三角 SVG，并给 Virtual 同步可访问排序状态。真实文字含义的数学/差异符号不属于占位图标。
+- ListGroup 保留已挂载子树、输入值和自定义/嵌套/禁用激活器；Treeview 离场节点即时 inert / aria-hidden，不混入可见键盘导航。共享 expand 对 padding、border、min-height 与中途反转做完整尺寸过渡，结束恢复原 inline 值和自动高度；disabled、手动/系统减少动效终止当前动画并进入最终状态。
+- 补充 Autocomplete/DateInput 面板、Tooltip、Drawer 遮罩、Badge、StepperWindowItem、DataTable 详情、ConfirmEdit/Lazy 过渡；Overlay/BottomSheet 离场阶段保留滚动锁和 top layer，退出后恢复焦点。Window/Carousel/StepperWindow 内容使用同一 grid 单元，Lazy 使用 out-in，避免进入/离开内容同时撑高容器。排序、分页、虚拟行和表格分组的数据行集合仍直接更新，不添加大批行移动动画。
+- 最终 typecheck、82/82 单测、库/文档 build 通过；日志 artifacts/icons-motion-{typecheck,unit,build}.log。完整 UI21/21（162 文档路由，200%缩放、800px窗口、键盘与减少动效）通过，无 pageerror，证据 artifacts/ui-VIKMWB。较早 artifacts/ui-8ef0Qo 也通过；最终验收以 VIKMWB 的切换布局修正为准。
+- root 已亲自复核 artifacts/disclosure-motion-WykAGk 的 ListGroup 四张浅深/1440×900/390×844 图像，MDI 箭头、嵌套缩进、label/hint、禁用/自定义入口和窄屏布局通过。专项最终结果继续记录如下。
+- 延迟加载专项发现 ULazy/UImg 的 immediate watch 将尚未挂载的 ref 当作不支持观察器的降级路径，visible 在真实进入视口前就变为 true。root 已拆开判断，等待 DOM 挂载后 observe，保留不支持观察器/显式关闭延迟的降级；Img 真实 demo 加入 lazy，公开 API 不变。
+- 动效核心4组通过 artifacts/disclosure-motion-4EgoMo；root 复核该批最终 ListGroup 深窄和 Treeview 浅宽图像，同时复核 YYbpGn 的 Treeview 另外浅深/宽窄图像。Wt2r9p 的 Overlay 浅宽、BottomSheet 深窄、Window 重叠中帧3张 Native 截图由 root 直接检查，表面/遮罩、焦点轮廓、移动位置和单一内容高度通过。原生动画仅暂停当前时间做中帧取样，随后继续播放并验证完成；没有直接设置业务状态掩盖退出生命周期。
+- root 独立快速重开诊断 artifacts/overlay-focus-OSkJsV：native dialog 与 data-state 均 open、inert=false、焦点仍在弹层内的快速重开按钮，无需额外产品焦点补丁。
+- 最终动效专项 **17/17** 通过，报告 artifacts/disclosure-motion-azJW1B/report.json，pageerror / Vue warnings 均为0，node --check 通过。覆盖上述全部核心与补充组件、原生 popover 离场、步骤/窗口/轮播中帧的单一 grid 内容高度，以及 Lazy/Img 视口外不加载、真实文档滚动后加载与图片 decode。只在测试中暂停/继续浏览器动画取样；隐藏/离场节点使用 DOM locator，键盘事件发送到实际触发器，避免把测试准备问题当产品缺陷。
+- Lazy/Img 修复及真实示例更新后的最终 typecheck、82/82单测、库/文档build、完整 UI **21/21** 均通过，最终完整 UI 证据为 artifacts/ui-HbR60v（162 路由、无 pageerror）；前述 VIKMWB 是该初始化修复前的通过记录。root 亲自复核 azJW1B 的 Overlay 中帧和 DataTable 详情最终图像，并复核8J9M8K表格详情/抽屉关闭窄屏状态：详情间距、单一外框、分隔线、MDI展开指示和剩余内容占位正常。结合此前8张ListGroup/Treeview状态与3张中帧图像，视觉验收通过。
+- git diff --check 通过；UI工作区仍为本地未提交/未发布修改，0.3.2版本和main检查点a8220aa不变，UAH工作区干净、消费版本不变。
+
+## 2026-10-07：列表与离散操作默认涟漪
+
+- root 复用现有 vRipple/RippleOptions，亲自补齐产品实现、选择控件几何、动作表面裁切及真实 demo；辅助代理仅编写 tests/desktop/click-ripple.mjs。范围与原生控件/静态内容边界见 docs/RIPPLE-COVERAGE-2026-10-07.md。ListItem、Ripple 和 Card 示例/API/可复制源码同步，包装层转发配置。148 个 canonical API 当前含1306 props/models、118 events、190 slots、262 exposed members，源码与示例编译单测通过。
+- 指令和列表/树复用内部 action-events.ts 排除独立子控件；嵌套 ripple=false 按钮不启动父层涟漪或改变父选择。选择控件反馈保持原生 input/label/ref，直接点击和 Space 只有一次反馈，标签快速点击允许独立波纹；Enter 保留原生语义。禁用/只读不产生反馈，播放中减少动效即时清理。
+- root 视觉复核发现并修正三个样式问题：网格拉伸选择控件包裹层，390px 顶栏通用 span 规则隐藏 Switch，以及 Carousel/Label 通用 span 规则误设新反馈层。现使用 max-content / justify-self:start 和语义 class；Switch36×20、Checkbox/Radio16×16 与 input 一致，Carousel装饰点7×7、按钮内反馈24px圆形。
+- typecheck、82/82 单测、文档/库 build 通过，日志 artifacts/ripple-coverage-{typecheck,unit,build}.log。既有 Ripple78项通过 artifacts/ripple-tOsq5P，activation43项通过 artifacts/ripple-activation-wpkvrK。
+- 新专项 **154项断言全部通过**，证据 artifacts/click-ripple-LlPrpE/report.json，pageErrors / Vue warnings 均为0。覆盖 ListItem/ListGroup/MenuItem、选择控件 direct/label/rapid-label/Space、Treeview 行/箭头/checkbox、静态与动作 Card、选择器/级联、日期、数值/Rating、展开/步骤、表格排序/详情、轮播和消息动作，以及系统/手动减少动效。没有产品失败；ListGroup 激活器定位与表格按钮切换可访问名后的定位均在测试中按真实语义修正。
+- 最新完整 UI **21/21** 通过 artifacts/ui-K4haar，162路由无横向溢出/pageerror，原200%缩放、800px窗口、键盘、焦点及数据表格断言保留。已有动效专项 **17/17** 通过 artifacts/disclosure-motion-qIqany，无 pageerror / Vue warnings；Lazy 断言等待真实 transitionrun 再采样，消除首帧竞态，没有更改产品生命周期或减弱顺序检查。
+- root 亲自复核 artifacts/ripple-visual-19s5C6 的 **16张最终原生图像**（ListItem/Ripple控件/Carousel/Card × 浅深 × 1440×900/390×844），布局、文字/图标、独立操作、控件几何、禁用状态、裁切/主题色和窄屏顶栏可见性通过；report.json 记录波纹层/装饰点/控件几何以及 rootScroll=0/headerTop=0。仅暂停/恢复真实浏览器动画取样；未改变产品状态模拟反馈。
+- node --check 两个新增桌面脚本、git diff --check 通过。当前本轮和之前脚注/MDI/过渡修改均为 UI 本地未提交、未发布内容，main检查点a8220aa、package0.3.2不变；UAH工作区干净，HEAD97c43a9，固定npm0.3.2未升级。
+
+## 2026-10-07：按钮样式、颜色与完整表面反馈
+
+- root 实现六种独立 variant 和 color，默认 outlined；同步内部调用、真实 demo、可复制源码、生成器与 API。danger/on-danger 默认跟随 error/on-error，并保留独立覆盖。对照 Vuetify4.2.4，继续使用本库主题；默认变体按用户要求保留。详细范围见 docs/BUTTON-COLORS-2026-10-07.md。
+- 彩色 elevated 统一增强三层阴影；色块变体 elevated/flat/tonal 的透明1px边框移除，padding补回尺寸，反馈层覆盖整个按钮。图标固定尺寸、紧凑尺寸和加载态保持。outlined 的实际描边保留。
+- typecheck、**84/84单测**、库/文档 build 通过，日志 artifacts/button-colors-{typecheck,unit,build}.log。新增两项主题回归检验默认 danger 别名和独立颜色覆盖，所有真实示例/API源码编译通过。
+- 最终按钮专项 **722项**通过，artifacts/button-variants-35mtmy/report.json；覆盖四色三种色块的边框/外框、真实按住波纹四边、快速松手退场、颜色/前景/阴影、主题、禁用/加载与窄屏。状态过渡稳定后严格比较背景颜色；pageErrors/Vue warnings为空。
+- loading专项 **3组**通过，artifacts/button-loading-cMMoHK/report.json，覆盖默认示例及浅深下八种变体/颜色、五种尺寸/loader。完整UI **21/21、162路由**通过，artifacts/ui-pI2hLP/report.json，无pageerror，保留缩放、键盘、分页和表格检查。表单专项 **14/14**通过，artifacts/forms-RrbEQh；仅按新的选择控件包装层定位原生 input，保留几何断言。
+- root 亲自复核 artifacts/button-colors-visual-Wc9vk1 的 **16张原生图像**（矩阵、CSS颜色、loading × 浅深 × 1440×900/390×844），以及边框修复后 artifacts/button-filled-ripple-UAumHf 的 **12张真实按住中帧图像**（三种色块 × 浅深 × 宽窄）。无未染色外沿，四边层与host一致；阴影、尺寸、配色、单loader与响应布局通过，rootScroll/headerTop为0。原生动画仅暂停采样后恢复退出，不通过业务状态伪造反馈。
+- 修改脚本 node --check、git diff --check 通过。UI 当前仍未提交、未发布，main a8220aa、package0.3.2；UAH干净，HEAD97c43a9、固定消费npm0.3.2不变。
+
+## 2026-10-07：输入模式与键盘焦点轮廓
+
+- root 先盘点共享焦点样式、组件 API 和真实示例。旧构建 artifacts/focus-modality-YiCqT0 复现 Slider/RangeSlider/ColorPicker 鼠标仍有1px外框；键盘后鼠标拖动原生 focus-visible 还会保持 true。内部模式追踪以 ownerDocument 共享捕获事件、引用计数及卸载清理；保留滑块焦点与原生拖动，文本编辑语义不变。root 完成全部产品样式、视觉示例说明与验收，辅助代理仅做测试。
+- 规则覆盖单/双滑块、三个颜色通道、颜色/文件/上传输入、复合选择表面及已注册的按钮/列表/选择控件，补齐保留焦点的树、卡片、级联、原生Select、阅读区和标签面板。六个独立组件文档与 README 同步。选择状态描边、拖放高亮、文本/OTP编辑和滚动条行为保留，公开 API 不变。
+- typecheck、87/87单测、文档/库 build 通过，日志 artifacts/focus-{typecheck,unit,build}.log。三个新生命周期测试验证共享监听、晚挂载继承、文档隔离、重复释放、最后卸载和原生事件未被取消。逐字键入测试发现 ColorInput 提前展开三位hex；root修正编辑草稿/失焦规范化。视觉验收发现小色块被通用 hover/focus 样式撑宽，root修正专用选择器，空闲/鼠标/键盘均26×26。
+- 最终桌面专项 artifacts/focus-modality-9raHif/report.json 通过：28项操作观察、issues/pageErrors为0，六个range真实拖动和Tab/方向键、同节点键盘→鼠标→键盘、direct/label/Space、按钮/列表、文本/多行/OTP、颜色/文件/上传均通过。系统选择器检查采用按下后移出释放，未打开或验收OS对话框。真实Tab和逐字键入不以DOM事件或一次fill替代；原生颜色input/change事件仅用于模型同步检查。
+- root 亲自复核36张最终原生PNG：artifacts/focus-visual-OcN4Yc 的滑块/双滑块/颜色编辑器24张（鼠标/键盘、浅深、1440×900/390×844），以及9raHif浅色桌面1264×1015、artifacts/focus-modality-Cpwuz6深色390×844的颜色/文件/上传各6张。鼠标轮廓消失、键盘清晰、范围手柄光晕、26px色块、窄屏布局和主题通过；初始24张同时记录rootScroll/headerTop=0、无横向溢出。Cpwuz6的28项操作观察也无失败。Firefox手柄规则已实现，但未做Firefox运行时检查。
+- 最终完整 UI21/21、162路由通过 artifacts/ui-AmJ3ov/report.json，errors为空，保留缩放、键盘和数据回归。表单14/14通过 artifacts/forms-NTzx0x；涟漪 activation43项通过 artifacts/ripple-activation-EH0Zqj/report.json，无pageerror。最后的颜色按钮局部几何修正后重跑焦点与完整UI；表单/涟漪报告来自该修正前。脚本语法与git diff --check通过。
+- UI未提交、未发布，main a8220aa、package0.3.2；UAH工作区干净、HEAD97c43a9、固定npm0.3.2不变。完整范围与边界见 docs/FOCUS-MODALITY-2026-10-07.md。

@@ -62,6 +62,7 @@ function variation(color: string, amount: number, lighter: boolean) {
 }
 function mergeTheme(base: UiResolvedTheme, definition: UiThemeDefinition = {}): UiResolvedTheme {
     const colors = { ...base.colors, ...definition.colors };
+    colors.danger = definition.colors?.danger ?? colors.error;
     for (const key of Object.keys(colors)) if (!validKey.test(key)) throw new Error(`Invalid theme color: ${key}`);
     if (definition.colors?.primary !== undefined) {
         colors['primary-surface'] = definition.colors['primary-surface'] ?? colors.primary;
@@ -112,6 +113,7 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
                 if (key.startsWith('on-')) continue;
                 if (definition.colors?.[`on-${key}`] === undefined) colors[`on-${key}`] = foreground(color);
             }
+            if (definition.colors?.danger === undefined && definition.colors?.['on-danger'] === undefined) colors['on-danger'] = colors['on-error'];
             result[name] = { ...resolved, colors };
         }
         return result;

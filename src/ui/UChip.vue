@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { computed, inject } from 'vue';
 import { vPointerBlur } from './pointer-focus';
 import { selectionGroupKey } from './selection-context';
@@ -15,7 +16,7 @@ const rawProps = withDefaults(defineProps<{
     color?: string;
     dense?: boolean;
     closeLabel?: string;
-}>(), { selected: undefined, tone: 'neutral', variant: 'soft', dense: false });
+} & { ripple?: RippleOptions }>(), { ripple: true, selected: undefined, tone: 'neutral', variant: 'soft', dense: false });
 const props = useDefaults(rawProps, 'UChip');
 const emit = defineEmits<{ close: [event: MouseEvent] }>();
 const group = inject(selectionGroupKey, undefined);
@@ -26,10 +27,10 @@ function activate() { if (!disabled.value && !group?.readonly.value && props.val
 </script>
 
 <template>
-    <UiBadge v-bind="$attrs" :tone="active ? 'accent' : props.tone" :variant="badgeVariant" :color="props.color" :dense="props.dense" :closable="props.closable && !disabled" :close-label="props.closeLabel"
+    <UiBadge v-bind="$attrs" :ripple="disabled || group?.readonly.value ? false : props.ripple" :tone="active ? 'accent' : props.tone" :variant="badgeVariant" :color="props.color" :dense="props.dense" :closable="props.closable && !disabled" :close-label="props.closeLabel"
         class="ui-chip" :class="{ 'is-selected': active, 'is-disabled': disabled, 'is-text': props.variant === 'text' }" :aria-disabled="disabled || undefined" @close="emit('close', $event)">
         <template v-if="$slots.icon" #icon><slot name="icon" /></template>
-        <button v-if="group" v-pointer-blur type="button" class="ui-chip-select" :aria-pressed="active" :disabled="disabled" @click="activate"><slot /></button>
+        <button v-ripple="disabled || group?.readonly.value ? false : props.ripple" v-if="group" v-pointer-blur type="button" class="ui-chip-select" :aria-pressed="active" :disabled="disabled" @click="activate"><slot /></button>
         <slot v-else />
     </UiBadge>
 </template>

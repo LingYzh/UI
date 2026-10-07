@@ -56,6 +56,6 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(showTimer); clearTimeout(h
 <template>
     <span ref="trigger" v-pointer-blur class="ui-tooltip-trigger" :tabindex="props.focusable ? 0 : undefined" :aria-describedby="id" @pointerdown.capture="pointerDown" @mouseenter="enter" @mouseleave="leave" @focusin="focus" @focusout="blur" @keydown.esc="hide">
         <slot />
-        <span :id="id" ref="bubble" class="ui-tooltip" role="tooltip" popover="manual">{{ props.text }}</span>
+        <span :id="id" ref="bubble" class="ui-tooltip" role="tooltip" popover="manual" :aria-hidden="!visible">{{ props.text }}</span>
     </span>
 </template>

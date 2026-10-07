@@ -26,7 +26,8 @@
     --mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
     --nav-width: 254px;
     --panel-width: 470px;
-    --code-size: 13px;
+    --code-size: 16px;
+    font-size: 16px;
     --usage-remaining: #c1c8d0;
     --usage-category-1: #918476;
     --usage-category-2: #a7856c;
@@ -102,3 +103,5 @@
 :root[data-theme="dark"] { --scrollbar-thumb: #b2afa366; --scrollbar-thumb-hover: #b2afa399; }
 
 :root { --primary: var(--accent-text); --primary-surface: var(--accent); --on-primary-surface: #fff; }
+:root { --on-primary: #fff; --on-secondary: #fff; --on-success: #fff; --on-error: #fff; --on-danger: #fff; --on-warning: #fff; --on-info: #fff; --on-surface: var(--text); --on-background: var(--text); }
+:root[data-theme="dark"] { --on-secondary: #000; --on-success: #000; --on-error: #000; --on-danger: #000; --on-warning: #000; --on-info: #000; }

@@ -15,7 +15,7 @@ Requires Node.js 24+. Run `npm ci`, `npm run dev` (port 5174), `npm run typechec
 Install the public package with `npm install @lingyzh/ui`. Vue `^3.5.0` is a peer dependency. The package exports Vue SFC and TypeScript source, so consumers need a Vue-aware bundler such as Vite.
 
 ```js
-import { UiButton, UiTable, UiDataTableServer, UiPagination } from '@lingyzh/ui';
+import { UButton, UTable, UDataTableServer, UPagination } from '@lingyzh/ui';
 import '@lingyzh/ui/styles.css';
 ```
 
@@ -24,6 +24,8 @@ UAH installs a fixed published npm version of `@lingyzh/ui` and deduplicates Vue
 The npm package includes the library source and documentation components, not the generated `dist` output. Headless behavior uses `@vuetify/v0`. There is no Electron runtime dependency in the components; Electron is used only as the test host.
 
 Design tokens, components, icons and their demos are owned here. UAH keeps its application layout, business state and prototype. Update this library and visually verify the docs before changing consuming screens. See [component contracts](src/ui/README.md).
+
+Public templates use `<u-xxx>`; existing `Ui*` imports remain available for compatibility. Default body/control and code text is 15px, with smaller auxiliary text retaining its hierarchy. Current demos include inline Code, SlideGroup/Item, direct-button BtnToggle, controlled Snackbar and SnackbarQueue. See the [latest readability and alignment record](docs/READABILITY-ALIGNMENT-2026-10-08.md) for implemented behavior and validation boundaries.
 
 ## Themes
 

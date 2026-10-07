@@ -20,7 +20,7 @@ body {
     font-family: var(--font);
     background: var(--background);
     color: var(--text);
-    font-size: 14px;
+    font-size: var(--ui-font-body-large);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -47,17 +47,17 @@ button:disabled {
     opacity: .62;
 }
 
-button:focus-visible,
-a:focus-visible,
-summary:focus-visible,
-[tabindex]:focus-visible {
+button:focus-visible:not([data-ui-pointer-focus]),
+a:focus-visible:not([data-ui-pointer-focus]),
+summary:focus-visible:not([data-ui-pointer-focus]),
+[tabindex]:focus-visible:not([data-ui-pointer-focus]) {
     outline: 2px solid var(--accent-text);
     outline-offset: 3px;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input:focus-visible:not([data-ui-pointer-focus]),
+textarea:focus-visible:not([data-ui-pointer-focus]),
+select:focus-visible:not([data-ui-pointer-focus]) {
     outline: 1px solid var(--accent-text);
 }
 
@@ -140,7 +140,7 @@ p {
 
 small,
 .small {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .muted {
@@ -199,6 +199,6 @@ kbd {
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1px 5px;
-    font: 11px var(--font);
+    font: var(--ui-font-body-small) var(--font);
     color: var(--muted);
 }

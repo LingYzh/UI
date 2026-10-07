@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { vRipple } from './ripple';
 import { computed, nextTick, onBeforeUnmount, ref, useAttrs, useId, watch, type CSSProperties } from 'vue';
 import UiControlFrame from './UiControlFrame.vue';
+import Icon from '../components/Icon.vue';
+import UTransition from './UTransition.vue';
 import { useDefaults } from './defaults';
 import { mergeControlAttrs, useFormControl } from './form';
 import { controlSizeStyles } from './control-sizing';
@@ -8,7 +11,7 @@ import { findSelection, isSelected, normalizeItems, toggleSelection, type Select
 import type { AutocompleteProps } from './autocomplete-props';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<AutocompleteProps>(), { items: () => [], dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<AutocompleteProps>(), { ripple: true, items: () => [], dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UAutocomplete');
 const attrs = useAttrs();
 const model = defineModel<unknown>();
@@ -98,20 +101,20 @@ defineExpose({ element: input, focus: () => input.value?.focus(), validate: cont
         <div ref="root" class="u-autocomplete" :class="[$attrs.class, control.classes.value]" :style="[control.styles.value, control.framed.value ? undefined : controlSizeStyles(props), $attrs.style as CSSProperties]" @focusout="blur">
             <div class="u-autocomplete-field" @pointerdown="!control.disabled.value && input?.focus()">
                 <span v-if="props.chips && chosen.length" class="u-autocomplete-chips">
-                    <span v-for="(title, index) in chosen" :key="index" class="u-autocomplete-chip"><span :title="title">{{ title }}</span><button v-if="!control.readonly.value && !control.disabled.value" type="button" :aria-label="`移除 ${title}`" @pointerdown.stop.prevent @click.stop="remove(index)">×</button></span>
+                    <span v-for="(title, index) in chosen" :key="index" class="u-autocomplete-chip"><span :title="title">{{ title }}</span><button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-if="!control.readonly.value && !control.disabled.value" type="button" :aria-label="`移除 ${title}`" @pointerdown.stop.prevent @click.stop="remove(index)"><Icon name="mdi-close" :size="14" /></button></span>
                 </span>
                 <input ref="input" :value="display" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" role="combobox" :aria-controls="listId" :aria-expanded="open" :aria-activedescendant="open && visible[active] ? `${listId}-${active}` : undefined" aria-autocomplete="list" :placeholder="props.placeholder" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="control.state.value === false || undefined" @input="search = ($event.target as HTMLInputElement).value; open = true; active = 0" @focus="open = true" @keydown="keydown" />
-                <button v-if="props.clearable && chosen.length && !control.disabled.value && !control.readonly.value" type="button" class="u-autocomplete-clear" aria-label="清除选择" @pointerdown.prevent @click.stop="clear">×</button>
-                <span class="u-autocomplete-arrow" aria-hidden="true">▾</span>
+                <button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-if="props.clearable && chosen.length && !control.disabled.value && !control.readonly.value" type="button" class="u-autocomplete-clear" aria-label="清除选择" @pointerdown.prevent @click.stop="clear"><Icon name="mdi-close" :size="16" /></button>
+                <Icon name="mdi-chevron-down" :size="18" class="u-autocomplete-arrow ui-disclosure-icon is-down" :class="{ 'is-open': open }" />
             </div>
-            <div v-if="open && !control.disabled.value" :id="listId" ref="menu" role="listbox" class="u-autocomplete-menu" :aria-multiselectable="props.multiple || undefined" :style="{ minWidth: `${menuWidth}px` }">
+            <UTransition variant="fade"><div v-if="open && !control.disabled.value" :id="listId" ref="menu" role="listbox" class="u-autocomplete-menu" :aria-multiselectable="props.multiple || undefined" :style="{ minWidth: `${menuWidth}px` }">
                 <template v-if="visible.length">
-                    <div v-for="(item, index) in visible" :id="`${listId}-${index}`" :key="index" :data-index="index" role="option" class="u-autocomplete-option" :class="{ 'is-active': active === index, 'is-selected': isSelected(model, item, !!props.multiple, !!props.returnObject, props.valueComparator), 'is-disabled': item.disabled }" :aria-selected="isSelected(model, item, !!props.multiple, !!props.returnObject, props.valueComparator)" :aria-disabled="item.disabled || undefined" @pointerdown.prevent @pointerenter="active = index" @click="choose(item, true)">
+                    <div v-for="(item, index) in visible" :id="`${listId}-${index}`" :key="index" :data-index="index" role="option" v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" class="u-autocomplete-option" :class="{ 'is-active': active === index, 'is-selected': isSelected(model, item, !!props.multiple, !!props.returnObject, props.valueComparator), 'is-disabled': item.disabled }" :aria-selected="isSelected(model, item, !!props.multiple, !!props.returnObject, props.valueComparator)" :aria-disabled="item.disabled || undefined" @pointerdown.prevent @pointerenter="active = index" @click="choose(item, true)">
                         <slot name="item" :item="item" :index="index" :selected="isSelected(model, item, !!props.multiple, !!props.returnObject, props.valueComparator)">{{ item.title }}</slot>
                     </div>
                 </template>
                 <div v-else class="u-autocomplete-empty">{{ props.combobox && search ? `按 Enter 创建“${search}”` : props.noDataText ?? '没有匹配项' }}</div>
-            </div>
+            </div></UTransition>
             <span v-if="!props.chips && props.multiple && chosen.length" class="u-autocomplete-summary"><slot name="selection" :items="chosen">{{ chosen.join('、') }}</slot></span>
         </div>
     </UiControlFrame>

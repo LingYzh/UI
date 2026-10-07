@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue';
 import UiButton from './UiButton.vue';
 import UiTooltip from './UiTooltip.vue';
+import Icon from '../components/Icon.vue';
 import { writeClipboard } from './clipboard';
 import { uiText } from './locale';
 
@@ -41,9 +42,8 @@ onBeforeUnmount(() => clearTimeout(timer));
 
 <template>
     <UiTooltip :text="copied ? doneName : name" :focusable="false">
-        <UiButton v-bind="$attrs" class="ui-copy-button" :class="{ 'is-copied': copied }" icon variant="ghost" :dense="dense" :disabled="disabled" :aria-label="name" @click="copy">
-            <svg v-if="copied" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5L19.5 7" /></svg>
-            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2" /><path d="M16 8V3H3v13h5" /></svg>
+        <UiButton v-bind="$attrs" class="ui-copy-button" :class="{ 'is-copied': copied }" icon variant="text" :dense="dense" :disabled="disabled" :aria-label="name" @click="copy">
+            <Icon :key="copied ? 'copied' : 'copy'" class="ui-copy-button-icon" :icon="copied ? 'mdi-check' : 'mdi-content-copy'" :size="15" />
         </UiButton>
         <!-- 屏幕阅读器播报复制结果；按钮名称保持“复制”不变，避免焦点下名称跳变。 -->
         <span class="ui-visually-hidden" role="status">{{ announcement }}</span>

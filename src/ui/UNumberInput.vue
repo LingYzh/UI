@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -8,7 +9,7 @@ import { useDefaults } from './defaults';
 import { parseNumberInput, stepNumber } from './specialized-inputs';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { min?: number; max?: number; step?: number; precision?: number }>(), { step: 1, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { min?: number; max?: number; step?: number; precision?: number } & { ripple?: RippleOptions }>(), { ripple: true, step: 1, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UNumberInput');
 const model = defineModel<number | null>({ default: null });
 const attrs = useAttrs();
@@ -46,9 +47,9 @@ defineExpose({ element, text, invalidInput, canDecrease, canIncrease, control, u
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div class="ui-input ui-number-input" :class="control.classes.value" :style="control.styles.value">
-            <button v-pointer-blur type="button" class="ui-control-step" aria-label="减少数值" :disabled="!canDecrease" @click="change(-1)">−</button>
+            <button v-ripple="props.ripple" v-pointer-blur type="button" class="ui-control-step" aria-label="减少数值" :disabled="!canDecrease" @click="change(-1)">−</button>
             <input ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" :value="text" type="text" inputmode="decimal" role="spinbutton" :aria-valuenow="model ?? undefined" :aria-valuemin="props.min" :aria-valuemax="props.max" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="invalidInput || control.state.value === false || undefined" @input="updateText(($event.target as HTMLInputElement).value)" @blur="commit" @keydown="keydown" />
-            <button v-pointer-blur type="button" class="ui-control-step" aria-label="增加数值" :disabled="!canIncrease" @click="change(1)">+</button>
+            <button v-ripple="props.ripple" v-pointer-blur type="button" class="ui-control-step" aria-label="增加数值" :disabled="!canIncrease" @click="change(1)">+</button>
         </div>
     </UiControlFrame>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -8,7 +9,7 @@ import { useDefaults } from './defaults';
 import { normalizeRating } from './specialized-inputs';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { length?: number; precision?: number; clearable?: boolean }>(), { length: 5, precision: 1, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { length?: number; precision?: number; clearable?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, length: 5, precision: 1, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'URating');
 const model = defineModel<number>({ default: 0 });
 const attrs = useAttrs();
@@ -34,7 +35,7 @@ defineExpose({ element, value, items, control, update, keydown, focus: () => ele
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div ref="element" class="ui-rating" :class="control.classes.value" :style="control.styles.value" role="slider" :aria-label="props.label || '评分'" :aria-valuemin="0" :aria-valuemax="props.length" :aria-valuenow="value" :aria-readonly="control.readonly.value || undefined" :aria-disabled="control.disabled.value || undefined" :aria-describedby="controlAttrs['aria-describedby']" @keydown="keydown">
-            <button v-for="item in items" :key="item" v-pointer-blur type="button" class="ui-rating-star" :class="{ 'is-active': item <= value }" :aria-label="item + ' 星'" :disabled="control.disabled.value" :tabindex="item === Math.max(1, Math.ceil(value)) ? 0 : -1" @click="update(item)" @blur="control.blur"><span aria-hidden="true">★</span></button><output>{{ value }} / {{ props.length }}</output>
+            <button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-for="item in items" :key="item" v-pointer-blur type="button" class="ui-rating-star" :class="{ 'is-active': item <= value }" :aria-label="item + ' 星'" :disabled="control.disabled.value" :tabindex="item === Math.max(1, Math.ceil(value)) ? 0 : -1" @click="update(item)" @blur="control.blur"><span aria-hidden="true">★</span></button><output>{{ value }} / {{ props.length }}</output>
         </div>
     </UiControlFrame>
 </template>

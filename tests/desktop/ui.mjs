@@ -98,7 +98,7 @@ try {
     passed.push('user reduced motion and actual closed event share the same dialog lifecycle');
     await openDoc('motion');
     await page.getByRole('checkbox', { name: '示例减少动效', exact: true }).uncheck();
-    await openDoc('snackbar');
+    await openDoc('snackbar-service');
     await page.getByRole('combobox', { name: '提示时长' }).selectOption('0');
     for (const position of ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']) {
         await page.getByRole('combobox', { name: '提示方位' }).selectOption(position);
@@ -483,20 +483,54 @@ try {
 
 
     await openDoc('button');
-    const ghostButton = page.getByRole('button', { name: '轻量操作', exact: true });
+    const textButton = page.getByRole('button', { name: '轻量操作', exact: true });
     for (const dark of [false, true]) {
         await page.getByRole('checkbox', { name: '深色主题', exact: true }).setChecked(dark);
         for (const surface of ['var(--surface)', 'var(--soft)', 'var(--background)']) {
-            await ghostButton.evaluate((button, surface) => { button.parentElement.style.background = surface; }, surface);
-            await ghostButton.hover();
+            await textButton.evaluate((button, surface) => { button.parentElement.style.background = surface; }, surface);
+            await page.mouse.move(1, 1);
+            await page.waitForFunction((button) => Number(getComputedStyle(button, '::before').opacity) === 0, await textButton.elementHandle());
+            const idle = await textButton.evaluate((button) => {
+                const style = getComputedStyle(button);
+                const state = getComputedStyle(button, '::before');
+                return {
+                    background: style.backgroundColor,
+                    border: style.borderTopColor,
+                    borderWidth: style.borderTopWidth,
+                    borderStyle: style.borderTopStyle,
+                    color: style.color,
+                    stateBackground: state.backgroundColor,
+                    stateOpacity: Number(state.opacity)
+                };
+            });
+            await textButton.hover();
             await page.waitForTimeout(200);
-            const hover = await ghostButton.evaluate((button) => { const style = getComputedStyle(button); return { border: style.borderTopColor, background: style.backgroundColor }; });
+            const hover = await textButton.evaluate((button) => {
+                const style = getComputedStyle(button);
+                const state = getComputedStyle(button, '::before');
+                return {
+                    background: style.backgroundColor,
+                    border: style.borderTopColor,
+                    borderWidth: style.borderTopWidth,
+                    borderStyle: style.borderTopStyle,
+                    color: style.color,
+                    stateBackground: state.backgroundColor,
+                    stateOpacity: Number(state.opacity)
+                };
+            });
             assert.equal(hover.border, 'rgba(0, 0, 0, 0)');
-            assert.notEqual(hover.background, 'rgba(0, 0, 0, 0)');
+            assert.equal(hover.border, idle.border, 'hover does not paint a real border on the text button');
+            assert.equal(hover.borderWidth, idle.borderWidth, 'hover does not change the text button border width');
+            assert.equal(hover.borderStyle, idle.borderStyle, 'hover does not change the text button border style');
+            assert.equal(hover.background, idle.background, 'the button background stays transparent; the state layer is separate');
+            assert.equal(idle.stateBackground, idle.color, 'the idle ::before layer is based on currentColor');
+            assert.equal(hover.stateBackground, hover.color, 'the ::before state layer uses currentColor');
+            assert.equal(idle.stateOpacity, 0, 'the state layer is transparent before hover');
+            assert.ok(hover.stateOpacity > idle.stateOpacity, 'hover raises the ::before state-layer opacity');
         }
-        await capture(app, dark ? '24-ghost-dark.png' : '23-ghost-light.png');
+        await capture(app, dark ? '24-text-dark.png' : '23-text-light.png');
     }
-    passed.push('ghost hover has no border and uses a translucent state layer on light and dark surfaces; sort uses triangle SVGs');
+    passed.push('text button hover has no border and uses a translucent state layer on light and dark surfaces; sort uses triangle SVGs');
 
 
 } finally { await gallery.app.close(); await new Promise((resolve, reject) => server.httpServer.close((error) => error ? reject(error) : resolve())); }

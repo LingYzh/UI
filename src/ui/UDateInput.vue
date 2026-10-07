@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import { computed, ref, useAttrs, watch } from 'vue';
 import UDatePicker from './UDatePicker.vue';
+import Icon from '../components/Icon.vue';
+import UTransition from './UTransition.vue';
 import UiControlFrame from './UiControlFrame.vue';
 import { isAllowedDate, parseIsoDate, selectedDates, type AllowedDates, type DateMode, type DateSelection } from './date-model';
 import { vPointerBlur } from './pointer-focus';
 import { mergeControlAttrs, useFormControl, type FormControlProps } from './form';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { mode?: DateMode; min?: string; max?: string; allowedDates?: AllowedDates; locale?: string }>(), { mode: 'single', label: '日期', dense: undefined, ghost: undefined, rounded: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { mode?: DateMode; min?: string; max?: string; allowedDates?: AllowedDates; locale?: string } & { ripple?: RippleOptions }>(), { ripple: true, mode: 'single', label: '日期', dense: undefined, ghost: undefined, rounded: undefined });
 const props = useDefaults(rawProps, 'UDateInput');
 const attrs = useAttrs();
 function inputAttrs(): Record<string, unknown> { const { class: _class, style: _style, ...rest } = attrs; return rest; }
@@ -40,8 +43,8 @@ function commit(): void {
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div class="u-date-input">
-            <div class="ui-input" :class="control.classes.value" :style="control.styles.value"><input ref="element" v-model="text" v-bind="mergedInputAttrs(controlAttrs)" type="text" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="invalid || control.state.value === false || undefined" placeholder="YYYY-MM-DD" @blur="commit(); control.blur()" @keydown.enter.prevent="commit" @keydown.esc="open = false" /><button v-pointer-blur type="button" class="ui-control-clear" :disabled="control.disabled.value || control.readonly.value" :aria-expanded="open" aria-label="打开日历" @click="open = !open">▦</button></div>
-            <UDatePicker v-if="open" v-model="model" :mode="props.mode" :min="props.min" :max="props.max" :allowed-dates="props.allowedDates" :locale="props.locale" :disabled="control.disabled.value" :readonly="control.readonly.value" @update:model-value="props.mode === 'single' && (open = false)" />
+            <div class="ui-input" :class="control.classes.value" :style="control.styles.value"><input ref="element" v-model="text" v-bind="mergedInputAttrs(controlAttrs)" type="text" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="invalid || control.state.value === false || undefined" placeholder="YYYY-MM-DD" @blur="commit(); control.blur()" @keydown.enter.prevent="commit" @keydown.esc="open = false" /><button v-ripple="props.ripple" v-pointer-blur type="button" class="ui-control-clear" :disabled="control.disabled.value || control.readonly.value" :aria-expanded="open" aria-label="打开日历" @click="open = !open"><Icon name="mdi-calendar-month-outline" :size="18" /></button></div>
+            <UTransition variant="slide-y"><UDatePicker v-if="open" v-model="model" :ripple="props.ripple" :mode="props.mode" :min="props.min" :max="props.max" :allowed-dates="props.allowedDates" :locale="props.locale" :disabled="control.disabled.value" :readonly="control.readonly.value" @update:model-value="props.mode === 'single' && (open = false)" /></UTransition>
         </div>
     </UiControlFrame>
 </template>

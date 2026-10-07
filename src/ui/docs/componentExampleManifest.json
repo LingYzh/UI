@@ -503,5 +503,30 @@
         "name": "UFab",
         "example": "component-fab",
         "file": "fab.vue"
+    },
+    {
+        "name": "UCode",
+        "example": "component-code",
+        "file": "code.vue"
+    },
+    {
+        "name": "USlideGroup",
+        "example": "component-slide-group",
+        "file": "slide-group.vue"
+    },
+    {
+        "name": "USlideGroupItem",
+        "example": "component-slide-group-item",
+        "file": "slide-group-item.vue"
+    },
+    {
+        "name": "USnackbar",
+        "example": "component-snackbar",
+        "file": "snackbar.vue"
+    },
+    {
+        "name": "USnackbarQueue",
+        "example": "component-snackbar-queue",
+        "file": "snackbar-queue.vue"
     }
 ]

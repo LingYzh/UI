@@ -51,6 +51,24 @@ function motionChanged() { if (motionDisabled()) { cancelAnimationFrame(frame); 
 reducedMotion.addEventListener('change', motionChanged);
 const motionObserver = new MutationObserver(motionChanged);
 motionObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-reduced-motion'] });
+function scrollAnchor(anchor: HTMLElement) {
+    let container = anchor.parentElement;
+    while (container && container !== document.body && container !== document.documentElement) {
+        if (/^(auto|scroll|overlay)$/.test(getComputedStyle(container).overflowY)) break;
+        container = container.parentElement;
+    }
+    const behavior = motionDisabled() ? 'instant' : 'smooth';
+    const bounds = anchor.getBoundingClientRect();
+    if (container && container !== document.body && container !== document.documentElement) {
+        // Scroll only the owning viewport; scrollIntoView also moves outer
+        // overflow:hidden ancestors and can carry fixed application chrome away.
+        const viewportTop = container.getBoundingClientRect().top + container.clientTop;
+        container.scrollTo({ top: container.scrollTop + bounds.top - viewportTop - (container.clientHeight - bounds.height) / 2, behavior });
+    } else {
+        const scroller = document.scrollingElement;
+        if (scroller) scroller.scrollTo({ top: scroller.scrollTop + bounds.top - (window.innerHeight - bounds.height) / 2, behavior });
+    }
+}
 function linkClick(event: MouseEvent) {
     const target = event.target instanceof Element ? event.target.closest('a') : null;
     if (!target || !element.value?.contains(target)) return;
@@ -59,7 +77,7 @@ function linkClick(event: MouseEvent) {
     if (href.startsWith(`#${prefix}-`)) {
         const anchor = Array.from(element.value.querySelectorAll<HTMLElement>('[id]')).find(node => node.id === href.slice(1));
         if (anchor) {
-            anchor.scrollIntoView({ block: 'center', inline: 'nearest', behavior: motionDisabled() ? 'instant' : 'smooth' });
+            scrollAnchor(anchor);
             const previous = anchor.getAttribute('tabindex');
             anchor.setAttribute('tabindex', '-1');
             anchor.focus({ preventScroll: true });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { computed } from 'vue';
 import { uiText, uiNumberLocale } from './locale';
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<{
     segments?: UsageSegment[];
     compositionLabel?: string;
     compositionEstimated?: boolean;
-}>(), { label: undefined, compositionLabel: undefined, compositionEstimated: true });
+} & { ripple?: RippleOptions }>(), { ripple: true, label: undefined, compositionLabel: undefined, compositionEstimated: true });
 const emit = defineEmits<{ inspect: [] }>();
 const valid = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0;
 const used = computed(() => valid(props.used) ? props.used : null);
@@ -33,7 +34,7 @@ const incomplete = computed(() => segments.value.some(item => item.value === nul
 </script>
 
 <template>
-    <button v-pointer-blur v-if="compact" type="button" class="ui-usage-trigger" :disabled="disabled" :aria-label="accessible" :title="accessible" @click="emit('inspect')">
+    <button v-ripple="props.ripple" v-pointer-blur v-if="compact" type="button" class="ui-usage-trigger" :disabled="disabled" :aria-label="accessible" :title="accessible" @click="emit('inspect')">
         <svg class="ui-usage-ring" viewBox="0 0 24 24" aria-hidden="true">
             <circle class="ui-usage-track" cx="12" cy="12" r="9" />
             <circle v-if="ratio !== null" class="ui-usage-progress" cx="12" cy="12" r="9" pathLength="100" :stroke-dasharray="`${Math.min(100, ratio * 100)} 100`" />
@@ -54,31 +55,31 @@ const incomplete = computed(() => segments.value.some(item => item.value === nul
 </template>
 
 <style scoped>
-.ui-usage-trigger { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 7px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font: inherit; font-size: 11px; font-variant-numeric: tabular-nums; cursor: pointer; transition: background var(--motion-fast), color var(--motion-fast); }
+.ui-usage-trigger { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 7px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font: inherit; font-size: var(--ui-font-body-small); font-variant-numeric: tabular-nums; cursor: pointer; transition: background var(--motion-fast), color var(--motion-fast); }
 .ui-usage-trigger:hover { background: var(--hover); color: var(--text); }
-.ui-usage-trigger:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+.ui-usage-trigger:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 3px; }
 .ui-usage-trigger:disabled { opacity: .5; cursor: default; }
 .ui-usage-ring { width: 19px; height: 19px; overflow: visible; flex: 0 0 auto; }
 .ui-usage-ring circle { fill: none; stroke-width: 3.2; }
 .ui-usage-track { stroke: var(--border); }
 .ui-usage-progress { stroke: var(--accent-text); stroke-linecap: round; transform: rotate(-90deg); transform-origin: center; transition: stroke-dasharray 320ms var(--ease); }
 .ui-usage-unknown { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; }
-.ui-usage-meter { min-width: 0; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text); }
+.ui-usage-meter { min-width: 0; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--text); }
 .ui-usage-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
 .ui-usage-heading > div { display: grid; gap: 6px; }
 .ui-usage-label, .ui-usage-note, .ui-usage-summary { color: var(--muted); }
 .ui-usage-heading strong { font-size: 18px; font-weight: 550; overflow-wrap: anywhere; }
-.ui-usage-heading strong span { color: var(--muted); font-size: 13px; font-weight: 400; }
-.ui-usage-source { color: var(--muted); font-size: 10px; white-space: nowrap; }
+.ui-usage-heading strong span { color: var(--muted); font-size: var(--ui-font-body-large); font-weight: 400; }
+.ui-usage-source { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .ui-usage-heading > .ui-usage-source { background: var(--soft); padding: 4px 7px; border-radius: 5px; }
-.ui-usage-summary { margin: 8px 0 18px; font-size: 11px; }
+.ui-usage-summary { margin: 8px 0 18px; font-size: var(--ui-font-body-small); }
 .ui-usage-composition { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; border-top: 1px solid var(--line); padding-top: 14px; }
-.ui-usage-composition strong { font-size: 12px; font-weight: 550; }
-.ui-usage-composition span, .ui-usage-note { font-size: 11px; color: var(--muted); }
+.ui-usage-composition strong { font-size: 14px; font-weight: 550; }
+.ui-usage-composition span, .ui-usage-note { font-size: var(--ui-font-body-small); color: var(--muted); }
 .ui-usage-note { margin: 7px 0 0; line-height: 1.6; }
 .ui-usage-bar { height: 9px; display: flex; background: var(--soft); overflow: hidden; border-radius: 4px; margin: 14px 0; }
 .ui-usage-bar i { height: 100%; transition: width var(--motion-normal); }
-.ui-usage-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; list-style: none; margin: 0; padding: 0; font-size: 11px; }
+.ui-usage-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; list-style: none; margin: 0; padding: 0; font-size: var(--ui-font-body-small); }
 .ui-usage-legend li { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
 .ui-usage-legend i { width: 7px; height: 7px; border-radius: 2px; flex: 0 0 auto; }
 .ui-usage-legend span { overflow-wrap: anywhere; }

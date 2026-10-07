@@ -2,6 +2,14 @@
 
 独立 Vue 3 UI 库。业务组件通过 `@lingyzh/ui` 导入；共享外观由 `tokens.css` 与 `styles.css` 管理。业务状态仍由页面或 Pinia 持有。
 
+字号使用Vuetify4的15级display/headline/title/body/label层级，正文16/14/12px，默认代码16px；`text-body-large`等工具类与`text-sm-title-large`等响应式类可直接使用。完整真实示例、源码及控件字号见`/#/typography`；字体家族与明暗主题继续使用本库tokens。
+
+`UCodeBlock` 默认随内容自然增高，不设置最大高度；只有显式传入 `max-height` 才限制代码区并显示纵向滚动。横向滚动、自动换行和复制继续可用，真实比较见 `/#/code-block`。文档源码采用四空格缩进并按Vue标签层级展开；运行 `npm run docs:sync` 同步真实示例、可复制源码与API。Prettier仅作为开发期格式化依赖，不进入组件运行时。
+
+通用滑动选择使用 `USlideGroup` 的 `v-model` 和 renderless `USlideGroupItem` 的 `isSelected/select/toggle/selectedClass` 插槽，项目内容直接由按钮或卡片提供。支持多选、mandatory/max、水平/垂直、滚动箭头和当前项定位；代码示例分别见 `/#/slide-group` 与 `/#/slide-group-item`。`UBtnToggle` 直接接入带 `value` 的 `UButton`，省略值时按组内索引选择；不必使用其他组件代替按钮。`UCode` 提供语义行内代码，`UCodeBlock` 继续用于带工具栏的多行源码查看。
+
+`USnackbar` 是局部受控消息组件，使用 `v-model`、`text/title` 和 `actions` 插槽，默认超时5000ms，负数持续显示；悬停、内部焦点和文档隐藏暂停倒计时。`USnackbarQueue` 的数组模型保存待显示项，显示时消费数组；支持字符串、属性对象、promise及success/error结果、totalVisible、hold/overflow、collapsed和clear。独立示例见 `/#/snackbar` 与 `/#/snackbar-queue`。原全局 `snackbar` 服务和 `USnackbarHost` 保留，服务说明现在位于 `/#/snackbar-service`。
+
 基于 [Vuetify0](https://0.vuetifyjs.com/introduction/getting-started) 的 headless 组件逐步整合，运行依赖固定为 `@vuetify/v0@1.2.3`。`UiButton` 使用 `Button.Root`，`UiTabs` 使用 `Tabs.Root/List/Item` 提供键盘导航和激活状态；UAH 保留设计 tokens、真实按钮 DOM 和公开 API。其余组件仍使用现有 Vue/原生实现，尤其 Dialog 保留退出动画、焦点恢复与 Electron 原生网页隐藏生命周期。没有引入 Material 主题。npm 包发布 Vue/TypeScript 源码，使用方需配置支持 Vue SFC 的构建工具。
 
 ## 使用
@@ -19,7 +27,7 @@ Electron 的 Vue 渲染层直接使用上述组件，无需放宽 `contextIsolat
 
 主题：应用入口 `app.use(createUiTheme({ defaultTheme: 'system', themes: { ocean: { colors: { primary: '#246a91' } } } }))`；组件 setup 使用 `useUiTheme()`，通过 `change / toggle / cycle` 切换。主题过渡默认开启；系统或应用 `data-reduced-motion="true"` 关闭过渡并结束播放中的动画，恢复完整动效后自动开启，可显式配置 `transition: false`。内置 light/dark 继续使用现有色值。局部区域使用 `UiThemeProvider`，Card/Dialog 的 `theme` 可覆盖并向子组件提供上下文；主题定义、颜色辅助类、响应式字段与过渡配置见真实文档 `/#/theme`、`/#/theme-provider`。
 
-Markdown 的行内代码与 mark 使用主题 primary，details 支持可中断的展开／收起过渡，脚注与返回链接平滑居中并移交焦点；滚动边界可能限制最终位置。系统和手动减少动态效果时立即更新。Mermaid 图表继承当前作用域并保留安全 SVG 文字，多个作用域的图表串行配置渲染，避免共享配置污染。真实交互见 `/#/markdown`。
+Markdown 的行内代码与 mark 使用主题 primary，details 支持可中断的展开／收起过渡，脚注与返回链接在最近的纵向滚动容器内平滑居中并移交焦点，不带动外层页面或顶栏；没有局部容器时使用文档滚动根，滚动边界可能限制最终位置。系统和手动减少动态效果时立即更新。Mermaid 图表继承当前作用域并保留安全 SVG 文字，多个作用域的图表串行配置渲染，避免共享配置污染。真实交互见 `/#/markdown`。
 
 ## 实施顺序
 
@@ -29,7 +37,7 @@ Markdown 的行内代码与 mark 使用主题 primary，details 支持可中断�
 
 | 组件 | 主要 API | 交互约定 |
 | --- | --- | --- |
-| `UiButton` | `variant="primary/secondary/ghost/danger"`、`size="sm/md"`、`icon`、`loading`、`disabled` | 默认 `type="button"`；等待态禁止重复点击；纯图标按钮必须传 `aria-label`；`ripple` 默认开启，可设 false；ref 暴露 `element/focus(options?)` |
+| `UiButton` | `variant="elevated/flat/tonal/outlined/text/plain"`、独立 `color="primary/secondary/danger/..."`、`size="sm/md"`、`icon`、`loading`、`disabled` | 默认 `type="button"`；等待态禁止重复点击；纯图标按钮必须传 `aria-label`；`ripple` 默认开启，可设 false；ref 暴露 `element/focus(options?)` |
 | `UiInput` | 字符串 `v-model`（`type="number"` 时为 number，清空为 null）、`disabled`、`invalid`；`leading/trailing` 插槽 | 边框、背景、hover/focus 属于整个外壳。`class/style` 落外壳，其余原生属性与事件落 input。ref 暴露 `element/focus()/select()` |
 | `UiSelect` | 字符串或数字 `v-model`、`compact`、`invalid`；原生 option 插槽 | 未传模型默认选择首项；指针选完默认释放焦点（`blur-on-select=false` 可关闭），键盘保留焦点；保留数字 option 值；支持 base-select 时使用统一弹层与居中箭头，否则使用原生弹层 |
 | `UiSwitch` | 布尔 `v-model`、原生 checkbox 属性 | Space 切换；使用关联 label 或 `aria-label` 提供名称 |
@@ -119,13 +127,13 @@ import { UiCard, UiButton, vRipple } from '@lingyzh/ui';
             <span class="flex-grow-1">内容</span>
             <UiButton :ripple="{ center: true }">打开</UiButton>
         </div>
-        <template #actions><UiButton variant="ghost">取消</UiButton></template>
+        <template #actions><UiButton variant="text">取消</UiButton></template>
     </UiCard>
     <button v-ripple class="pa-4 rounded">原生按钮</button>
 </template>
 ```
 
-`vRipple` 支持 false 或 `{ center, color }`，UiButton/UiTabs 默认开启。指针和键盘按住扩散、松开淡出，取消/失焦清理；禁用和减少动效不显示。该指令不添加点击行为或可访问语义，使用真正按钮承载操作。
+`vRipple` 支持 false 或 `{ center, circle, color, class, keys }`。按钮、Tabs、列表项、菜单选项、树、选择控件及排序/展开/清除等动作入口默认开启；均可用 `ripple=false` 关闭。快速松手与指针失焦后完整扩散、淡出；禁用、只读和减少动效不显示。嵌套独立控件只反馈实际动作，子控件关闭涟漪时父层也不会接管。该指令不添加点击行为或可访问语义，使用真正按钮承载操作。
 
 Card 支持 outlined/elevated/tonal/flat，comfortable/compact 的 24/16px 内容间距。flush 可让 Tabs 和代码贴齐内容边缘；actions 独立分隔且自动换行。示例文档全部使用真实 UiCard。
 
@@ -187,7 +195,7 @@ UiIcon 保留原型名称，支持常用 mdi-* 名称、按需 path 与 register
         <UiCol :cols="12" :md="6"><UiInput v-model="name" label="名称" hint="至少 3 个字符" :rules="nameRules" /></UiCol>
         <UiCol :cols="12" :md="6"><UiSwitch v-model="enabled" label="启用" /></UiCol>
         <UiCol :cols="12"><UiTextarea v-model="description" label="说明" :rows="3" /></UiCol>
-        <UiCol :cols="12"><UiFormActions><UiButton type="reset">重置</UiButton><UiButton type="submit" variant="primary">保存</UiButton></UiFormActions></UiCol>
+        <UiCol :cols="12"><UiFormActions><UiButton type="reset">重置</UiButton><UiButton type="submit" variant="flat" color="primary">保存</UiButton></UiFormActions></UiCol>
     </UiRow>
 </UiForm>
 ```
@@ -224,6 +232,34 @@ Tabs 的 #window 内直接放 WindowItem，可自动继承模型和 ID；items �
 
 ## Ripple 生命周期与配置
 
-`vRipple`、UiButton / UiTab / UiTabs 的 ripple 以 Vuetify 的入场与退场生命周期为参照：扩散 250ms、显现 100ms，至少显示 250ms 后淡出 300ms；快速松开与指针自动失焦都不会删除尚未完成的波纹。连续点击保留各自波纹；键盘自动重复不叠加，Enter / Space 默认居中，失焦释放键盘保持态。
+`vRipple` 与组件内置的 ripple 以 Vuetify 的入场与退场生命周期为参照：扩散 250ms、显现 100ms，至少显示 250ms 后淡出 300ms；快速松开与指针自动失焦都不会删除尚未完成的波纹。连续点击保留各自波纹；键盘自动重复不叠加，动作按钮默认 Enter / Space，原生选择控件默认 Space，均居中显示；失焦释放键盘保持态。
 
 公开配置为 `boolean | { center?: boolean; circle?: boolean; class?: string; color?: string; keys?: string[] }`；原生指令支持 `.center`、`.circle`、`.stop`。`.stop` 不显示自己的波纹并阻止祖先波纹，不阻止事件传播；普通嵌套仅最内层响应。class 可使用主题颜色辅助类，color 保留既有兼容用法；默认 UAH 强度 .14，可用 --ripple-opacity 调整。触摸延迟 80ms，短点按仍显示，延迟内滑动取消；禁用或动态关闭阻止新波纹，已有波纹完整退场，点击后进入 loading 也不会截断反馈。减少动效、页面隐藏及卸载立即清理。真实 demo：`/#/ripple`。
+
+默认覆盖 ListItem / ListGroup / MenuItem、Treeview 行/展开/选择、Item / Chip、Checkbox / Radio / Switch / SelectionControl / ColorSwatches、Picker / Autocomplete / Combobox / Cascader、表格排序/分组/详情/分页、日期/数值/评级/颜色/轮播按钮，以及清除、关闭和文件/消息操作。关闭配置会转发给组件内部动作；ListGroup 自定义激活器需绑定插槽 props 中的 ripple。静态 Card 不触发，显式点击或 as=button 的单一动作表面触发；文本编辑区、普通链接、拖放区、遮罩和平台原生 select/file 区不整面添加效果。列表项独立按钮与内置选择控件示例位于 `/#/list-item`，不会改变父行选择或叠加父行波纹。
+
+## 图标与内容过渡
+
+ListGroup、Treeview、ExpansionPanelTitle、选择器、日期翻页、轮播、分页和表格展开入口使用现有 MDI 图标。展开箭头随状态旋转；ListGroup 收起时保留子内容与输入模型，并立即设置 inert / aria-hidden。自定义 activator 继续通过插槽提供的 props 连接事件和可访问关系，真实示例包含嵌套、禁用和自定义触发器。
+
+UTransition 的 expand 支持 padding、border、min-height 和播放中反转，完成后恢复调用方 inline 样式及自动高度；disabled 跳过过渡。Treeview 分支、表格详情、编辑区域、步骤内容、抽屉遮罩、徽标、输入弹出面板和 Tooltip 共用现有动效 tokens。Overlay / BottomSheet 在退出动效完成后关闭原生 dialog、释放滚动锁并恢复焦点。手动 data-reduced-motion 或系统 prefers-reduced-motion 会跳过并结束活动过渡。排序、分页和虚拟行更新不附加布局动画。
+
+### 按钮样式与颜色
+
+`UButton` 的 `variant` 只决定六种样式：`elevated`（有阴影的实心）、`flat`（无阴影实心）、`tonal`（柔和同色底）、`outlined`（本库默认，无阴影描边）、`text`（透明交互表面）、`plain`（弱化文字且没有悬停底层）。颜色通过 `color` 独立指定，支持主题颜色、自定义主题色与 CSS 颜色；`danger` 默认跟随 `error`。实心按钮使用主题 `on-*` 前景，CSS 的不透明 hex/rgb/hsl/命名色按亮度选择黑白文字。半透明和复杂 CSS 变量无法可靠推导前景时继承正文色；主题变量 `var(--ui-theme-xxx)` 使用对应 `on-xxx`。
+
+```vue
+<u-button variant="flat" color="primary">保存</u-button>
+<u-button variant="outlined" color="danger">删除</u-button>
+<u-button variant="text" color="danger">清空</u-button>
+<u-button variant="tonal" color="success">完成</u-button>
+```
+
+旧 `variant="primary/secondary/danger/ghost"` 已从公开 API 和示例移除。原 `primary` 用 `variant="flat" color="primary"`，`secondary` 用 `variant="outlined"`，`danger` 用相应 `variant` 加 `color="danger"`，`ghost` 用 `variant="text"`。布尔 `ghost` 仍兼容表单统一透明外观并映射 text；新用法优先标准 variant。默认颜色保持中性，设置 color 不会改变 variant。
+
+### 焦点提示与输入模式
+
+Slider、RangeSlider 和 ColorPicker 的通道滑块在鼠标点击/拖动时不显示键盘焦点框，实际焦点和原生拖动保持；Tab 进入后显示焦点提示，方向键继续调整数值。文件选择和上传区域只在键盘焦点时显示对应提示，上传区仍保留拖放高亮。复合输入容器按内部 `:focus-visible` 显示提示，点击内部非文本按钮不触发整圈焦点框；文本编辑保留活动表面、光标与选中。选中状态的描边独立保留。可在各组件独立文档页使用鼠标与 Tab 比较。
+
+键盘与鼠标在同一非文本控件上切换时，焦点提示立即跟随输入方式，不依赖浏览器残留的 `:focus-visible`。ColorInput 输入期间保留颜色草稿，失焦后统一为模型格式；外部不同颜色仍同步到文本。
+`UToolbar`内置标题和操作区域，直接使用`title`/`#title`、`#actions`（或`#append`）和`#extension`；常规用法不需要额外组合标题/操作组件。

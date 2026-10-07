@@ -91,13 +91,13 @@ onBeforeUnmount(() => {
         <a class="docs-skip" href="#docs-main" @click.prevent="content?.focus()">跳到文档内容</a>
         <header class="docs-header">
             <div class="docs-brand-wrap">
-                <u-button ref="menuButton" class="docs-menu-button" icon variant="ghost" aria-label="切换文档导航" :aria-expanded="menuOpen" aria-controls="docs-navigation" @click="menuOpen = !menuOpen"><Icon name="panel" /></u-button>
+                <u-button ref="menuButton" class="docs-menu-button" icon variant="text" aria-label="切换文档导航" :aria-expanded="menuOpen" aria-controls="docs-navigation" @click="menuOpen = !menuOpen"><Icon name="panel" /></u-button>
                 <a href="#/overview" class="docs-brand" aria-label="UAH UI 首页"><span class="docs-logo"><Icon name="spark" :size="21" /></span><strong>UAH <span>UI</span></strong></a>
                 <span class="docs-version">{{ packageInfo.version }} · 独立库</span>
             </div>
             <div class="docs-header-links"><a href="#/getting-started" :class="{ active: current.group === '开始使用' }">文档</a><a href="#/tokens" :class="{ active: current.group === '设计基础' }">设计基础</a></div>
             <div class="docs-header-actions">
-                <label class="docs-theme-switch"><Icon name="sun" :size="16" /><u-switch ref="themeSwitch" v-model="darkTheme" aria-label="深色主题" /><Icon name="moon" :size="16" /><span>{{ darkTheme ? '深色' : '浅色' }}</span></label>
+                <label class="docs-theme-switch"><Icon name="sun" :size="16" /><u-switch ref="themeSwitch" v-model="darkTheme" aria-label="深色主题" /><Icon name="moon" :size="16" /><span class="docs-theme-label">{{ darkTheme ? '深色' : '浅色' }}</span></label>
                 <a class="docs-reference" href="https://0.vuetifyjs.com/introduction/getting-started" target="_blank" rel="noopener noreferrer" aria-label="Vuetify0 官方文档（新窗口）"><Icon name="external" :size="17" /></a>
             </div>
         </header>
@@ -140,9 +140,9 @@ onBeforeUnmount(() => {
                             <section id="section-examples" class="docs-section"><h2><a :href="`#/${current.id}/examples`">交互示例<span aria-hidden="true">#</span></a></h2><p class="docs-section-intro">直接操作真实组件，或切换到源码查看组合方式。</p><ExampleCard v-for="example in current.examples" :key="example.id" :example="example" /></section>
                             <section id="section-api" class="docs-section">
                                 <h2><a :href="`#/${current.id}/api`">API 参考<span aria-hidden="true">#</span></a></h2>
-                                <p class="docs-section-intro">{{ current.kind === 'service' ? '服务选项与方法；以各方法签名为准。' : '公开组件契约；modelValue 使用 v-model，其他双向属性使用 v-model:属性名。未声明的原生属性与事件按组件约定透传。' }}</p>
-                                <ApiTable :title="current.kind === 'service' ? 'Options' : 'Props'" :rows="current.props" empty="无公开 props。" />
-                                <ApiTable :title="current.kind === 'service' ? 'Methods' : 'Emits'" :rows="current.events" empty="无自定义事件。" />
+                                <p class="docs-section-intro">{{ current.apiKind === 'utilities' ? '工具类可直接添加到元素；以下为16px根字号下的尺寸，响应式前缀使用同一层级。' : current.kind === 'service' ? '服务选项与方法；以各方法签名为准。' : '公开组件契约；modelValue 使用 v-model，其他双向属性使用 v-model:属性名。未声明的原生属性与事件按组件约定透传。' }}</p>
+                                <ApiTable :title="current.apiKind === 'utilities' ? '工具类' : current.kind === 'service' ? 'Options' : 'Props'" :rows="current.props" empty="无公开 props。" />
+                                <ApiTable v-if="current.apiKind !== 'utilities'" :title="current.kind === 'service' ? 'Methods' : 'Emits'" :rows="current.events" empty="无自定义事件。" />
                                 <ApiTable v-if="current.kind === 'component'" title="Slots" :rows="current.slots" empty="无公开插槽。" />
                                 <ApiTable v-if="current.methods?.length" title="Expose（通过 ref 使用）" :rows="current.methods" />
                                 <ApiTable v-if="current.attributes?.length" title="原生属性透传" :rows="current.attributes" />

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
+import { vRipple, type RippleOptions } from './ripple';
+import Icon from '../components/Icon.vue';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -8,7 +11,7 @@ import { useDefaults } from './defaults';
 import { validateFiles, type FileValidationResult } from './specialized-inputs';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; multiple?: boolean; maxSize?: number }>(), { dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; multiple?: boolean; maxSize?: number } & { ripple?: RippleOptions }>(), { ripple: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UFileUpload');
 const emit = defineEmits<{ rejected: [result: FileValidationResult['rejected']]; change: [files: File[]] }>();
 const model = defineModel<File[]>({ default: () => [] });
@@ -43,8 +46,8 @@ defineExpose({ element, input, files, dragging, control, receive, drop, change, 
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div ref="element" class="ui-file-upload" :class="[control.classes.value, { 'is-dragging': dragging }]" :style="control.styles.value" :aria-describedby="controlAttrs['aria-describedby']" @dragover.prevent="dragging = !control.disabled.value && !control.readonly.value" @dragleave="dragging = false" @drop="drop">
-            <div class="ui-upload-target"><span class="ui-upload-symbol" aria-hidden="true">↑</span><strong>拖放文件到这里</strong><span class="ui-upload-hint">或选择本地文件</span><input :id="control.id()" ref="input" class="ui-upload-file-input" type="file" :accept="props.accept" :multiple="props.multiple" :disabled="control.disabled.value" :aria-label="props.label || '上传文件'" @click="control.guard" @change="change" @blur="control.blur" /></div>
-            <ul v-if="files.length" class="ui-upload-files"><li v-for="(file, index) in files" :key="index"><span :title="file.name">{{ file.name }}</span><small>{{ (file.size / 1024).toFixed(1) }} KB</small><button v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="control.disabled.value || control.readonly.value" @click="remove(index)">×</button></li></ul>
+            <div class="ui-upload-target"><span class="ui-upload-symbol" aria-hidden="true"><Icon name="mdi-upload" :size="20" /></span><strong>拖放文件到这里</strong><span class="ui-upload-hint">或选择本地文件</span><input v-focus-modality :id="control.id()" ref="input" class="ui-upload-file-input" type="file" :accept="props.accept" :multiple="props.multiple" :disabled="control.disabled.value" :aria-label="props.label || '上传文件'" @click="control.guard" @change="change" @blur="control.blur" /></div>
+            <ul v-if="files.length" class="ui-upload-files"><li v-for="(file, index) in files" :key="index"><span :title="file.name">{{ file.name }}</span><small>{{ (file.size / 1024).toFixed(1) }} KB</small><button v-ripple="props.ripple" v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="control.disabled.value || control.readonly.value" @click="remove(index)"><Icon name="mdi-close" :size="16" /></button></li></ul>
         </div>
     </UiControlFrame>
 </template>

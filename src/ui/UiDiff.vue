@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { computed, ref } from 'vue';
 import UiButton from './UiButton.vue';
@@ -8,7 +9,7 @@ import { writeClipboard } from './clipboard';
 import Icon from '../components/Icon.vue';
 import { uiText } from './locale';
 
-const props = withDefaults(defineProps<{ before: string | null; after: string | null; path?: string; proposed?: boolean; compact?: boolean; inspectable?: boolean }>(), { path: undefined, proposed: false, compact: false, inspectable: false });
+const props = withDefaults(defineProps<{ before: string | null; after: string | null; path?: string; proposed?: boolean; compact?: boolean; inspectable?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, path: undefined, proposed: false, compact: false, inspectable: false });
 const emit = defineEmits<{ inspect: [] }>();
 const expanded = ref(false);
 const wrap = ref(false);
@@ -28,16 +29,16 @@ async function copy(value: string) {
     <section class="ui-diff" :class="{ 'is-compact': compact }" :aria-label="`${displayPath} ${status}`">
         <header class="ui-diff-header">
             <div class="ui-diff-identity"><strong :title="displayPath">{{ displayPath }}</strong><span>{{ compact ? `· ${proposed ? uiText('diff.pendingShort') : uiText('diff.snapshot')}` : status }}</span></div>
-            <button v-pointer-blur v-if="inspectable" class="ui-diff-inspect" type="button" @click="emit('inspect')">{{ uiText('diff.inspect') }} <Icon name="external" :size="14" /></button>
+            <button v-ripple="props.ripple" v-pointer-blur v-if="inspectable" class="ui-diff-inspect" type="button" @click="emit('inspect')">{{ uiText('diff.inspect') }} <Icon name="external" :size="14" /></button>
             <div v-if="!compact && !diff.omitted" class="ui-diff-counts" :aria-label="uiText('diff.counts')"><span class="ui-diff-added">+{{ diff.added }}</span><span class="ui-diff-removed">−{{ diff.removed }}</span></div>
         </header>
         <div v-if="!compact" class="ui-diff-toolbar">
-            <UiButton size="sm" variant="ghost" :aria-pressed="expanded" :disabled="diff.omitted" @click="expanded = !expanded">{{ expanded ? uiText('diff.changesOnly') : uiText('diff.showContext') }}</UiButton>
-            <UiButton size="sm" variant="ghost" :aria-pressed="wrap" @click="wrap = !wrap">{{ wrap ? uiText('diff.wrapOff') : uiText('common.autoWrap') }}</UiButton>
-            <UiButton v-if="before !== null" size="sm" variant="ghost" @click="copy(before)">{{ uiText('diff.copyBefore') }}</UiButton>
-            <UiButton v-if="after !== null" size="sm" variant="ghost" @click="copy(after)">{{ uiText('diff.copyAfter') }}</UiButton>
+            <UiButton size="sm" variant="text" :aria-pressed="expanded" :disabled="diff.omitted" @click="expanded = !expanded">{{ expanded ? uiText('diff.changesOnly') : uiText('diff.showContext') }}</UiButton>
+            <UiButton size="sm" variant="text" :aria-pressed="wrap" @click="wrap = !wrap">{{ wrap ? uiText('diff.wrapOff') : uiText('common.autoWrap') }}</UiButton>
+            <UiButton v-if="before !== null" size="sm" variant="text" @click="copy(before)">{{ uiText('diff.copyBefore') }}</UiButton>
+            <UiButton v-if="after !== null" size="sm" variant="text" @click="copy(after)">{{ uiText('diff.copyAfter') }}</UiButton>
         </div>
-        <template v-if="diff.omitted"><p class="ui-diff-notice">{{ uiText('diff.omitted') }}</p><div v-if="compact" class="ui-diff-fallback-actions"><UiButton v-if="before !== null" size="sm" variant="ghost" @click="copy(before)">{{ uiText('diff.copyBefore') }}</UiButton><UiButton v-if="after !== null" size="sm" variant="ghost" @click="copy(after)">{{ uiText('diff.copyAfter') }}</UiButton></div></template>
+        <template v-if="diff.omitted"><p class="ui-diff-notice">{{ uiText('diff.omitted') }}</p><div v-if="compact" class="ui-diff-fallback-actions"><UiButton v-if="before !== null" size="sm" variant="text" @click="copy(before)">{{ uiText('diff.copyBefore') }}</UiButton><UiButton v-if="after !== null" size="sm" variant="text" @click="copy(after)">{{ uiText('diff.copyAfter') }}</UiButton></div></template>
         <p v-else-if="!diff.added && !diff.removed" class="ui-diff-notice">{{ uiText('diff.unchanged') }}</p>
         <UiScrollArea v-else :label="uiText('diff.linesLabel', { path: displayPath })" axis="both" max-height="440px" :rounded="false">
             <div class="ui-diff-lines" :class="{ 'is-wrapped': wrap }" role="table" :aria-label="uiText('diff.tableLabel')">

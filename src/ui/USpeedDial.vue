@@ -2,6 +2,7 @@
 import { useDefaults } from './defaults';
 import UTransition from './UTransition.vue';
 import UiButton from './UiButton.vue';
+import Icon from '../components/Icon.vue';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 const rawProps = withDefaults(defineProps<{ disabled?: boolean; closeOnClick?: boolean }>(), { closeOnClick: true });
 const props = useDefaults(rawProps, 'USpeedDial');
@@ -19,5 +20,5 @@ onBeforeUnmount(() => { document.removeEventListener('pointerdown', onPointerDow
 defineExpose({ open, close, toggle });
 </script>
 <template>
-    <div ref="root" class="u-speed-dial"><slot name="activator" :props="{ onClick: toggle, 'aria-expanded': model, 'aria-haspopup': 'menu', disabled: props.disabled }" :open="model" :toggle="toggle"><UiButton :disabled="props.disabled" :aria-expanded="model" aria-label="快捷操作" @click="toggle">{{ model ? '×' : '+' }}</UiButton></slot><UTransition variant="scale"><div v-if="model" class="u-speed-dial-actions" @click="onAction"><slot :close="close" /></div></UTransition></div>
+    <div ref="root" class="u-speed-dial"><slot name="activator" :props="{ onClick: toggle, 'aria-expanded': model, 'aria-haspopup': 'menu', disabled: props.disabled }" :open="model" :toggle="toggle"><UiButton :disabled="props.disabled" :aria-expanded="model" aria-label="快捷操作" @click="toggle"><Icon name="mdi-plus" :size="20" class="u-speed-dial-icon" :class="{ 'is-open': model }" /></UiButton></slot><UTransition variant="scale"><div v-if="model" class="u-speed-dial-actions" @click="onAction"><slot :close="close" /></div></UTransition></div>
 </template>

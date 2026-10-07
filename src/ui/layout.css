@@ -61,7 +61,7 @@
     container: ui-form / inline-size;
     min-width: 0;
     width: 100%;
-    font-size: 13px;
+    font-size: var(--ui-font-body-large);
 }
 .ui-form-body, .ui-form-section {
     box-sizing: border-box;
@@ -80,14 +80,14 @@
     padding: 0;
     margin-block-end: 16px;
     color: var(--text);
-    font-size: 14px;
+    font-size: var(--ui-font-body-large);
     font-weight: 600;
     line-height: 1.5;
 }
 .ui-form-section-description {
     margin: -8px 0 20px;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
@@ -134,7 +134,7 @@
 .ui-form-actions.is-divided { border-block-start: 1px solid var(--line); padding-block-start: 20px; }
 .ui-form-actions[data-align="start"] { justify-content: flex-start; }
 .ui-form-actions[data-align="between"] { justify-content: space-between; }
-.ui-form-actions-leading { min-width: 0; margin-inline-end: auto; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.ui-form-actions-leading { min-width: 0; margin-inline-end: auto; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
 .ui-form-actions-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 @container ui-form (max-width: 559px) {
     .ui-field[data-layout="horizontal"] { grid-template-columns: minmax(0, 1fr); gap: 8px; }
@@ -155,7 +155,7 @@
 .ui-textarea:hover:not(:disabled) { border-color: color-mix(in srgb, var(--accent-text) 38%, var(--border)); background-color: var(--soft); }
 .ui-textarea:focus { border-color: var(--accent-text); box-shadow: 0 0 0 3px var(--accent-soft); }
 .ui-textarea[aria-invalid="true"] { border-color: var(--red); }
-.ui-textarea.is-dense { min-height: 30px; padding-block: 4px; font-size: 12px; }
+.ui-textarea.is-dense { min-height: 30px; padding-block: 4px; font-size: 14px; }
 .ui-textarea.is-ghost { background-color: transparent; border-color: transparent; }
 .ui-textarea.is-ghost:hover:not(:disabled) { background-color: var(--soft); }
 .ui-textarea.is-ghost:focus { border-color: var(--accent-text); }
@@ -163,7 +163,7 @@
 .ui-textarea.is-square { border-radius: 0; }
 .ui-textarea.has-no-resize { resize: none; }
 .ui-textarea-wrap { min-width: 0; width: 100%; }
-.ui-textarea-counter { display: block; margin-block-start: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; text-align: end; }
+.ui-textarea-counter { display: block; margin-block-start: 5px; color: var(--muted); font-size: var(--ui-font-body-small); line-height: 1.5; text-align: end; }
 .ui-textarea-counter.is-over-limit { color: var(--red); }
 .ui-input { overflow: hidden; }
 .ui-input input { white-space: nowrap; text-overflow: clip; }

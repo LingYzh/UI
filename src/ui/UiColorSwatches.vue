@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { computed, ref, useAttrs, useId } from 'vue';
 import UiControlFrame from './UiControlFrame.vue';
@@ -14,7 +15,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<FormControlProps & {
     /** 可选颜色；不传时使用与 tokens 协调的 10 色默认色板。 */
     colors?: ColorSwatch[];
-}>(), { disabled: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+} & { ripple?: RippleOptions }>(), { ripple: true, disabled: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const model = defineModel<string | null>({ default: null });
 const element = ref<HTMLDivElement>();
 const attrs = useAttrs();
@@ -46,7 +47,7 @@ const choices = computed(() => (custom.value ? [...items.value, { value: custom.
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-swatches" :class="control.classes.value" :style="control.styles.value" role="radiogroup" :aria-label="label ?? uiText('swatch.label')" :aria-disabled="control.disabled.value || undefined" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click.capture="control.guard" @keydown.capture="control.guardKeys" @focusout="control.blur">
             <!-- 选中态按归一化值判断，不用 v-model：原生 radio 按严格相等匹配，大小写不同的已保存值会导致整组无选中。 -->
-            <label v-for="item in choices" :key="item.value" class="ui-swatch" :class="{ 'is-custom': item.value === custom }" :style="{ '--swatch-color': item.value }" :title="item.label">
+            <label v-ripple.center.circle="control.disabled.value || control.readonly.value ? false : props.ripple" v-for="item in choices" :key="item.value" class="ui-swatch" :class="{ 'is-custom': item.value === custom }" :style="{ '--swatch-color': item.value }" :title="item.label">
                 <input v-pointer-blur type="radio" class="ui-swatch-control" :name="name" :value="item.value" :checked="normalized(item.value) === normalized(model)" :aria-label="item.label" :disabled="control.disabled.value" @change="control.editable.value = item.value" />
             </label>
         </div>

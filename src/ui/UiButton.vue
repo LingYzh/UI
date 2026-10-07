@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { vPointerBlur } from './pointer-focus';
 import { Button } from '@vuetify/v0';
-import { computed, inject, ref, watch, type CSSProperties } from 'vue';
+import { computed, inject, onBeforeUnmount, ref, useId, watch, type CSSProperties } from 'vue';
+import { buttonGroupKey } from './button-group';
 import { formContextKey } from './form';
 import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
+import { buttonColorStyles } from './button-colors';
 defineOptions({ inheritAttrs: false });
 const element = ref<HTMLButtonElement | HTMLAnchorElement>();
 defineExpose({ element, focus: (options?: FocusOptions) => element.value?.focus(options) });
 const rawProps = withDefaults(defineProps<{
-    variant?: 'secondary' | 'primary' | 'ghost' | 'danger' | 'elevated' | 'flat' | 'tonal' | 'outlined' | 'text' | 'plain';
+    variant?: 'elevated' | 'flat' | 'tonal' | 'outlined' | 'text' | 'plain';
     size?: 'sm' | 'md' | 'x-small' | 'small' | 'default' | 'large' | 'x-large' | number;
     density?: 'default' | 'comfortable' | 'compact';
     color?: string;
+    value?: unknown;
+    selectedClass?: string;
     href?: string;
     to?: string | Record<string, unknown>;
     loading?: boolean;
@@ -24,10 +28,15 @@ const rawProps = withDefaults(defineProps<{
     dense?: boolean;
     ghost?: boolean;
     rounded?: boolean;
-}>(), { variant: 'secondary', size: 'md', type: 'button', ripple: true, rounded: undefined, dense: undefined, ghost: undefined });
+}>(), { variant: 'outlined', size: 'md', type: 'button', ripple: true, rounded: undefined, dense: undefined, ghost: undefined });
 const props = useDefaults(rawProps, 'UButton');
 const form = inject(formContextKey, undefined);
-const isDisabled = computed(() => props.disabled || form?.disabled.value);
+const group = inject(buttonGroupKey, undefined);
+const registration = group?.register(useId());
+onBeforeUnmount(() => registration?.release());
+const groupValue = computed(() => props.value === undefined ? registration?.index.value : props.value);
+const isSelected = computed(() => !!group && group.selected(groupValue.value));
+const isDisabled = computed(() => props.disabled || form?.disabled.value || group?.disabled.value);
 const isDense = computed(() => props.density ? props.density === 'compact' : props.dense ?? form?.dense.value ?? false);
 const isGhost = computed(() => props.ghost ?? form?.ghost.value ?? false);
 const isRounded = computed(() => props.rounded ?? form?.rounded.value ?? true);
@@ -44,14 +53,17 @@ watch(() => props.loading, (loading, previous) => {
         boxSizing: 'border-box', flexGrow: 0, flexShrink: 0
     };
 }, { flush: 'pre' });
-const classVariant = computed(() => props.variant === 'danger' ? 'danger' : ['text', 'plain', 'ghost'].includes(props.variant) || isGhost.value ? 'ghost' : ['flat', 'elevated'].includes(props.variant) ? 'primary' : props.variant);
-const styles = computed(() => ({ '--ui-button-color': props.color ? `var(--ui-theme-${props.color}, ${props.color})` : undefined, '--ui-button-height': typeof props.size === 'number' ? `${props.size}px` : ({ 'x-small': '24px', small: '28px', default: '36px', large: '44px', 'x-large': '52px' } as Record<string, string>)[props.size], ...loadingSize.value }));
-function guard(event: MouseEvent) { if (isDisabled.value || props.loading) event.preventDefault(); }
+const classVariant = computed(() => `ui-button--variant-${isGhost.value ? 'text' : props.variant}`);
+const styles = computed(() => ({ ...buttonColorStyles(props.color), '--ui-button-font-size': ({ 'x-small': '.625rem', sm: '.75rem', small: '.75rem', md: '.875rem', default: '.875rem', large: '1rem', 'x-large': '1.125rem' } as Record<string, string>)[String(props.size)], '--ui-button-height': typeof props.size === 'number' ? `${props.size}px` : ({ 'x-small': '24px', small: '28px', default: '36px', large: '44px', 'x-large': '52px' } as Record<string, string>)[props.size], ...loadingSize.value }));
+function guard(event: MouseEvent) {
+    if (isDisabled.value || props.loading) { event.preventDefault(); return; }
+    if (!group?.readonly.value) group?.toggle(groupValue.value);
+}
 </script>
 
 <template>
     <Button.Root v-slot="{ attrs }" :disabled="isDisabled || props.loading" :loading="props.loading" renderless>
-        <component :is="props.href || props.to ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="props.href ?? (typeof props.to === 'string' ? props.to : undefined)" :type="props.href || props.to ? undefined : props.type" class="ui-button" :class="[classVariant, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'is-ghost-danger': isGhost && props.variant === 'danger', 'has-color': props.color }]" :style="styles" :aria-disabled="isDisabled || props.loading || undefined" @click="guard">
+        <component :is="props.href || props.to ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="props.href ?? (typeof props.to === 'string' ? props.to : undefined)" :type="props.href || props.to ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? props.selectedClass : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" @click="guard">
             <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><span class="ui-button-loading" /></slot></span>
             <span class="ui-button-content" :class="{ 'is-loading': props.loading }">
                 <Icon v-if="typeof props.icon === 'string'" :icon="props.icon" :size="18" />

@@ -1,26 +1,54 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue';
-import { UButton, UCodeBlock, UPagination, UTable, UTabs, confirmDialog, getLocale, setLocale } from '../index';
+import {
+    UButton,
+    UCodeBlock,
+    UPagination,
+    UTable,
+    UTabs,
+    confirmDialog,
+    getLocale,
+    setLocale,
+} from '../index';
 
 const locale = ref(getLocale());
 const page = ref(3);
-const items = [{ id: 'zh', label: '中文' }, { id: 'en', label: 'English' }];
+const items = [
+    { id: 'zh', label: '中文' },
+    { id: 'en', label: 'English' },
+];
 const answer = ref('');
 watch(locale, (value) => setLocale(value));
 // 文档站本身是中文；离开示例时恢复，避免影响其他页面的组件文案。
 onBeforeUnmount(() => setLocale('zh'));
 async function ask() {
-    const ok = await confirmDialog(locale.value === 'en' ? 'Switch the active account?' : '切换当前账号？');
+    const ok = await confirmDialog(
+        locale.value === 'en' ? 'Switch the active account?' : '切换当前账号？'
+    );
     answer.value = String(ok);
 }
 </script>
 
 <template>
     <div class="d-flex flex-column ga-4">
-        <u-tabs v-model="locale" :items="items" id-prefix="locale-demo" variant="soft" aria-label="组件语言" />
+        <u-tabs
+            v-model="locale"
+            :items="items"
+            id-prefix="locale-demo"
+            variant="soft"
+            aria-label="组件语言"
+        />
         <u-pagination v-model="page" :length="12" />
-        <u-table :headers="[{ key: 'name', title: 'Name', sortable: true }]" :items="[]" label="Accounts" dense />
+        <u-table
+            :headers="[{ key: 'name', title: 'Name', sortable: true }]"
+            :items="[]"
+            label="Accounts"
+            dense
+        />
         <u-code-block code="const locale = 'en';" language="javascript" dense />
-        <div class="d-flex align-center ga-3"><u-button @click="ask">confirmDialog</u-button><output>{{ answer || '—' }}</output></div>
+        <div class="d-flex align-center ga-3">
+            <u-button @click="ask">confirmDialog</u-button>
+            <output>{{ answer || '—' }}</output>
+        </div>
     </div>
 </template>

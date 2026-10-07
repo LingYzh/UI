@@ -1,4 +1,5 @@
 import type { ObjectDirective } from 'vue';
+import { isNestedControlEvent } from './action-events';
 
 export type RippleOptions = boolean | { center?: boolean; circle?: boolean; color?: string; class?: string; keys?: string[] };
 type Wave = { layer: HTMLSpanElement; element: HTMLSpanElement; started: number; animations: Animation[]; timer?: ReturnType<typeof setTimeout>; released: boolean };
@@ -21,7 +22,7 @@ export const vRipple: ObjectDirective<HTMLElement, RippleOptions | undefined> = 
         let press: Press | undefined;
         let previousPosition: { value: string; priority: string } | undefined;
         const options = () => typeof state.value === 'object' ? state.value : {};
-        const enabled = () => Boolean(state.value) && !host.matches(':disabled, [aria-disabled="true"]') && !host.closest('[inert]') && !media.matches && document.documentElement.dataset.reducedMotion !== 'true';
+        const enabled = () => Boolean(state.value) && !host.matches(':disabled, [aria-disabled="true"]') && !host.closest('[inert], [aria-readonly="true"]') && !(host.matches('.ui-selection-ripple, .ui-swatch') && host.querySelector('input:disabled, input[aria-readonly="true"]')) && !media.matches && document.documentElement.dataset.reducedMotion !== 'true';
         function position() {
             if (getComputedStyle(host).position !== 'static') return;
             previousPosition ??= { value: host.style.getPropertyValue('position'), priority: host.style.getPropertyPriority('position') };
@@ -106,6 +107,8 @@ export const vRipple: ObjectDirective<HTMLElement, RippleOptions | undefined> = 
         }
         function claim(event: Event) {
             if (handled.has(event)) return false;
+            const proxyInput = host.matches('.ui-selection-ripple, .ui-swatch') && event.target instanceof HTMLInputElement && ['checkbox', 'radio'].includes(event.target.type);
+            if (!proxyInput && isNestedControlEvent(event, host)) return false;
             if (state.modifiers.stop && Boolean(state.value)) { handled.add(event); return false; }
             if (!enabled() || press) return false;
             handled.add(event);
@@ -127,9 +130,23 @@ export const vRipple: ObjectDirective<HTMLElement, RippleOptions | undefined> = 
             press.cancelled = true;
         }
         function keyDown(event: KeyboardEvent) {
-            if (event.repeat || !(options().keys ?? ['Enter', 'Space']).some(key => keyName(key) === keyName(event.key)) || !claim(event)) return;
+            const defaultKeys = host.matches('.ui-selection-ripple, .ui-swatch') ? ['Space'] : ['Enter', 'Space'];
+            if (event.repeat || !(options().keys ?? defaultKeys).some(key => keyName(key) === keyName(event.key)) || !claim(event)) return;
             press = { key: keyName(event.key), touch: false, x: 0, y: 0 };
             show(press);
+        }
+        function choiceClick(event: MouseEvent) {
+            // Native label activation forwards a trusted click without a pointerdown on the input.
+            if (!host.matches('.ui-selection-ripple, .ui-swatch') || !event.isTrusted || !(event.target instanceof HTMLInputElement) || !['checkbox', 'radio'].includes(event.target.type) || handled.has(event) || press || !enabled()) return;
+            const bounds = host.getBoundingClientRect();
+            // Pointer/keyboard activation already started a wave. Label text clicks
+            // arrive outside the input bounds and each deserve their own feedback.
+            const inside = event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+            if (waves.size && (event.detail === 0 || inside)) return;
+            handled.add(event);
+            const current: Press = { touch: false, x: bounds.left + host.clientWidth / 2, y: bounds.top + host.clientHeight / 2 };
+            show(current);
+            if (current.wave) fade(current.wave);
         }
         const signal = controller.signal;
         host.classList.add('ui-ripple-target');
@@ -139,8 +156,10 @@ export const vRipple: ObjectDirective<HTMLElement, RippleOptions | undefined> = 
         window.addEventListener('pointercancel', pointerCancel, { signal, capture: true });
         window.addEventListener('pointermove', pointerMove, { signal, capture: true, passive: true });
         host.addEventListener('keydown', keyDown, { signal });
+        host.addEventListener('click', choiceClick, { signal });
         host.addEventListener('keyup', event => { if (press?.key === keyName(event.key)) release(); }, { signal });
         host.addEventListener('blur', () => { if (press?.key !== undefined) release(); }, { signal });
+        host.addEventListener('focusout', () => { if (press?.key !== undefined) release(); }, { signal });
         host.addEventListener('dragstart', () => release(), { signal });
         window.addEventListener('blur', () => release(), { signal });
         document.addEventListener('visibilitychange', () => { if (document.hidden) clear(); }, { signal });

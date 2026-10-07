@@ -11,14 +11,14 @@ export const controlPages = [
                 "id": "checkbox-select-all",
                 "title": "全选与部分选中",
                 "description": "父级按子项计算 checked 与 indeterminate；点击全选会切换所有子项。列表行使用 label 扩大点击区域。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst items = ref([{ id: 'a', selected: true }, { id: 'b', selected: false }]);\nconst count = computed(() => items.value.filter((item) => item.selected).length);\nconst all = computed({ get: () => count.value === items.value.length, set: (value) => items.value.forEach((item) => { item.selected = value; }) });\n</script>\n\n<template>\n    <u-checkbox v-model=\"all\" :indeterminate=\"count > 0 && count < items.length\">全选</u-checkbox>\n    <u-checkbox v-for=\"item in items\" :key=\"item.id\" v-model=\"item.selected\" :aria-label=\"`选择 ${item.id}`\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst items = ref([\n    { id: 'a', selected: true },\n    { id: 'b', selected: false },\n]);\nconst count = computed(() => items.value.filter((item) => item.selected).length);\nconst all = computed({\n    get: () => count.value === items.value.length,\n    set: (value) =>\n        items.value.forEach((item) => {\n            item.selected = value;\n        }),\n});\n</script>\n\n<template>\n    <u-checkbox v-model=\"all\" :indeterminate=\"count > 0 && count < items.length\">全选</u-checkbox>\n    <u-checkbox\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        v-model=\"item.selected\"\n        :aria-label=\"`选择 ${item.id}`\"\n    />\n</template>\n",
                 "fullSource": true
             },
             {
                 "id": "checkbox-states",
                 "title": "标签与禁用",
                 "description": "传入默认插槽时渲染为可点击的 label；禁用状态同时作用于标签。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst include = ref(true);\n</script>\n\n<template>\n    <u-checkbox v-model=\"include\">包含凭证</u-checkbox>\n    <u-checkbox :model-value=\"true\" disabled>禁用 · 已选</u-checkbox>\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UCheckbox } from '@lingyzh/ui';\nconst include = ref(true);\n</script>\n\n<template>\n    <u-checkbox v-model=\"include\">包含凭证</u-checkbox>\n    <u-checkbox :model-value=\"true\" disabled>禁用 · 已选</u-checkbox>\n</template>\n",
                 "fullSource": true
             },
             {
@@ -26,7 +26,7 @@ export const controlPages = [
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -48,7 +48,7 @@ export const controlPages = [
                 "id": "radio-cards",
                 "title": "分布在卡片中的单选",
                 "description": "三张路由卡片各放一个单选框，共享同一 name 与模型；方向键在组内切换。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { URadio } from '@lingyzh/ui';\nconst route = ref('sonnet');\n</script>\n\n<template>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"opus\">设为默认</u-radio>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"sonnet\">设为默认</u-radio>\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { URadio } from '@lingyzh/ui';\nconst route = ref('sonnet');\n</script>\n\n<template>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"opus\">设为默认</u-radio>\n    <u-radio v-model=\"route\" name=\"default-route\" value=\"sonnet\">设为默认</u-radio>\n</template>\n",
                 "fullSource": true
             },
             {
@@ -56,7 +56,7 @@ export const controlPages = [
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -77,7 +77,7 @@ export const controlPages = [
                 "id": "progress-tones",
                 "title": "语气与过渡",
                 "description": "用量超过阈值时由页面切换 tone；数值变化平滑过渡，减少动效时直接跳到目标值。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UProgress } from '@lingyzh/ui';\nconst usage = ref(36);\n</script>\n\n<template>\n    <u-progress :value=\"usage\" :tone=\"usage > 95 ? 'error' : usage > 80 ? 'warning' : 'accent'\" label=\"本月用量\" />\n    <u-progress :value=\"60\" dense label=\"批量注册进度\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UProgress } from '@lingyzh/ui';\nconst usage = ref(36);\n</script>\n\n<template>\n    <u-progress\n        :value=\"usage\"\n        :tone=\"usage > 95 ? 'error' : usage > 80 ? 'warning' : 'accent'\"\n        label=\"本月用量\"\n    />\n    <u-progress :value=\"60\" dense label=\"批量注册进度\" />\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -98,7 +98,7 @@ export const controlPages = [
                 "id": "copy-inline",
                 "title": "行内复制",
                 "description": "长值截断显示，复制得到完整原文；复制成功 1.6 秒内显示绿色勾选，读屏播报“已复制”。",
-                "code": "<script setup>\nimport { UCopyButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-copy-button :text=\"token\" label=\"复制 Access Token\" @copied=\"notify\" />\n</template>",
+                "code": "<script setup>\nimport { UCopyButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-copy-button :text=\"token\" label=\"复制 Access Token\" @copied=\"notify\" />\n</template>\n",
                 "fullSource": true
             }
         ],
@@ -119,14 +119,14 @@ export const controlPages = [
                 "id": "swatches-tag",
                 "title": "标签颜色",
                 "description": "方向键在色块间移动并立即选中；已保存的大写十六进制值同样匹配色板。选中色块以表面色间隔加描边标记，任意颜色上都清晰。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#4A78B8');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"标签颜色\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#4A78B8');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"标签颜色\" />\n</template>\n",
                 "fullSource": true
             },
             {
                 "id": "swatches-legacy",
                 "title": "兼容已有颜色",
                 "description": "已保存但不在色板中的颜色显示为末尾的“当前颜色”，保留原值直到用户重新选择。",
-                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#2f6f9f');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"已有标签颜色\" />\n</template>",
+                "code": "<script setup>\nimport { computed, ref } from 'vue';\nimport { UColorSwatches } from '@lingyzh/ui';\nconst color = ref('#2f6f9f');\n</script>\n\n<template>\n    <u-color-swatches v-model=\"color\" label=\"已有标签颜色\" />\n</template>\n",
                 "fullSource": true
             },
             {
@@ -134,7 +134,7 @@ export const controlPages = [
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -157,7 +157,7 @@ export const controlPages = [
                 "title": "级联选择与行列表单",
                 "description": "真实三级选项、禁用分支／叶节点、数字值、父级选择、完整路径显示、清空、状态变体和验证／重置。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UCascader, UButton } from '@lingyzh/ui';\nconst region = ref([]);\nconst items = [{ value: 'east', label: '华东', children: [{ value: 'zhejiang', label: '浙江省', children: [{ value: 'hangzhou', label: '杭州市' }] }] }];\nfunction save() { console.log(region.value); }\n</script>\n\n<template>\n    <u-form @submit=\"save\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\"><u-cascader v-model=\"region\" :items=\"items\" label=\"所属区域\" hint=\"逐级选择完整路径。\" required clearable /></u-col>\n            <u-col :cols=\"12\"><u-button type=\"submit\" variant=\"primary\">保存区域</u-button></u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, URow, UCol, UCascader, UButton } from '@lingyzh/ui';\nconst region = ref([]);\nconst items = [\n    {\n        value: 'east',\n        label: '华东',\n        children: [\n            {\n                value: 'zhejiang',\n                label: '浙江省',\n                children: [{ value: 'hangzhou', label: '杭州市' }],\n            },\n        ],\n    },\n];\nfunction save() {\n    console.log(region.value);\n}\n</script>\n\n<template>\n    <u-form @submit=\"save\">\n        <u-row density=\"comfortable\">\n            <u-col :cols=\"12\" :md=\"6\">\n                <u-cascader\n                    v-model=\"region\"\n                    :items=\"items\"\n                    label=\"所属区域\"\n                    hint=\"逐级选择完整路径。\"\n                    required\n                    clearable\n                />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-button type=\"submit\" variant=\"flat\" color=\"primary\">保存区域</u-button>\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [

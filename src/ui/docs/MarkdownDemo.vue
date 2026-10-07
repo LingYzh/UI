@@ -8,10 +8,13 @@ import { reducedMotion } from './preferences';
 
 const props = defineProps({ example: { type: String, default: 'markdown-rich' } });
 const navigationArea = ref();
-onMounted(async () => { await nextTick(); if (props.example === 'markdown-navigation') navigationArea.value?.scrollTo({ top: 220 }); });
+onMounted(async () => {
+    await nextTick();
+    if (props.example === 'markdown-navigation') navigationArea.value?.scrollTo({ top: 220 });
+});
 const navigation = `## 阅读与补充说明
 
-\`行内代码\` 和 ==标记== 跟随主题 primary。这里有一条脚注[^motion]，点击后观察平滑滚动与居中位置，再点击脚注的返回箭头。
+\`行内代码\` 和 ==标记== 跟随主题 primary。这里有一条脚注[^motion]，点击后观察当前阅读区域内的平滑滚动与居中位置；外层页面和顶栏保持不动。再点击脚注的返回箭头。
 
 <details><summary>展开补充说明</summary><p>展开和收起均有高度过渡，可用 Tab 选中后按 Enter 或空格操作。</p><p>快速重复操作会从当前高度继续，不必等待上一次动画。</p><p>减少动态效果时立即展开和收起。</p></details>
 
@@ -88,25 +91,46 @@ function restart() {
     function next() {
         position = Math.min(streamingText.length, position + [8, 16, 30, 10, 45][sequence++ % 5]);
         source.value = streamingText.slice(0, position);
-        progress.value = Math.round(position / streamingText.length * 100);
-        if (position < streamingText.length) timer = setTimeout(next, [160, 100, 250, 80][sequence % 4]);
+        progress.value = Math.round((position / streamingText.length) * 100);
+        if (position < streamingText.length)
+            timer = setTimeout(next, [160, 100, 250, 80][sequence % 4]);
         else active.value = false;
     }
     next();
 }
-function finish() { clearTimeout(timer); source.value = streamingText; progress.value = 100; active.value = false; }
+function finish() {
+    clearTimeout(timer);
+    source.value = streamingText;
+    progress.value = 100;
+    active.value = false;
+}
 onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
     <div class="markdown-demo">
         <template v-if="props.example === 'markdown-navigation'">
-            <div class="markdown-demo-toolbar"><u-switch v-model="reducedMotion" label="减少动态效果" /><span>比较平滑过渡与立即定位</span></div>
-            <u-scroll-area ref="navigationArea" label="Markdown 跳转与折叠示例" height="420px"><div class="markdown-demo-reading"><u-markdown :source="navigation" /></div></u-scroll-area>
+            <div class="markdown-demo-toolbar">
+                <u-switch v-model="reducedMotion" label="减少动态效果" />
+                <span>比较平滑过渡与立即定位</span>
+            </div>
+            <u-scroll-area ref="navigationArea" label="Markdown 跳转与折叠示例" height="420px">
+                <div class="markdown-demo-reading">
+                    <u-markdown :source="navigation" />
+                </div>
+            </u-scroll-area>
         </template>
         <template v-else-if="props.example === 'markdown-streaming'">
-            <div class="markdown-demo-toolbar"><u-button size="sm" @click="restart">开始 / 重新播放</u-button><u-button size="sm" variant="ghost" :disabled="!active" @click="finish">立即结束接收</u-button><span aria-live="polite">接收 {{ progress }}%</span></div>
-            <u-scroll-area label="流式 Markdown 示例" height="420px"><u-markdown :source="source" :streaming="active" @link-click="lastLink = $event" /></u-scroll-area>
+            <div class="markdown-demo-toolbar">
+                <u-button size="sm" @click="restart">开始 / 重新播放</u-button>
+                <u-button size="sm" variant="text" :disabled="!active" @click="finish">
+                    立即结束接收
+                </u-button>
+                <span aria-live="polite">接收 {{ progress }}%</span>
+            </div>
+            <u-scroll-area label="流式 Markdown 示例" height="420px">
+                <u-markdown :source="source" :streaming="active" @link-click="lastLink = $event" />
+            </u-scroll-area>
         </template>
         <u-markdown v-else :source="rich" @link-click="lastLink = $event" />
         <p v-if="lastLink" role="status" class="markdown-demo-link">应用收到链接：{{ lastLink }}</p>
@@ -114,8 +138,22 @@ onBeforeUnmount(() => clearTimeout(timer));
 </template>
 
 <style scoped>
-.markdown-demo { min-width: 0; }
-.markdown-demo-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.markdown-demo-toolbar span, .markdown-demo-link { color: var(--muted); font-size: 12px; }
-.markdown-demo-reading { padding-block: 220px; }
+.markdown-demo {
+    min-width: 0;
+}
+.markdown-demo-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.markdown-demo-toolbar span,
+.markdown-demo-link {
+    color: var(--muted);
+    font-size: 14px;
+}
+.markdown-demo-reading {
+    padding-block: 220px;
+}
 </style>

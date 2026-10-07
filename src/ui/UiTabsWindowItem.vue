@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
 import { computed, inject, onBeforeUnmount, ref, useId, watch } from 'vue';
 import { tabsWindowKey, type TabValue } from './tabs';
 
@@ -15,7 +16,7 @@ onBeforeUnmount(() => { const index = context.entries.findIndex(entry => entry.i
 </script>
 
 <template>
-    <div v-show="active" :id="`${context.prefix.value}-panel-${context.token(value)}`" :data-ui-panel="ticketId" class="ui-tab-panel ui-tabs-window-item" :class="{ 'is-active': active }" role="tabpanel" :aria-labelledby="`${context.prefix.value}-tab-${context.token(value)}`" tabindex="0">
+    <div v-focus-modality v-show="active" :id="`${context.prefix.value}-panel-${context.token(value)}`" :data-ui-panel="ticketId" class="ui-tab-panel ui-tabs-window-item" :class="{ 'is-active': active }" role="tabpanel" :aria-labelledby="`${context.prefix.value}-tab-${context.token(value)}`" tabindex="0">
         <slot v-if="eager || visited" />
     </div>
 </template>

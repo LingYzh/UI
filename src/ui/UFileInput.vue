@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
+import { vRipple, type RippleOptions } from './ripple';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -8,7 +10,7 @@ import { useDefaults } from './defaults';
 import { validateFiles, type FileValidationResult } from './specialized-inputs';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; multiple?: boolean; maxSize?: number; showSize?: boolean }>(), { dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; multiple?: boolean; maxSize?: number; showSize?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UFileInput');
 const emit = defineEmits<{ rejected: [result: FileValidationResult['rejected']]; change: [files: File[]] }>();
 const model = defineModel<File | File[] | null>({ default: null });
@@ -36,8 +38,8 @@ defineExpose({ element, files, control, receive, change, clear, focus: () => ele
 <template>
     <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="true" :for="control.id()" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <div class="ui-file-input" :class="control.classes.value" :style="control.styles.value">
-            <input ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-file-input-native" type="file" :accept="props.accept" :multiple="props.multiple" :disabled="control.disabled.value" @click="control.guard" @change="change" @blur="control.blur" />
-            <div v-if="files.length" class="ui-file-input-summary"><span v-for="(file, index) in files" :key="index" :title="file.name">{{ file.name }}<small v-if="props.showSize"> · {{ (file.size / 1024).toFixed(1) }} KB</small></span><button v-pointer-blur type="button" class="ui-control-clear" aria-label="清除文件" :disabled="control.disabled.value || control.readonly.value" @click="clear">×</button></div>
+            <input v-focus-modality ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="ui-file-input-native" type="file" :accept="props.accept" :multiple="props.multiple" :disabled="control.disabled.value" @click="control.guard" @change="change" @blur="control.blur" />
+            <div v-if="files.length" class="ui-file-input-summary"><span v-for="(file, index) in files" :key="index" :title="file.name">{{ file.name }}<small v-if="props.showSize"> · {{ (file.size / 1024).toFixed(1) }} KB</small></span><button v-ripple="props.ripple" v-pointer-blur type="button" class="ui-control-clear" aria-label="清除文件" :disabled="control.disabled.value || control.readonly.value" @click="clear">×</button></div>
         </div>
     </UiControlFrame>
 </template>

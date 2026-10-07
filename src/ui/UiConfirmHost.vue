@@ -40,7 +40,7 @@ onBeforeUnmount(confirmState.cancelAll);
             <p :id="messageId" class="ui-confirm-message">{{ current.message }}</p>
             <div class="ui-confirm-actions">
                 <UiButton autofocus @click="choose(false)">{{ current.cancelText ?? uiText('common.cancel') }}</UiButton>
-                <UiButton :variant="current.tone === 'danger' ? 'danger' : 'primary'" @click="choose(true)">{{ current.confirmText ?? uiText('common.confirm') }}</UiButton>
+                <UiButton variant="flat" :color="current.tone === 'danger' ? 'danger' : 'primary'" @click="choose(true)">{{ current.confirmText ?? uiText('common.confirm') }}</UiButton>
             </div>
         </template>
     </UiDialog>

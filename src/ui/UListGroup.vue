@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { vRipple, type RippleOptions } from './ripple';
+import { computed, ref, useId } from 'vue';
+import Icon from '../components/Icon.vue';
+import UiCollapse from './UiCollapse.vue';
 import { useList, type ListValue } from './list-completion';
 import { useDefaults } from './defaults';
 import { vPointerBlur } from './pointer-focus';
-const rawProps = withDefaults(defineProps<{ value: ListValue; title?: string; disabled?: boolean; modelValue?: boolean }>(), { modelValue: undefined, disabled: false });
+const rawProps = withDefaults(defineProps<{ value: ListValue; title?: string; disabled?: boolean; modelValue?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, modelValue: undefined, disabled: false });
 const props = useDefaults(rawProps, 'UListGroup');
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
 const list = useList();
 const local = ref(false);
+const id = useId();
 const expanded = computed(() => props.modelValue ?? (list ? list.opened().includes(props.value) : local.value));
 function toggle() {
     if (props.disabled) return;
@@ -20,9 +24,9 @@ function toggle() {
 
 <template>
     <div class="ui-list-group" role="group">
-        <slot name="activator" :props="{ onClick: toggle, class: 'ui-list-group-header', 'aria-expanded': expanded, disabled: props.disabled }">
-            <button v-pointer-blur type="button" class="ui-list-group-header" :disabled="props.disabled" :aria-expanded="expanded" @click="toggle">{{ props.title }}<span class="ui-list-group-chevron" aria-hidden="true">{{ expanded ? '⌄' : '›' }}</span></button>
+        <slot name="activator" :props="{ onClick: toggle, ripple: props.ripple, class: 'ui-list-group-header', id: `${id}-title`, 'aria-controls': `${id}-items`, 'aria-expanded': expanded, disabled: props.disabled }">
+            <button v-ripple="props.ripple" :id="`${id}-title`" v-pointer-blur type="button" class="ui-list-group-header" :disabled="props.disabled" :aria-expanded="expanded" :aria-controls="`${id}-items`" @click="toggle">{{ props.title }}<Icon name="mdi-chevron-down" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': expanded }" /></button>
         </slot>
-        <div v-show="expanded" class="ui-list-group-items"><slot /></div>
+        <UiCollapse :id="`${id}-items`" :open="expanded" role="group" :aria-labelledby="`${id}-title`"><div class="ui-list-group-items"><slot /></div></UiCollapse>
     </div>
 </template>

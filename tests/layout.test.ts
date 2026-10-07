@@ -59,6 +59,7 @@ test('every public component export has one component page in a visible navigati
     assert.equal(new Set(exports).size, exports.length, 'component exports should be unique');
     assert.deepEqual([...documented].sort(), [...exports].sort(), 'every default component export must have a docs page');
     assert.equal(new Set(componentPages.map((page) => page.id)).size, componentPages.length, 'component routes should be unique');
+    assert.equal(new Set(pages.map((page) => page.id)).size, pages.length, 'service, guide and component routes must also be unique together');
     for (const page of componentPages) {
         assert.ok(groups.includes(page.group), `${page.name} group ${page.group} must appear in the docs navigation`);
         assert.ok(page.title.trim(), `${page.name} needs a visible page title`);

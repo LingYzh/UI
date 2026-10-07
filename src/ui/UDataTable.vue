@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import { computed, ref, watch } from 'vue';
 import UiPagination from './UiPagination.vue';
+import Icon from '../components/Icon.vue';
+import UTransition from './UTransition.vue';
 import { vPointerBlur } from './pointer-focus';
 import { uiText } from './locale';
 import { getPath, groupRows, itemKey, pageItems, processItems, type DataGroup, type DataHeader, type DataItem } from './data-pipeline';
@@ -28,7 +31,7 @@ const rawProps = withDefaults(defineProps<{
     height?: string;
     fixedHeader?: boolean;
     dense?: boolean;
-}>(), { itemTitle: 'title', itemValue: 'id', label: 'Data table', itemsPerPageOptions: () => [10, 25, 50] });
+} & { ripple?: RippleOptions }>(), { ripple: true, itemTitle: 'title', itemValue: 'id', label: 'Data table', itemsPerPageOptions: () => [10, 25, 50] });
 const props = useDefaults(rawProps, 'UDataTable');
 const emit = defineEmits<{ 'update:options': [options: { page: number; itemsPerPage: number; sortBy: TableSort[]; groupBy: DataGroup[]; search: string }] }>();
 const page = defineModel<number>('page', { default: 1 });
@@ -82,9 +85,9 @@ function toggleExpanded(item: DataItem, index: number): void {
         <div class="u-data-table-scroll" :style="{ maxHeight: props.height }">
             <table :aria-label="props.label">
                 <thead><tr>
-                    <th v-if="props.showSelect" scope="col"><input type="checkbox" :checked="allSelected" :indeterminate="someSelected && !allSelected" :disabled="props.disabled || props.loading || !visible.length" aria-label="Select current page" @change="toggleAll" /></th>
+                    <th v-if="props.showSelect" scope="col"><span class="ui-selection-ripple is-checkbox" v-ripple.center.circle="props.ripple"><input type="checkbox" :checked="allSelected" :indeterminate="someSelected && !allSelected" :disabled="props.disabled || props.loading || !visible.length" aria-label="Select current page" @change="toggleAll" /></span></th>
                     <th v-for="header in props.headers" :key="header.key" scope="col" :style="{ textAlign: header.align, width: header.width }" :aria-sort="header.sortable ? (sortBy.find((sort) => sort.key === header.key)?.order === 'asc' ? 'ascending' : sortBy.find((sort) => sort.key === header.key)?.order === 'desc' ? 'descending' : 'none') : undefined">
-                        <button v-if="header.sortable" v-pointer-blur type="button" class="u-data-table-sort" :disabled="props.loading || props.disabled" :aria-label="uiText('table.sort', { title: header.title })" @click="toggleSort(header.key)">
+                        <button v-ripple="props.ripple" v-if="header.sortable" v-pointer-blur type="button" class="u-data-table-sort" :disabled="props.loading || props.disabled" :aria-label="uiText('table.sort', { title: header.title })" @click="toggleSort(header.key)">
                             <slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot>
                             <svg class="ui-table-sort-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 2 10 6H2Z" :class="{ 'is-active': sortBy.find(sort => sort.key === header.key)?.order === 'asc' }" /><path d="M2 10H10L6 14Z" :class="{ 'is-active': sortBy.find(sort => sort.key === header.key)?.order === 'desc' }" /></svg>
                         </button>
@@ -97,14 +100,14 @@ function toggleExpanded(item: DataItem, index: number): void {
                     <tr v-else-if="props.error"><td :colspan="columnCount"><slot name="error" :error="props.error">{{ props.error }}</slot></td></tr>
                     <template v-else>
                         <template v-for="(row, rowIndex) in rows" :key="row.key">
-                            <tr v-if="row.type === 'group'" class="u-data-table-group"><td :colspan="columnCount"><slot name="group-header" :group="row" :toggle="() => collapsedGroups = collapsedGroups.includes(row.key) ? collapsedGroups.filter((key) => key !== row.key) : [...collapsedGroups, row.key]"><button v-pointer-blur type="button" :aria-expanded="!collapsedGroups.includes(row.key)" @click="collapsedGroups = collapsedGroups.includes(row.key) ? collapsedGroups.filter((key) => key !== row.key) : [...collapsedGroups, row.key]">{{ collapsedGroups.includes(row.key) ? '▸' : '▾' }} {{ row.title }}</button></slot></td></tr>
+                            <tr v-if="row.type === 'group'" class="u-data-table-group"><td :colspan="columnCount"><slot name="group-header" :group="row" :toggle="() => collapsedGroups = collapsedGroups.includes(row.key) ? collapsedGroups.filter((key) => key !== row.key) : [...collapsedGroups, row.key]"><button v-ripple="props.ripple" v-pointer-blur type="button" :disabled="props.disabled || props.loading" :aria-expanded="!collapsedGroups.includes(row.key)" @click="collapsedGroups = collapsedGroups.includes(row.key) ? collapsedGroups.filter((key) => key !== row.key) : [...collapsedGroups, row.key]"><Icon name="mdi-chevron-right" :size="18" class="ui-disclosure-icon" :class="{ 'is-open': !collapsedGroups.includes(row.key) }" />{{ row.title }}</button></slot></td></tr>
                             <template v-else-if="row.item && !collapsedGroups.some((key) => row.key.startsWith(`${key}/`) || row.key.startsWith(`${key}:`))">
                                 <tr :data-item-key="itemKey(row.item, props.itemValue, rowIndex)">
-                                    <td v-if="props.showSelect"><input type="checkbox" :checked="selectedKeys.has(itemKey(row.item, props.itemValue, rowIndex))" :disabled="props.disabled || props.loading" :aria-label="`Select ${getPath(row.item, props.itemTitle) ?? rowIndex + 1}`" @change="toggleSelection(row.item, rowIndex)" /></td>
+                                    <td v-if="props.showSelect"><span class="ui-selection-ripple is-checkbox" v-ripple.center.circle="props.ripple"><input type="checkbox" :checked="selectedKeys.has(itemKey(row.item, props.itemValue, rowIndex))" :disabled="props.disabled || props.loading" :aria-label="`Select ${getPath(row.item, props.itemTitle) ?? rowIndex + 1}`" @change="toggleSelection(row.item, rowIndex)" /></span></td>
                                     <td v-for="header in props.headers" :key="header.key" :style="{ textAlign: header.align }"><slot :name="`item.${header.key}`" :item="row.item" :value="getPath(row.item, header.value ?? header.key)" :index="rowIndex">{{ getPath(row.item, header.value ?? header.key) ?? '—' }}</slot></td>
-                                    <td v-if="props.showExpand"><button v-pointer-blur type="button" :disabled="props.disabled || props.loading" :aria-expanded="expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex))" @click="toggleExpanded(row.item, rowIndex)">{{ expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex)) ? '−' : '+' }}</button></td>
+                                    <td v-if="props.showExpand"><button v-ripple="props.ripple" v-pointer-blur type="button" :disabled="props.disabled || props.loading" :aria-label="`${expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex)) ? '收起' : '展开'} ${getPath(row.item, props.itemTitle) ?? rowIndex + 1}`" :aria-expanded="expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex))" @click="toggleExpanded(row.item, rowIndex)"><Icon name="mdi-chevron-down" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex)) }" /></button></td>
                                 </tr>
-                                <tr v-if="props.showExpand && expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex))"><td :colspan="columnCount"><slot name="expanded-row" :item="row.item" :index="rowIndex">{{ getPath(row.item, props.itemTitle) }}</slot></td></tr>
+                                <tr v-if="props.showExpand" class="u-data-table-details-row" :aria-hidden="!expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex))"><td :colspan="columnCount"><UTransition variant="expand"><div v-if="expandedKeys.has(itemKey(row.item, props.itemValue, rowIndex))" class="u-data-table-details"><slot name="expanded-row" :item="row.item" :index="rowIndex">{{ getPath(row.item, props.itemTitle) }}</slot></div></UTransition></td></tr>
                             </template>
                         </template>
                         <tr v-if="!rows.length"><td :colspan="columnCount"><slot name="no-data">No data</slot></td></tr>
@@ -113,7 +116,7 @@ function toggleExpanded(item: DataItem, index: number): void {
             </table>
         </div>
         <slot v-if="!props.hideDefaultFooter" name="footer" :page="page" :page-count="pageCount" :items-per-page="size" :items-length="processed.length">
-            <footer class="u-data-table-footer"><label>Rows per page <select v-model.number="itemsPerPage" :disabled="props.loading || props.disabled" @change="page = 1"><option v-for="option in props.itemsPerPageOptions" :key="option" :value="option">{{ option }}</option><option value="-1">All</option></select></label><span aria-live="polite">{{ range }}</span><UiPagination v-model="page" :length="pageCount" :disabled="props.loading || props.disabled || !processed.length" :total-visible="3" :label="`${props.label} pages`" /></footer>
+            <footer class="u-data-table-footer"><label>Rows per page <select v-model.number="itemsPerPage" :disabled="props.loading || props.disabled" @change="page = 1"><option v-for="option in props.itemsPerPageOptions" :key="option" :value="option">{{ option }}</option><option value="-1">All</option></select></label><span aria-live="polite">{{ range }}</span><UiPagination :ripple="props.ripple" v-model="page" :length="pageCount" :disabled="props.loading || props.disabled || !processed.length" :total-visible="3" :label="`${props.label} pages`" /></footer>
         </slot>
     </div>
 </template>

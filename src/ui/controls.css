@@ -7,7 +7,7 @@
     gap: 8px;
     min-width: 0;
     color: var(--text);
-    font-size: 13px;
+    font-size: var(--ui-font-body-large);
     line-height: 1.5;
     cursor: pointer;
 }
@@ -30,7 +30,7 @@
 .ui-checkbox-control { border-radius: 4px; }
 .ui-radio-control { border-radius: 50%; }
 .ui-checkbox-control:hover:not(:disabled), .ui-radio-control:hover:not(:disabled) { border-color: var(--accent-text); }
-.ui-checkbox-control:focus-visible, .ui-radio-control:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+.ui-checkbox-control:focus-visible:not([data-ui-pointer-focus]), .ui-radio-control:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 .ui-checkbox-control:disabled, .ui-radio-control:disabled { cursor: not-allowed; }
 /* A bare control (no label wrapper) dims itself; wrapped controls are dimmed by the label. */
 :not(.ui-checkbox) > .ui-checkbox-control:disabled, :not(.ui-radio) > .ui-radio-control:disabled { opacity: .56; }
@@ -97,10 +97,9 @@
    Selectors repeat .ui-button because this file is imported before the button rules in styles.css. */
 .ui-button.ui-copy-button { color: var(--muted); }
 .ui-button.ui-copy-button:hover:not(:disabled) { color: var(--text); }
-.ui-copy-button > svg { width: 15px; height: 15px; }
 .ui-button.ui-copy-button.is-copied,
 .ui-button.ui-copy-button.is-copied:hover:not(:disabled) { color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
-.ui-copy-button > svg { animation: ui-copy-in var(--motion-fast) var(--ease); }
+.ui-copy-button-icon { animation: ui-copy-in var(--motion-fast) var(--ease); }
 @keyframes ui-copy-in { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
 
 /* Swatches: native radios keep arrow-key selection; the ring uses a surface gap so it reads on any color. */
@@ -121,7 +120,7 @@
 }
 .ui-swatch-control:hover:not(:disabled) { transform: scale(1.08); }
 .ui-swatch-control:checked { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
-.ui-swatch-control:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 5px; }
+.ui-swatch-control:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 5px; }
 .ui-swatch-control:disabled { cursor: not-allowed; opacity: .5; }
 /* A saved color outside the palette is marked with a dashed outline so it reads as "kept", not "suggested". */
 .ui-swatch.is-custom { margin-inline-start: 6px; }
@@ -130,9 +129,9 @@
 .ui-swatch.is-custom:has(:checked)::after { inset: -7px; }
 
 @media (prefers-reduced-motion: reduce) {
-    :is(.ui-checkbox-control, .ui-radio-control, .ui-swatch-control, .ui-progress-fill), .ui-checkbox-control::after, .ui-radio-control::after, .ui-copy-button > svg { transition: none !important; animation: none !important; }
+    :is(.ui-checkbox-control, .ui-radio-control, .ui-swatch-control, .ui-progress-fill), .ui-checkbox-control::after, .ui-radio-control::after, .ui-copy-button-icon { transition: none !important; animation: none !important; }
 }
 :root[data-reduced-motion="true"] :is(.ui-checkbox-control, .ui-radio-control, .ui-swatch-control, .ui-progress-fill),
 :root[data-reduced-motion="true"] .ui-checkbox-control::after,
 :root[data-reduced-motion="true"] .ui-radio-control::after,
-:root[data-reduced-motion="true"] .ui-copy-button > svg { transition: none !important; animation: none !important; }
+:root[data-reduced-motion="true"] .ui-copy-button-icon { transition: none !important; animation: none !important; }

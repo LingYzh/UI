@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import UiScrollArea from './UiScrollArea.vue';
 import type { TableHeader, TableSort } from './table';
@@ -17,7 +18,7 @@ const props = withDefaults(defineProps<{
     height?: string;
     fixedHeader?: boolean;
     disabled?: boolean;
-}>(), { headers: () => [], items: () => [], itemValue: 'id', emptyText: undefined, sortBy: () => [], rounded: true });
+} & { ripple?: RippleOptions }>(), { ripple: true, headers: () => [], items: () => [], itemValue: 'id', emptyText: undefined, sortBy: () => [], rounded: true });
 defineEmits<{ sort: [key: string] }>();
 </script>
 
@@ -28,7 +29,7 @@ defineEmits<{ sort: [key: string] }>();
                 <slot v-if="$slots.default" />
                 <template v-else>
                 <thead><tr><th v-for="header in headers" :key="header.key" scope="col" :style="{ textAlign: header.align, width: header.width }" :aria-sort="header.sortable ? (sortBy[0]?.key === header.key ? (sortBy[0].order === 'asc' ? 'ascending' : 'descending') : 'none') : undefined">
-                    <button v-pointer-blur v-if="header.sortable" type="button" class="ui-table-sort" :disabled="loading || disabled" :aria-label="uiText('table.sort', { title: header.title })" @click="$emit('sort', header.key)"><slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot><svg class="ui-table-sort-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 2 10 6H2Z" :class="{ 'is-active': sortBy[0]?.key === header.key && sortBy[0]?.order === 'asc' }" /><path d="M2 10H10L6 14Z" :class="{ 'is-active': sortBy[0]?.key === header.key && sortBy[0]?.order === 'desc' }" /></svg></button>
+                    <button v-ripple="props.ripple" v-pointer-blur v-if="header.sortable" type="button" class="ui-table-sort" :disabled="loading || disabled" :aria-label="uiText('table.sort', { title: header.title })" @click="$emit('sort', header.key)"><slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot><svg class="ui-table-sort-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 2 10 6H2Z" :class="{ 'is-active': sortBy[0]?.key === header.key && sortBy[0]?.order === 'asc' }" /><path d="M2 10H10L6 14Z" :class="{ 'is-active': sortBy[0]?.key === header.key && sortBy[0]?.order === 'desc' }" /></svg></button>
                     <slot v-else :name="`header.${header.key}`" :header="header">{{ header.title }}</slot>
                 </th></tr></thead>
                 <tbody>

@@ -1,0 +1,818 @@
+{
+    "date": "2026-10-08",
+    "upstreamVersion": "4.2.4",
+    "registryTarball": "https://registry.npmjs.org/vuetify/-/vuetify-4.2.4.tgz",
+    "integrity": "sha512-zLYtVGJcg2hK3DHoeiBXSImpzg4E0N19p3zCgGnNhMp/YwaVQZXP4cPkIKeL/evVnUeLP/CjSnFsFBThWSl2Ew==",
+    "source": "https://github.com/vuetifyjs/vuetify/tree/v4.2.4/packages/vuetify/src",
+    "local": {
+        "components": 153,
+        "documentationPages": 167,
+        "independentExamples": 106
+    },
+    "scope": "Public stable component families and directive entries. A matching entry or responsibility mapping is not evidence of full upstream props, slots, accessibility, SSR, hydration, RTL or platform equivalence.",
+    "stable": [
+        {
+            "upstream": "VApp",
+            "local": [
+                "UApp"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VAppBar",
+            "local": [
+                "UAppBar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VAlert",
+            "local": [
+                "UAlert"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VAutocomplete",
+            "local": [
+                "UAutocomplete"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VAvatar",
+            "local": [
+                "UAvatar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBadge",
+            "local": [
+                "UBadge"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBanner",
+            "local": [
+                "UBanner"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBottomNavigation",
+            "local": [
+                "UBottomNavigation"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBottomSheet",
+            "local": [
+                "UBottomSheet"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBreadcrumbs",
+            "local": [
+                "UBreadcrumbs"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBtn",
+            "local": [
+                "UButton"
+            ],
+            "status": "responsibility-mapping"
+        },
+        {
+            "upstream": "VBtnGroup",
+            "local": [
+                "UBtnGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VBtnToggle",
+            "local": [
+                "UBtnToggle"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCalendar",
+            "local": [
+                "UCalendar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCard",
+            "local": [
+                "UCard"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCarousel",
+            "local": [
+                "UCarousel"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCheckbox",
+            "local": [
+                "UCheckbox"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VChip",
+            "local": [
+                "UChip"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VChipGroup",
+            "local": [
+                "UChipGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCode",
+            "local": [
+                "UCode"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VColorInput",
+            "local": [
+                "UColorInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VColorPicker",
+            "local": [
+                "UColorPicker"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCombobox",
+            "local": [
+                "UCombobox"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VConfirmEdit",
+            "local": [
+                "UConfirmEdit"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VCounter",
+            "local": [
+                "UCounter"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDataIterator",
+            "local": [
+                "UDataIterator"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDataTable",
+            "local": [
+                "UDataTable"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDateInput",
+            "local": [
+                "UDateInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDatePicker",
+            "local": [
+                "UDatePicker"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDefaultsProvider",
+            "local": [
+                "UDefaultsProvider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDialog",
+            "local": [
+                "UDialog"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VDivider",
+            "local": [
+                "UDivider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VEmptyState",
+            "local": [
+                "UEmptyState"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VExpansionPanel",
+            "local": [
+                "UExpansionPanel"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VFab",
+            "local": [
+                "UFab"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VField",
+            "local": [
+                "UField"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VFileInput",
+            "local": [
+                "UFileInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VFileUpload",
+            "local": [
+                "UFileUpload"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VFooter",
+            "local": [
+                "UFooter"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VForm",
+            "local": [
+                "UForm"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VGrid",
+            "local": [
+                "UContainer",
+                "URow",
+                "UCol"
+            ],
+            "status": "responsibility-mapping"
+        },
+        {
+            "upstream": "VHotkey",
+            "local": [
+                "UHotkey"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VHover",
+            "local": [
+                "UHover"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VIcon",
+            "local": [
+                "UIcon"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VIconBtn",
+            "local": [
+                "UButton"
+            ],
+            "status": "responsibility-mapping",
+            "usage": "<u-button icon=\"mdi-name\" />"
+        },
+        {
+            "upstream": "VImg",
+            "local": [
+                "UImg"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VInfiniteScroll",
+            "local": [
+                "UInfiniteScroll"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VInput",
+            "local": [
+                "UInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VItemGroup",
+            "local": [
+                "UItemGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VKbd",
+            "local": [
+                "UKbd"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VLabel",
+            "local": [
+                "ULabel"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VLayout",
+            "local": [
+                "ULayout"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VLazy",
+            "local": [
+                "ULazy"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VList",
+            "local": [
+                "UList"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VLocaleProvider",
+            "local": [
+                "ULocaleProvider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VMain",
+            "local": [
+                "UMain"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VMenu",
+            "local": [
+                "UMenu"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VMessages",
+            "local": [
+                "UMessages"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VNavigationDrawer",
+            "local": [
+                "UNavigationDrawer"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VNoSsr",
+            "local": [
+                "UNoSsr"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VNumberInput",
+            "local": [
+                "UNumberInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VOtpInput",
+            "local": [
+                "UOtpInput"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VOverlay",
+            "local": [
+                "UOverlay"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VPagination",
+            "local": [
+                "UPagination"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VParallax",
+            "local": [
+                "UParallax"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VPicker",
+            "local": [
+                "UPicker"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VProgressCircular",
+            "local": [
+                "UProgressCircular"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VProgressLinear",
+            "local": [
+                "UProgressLinear"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VPullToRefresh",
+            "local": [
+                "UPullToRefresh"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VRadio",
+            "local": [
+                "URadio"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VRadioGroup",
+            "local": [
+                "URadioGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VRangeSlider",
+            "local": [
+                "URangeSlider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VRating",
+            "local": [
+                "URating"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VResponsive",
+            "local": [
+                "UResponsive"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSelect",
+            "local": [
+                "USelect"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSelectionControl",
+            "local": [
+                "USelectionControl"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSelectionControlGroup",
+            "local": [
+                "USelectionControlGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSheet",
+            "local": [
+                "USheet"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSkeletonLoader",
+            "local": [
+                "USkeletonLoader"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSlideGroup",
+            "local": [
+                "USlideGroup"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSlider",
+            "local": [
+                "USlider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSnackbar",
+            "local": [
+                "USnackbar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSnackbarQueue",
+            "local": [
+                "USnackbarQueue"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSparkline",
+            "local": [
+                "USparkline"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSpeedDial",
+            "local": [
+                "USpeedDial"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VStepper",
+            "local": [
+                "UStepper"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VStepperVertical",
+            "local": [
+                "UStepperVertical"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSwitch",
+            "local": [
+                "USwitch"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VSystemBar",
+            "local": [
+                "USystemBar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTabs",
+            "local": [
+                "UTabs"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTable",
+            "local": [
+                "UTable"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTextarea",
+            "local": [
+                "UTextarea"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTextField",
+            "local": [
+                "UTextField"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VThemeProvider",
+            "local": [
+                "UThemeProvider"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTimeline",
+            "local": [
+                "UTimeline"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTimePicker",
+            "local": [
+                "UTimePicker"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VToolbar",
+            "local": [
+                "UToolbar"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTooltip",
+            "local": [
+                "UTooltip"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VTreeview",
+            "local": [
+                "UTreeview"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VValidation",
+            "local": [
+                "UValidation"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VVirtualScroll",
+            "local": [
+                "UVirtualScroll"
+            ],
+            "status": "public-base-implementation"
+        },
+        {
+            "upstream": "VWindow",
+            "local": [
+                "UWindow"
+            ],
+            "status": "public-base-implementation"
+        }
+    ],
+    "directives": [
+        {
+            "upstream": "ClickOutside",
+            "local": "vClickOutside"
+        },
+        {
+            "upstream": "Intersect",
+            "local": "vIntersect"
+        },
+        {
+            "upstream": "Mutate",
+            "local": "vMutate"
+        },
+        {
+            "upstream": "Resize",
+            "local": "vResize"
+        },
+        {
+            "upstream": "Ripple",
+            "local": "vRipple"
+        },
+        {
+            "upstream": "Scroll",
+            "local": "vScroll"
+        },
+        {
+            "upstream": "Touch",
+            "local": "vTouch"
+        },
+        {
+            "upstream": "Tooltip",
+            "local": "vTooltip"
+        }
+    ],
+    "labs": [
+        {
+            "upstream": "VAvatarGroup",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VCommandPalette",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VDateRangePicker",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VMonthPicker",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VHeatmap",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VHighlight",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VMaskInput",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VPie",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VProgress",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        },
+        {
+            "upstream": "VVideo",
+            "status": "experimental-contract-not-provided",
+            "note": "Existing date-range or progress capabilities do not imply compatibility with this Labs family."
+        }
+    ]
+}

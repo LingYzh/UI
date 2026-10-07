@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { acquireScrollLock, isTopOverlay, popOverlay, pushOverlay, releaseScrollLock } from './overlay-lifecycle';
 import { useDefaults } from './defaults';
+import { useReducedMotion } from './motion';
 type Location = 'center' | 'top' | 'bottom' | 'left' | 'right' | 'anchor';
 const rawProps = withDefaults(defineProps<{ modelValue?: boolean; location?: Location; persistent?: boolean; scrollStrategy?: 'locked' | 'block' | 'close' | 'reposition'; width?: string | number; maxWidth?: string | number; scrim?: boolean }>(), {
     modelValue: undefined, location: 'center', persistent: false, scrollStrategy: 'locked', scrim: true
@@ -11,6 +12,9 @@ const emit = defineEmits<{ 'update:modelValue': [value: boolean]; 'click:outside
 const internal = ref(false);
 const open = computed(() => props.modelValue ?? internal.value);
 const dialog = ref<HTMLDialogElement>();
+const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
+const reduced = useReducedMotion();
+let generation = 0;
 const activator = ref<HTMLElement>();
 const anchorStyle = ref<Record<string, string>>({});
 let returnFocus: HTMLElement | null = null;
@@ -34,17 +38,32 @@ function unlock() {
     releaseScrollLock(lockToken);
 }
 async function sync() {
+    const current = ++generation;
     await nextTick();
+    if (current !== generation) return;
     const element = dialog.value;
     if (!element) return;
-    if (open.value && !element.open) {
-        returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : activator.value ?? null;
-        element.showModal();
-        pushOverlay(element);
-        lock();
-        position();
-        (element.querySelector<HTMLElement>('[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') ?? element).focus({ preventScroll: true });
-    } else if (!open.value && element.open) {
+    if (open.value) {
+        if (!element.open) {
+            returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : activator.value ?? null;
+            element.showModal();
+            pushOverlay(element);
+            lock();
+            position();
+            (element.querySelector<HTMLElement>('[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') ?? element).focus({ preventScroll: true });
+        }
+        state.value = 'opening';
+    } else {
+        if (!element.open) return;
+        state.value = 'closing';
+    }
+    await nextTick();
+    getComputedStyle(element).opacity;
+    await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    if (current !== generation) return;
+    if (open.value) state.value = 'open';
+    else {
+        state.value = 'closed';
         element.close();
         popOverlay(element);
         unlock();
@@ -74,8 +93,10 @@ const activatorProps = computed(() => ({
     onKeydown: () => { keyboard = true; }
 }));
 watch(open, sync, { flush: 'post' });
+watch(reduced, (value) => { if (value) for (const animation of dialog.value?.getAnimations() ?? []) animation.finish(); });
 onMounted(() => { sync(); window.addEventListener('scroll', onScroll, true); window.addEventListener('resize', position); });
 onBeforeUnmount(() => {
+    generation++;
     window.removeEventListener('scroll', onScroll, true);
     window.removeEventListener('resize', position);
     if (dialog.value?.open) dialog.value.close();
@@ -87,5 +108,5 @@ defineExpose({ close, open: () => setOpen(true), dialog });
 
 <template>
     <slot name="activator" :props="activatorProps" :activator-props="activatorProps" :open="open" />
-    <dialog ref="dialog" class="ui-overlay" :class="[`is-${props.location}`, { 'has-scrim': props.scrim }]" :style="{ ...anchorStyle, width: typeof props.width === 'number' ? `${props.width}px` : props.width, maxWidth: typeof props.maxWidth === 'number' ? `${props.maxWidth}px` : props.maxWidth }" :data-scroll-strategy="props.scrollStrategy" @cancel.prevent="close" @click="outside" @pointerdown="pointerUsed" @keydown="keyboardUsed"><slot :close="close" /></dialog>
+    <dialog ref="dialog" class="ui-overlay" :class="[`is-${props.location}`, { 'has-scrim': props.scrim }]" :style="{ ...anchorStyle, width: typeof props.width === 'number' ? `${props.width}px` : props.width, maxWidth: typeof props.maxWidth === 'number' ? `${props.maxWidth}px` : props.maxWidth }" :data-state="state" :inert="state === 'closing'" :aria-hidden="state === 'closing' || undefined" :data-scroll-strategy="props.scrollStrategy" @cancel.prevent="close" @click="outside" @pointerdown="pointerUsed" @keydown="keyboardUsed"><slot :close="close" /></dialog>
 </template>

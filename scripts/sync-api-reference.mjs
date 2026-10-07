@@ -13,6 +13,7 @@ const existingApi = await loadExistingApi(sourceOutput);
 const priorByFile = makePriorByFile(allExports, existingApi);
 
 const commonProps = {
+    ripple: '动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发。',
     label: '控件或区域的可访问名称；有可见标题时仍会关联对应控件。',
     labelWidth: '设置标签左对齐时标签列的宽度；数字按像素处理。',
     hint: '显示在控件下方的补充说明，并通过 aria-describedby 关联。',
@@ -351,6 +352,31 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (contract.name === 'UToolbar' && prop.name === 'density') return 'default/comfortable/compact/prominent：默认内容高度64/56/48/128px；扩展区48/44/40/96px。显式height与extensionHeight参与相同密度计算。';
+    if (contract.name === 'UToolbar' && prop.name === 'height') return '内容区基础高度，默认64px；数字或数字字符串。密度会从此基础高度计算最终尺寸。';
+    if (contract.name === 'UToolbar' && prop.name === 'extensionHeight') return '扩展区基础高度，默认48px；密度会调整最终高度，不包含内容区。';
+    if (contract.name === 'UToolbar' && prop.name === 'extended') return '默认null：存在extension插槽时显示扩展区；显式true/false控制显示，并提供展开收起过渡。关闭时内容不可聚焦。';
+    if (contract.name === 'UToolbar' && prop.name === 'collapse') return '将工具栏限制到112px并隐藏标题；collapsePosition指定折叠侧。';
+    if (contract.name === 'UToolbar' && prop.name === 'collapsePosition') return 'start/end指定折叠侧，使用逻辑方向并圆化对应底角；默认start。';
+    if (contract.name === 'UToolbar' && prop.name === 'floating') return '宽度随内容收缩，适合独立浮动操作条；未启用时占满容器宽度。';
+    if (contract.name === 'UToolbar' && prop.name === 'location') return '定位边缘，如top start或bottom end；通常与absolute配合使用。';
+    if (contract.name === 'UToolbar' && prop.name === 'color') return '主题名称（如primary）或CSS颜色；填充背景并使用对应on-color，未单独设置颜色的按钮继承前景色。';
+    if (contract.name === 'UToolbarItems' && prop.name === 'variant') return '为操作按钮提供默认样式，默认text；按钮显式variant优先。';
+    if (contract.name === 'UToolbarItems' && prop.name === 'color') return '为操作按钮提供默认颜色；按钮显式color优先，未设置时继承工具栏前景色。';
+    if (contract.name === 'UCodeBlock' && prop.name === 'maxHeight') return '默认不限制最大高度，代码随内容自然增高；显式传入CSS高度后在指定高度内纵向滚动。';
+    if (contract.name === 'UButton' && prop.name === 'value') return '在 u-btn-toggle 中的选择值；省略时使用按钮在组中的索引。普通按钮不参与组选择。';
+    if (contract.name === 'USlideGroup' && prop.name === 'mandatory') return 'true 阻止取消最后一项；force 还会在挂载时选择第一个可用项。';
+    if (contract.name === 'USlideGroup' && prop.name === 'scrollDistance') return '箭头滚动距离，支持px数值或百分比；默认100%为一个视口。';
+    if (contract.name === 'USlideGroup' && prop.name === 'showArrows') return 'always始终显示；never隐藏；true仅溢出时显示；desktop桌面始终显示；mobile在移动设备或溢出时显示；省略/false为桌面溢出时显示。';
+    if (['USnackbar','USnackbarQueue'].includes(contract.name) && prop.name === 'timeout') return '显示超时（毫秒），默认5000；负数持续显示，0立即结束。悬停、内部键盘焦点和文档隐藏暂停倒计时。';
+    if (contract.name === 'USnackbarQueue' && prop.name === 'modelValue') return 'v-model待显示消息数组；消息被取出显示时从数组移除。支持字符串、属性对象和promise及success/error回调。';
+    if (contract.name === 'USnackbarQueue' && prop.name === 'displayStrategy') return 'hold按顺序等待空位；overflow在容量满时淘汰最早活跃消息以显示新项。';
+    if (contract.name === 'USnackbarQueue' && prop.name === 'totalVisible') return '同时活跃的消息上限，最小为1；关闭动画结束后移除表面。';
+    if (['USnackbar','USnackbarQueue'].includes(contract.name) && prop.name === 'contained') return '显示在最近定位容器内；默认Teleport到body。attach可指定挂载目标或false原位渲染。';
+    if (['USnackbar','USnackbarQueue'].includes(contract.name) && prop.name === 'location') return '消息位置，如bottom center、top left；start/end映射逻辑侧。';
+    if (contract.name === 'UButton' && prop.name === 'variant') return '只选择样式变体：elevated、flat、tonal、outlined（本库默认）、text、plain；颜色独立由 color 配置。默认沿用无阴影描边外观，显式 elevated 才使用阴影。';
+    if (contract.name === 'UButton' && prop.name === 'color') return '独立颜色：主题名称（primary、secondary、success、error、danger、warning、info 或自定义色）及 CSS 颜色。danger 默认跟随 error。elevated/flat 填充底色并使用对应 on-color，其余作用于文字/图标及 outlined 边框、tonal 底层。';
+    if (contract.name === 'UButton' && prop.name === 'ghost') return '兼容透明外观属性；为 true 时映射到 text 变体，颜色仍由 color 控制。新用法优先使用 variant="text"。';
     if (contract.name === 'UButton' && prop.name === 'loading') return '等待时禁用并暴露 aria-busy；保留原 variant 和进入加载前的宽高，只显示一个居中的加载指示，可通过 loader 插槽定制。';
     if (['UTable', 'UDataTable', 'UDataTableServer', 'UDataTableVirtual'].includes(contract.name) && prop.name === 'label') return '表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。';
     if (['UDataTable', 'UDataTableServer'].includes(contract.name) && prop.name === 'sortBy') return 'v-model:sort-by：排序模型；每列按升序、降序、取消循环，multi-sort 允许同时指定多列。';
@@ -414,7 +440,11 @@ function scopeText(slot) {
     return names.length ? `作用域提供 { ${[...new Set(names)].join(', ')} }。` : '';
 }
 
-function slotDescription(slot, previous) {
+function slotDescription(slot, previous, contract) {
+    if (contract?.name === 'UToolbar') {
+        const descriptions = { title: '自定义内置标题，优先于title属性；长文本自动省略。', prepend: '内容区前置操作，如菜单按钮。', actions: '直接放入操作按钮，自动进入内置右侧操作区；默认text，无需额外ToolbarItems。', append: '兼容的后置操作插槽；存在actions时优先使用actions。', extension: '内容区下方的扩展行；默认存在插槽时显示，可由extended控制。', image: '自定义背景图片层，作用域image提供image属性。', default: '内容区中标题与操作之间的自定义内容。' };
+        if (descriptions[slot.name]) return descriptions[slot.name];
+    }
     const oldDescription = reusableDescription(previous);
     if (oldDescription) return oldDescription;
     const name = slot.name === '<dynamic>' ? slot.pattern : slot.name;
@@ -461,7 +491,7 @@ function buildComponentApi(contract) {
         name: slot.name === '<dynamic>' ? slot.pattern : slot.name,
         type: slot.payload?.length ? `{ ${slot.payload.filter((entry) => !['<scope>', '<spread>'].includes(entry.name)).map((entry) => entry.name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())).join(', ')} }` : '—',
         fallback: slot.hasFallback ? '有默认内容' : '—',
-        description: slotDescription(slot, oldSlots.get(slot.name === '<dynamic>' ? slot.pattern : slot.name)),
+        description: slotDescription(slot, oldSlots.get(slot.name === '<dynamic>' ? slot.pattern : slot.name), contract),
     }));
     const methods = contract.expose.map((member) => {
         const previous = oldMethods.get(member.name);

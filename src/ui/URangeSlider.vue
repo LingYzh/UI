@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vFocusModality } from './focus-modality';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -33,8 +34,8 @@ defineExpose({ element, startInput, endInput, range, percentages, control, updat
         <div ref="element" class="ui-range-slider-control" :class="control.classes.value" :style="control.styles.value" :aria-describedby="controlAttrs['aria-describedby']">
             <div class="ui-range-slider-track">
                 <div class="ui-range-slider-fill" :style="{ insetInlineStart: percentages[0] + '%', width: percentages[1] - percentages[0] + '%' }" />
-            <input :id="control.id()" ref="startInput" type="range" :value="range[0]" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-label="(props.label || '范围') + '：下限'" :aria-readonly="control.readonly.value || undefined" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input(0, $event)" @blur="control.blur" />
-            <input ref="endInput" type="range" :value="range[1]" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-label="(props.label || '范围') + '：上限'" :aria-readonly="control.readonly.value || undefined" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input(1, $event)" @blur="control.blur" />
+            <input v-focus-modality :id="control.id()" ref="startInput" type="range" :value="range[0]" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-label="(props.label || '范围') + '：下限'" :aria-readonly="control.readonly.value || undefined" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input(0, $event)" @blur="control.blur" />
+            <input v-focus-modality ref="endInput" type="range" :value="range[1]" :min="props.min" :max="props.max" :step="props.step" :disabled="control.disabled.value" :aria-label="(props.label || '范围') + '：上限'" :aria-readonly="control.readonly.value || undefined" @pointerdown="control.guard" @keydown="control.guardKeys" @input="input(1, $event)" @blur="control.blur" />
             </div>
             <div class="ui-range-slider-values"><output>{{ range[0] }}</output><output>{{ range[1] }}</output></div>
         </div>

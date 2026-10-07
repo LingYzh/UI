@@ -315,7 +315,10 @@ try {
             selectSquare: select.classList.contains('is-square'),
             textareaSquare: textarea.classList.contains('is-square'),
             buttonDense: button.classList.contains('sm'),
-            buttonGhost: button.classList.contains('ghost'),
+            buttonTextSurface: {
+                border: getComputedStyle(button).borderTopColor,
+                background: getComputedStyle(button).backgroundColor
+            },
             buttonSquare: button.classList.contains('is-square'),
             inputHeight: getComputedStyle(input).minHeight,
             ghostBorder: getComputedStyle(input).borderColor,
@@ -323,7 +326,9 @@ try {
         };
     });
     assert.equal(visualClasses.inputDense && visualClasses.selectDense && visualClasses.textareaDense && visualClasses.buttonDense, true, 'dense form styling reaches its controls and actions');
-    assert.equal(visualClasses.inputGhost && visualClasses.selectGhost && visualClasses.textareaGhost && visualClasses.buttonGhost, true, 'ghost form styling reaches its controls and actions');
+    assert.equal(visualClasses.inputGhost && visualClasses.selectGhost && visualClasses.textareaGhost, true, 'ghost form styling reaches its input controls');
+    assert.match(visualClasses.buttonTextSurface.border, /rgba\(0, 0, 0, 0\)|transparent/, 'the inherited ghost compatibility prop renders the button as text without a border');
+    assert.match(visualClasses.buttonTextSurface.background, /rgba\(0, 0, 0, 0\)|transparent/, 'the inherited ghost compatibility prop renders the button as text without a filled surface');
     assert.equal(visualClasses.inputSquare && visualClasses.selectSquare && visualClasses.textareaSquare && visualClasses.buttonSquare, true, 'square form styling reaches its controls and actions');
     assert.equal(visualClasses.inputHeight, '30px', 'dense class changes the input control height');
     assert.match(visualClasses.ghostBorder, /rgba\(0, 0, 0, 0\)|transparent/, 'ghost class removes the input border');
@@ -348,7 +353,7 @@ try {
     passed.push('left label layout preserves a separate label column and keeps hint beneath the control');
 
     for (const item of [
-        { label: '启用配置', control: ':scope > .ui-switch' },
+        { label: '启用配置', control: ':scope > .ui-selection-ripple.is-switch' },
         { label: '使用约定', control: ':scope > .ui-checkbox' },
         { label: '单选项', control: ':scope > .ui-radio' },
         { label: '标记颜色', control: ':scope > .ui-swatches' }

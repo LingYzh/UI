@@ -8,8 +8,10 @@ import UiButton from './UiButton.vue';
 import { positiveInteger, type TableSort } from './table';
 import type { DataGroup, DataHeader, DataItem } from './data-pipeline';
 import { uiText } from './locale';
+import type { RippleOptions } from './ripple';
 
 const rawProps = withDefaults(defineProps<{
+    ripple?: RippleOptions;
     headers: readonly DataHeader[];
     items: readonly DataItem[];
     itemsLength: number;
@@ -30,7 +32,7 @@ const rawProps = withDefaults(defineProps<{
     rounded?: boolean;
     height?: string;
     fixedHeader?: boolean;
-}>(), { itemsPerPageOptions: () => [10, 25, 50], rounded: true });
+}>(), { ripple: true, itemsPerPageOptions: () => [10, 25, 50], rounded: true });
 const props = useDefaults(rawProps, 'UDataTableServer');
 const page = defineModel<number>('page', { default: 1 });
 const itemsPerPage = defineModel<number>('itemsPerPage', { default: 10 });
@@ -55,15 +57,15 @@ const range = computed(() => total.value ? uiText('table.range', { start: (page.
 
 <template>
     <div class="ui-data-table-server" :class="{ 'is-dense': props.dense, 'is-ghost': props.ghost, 'is-square': !props.rounded }">
-        <UDataTable v-model="selected" v-model:expanded="expanded" v-model:sort-by="sortBy" v-model:group-by="groupBy" :headers="props.headers" :items="props.error ? [] : props.items" :item-value="props.itemValue" :item-title="props.itemTitle" :label="props.label" :loading="props.loading" :error="props.error" :disabled="props.disabled" :show-select="props.showSelect" :return-object="props.returnObject" :show-expand="props.showExpand" :multi-sort="props.multiSort" :height="props.height" :fixed-header="props.fixedHeader" :dense="props.dense" server hide-default-footer>
+        <UDataTable :ripple="props.ripple" v-model="selected" v-model:expanded="expanded" v-model:sort-by="sortBy" v-model:group-by="groupBy" :headers="props.headers" :items="props.error ? [] : props.items" :item-value="props.itemValue" :item-title="props.itemTitle" :label="props.label" :loading="props.loading" :error="props.error" :disabled="props.disabled" :show-select="props.showSelect" :return-object="props.returnObject" :show-expand="props.showExpand" :multi-sort="props.multiSort" :height="props.height" :fixed-header="props.fixedHeader" :dense="props.dense" server hide-default-footer>
             <template v-for="name in Object.keys($slots).filter((key) => key !== 'no-data' && key !== 'error')" #[name]="scope"><slot :name="name" v-bind="scope" /></template>
-            <template #error="scope"><slot name="error" v-bind="scope"><div class="ui-table-error" role="alert"><span>{{ props.error }}</span><UiButton dense @click="emit('retry')">{{ uiText('common.retry') }}</UiButton></div></slot></template>
+            <template #error="scope"><slot name="error" v-bind="scope"><div class="ui-table-error" role="alert"><span>{{ props.error }}</span><UiButton :ripple="props.ripple" dense @click="emit('retry')">{{ uiText('common.retry') }}</UiButton></div></slot></template>
             <template #no-data><slot name="no-data"><span role="status">{{ uiText('common.empty') }}</span></slot></template>
         </UDataTable>
         <footer class="ui-table-footer">
             <div class="ui-table-page-size"><label :for="selectId">{{ uiText('table.perPage') }}</label><UiSelect :id="selectId" :model-value="size" :disabled="props.loading || props.disabled" dense :ghost="props.ghost" :rounded="props.rounded" @update:model-value="changeSize"><option v-for="value in sizes" :key="value" :value="value">{{ uiText('table.perPageOption', { count: value }) }}</option></UiSelect></div>
             <span class="ui-table-range" aria-live="polite">{{ range }}</span>
-            <UiPagination v-model="page" :length="props.loading ? Math.max(page, pageCount) : pageCount" :disabled="props.loading || props.disabled || total === 0" :total-visible="3" :dense="props.dense" :ghost="props.ghost" :rounded="props.rounded" :label="uiText('table.pagination', { label: props.label })" />
+            <UiPagination :ripple="props.ripple" v-model="page" :length="props.loading ? Math.max(page, pageCount) : pageCount" :disabled="props.loading || props.disabled || total === 0" :total-visible="3" :dense="props.dense" :ghost="props.ghost" :rounded="props.rounded" :label="uiText('table.pagination', { label: props.label })" />
         </footer>
     </div>
 </template>

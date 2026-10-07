@@ -1,6 +1,8 @@
 import { themePages } from './themeContent.js';
 import { completionPages } from './completionContent.js';
-import { buttonLoadingExample } from './buttonContent.js';
+import { buttonAppearanceExample, buttonLoadingExample } from './buttonContent.js';
+import { codeBlockHeightExample } from './codeBlockContent.js';
+import { typographyPage } from './typographyContent.js';
 import { tablePages } from './tableContent.js';
 import { feedbackPages } from './feedbackContent.js';
 import { controlPages } from './controlsContent.js';
@@ -108,7 +110,7 @@ export const pages = [
                 "id": "usage-meter-basic",
                 "title": "用量状态",
                 "description": "点击或用 Enter/Space 查看详情；更新按钮演示动态数据。分类合计与服务用量独立。嵌套内容弹窗使用真实 Dialog、Collapse 与 CodeBlock，展开后正文独立滚动。",
-                "code": "<script setup>\nimport { UUsageMeter } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-usage-meter compact :used=\"24800\" :capacity=\"200000\" estimated @inspect=\"openDetails\" />\n    <u-usage-meter :used=\"24800\" :capacity=\"200000\" :segments=\"segments\" />\n</template>"
+                "code": "<script setup>\nimport { UUsageMeter } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-usage-meter compact :used=\"24800\" :capacity=\"200000\" estimated @inspect=\"openDetails\" />\n    <u-usage-meter :used=\"24800\" :capacity=\"200000\" :segments=\"segments\" />\n</template>\n"
             }
         ],
         "notes": [
@@ -130,7 +132,7 @@ export const pages = [
                 "id": "conversation-actions",
                 "title": "回复操作",
                 "description": "复制、编辑、分支、重新生成和删除按钮；禁用状态、悬停与键盘提示。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UMessageActions } from '@lingyzh/ui';\nconst selected = ref('');\nconst actions = [{ id: 'copy', icon: 'copy', label: '复制回复' }, { id: 'edit', icon: 'edit', label: '编辑历史回复' }, { id: 'branch', icon: 'branch', label: '从此回复创建分支' }, { id: 'refresh', icon: 'refresh', label: '重新生成最新回复' }, { id: 'delete', icon: 'trash', label: '删除消息' }];\nfunction handleAction(id) { selected.value = id; }\n</script>\n\n<template>\n    <u-message-actions label=\"第 2 轮 · 32 秒\" :actions=\"actions\" @action=\"handleAction\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UMessageActions } from '@lingyzh/ui';\nconst selected = ref('');\nconst actions = [\n    { id: 'copy', icon: 'copy', label: '复制回复' },\n    { id: 'edit', icon: 'edit', label: '编辑历史回复' },\n    { id: 'branch', icon: 'branch', label: '从此回复创建分支' },\n    { id: 'refresh', icon: 'refresh', label: '重新生成最新回复' },\n    { id: 'delete', icon: 'trash', label: '删除消息' },\n];\nfunction handleAction(id) {\n    selected.value = id;\n}\n</script>\n\n<template>\n    <u-message-actions label=\"第 2 轮 · 32 秒\" :actions=\"actions\" @action=\"handleAction\" />\n</template>\n"
             }
         ],
         "notes": [
@@ -151,13 +153,13 @@ export const pages = [
                 "id": "conversation-inline",
                 "title": "对话中的工具与改动",
                 "description": "轻量工具标题、原位展开的紧凑 Diff，以及本轮文件改动列表。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UActivity, UDiff, UFileChanges } from '@lingyzh/ui';\nconst selected = ref('');\nconst items = [{ id: 'tool', path: 'src/ui/ToolCallRow.ts', status: 'M', added: 16, removed: 2 }];\nfunction inspectFile() { selected.value = 'tool'; }\nfunction selectFile(id) { selected.value = id; }\nfunction viewAll() { selected.value = 'all'; }\n</script>\n\n<template>\n    <u-activity title=\"已编辑 ToolCallRow.ts\" variant=\"inline\" icon=\"file\" :added=\"16\" :removed=\"2\" :open=\"true\" :scrollable=\"false\">\n        <u-diff compact inspectable path=\"src/ui/ToolCallRow.ts\" before=\"旧内容\" after=\"新内容\" @inspect=\"inspectFile\" />\n    </u-activity>\n    <u-file-changes title=\"第 2 轮文件改动\" :items=\"items\" @select=\"selectFile\" @view-all=\"viewAll\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UActivity, UDiff, UFileChanges } from '@lingyzh/ui';\nconst selected = ref('');\nconst items = [{ id: 'tool', path: 'src/ui/ToolCallRow.ts', status: 'M', added: 16, removed: 2 }];\nfunction inspectFile() {\n    selected.value = 'tool';\n}\nfunction selectFile(id) {\n    selected.value = id;\n}\nfunction viewAll() {\n    selected.value = 'all';\n}\n</script>\n\n<template>\n    <u-activity\n        title=\"已编辑 ToolCallRow.ts\"\n        variant=\"inline\"\n        icon=\"file\"\n        :added=\"16\"\n        :removed=\"2\"\n        :open=\"true\"\n        :scrollable=\"false\"\n    >\n        <u-diff\n            compact\n            inspectable\n            path=\"src/ui/ToolCallRow.ts\"\n            before=\"旧内容\"\n            after=\"新内容\"\n            @inspect=\"inspectFile\"\n        />\n    </u-activity>\n    <u-file-changes\n        title=\"第 2 轮文件改动\"\n        :items=\"items\"\n        @select=\"selectFile\"\n        @view-all=\"viewAll\"\n    />\n</template>\n"
             },
             {
                 "id": "conversation-file-states",
                 "title": "未知统计与空改动",
                 "description": "无法核实增删行数时明确显示统计不可用；完整路径通过文件行提示查看。",
-                "code": "<script setup>\nimport { UFileChanges } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-file-changes title=\"第 3 轮文件改动\" :items=\"[{ id: 'asset', path: 'assets/image.png', status: 'M', added: null, removed: null }]\" />\n</template>"
+                "code": "<script setup>\nimport { UFileChanges } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-file-changes\n        title=\"第 3 轮文件改动\"\n        :items=\"[\n            { id: 'asset', path: 'assets/image.png', status: 'M', added: null, removed: null },\n        ]\"\n    />\n</template>\n"
             }
         ],
         "notes": [
@@ -178,19 +180,19 @@ export const pages = [
                 "id": "markdown-rich",
                 "title": "完整正文",
                 "description": "表格、代码、公式、图表、脚注与折叠说明。",
-                "code": "<script setup>\nimport { UMarkdown } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-markdown :source=\"text\" @link-click=\"openLink\" />\n</template>"
+                "code": "<script setup>\nimport { UMarkdown } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-markdown :source=\"text\" @link-click=\"openLink\" />\n</template>\n"
             },
             {
                 "id": "markdown-navigation",
                 "title": "主题强调、折叠与脚注跳转",
-                "description": "行内代码和标记使用 primary；展开／收起平滑过渡，脚注双向平滑居中。减少动态效果时立即更新。",
-                "code": "<script setup>\nimport { UMarkdown, UScrollArea } from '@lingyzh/ui';\nconst text = '\u0060行内代码\u0060 与 ==标记==。脚注[^note]。\\n\\n<details><summary>补充说明</summary><p>支持展开和收起动画。</p></details>\\n\\n[^note]: 点击返回箭头回到引用处。';\n</script>\n\n<template>\n    <u-scroll-area height=\"420px\" label=\"Markdown 阅读\"><u-markdown :source=\"text\" /></u-scroll-area>\n</template>"
+                "description": "行内代码和标记使用 primary；展开／收起平滑过渡，脚注仅在最近的阅读容器中双向平滑居中，不带动外层页面。减少动态效果时立即更新。",
+                "code": "<script setup>\nimport { UMarkdown, UScrollArea } from '@lingyzh/ui';\nconst text =\n    '`行内代码` 与 ==标记==。脚注[^note]。\\n\\n<details><summary>补充说明</summary><p>支持展开和收起动画。</p></details>\\n\\n[^note]: 点击返回箭头回到引用处。';\n</script>\n\n<template>\n    <u-scroll-area height=\"420px\" label=\"Markdown 阅读\">\n        <u-markdown :source=\"text\" />\n    </u-scroll-area>\n</template>\n"
             },
             {
                 "id": "markdown-streaming",
                 "title": "平滑流式输出",
                 "description": "短暂缓冲突发数据，自适应追赶，完成后及时显示完整内容。",
-                "code": "<script setup>\nimport { UMarkdown } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-markdown :source=\"text\" :streaming=\"running\" />\n</template>"
+                "code": "<script setup>\nimport { UMarkdown } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-markdown :source=\"text\" :streaming=\"running\" />\n</template>\n"
             }
         ],
         "notes": [
@@ -210,7 +212,7 @@ export const pages = [
                 "id": "diff-content",
                 "title": "历史与提议",
                 "description": "仅使用传入的快照，不读取磁盘；待审批修改单独标识为提议。支持换行、复制完整内容和有界预览。",
-                "code": "<script setup>\nimport { UDiff } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-diff path=\"notes.md\" :before=\"null\" after=\"# 新文档\" proposed />\n</template>"
+                "code": "<script setup>\nimport { UDiff } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-diff path=\"notes.md\" :before=\"null\" after=\"# 新文档\" proposed />\n</template>\n"
             }
         ],
         "notes": [
@@ -231,7 +233,7 @@ export const pages = [
                 "id": "activity-basic",
                 "title": "思考与工具调用",
                 "description": "键盘 Enter/Space 展开；审批动作置于滚动区外，长内容不遮挡按钮。",
-                "code": "<script setup>\nimport { UActivity } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-activity title=\"思考过程\" status=\"已完成\">服务返回的摘要</u-activity>\n</template>"
+                "code": "<script setup>\nimport { UActivity } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-activity title=\"思考过程\" status=\"已完成\">服务返回的摘要</u-activity>\n</template>\n"
             }
         ],
         "notes": [
@@ -251,27 +253,27 @@ export const pages = [
                 "title": "与单行输入一致的样式",
                 "description": "切换密度、禁用、只读和错误态，比较真实Input与Textarea；自动增高支持最低行数、最高行数与字数提示。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst text = ref('同一套边框、圆角和字号');\nconst prompt = ref('');\n</script>\n\n<template>\n    <u-form>\n        <u-row>\n            <u-col :cols=\"12\" :sm=\"6\">\n                <u-text-field v-model=\"text\"  label=\"单行文本\" id=\"single\" />\n            </u-col>\n            <u-col :cols=\"12\" :sm=\"6\">\n                <u-textarea v-model=\"text\" :rows=\"1\" no-resize  label=\"多行文本\" id=\"multi\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"prompt\" :rows=\"3\" auto-grow :max-rows=\"8\" counter maxlength=\"500\"  label=\"自动增高指令\" id=\"prompt\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst text = ref('同一套边框、圆角和字号');\nconst prompt = ref('');\n</script>\n\n<template>\n    <u-form>\n        <u-row>\n            <u-col :cols=\"12\" :sm=\"6\">\n                <u-text-field v-model=\"text\" label=\"单行文本\" id=\"single\" />\n            </u-col>\n            <u-col :cols=\"12\" :sm=\"6\">\n                <u-textarea v-model=\"text\" :rows=\"1\" no-resize label=\"多行文本\" id=\"multi\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea\n                    v-model=\"prompt\"\n                    :rows=\"3\"\n                    auto-grow\n                    :max-rows=\"8\"\n                    counter\n                    maxlength=\"500\"\n                    label=\"自动增高指令\"\n                    id=\"prompt\"\n                />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
             {
                 "id": "textarea-instructions",
                 "title": "指令编辑",
                 "description": "默认、聚焦、禁用与错误状态；与其他表单使用同一组 tokens。",
-                "code": "<script setup>\nimport { UTextarea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <label for=\"instructions\">Agent 指令</label>\n    <u-textarea id=\"instructions\" v-model=\"instructions\" :rows=\"5\" />\n</template>"
+                "code": "<script setup>\nimport { UTextarea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <label for=\"instructions\">Agent 指令</label>\n    <u-textarea id=\"instructions\" v-model=\"instructions\" :rows=\"5\" />\n</template>\n"
             },
             {
                 "id": "layout-widths",
                 "title": "默认宽度与容器约束",
                 "description": "输入、选择和多行文本默认占满可用区域，可在240/320/480px容器中实际比较；inline用于工具栏，开关不拉伸。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\"  label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\"  label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\"  label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\" label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\" label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>\n"
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -292,14 +294,14 @@ export const pages = [
                 "id": "tooltip-capability",
                 "title": "能力名称",
                 "description": "悬停或 Tab 聚焦图标，Esc 关闭；滚动或调整窗口时关闭提示。",
-                "code": "<script setup>\nimport { UTooltip, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tooltip text=\"图片输入\"><u-icon name=\"image\" /></u-tooltip>\n</template>"
+                "code": "<script setup>\nimport { UTooltip, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tooltip text=\"图片输入\">\n        <u-icon name=\"image\" />\n    </u-tooltip>\n</template>\n"
             },
             {
                 "id": "layout-form-tooltip",
                 "title": "指针与键盘触发",
                 "description": "点击后移出即关闭；Tab 聚焦时保持显示，Esc 关闭。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTooltip, UButton } from '@lingyzh/ui';\n\n</script>\n\n<template>\n    <u-tooltip text=\"鼠标移出关闭，键盘聚焦保留\"><u-button>提示触发器</u-button></u-tooltip>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTooltip, UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tooltip text=\"鼠标移出关闭，键盘聚焦保留\">\n        <u-button>提示触发器</u-button>\n    </u-tooltip>\n</template>\n"
             }
         ],
         "notes": []
@@ -345,19 +347,19 @@ export const pages = [
                 "id": "import",
                 "title": "导入与样式",
                 "text": "运行 npm install @lingyzh/ui；安装包导出 Vue/TypeScript 源码，需使用支持 Vue SFC 的构建工具。本地联调 UAH 可继续使用 file:../UI，并在 Vite 中配置 Vue dedupe。只在应用入口引入一次共享样式。",
-                "code": "import { UButton, UTextField, UField, USnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';"
+                "code": "import { UButton, UTextField, UField, USnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';\n"
             },
             {
                 "id": "form",
                 "title": "组合一个表单",
                 "text": "UField 提供关联属性，UTextField 接收字符串状态。校验属于页面；同时传入 error 与 invalid，分别提供说明和错误视觉。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UField, UTextField, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n</script>\n\n<template>\n    <form @submit.prevent=\"save\">\n        <u-text-field label=\"项目名称\" id=\"name\" :error-messages=\"error\" v-model=\"name\" :invalid=\"Boolean(error)\" />\n        <u-button type=\"submit\" variant=\"primary\">保存</u-button>\n    </form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UField, UTextField, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n</script>\n\n<template>\n    <form @submit.prevent=\"save\">\n        <u-text-field\n            label=\"项目名称\"\n            id=\"name\"\n            :error-messages=\"error\"\n            v-model=\"name\"\n            :invalid=\"Boolean(error)\"\n        />\n        <u-button type=\"submit\" variant=\"flat\" color=\"primary\">保存</u-button>\n    </form>\n</template>\n"
             },
             {
                 "id": "host",
                 "title": "挂载全局提示",
                 "text": "在根组件挂载一个 USnackbarHost。之后任何应用模块都能调用 snackbar，无需通过页面 ref 寻找 Host。",
-                "code": "<template>\n    <AppContent />\n    <u-snackbar-host />\n</template>"
+                "code": "<template>\n    <AppContent />\n    <u-snackbar-host />\n</template>\n"
             },
             {
                 "id": "workflow",
@@ -383,25 +385,25 @@ export const pages = [
                 "id": "button-variants",
                 "title": "动作层级",
                 "description": "主要动作保持单一；次要动作和轻量动作服务于同一任务。点击按钮可观察反馈。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, snackbar } from '@lingyzh/ui';\nfunction save() { snackbar.show('更改已保存。', { tone: 'success' }); }\n</script>\n\n<template>\n    <u-button variant=\"primary\" @click=\"save\">保存更改</u-button>\n    <u-button>次要操作</u-button>\n    <u-button variant=\"ghost\">轻量操作</u-button>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, snackbar } from '@lingyzh/ui';\nfunction save() {\n    snackbar.show('更改已保存。', { tone: 'success' });\n}\n</script>\n\n<template>\n    <u-button variant=\"flat\" color=\"primary\" @click=\"save\">保存更改</u-button>\n    <u-button>次要操作</u-button>\n    <u-button variant=\"text\">轻量操作</u-button>\n</template>\n"
             },
             {
                 "id": "button-states",
                 "title": "尺寸、图标与等待态",
                 "description": "等待态同时设置 disabled 与 aria-busy，阻止重复操作。图标按钮始终提供可访问名称。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UIcon } from '@lingyzh/ui';\nconst saving = ref(false);\nfunction save() {\n    if (saving.value) return;\n    saving.value = true;\n    setTimeout(() => { saving.value = false; }, 1400);\n}\n</script>\n\n<template>\n    <u-button size=\"sm\">紧凑按钮</u-button>\n    <u-button icon aria-label=\"添加项目\"><u-icon name=\"plus\" /></u-button>\n    <u-button disabled>不可用</u-button>\n    <u-button :loading=\"saving\" @click=\"save\">{{ saving ? '正在保存…' : '模拟保存' }}</u-button>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UIcon } from '@lingyzh/ui';\nconst saving = ref(false);\nfunction save() {\n    if (saving.value) return;\n    saving.value = true;\n    setTimeout(() => {\n        saving.value = false;\n    }, 1400);\n}\n</script>\n\n<template>\n    <u-button size=\"sm\">紧凑按钮</u-button>\n    <u-button icon aria-label=\"添加项目\">\n        <u-icon name=\"plus\" />\n    </u-button>\n    <u-button disabled>不可用</u-button>\n    <u-button :loading=\"saving\" @click=\"save\">{{ saving ? '正在保存…' : '模拟保存' }}</u-button>\n</template>\n"
             },
             {
                 "id": "button-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-button >保存更改</u-button>\n    <u-button dense>保存更改</u-button>\n    <u-button ghost>保存更改</u-button>\n    <u-button :rounded=\"false\">保存更改</u-button>\n</template>"
+                "code": "<script setup>\nimport { UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-button>保存更改</u-button>\n    <u-button dense>保存更改</u-button>\n    <u-button ghost>保存更改</u-button>\n    <u-button :rounded=\"false\">保存更改</u-button>\n</template>\n"
             },
             {
                 "id": "button-danger",
                 "title": "危险操作",
-                "description": "红色文字与悬停弱底区分不可撤销的操作，不与主要动作的强调填充混淆；可与 ghost、尺寸和图标组合。",
-                "code": "<script setup>\nimport { UButton, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-button variant=\"danger\">删除</u-button>\n    <u-button variant=\"danger\" ghost>清空日志</u-button>\n    <u-button variant=\"danger\" icon aria-label=\"删除项目\"><u-icon name=\"trash\" /></u-button>\n</template>"
+                "description": "color=\"danger\" 指定危险操作颜色；可与任意 variant、尺寸和图标组合，默认跟随主题 error。",
+                "code": "<script setup>\nimport { UButton, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-button variant=\"outlined\" color=\"danger\">删除</u-button>\n    <u-button variant=\"text\" color=\"danger\">清空日志</u-button>\n    <u-button variant=\"outlined\" color=\"danger\" icon aria-label=\"删除项目\">\n        <u-icon name=\"trash\" />\n    </u-button>\n</template>\n"
             }
         ],
         "notes": [
@@ -409,7 +411,7 @@ export const pages = [
             "每个操作区推荐只有一个主要动作。",
             "使用 loading 控制等待视觉，同时在业务处理函数中守卫重复请求。",
             "本页提供各变体的独立示例；跨组件组合见“统一样式变体”文档。",
-            "danger 只用于删除、清空等不可撤销的操作，并配合 confirmDialog 二次确认。",
+            "variant 只处理 elevated/flat/tonal/outlined/text/plain；primary、secondary、danger 等通过 color 指定。危险操作可配合 confirmDialog 二次确认。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。"
         ]
     },
@@ -425,46 +427,46 @@ export const pages = [
                 "id": "input-search",
                 "title": "带图标的输入",
                 "description": "输入文字，清空或聚焦。前后插槽不承担输入控件的可访问名称。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTextField, UIcon } from '@lingyzh/ui';\nconst input = ref();\nconst query = ref('');\n</script>\n\n<template>\n    <u-text-field ref=\"input\" v-model=\"query\" aria-label=\"搜索\" placeholder=\"搜索会话、项目与设置\">\n        <template #leading><u-icon name=\"search\" :size=\"16\" /></template>\n        <template #trailing><span>{{ query.length }}</span></template>\n    </u-text-field>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTextField, UIcon } from '@lingyzh/ui';\nconst input = ref();\nconst query = ref('');\n</script>\n\n<template>\n    <u-text-field ref=\"input\" v-model=\"query\" aria-label=\"搜索\" placeholder=\"搜索会话、项目与设置\">\n        <template #leading>\n            <u-icon name=\"search\" :size=\"16\" />\n        </template>\n        <template #trailing>\n            <span>{{ query.length }}</span>\n        </template>\n    </u-text-field>\n</template>\n"
             },
             {
                 "id": "input-states",
                 "title": "错误与禁用",
                 "description": "控件直接接收 label、hint 和 errorMessages；disabled 与 readonly 均为控件属性。",
-                "code": "<script setup>\nimport { UTextField } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-text-field label=\"项目名称\" error-messages=\"请输入项目名称。\" placeholder=\"例如：我的工作区\" />\n    <u-text-field label=\"只读能力\" readonly model-value=\"尚未接入\" />\n    <u-text-field label=\"禁用项目\" disabled model-value=\"暂不可编辑\" />\n</template>"
+                "code": "<script setup>\nimport { UTextField } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-text-field\n        label=\"项目名称\"\n        error-messages=\"请输入项目名称。\"\n        placeholder=\"例如：我的工作区\"\n    />\n    <u-text-field label=\"只读能力\" readonly model-value=\"尚未接入\" />\n    <u-text-field label=\"禁用项目\" disabled model-value=\"暂不可编辑\" />\n</template>\n"
             },
             {
                 "id": "input-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { UTextField } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\"  />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" dense />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" ghost />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" :rounded=\"false\" />\n</template>"
+                "code": "<script setup>\nimport { UTextField } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" dense />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" ghost />\n    <u-text-field model-value=\"UAH\" aria-label=\"工作区名称\" :rounded=\"false\" />\n</template>\n"
             },
             {
                 "id": "layout-widths",
                 "title": "默认宽度与容器约束",
                 "description": "输入、选择和多行文本默认占满可用区域，可在240/320/480px容器中实际比较；inline用于工具栏，开关不拉伸。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\"  label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\"  label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\"  label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\" label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\" label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>\n"
             },
             {
                 "id": "input-number",
                 "title": "数字输入",
                 "description": "type=\"number\" 时模型保持数字类型；清空为 null，输入中间态不会被提前改写。min / max / step 透传给原生输入。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTextField } from '@lingyzh/ui';\nconst port = ref(5580);\n</script>\n\n<template>\n    <u-text-field v-model=\"port\" type=\"number\" min=\"1\" max=\"65535\" aria-label=\"端口\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTextField } from '@lingyzh/ui';\nconst port = ref(5580);\n</script>\n\n<template>\n    <u-text-field v-model=\"port\" type=\"number\" min=\"1\" max=\"65535\" aria-label=\"端口\" />\n</template>\n"
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
             {
                 "id": "layout-form-text",
                 "title": "长文本与菜单宽度",
                 "description": "选择值保持单行省略，输入保留原生横向滚动；短菜单与控件同宽，长内容可扩展到视口范围内。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, USelect, URow, UCol } from '@lingyzh/ui';\nconst text = ref('需要保持单行的很长表单内容');\nconst choice = ref('long');\nconst items = [{ value: 'long', label: '需要完整保留的很长选项名称' }];\n</script>\n\n<template>\n    <u-form style=\"width: 240px; max-width: 100%\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"text\" label=\"单行裁剪\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-select v-model=\"choice\" label=\"单行省略\" :items=\"items\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, USelect, URow, UCol } from '@lingyzh/ui';\nconst text = ref('需要保持单行的很长表单内容');\nconst choice = ref('long');\nconst items = [{ value: 'long', label: '需要完整保留的很长选项名称' }];\n</script>\n\n<template>\n    <u-form style=\"width: 240px; max-width: 100%\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"text\" label=\"单行裁剪\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-select v-model=\"choice\" label=\"单行省略\" :items=\"items\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -488,58 +490,58 @@ export const pages = [
                 "id": "select-described",
                 "title": "带说明的选项",
                 "description": "收起时只显示简短名称，菜单提供标题、说明和右侧选中标记。禁用项不能选择；文案由应用提供，不代表组件实施权限策略。",
-                "code": "<script setup>\nimport { USelect } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-select v-model=\"mode\" :items=\"[{ value: 'default', label: 'Default', description: 'Ask before making changes.' }]\" menu-title=\"Mode\" compact ghost aria-label=\"Permission mode\" />\n</template>"
+                "code": "<script setup>\nimport { USelect } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-select\n        v-model=\"mode\"\n        :items=\"[{ value: 'default', label: 'Default', description: 'Ask before making changes.' }]\"\n        menu-title=\"Mode\"\n        compact\n        ghost\n        aria-label=\"Permission mode\"\n    />\n</template>\n"
             },
             {
                 "id": "select-groups",
                 "title": "分组与占位提示",
                 "description": "占位提示不进入选项列表；长列表复用 UScrollArea，原生 optgroup 标识分组。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect } from '@lingyzh/ui';\nconst model = ref('');\n</script>\n\n<template>\n    <u-select v-model=\"model\" placeholder=\"选择模型\" aria-label=\"模型\"><optgroup label=\"Provider A\"><option value=\"a\">model-a</option></optgroup></u-select>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect } from '@lingyzh/ui';\nconst model = ref('');\n</script>\n\n<template>\n    <u-select v-model=\"model\" placeholder=\"选择模型\" aria-label=\"模型\">\n        <optgroup label=\"Provider A\">\n            <option value=\"a\">model-a</option>\n        </optgroup>\n    </u-select>\n</template>\n"
             },
             {
                 "id": "select-values",
                 "title": "数字值与紧凑样式",
                 "description": "切换代码字号，观察模型类型仍为 number。紧凑样式适合工具栏内的低频选择。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect } from '@lingyzh/ui';\nconst size = ref(13);\nconst density = ref('comfortable');\n</script>\n\n<template>\n    <u-select v-model=\"size\" aria-label=\"代码字号\">\n        <option v-for=\"value in [12, 13, 14, 16]\" :key=\"value\" :value=\"value\">{{ value }} px</option>\n    </u-select>\n    <u-select v-model=\"density\" compact aria-label=\"显示密度\">\n        <option value=\"comfortable\">舒适</option>\n        <option value=\"compact\">紧凑</option>\n    </u-select>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect } from '@lingyzh/ui';\nconst size = ref(15);\nconst density = ref('comfortable');\n</script>\n\n<template>\n    <u-select v-model=\"size\" aria-label=\"代码字号\">\n        <option v-for=\"value in [14, 15, 16, 18]\" :key=\"value\" :value=\"value\">\n            {{ value }} px\n        </option>\n    </u-select>\n    <u-select v-model=\"density\" compact aria-label=\"显示密度\">\n        <option value=\"comfortable\">舒适</option>\n        <option value=\"compact\">紧凑</option>\n    </u-select>\n</template>\n"
             },
             {
                 "id": "select-states",
                 "title": "错误和禁用",
                 "description": "invalid 与 disabled 可分别表达校验结果和当前不可操作状态。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UField, USelect } from '@lingyzh/ui';\nconst project = ref('');\n</script>\n\n<template>\n    <u-select label=\"需要选择的项目\" id=\"project\" :error-messages=\"project ? '' : '请选择项目。'\" v-model=\"project\" :invalid=\"!project\"><option value=\"\">请选择项目</option><option value=\"uah\">UAH 工作台</option></u-select>\n    <u-select model-value=\"unavailable\" disabled aria-label=\"不可用的选择\"><option value=\"unavailable\">尚未启用</option></u-select>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UField, USelect } from '@lingyzh/ui';\nconst project = ref('');\n</script>\n\n<template>\n    <u-select\n        label=\"需要选择的项目\"\n        id=\"project\"\n        :error-messages=\"project ? '' : '请选择项目。'\"\n        v-model=\"project\"\n        :invalid=\"!project\"\n    >\n        <option value=\"\">请选择项目</option>\n        <option value=\"uah\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"unavailable\" disabled aria-label=\"不可用的选择\">\n        <option value=\"unavailable\">尚未启用</option>\n    </u-select>\n</template>\n"
             },
             {
                 "id": "select-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { USelect } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" ><option value=\"UAH\">UAH 工作台</option></u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" dense><option value=\"UAH\">UAH 工作台</option></u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" ghost><option value=\"UAH\">UAH 工作台</option></u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" :rounded=\"false\"><option value=\"UAH\">UAH 工作台</option></u-select>\n</template>"
+                "code": "<script setup>\nimport { USelect } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\">\n        <option value=\"UAH\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" dense>\n        <option value=\"UAH\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" ghost>\n        <option value=\"UAH\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"UAH\" aria-label=\"工作区\" :rounded=\"false\">\n        <option value=\"UAH\">UAH 工作台</option>\n    </u-select>\n</template>\n"
             },
             {
                 "id": "layout-widths",
                 "title": "默认宽度与容器约束",
                 "description": "输入、选择和多行文本默认占满可用区域，可在240/320/480px容器中实际比较；inline用于工具栏，开关不拉伸。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\"  label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\"  label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\"  label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('UAH');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form style=\"max-width: 320px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" id=\"width-name\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" :rows=\"3\" label=\"用途\" id=\"width-description\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" :max-width=\"200\" label=\"上限200px\" id=\"width-limit\" />\n            </u-col>\n        </u-row>\n    </u-form>\n    <u-text-field v-model=\"name\" inline :width=\"160\" aria-label=\"工具栏输入\" />\n</template>\n"
             },
             {
                 "id": "select-dynamic",
                 "title": "选项文本动态更新",
                 "description": "items 中的 label、description 可以随数据更新；value 不变时，收起后的选中内容也会同步刷新，不重建整个选择器。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect, UButton } from '@lingyzh/ui';\nconst version = ref('v1');\nconst submitted = ref(false);\n</script>\n\n<template>\n    <u-select v-model=\"version\" label=\"配置版本\" :items=\"[{ value: 'v1', label: submitted ? 'v1 · 待审批' : 'v1 · 草稿' }]\" />\n    <u-button @click=\"submitted = !submitted\">切换选项文案</u-button>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USelect, UButton } from '@lingyzh/ui';\nconst version = ref('v1');\nconst submitted = ref(false);\n</script>\n\n<template>\n    <u-select\n        v-model=\"version\"\n        label=\"配置版本\"\n        :items=\"[{ value: 'v1', label: submitted ? 'v1 · 待审批' : 'v1 · 草稿' }]\"\n    />\n    <u-button @click=\"submitted = !submitted\">切换选项文案</u-button>\n</template>\n"
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
             {
                 "id": "layout-form-text",
                 "title": "长文本与菜单宽度",
                 "description": "选择值保持单行省略，输入保留原生横向滚动；短菜单与控件同宽，长内容可扩展到视口范围内。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, USelect, URow, UCol } from '@lingyzh/ui';\nconst text = ref('需要保持单行的很长表单内容');\nconst choice = ref('long');\nconst items = [{ value: 'long', label: '需要完整保留的很长选项名称' }];\n</script>\n\n<template>\n    <u-form style=\"width: 240px; max-width: 100%\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"text\" label=\"单行裁剪\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-select v-model=\"choice\" label=\"单行省略\" :items=\"items\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, USelect, URow, UCol } from '@lingyzh/ui';\nconst text = ref('需要保持单行的很长表单内容');\nconst choice = ref('long');\nconst items = [{ value: 'long', label: '需要完整保留的很长选项名称' }];\n</script>\n\n<template>\n    <u-form style=\"width: 240px; max-width: 100%\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"text\" label=\"单行裁剪\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-select v-model=\"choice\" label=\"单行省略\" :items=\"items\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -563,27 +565,27 @@ export const pages = [
                 "id": "switch-preference",
                 "title": "立即生效的偏好",
                 "description": "“减少动效”同时更新当前文档的根属性。系统偏好仍独立生效。",
-                "code": "<script setup>\nimport { ref, watch } from 'vue';\nimport { UField, USwitch } from '@lingyzh/ui';\nconst reduced = ref(false);\nwatch(reduced, (value) => {\n    document.documentElement.dataset.reducedMotion = String(value);\n});\n</script>\n\n<template>\n    <u-switch label=\"减少动效\" id=\"motion\" v-model=\"reduced\" />\n</template>"
+                "code": "<script setup>\nimport { ref, watch } from 'vue';\nimport { UField, USwitch } from '@lingyzh/ui';\nconst reduced = ref(false);\nwatch(reduced, (value) => {\n    document.documentElement.dataset.reducedMotion = String(value);\n});\n</script>\n\n<template>\n    <u-switch label=\"减少动效\" id=\"motion\" v-model=\"reduced\" />\n</template>\n"
             },
             {
                 "id": "switch-states",
                 "title": "开与关、禁用",
                 "description": "静态状态用于比较；旁边的可操作开关可通过鼠标或 Space 切换。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USwitch } from '@lingyzh/ui';\nconst enabled = ref(true);\n</script>\n\n<template>\n    <u-switch v-model=\"enabled\" aria-label=\"启用通知\" />\n    <u-switch :model-value=\"false\" disabled aria-label=\"禁用的关闭状态\" />\n    <u-switch :model-value=\"true\" disabled aria-label=\"禁用的开启状态\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USwitch } from '@lingyzh/ui';\nconst enabled = ref(true);\n</script>\n\n<template>\n    <u-switch v-model=\"enabled\" aria-label=\"启用通知\" />\n    <u-switch :model-value=\"false\" disabled aria-label=\"禁用的关闭状态\" />\n    <u-switch :model-value=\"true\" disabled aria-label=\"禁用的开启状态\" />\n</template>\n"
             },
             {
                 "id": "layout-focus",
                 "title": "指针操作与键盘焦点",
                 "description": "使用真实开关、复选框、单选、按钮、Tabs、色板、折叠和输入框比较两种操作方式。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USwitch, UCheckbox, URadio, UButton, UTabs, UTabPanel, UColorSwatches, UActivity, UTextField } from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label><u-switch v-model=\"enabled\" />开关</label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs v-model=\"selectedTab\" id-prefix=\"focus\" :items=\"[{ id: 'first', label: '第一项' }, { id: 'second', label: '第二项' }]\" />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">第二项内容</u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabPanel,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">\n        第二项内容\n    </u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
             },
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -606,7 +608,7 @@ export const pages = [
                 "title": "标签方向与下方说明",
                 "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
@@ -628,53 +630,53 @@ export const pages = [
                 "title": "声明式标签与共享内容模型",
                 "description": "Tab 与 Window 共享一个模型，value 对应内容；无需 items 或 idPrefix。默认首个可用项选中，方向键仅移动焦点。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\"><u-text-field v-model=\"draft\" label=\"草稿\" /></u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\">\n            <u-text-field v-model=\"draft\" label=\"草稿\" />\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             },
             {
                 "id": "tabs-items",
                 "title": "数组标签与自动内容容器",
                 "description": "value/text 数组和 #item 即可创建完整标签页，支持数字值、禁用和动态移除。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs } from '@lingyzh/ui';\nconst tab = ref();\nconst items = [{ value: 0, text: '常规设置' }, { value: 2, text: '运行设置' }];\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" :items=\"items\" aria-label=\"设置\">\n        <template #item=\"{ item }\">{{ item.text }}内容</template>\n    </u-tabs>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs } from '@lingyzh/ui';\nconst tab = ref();\nconst items = [\n    { value: 0, text: '常规设置' },\n    { value: 2, text: '运行设置' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" :items=\"items\" aria-label=\"设置\">\n        <template #item=\"{ item }\">{{ item.text }}内容</template>\n    </u-tabs>\n</template>\n"
             },
             {
                 "id": "tabs-window",
                 "title": "自动关联的内容插槽",
                 "description": "#window 中的 WindowItem 自动继承选中值和关联 ID；内容首次访问挂载并保留，eager 可预先挂载。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>"
+                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>\n"
             },
             {
                 "id": "tabs-values",
                 "title": "默认索引与可空选择",
                 "description": "不设置 value 时使用索引，默认强制首个可用项；mandatory=false 可保留空模型。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"默认索引\">\n        <u-tab>第一项</u-tab>\n        <u-tab disabled>禁用项</u-tab>\n        <u-tab>第三项</u-tab>\n        <template #window>\n            <u-tabs-window-item>索引 0</u-tabs-window-item>\n            <u-tabs-window-item>索引 1</u-tabs-window-item>\n            <u-tabs-window-item>索引 2</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>"
+                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"默认索引\">\n        <u-tab>第一项</u-tab>\n        <u-tab disabled>禁用项</u-tab>\n        <u-tab>第三项</u-tab>\n        <template #window>\n            <u-tabs-window-item>索引 0</u-tabs-window-item>\n            <u-tabs-window-item>索引 1</u-tabs-window-item>\n            <u-tabs-window-item>索引 2</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>\n"
             },
             {
                 "id": "tabs-scroll",
                 "title": "溢出滚动与标签布局",
                 "description": "选中项自动滚入可见区域；箭头仅滚动列表，grow/fixedTabs/stacked/alignTabs/hideSlider 配置标签布局。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs } from '@lingyzh/ui';\nconst selected = ref();\nconst items = Array.from({ length: 10 }, (_, value) => ({ value, text: `工作区配置 ${value + 1}` }));\n</script>\n\n<template>\n    <div style=\"width: 480px; max-width: 100%\">\n        <u-tabs v-model=\"selected\" :items=\"items\" show-arrows center-active aria-label=\"工作区配置\" />\n    </div>\n    <u-tabs v-model=\"selected\" :items=\"items.slice(0, 3)\" grow align-tabs=\"center\" aria-label=\"伸展标签\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs } from '@lingyzh/ui';\nconst selected = ref();\nconst items = Array.from({ length: 10 }, (_, value) => ({\n    value,\n    text: `工作区配置 ${value + 1}`,\n}));\n</script>\n\n<template>\n    <div style=\"width: 480px; max-width: 100%\">\n        <u-tabs\n            v-model=\"selected\"\n            :items=\"items\"\n            show-arrows\n            center-active\n            aria-label=\"工作区配置\"\n        />\n    </div>\n    <u-tabs\n        v-model=\"selected\"\n        :items=\"items.slice(0, 3)\"\n        grow\n        align-tabs=\"center\"\n        aria-label=\"伸展标签\"\n    />\n</template>\n"
             },
             {
                 "id": "tabs-soft",
                 "title": "基础标签与禁用项",
                 "description": "左右键、Home / End 移动焦点，Enter / Space 确认。禁用项会被跳过，旧数组和面板用法继续兼容。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'unavailable', label: '尚未启用', disabled: true },\n    { id: 'details', label: '详情' }\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"example\" aria-label=\"示例标签页\" />\n    <u-tab-panel :model-value=\"selected\" value=\"overview\" id-prefix=\"example\">概览</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"details\" id-prefix=\"example\">详情</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"unavailable\" id-prefix=\"example\">尚未启用</u-tab-panel>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'unavailable', label: '尚未启用', disabled: true },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"example\" aria-label=\"示例标签页\" />\n    <u-tab-panel :model-value=\"selected\" value=\"overview\" id-prefix=\"example\">概览</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"details\" id-prefix=\"example\">详情</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"unavailable\" id-prefix=\"example\">\n        尚未启用\n    </u-tab-panel>\n</template>\n"
             },
             {
                 "id": "tabs-variants",
                 "title": "下划线与垂直布局",
                 "description": "切换布局可观察方向键规则；自定义插槽可加入 UAH 图标。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel, UIcon } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览', icon: 'book' },\n    { id: 'details', label: '详情', icon: 'file' }\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"tools\" variant=\"underline\">\n        <template #default=\"{ item }\"><u-icon :name=\"item.icon\" />{{ item.label }}</template>\n    </u-tabs>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"vertical\" orientation=\"vertical\" indicator-side=\"start\" />\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"tools\">{{ item.label }}内容</u-tab-panel>\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"vertical\">{{ item.label }}内容</u-tab-panel>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel, UIcon } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览', icon: 'book' },\n    { id: 'details', label: '详情', icon: 'file' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"tools\" variant=\"underline\">\n        <template #default=\"{ item }\">\n            <u-icon :name=\"item.icon\" />\n            {{ item.label }}\n        </template>\n    </u-tabs>\n    <u-tabs\n        v-model=\"selected\"\n        :items=\"items\"\n        id-prefix=\"vertical\"\n        orientation=\"vertical\"\n        indicator-side=\"start\"\n    />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"tools\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"vertical\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n</template>\n"
             },
             {
                 "id": "tabs-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [{ id: 'overview', label: '概览' }, { id: 'details', label: '详情' }];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-0\"  />\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"sample-0\">{{ item.label }}内容</u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-1\" dense />\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"sample-1\">{{ item.label }}内容</u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-2\" ghost />\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"sample-2\">{{ item.label }}内容</u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-3\" :rounded=\"false\" />\n    <u-tab-panel v-for=\"item in items\" :key=\"item.id\" :model-value=\"selected\" :value=\"item.id\" id-prefix=\"sample-3\">{{ item.label }}内容</u-tab-panel>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-0\" />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-0\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-1\" dense />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-1\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-2\" ghost />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-2\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-3\" :rounded=\"false\" />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-3\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n</template>\n"
             }
         ],
         "notes": [
@@ -702,7 +704,7 @@ export const pages = [
                 "title": "声明式标签与共享内容模型",
                 "description": "与 Window 共享模型，标签与内容使用相同 value。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\"><u-text-field v-model=\"draft\" label=\"草稿\" /></u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\">\n            <u-text-field v-model=\"draft\" label=\"草稿\" />\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             }
         ],
         "notes": [
@@ -723,14 +725,14 @@ export const pages = [
                 "title": "声明式标签与共享内容模型",
                 "description": "只在容器上绑定模型，WindowItem 不重复绑定。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\"><u-text-field v-model=\"draft\" label=\"草稿\" /></u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTab, UTabsWindow, UTabsWindowItem, UTextField } from '@lingyzh/ui';\nconst tab = ref();\nconst draft = ref('');\n</script>\n\n<template>\n    <u-tabs v-model=\"tab\" aria-label=\"工作区视图\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"locked\" disabled>尚未启用</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n    </u-tabs>\n    <u-tabs-window v-model=\"tab\">\n        <u-tabs-window-item value=\"overview\">\n            <u-text-field v-model=\"draft\" label=\"草稿\" />\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"locked\">尚未启用</u-tabs-window-item>\n        <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             },
             {
                 "id": "tabs-window",
                 "title": "自动关联的内容插槽",
                 "description": "与父 Tabs 自动关联，不需要传模型或 ID。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>"
+                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>\n"
             }
         ],
         "notes": [
@@ -751,7 +753,7 @@ export const pages = [
                 "title": "自动关联的内容插槽",
                 "description": "使用 value 对应标签；切换后草稿仍保留，eager 预先挂载。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>"
+                "code": "<script setup>\nimport { UTabs, UTab, UTabsWindowItem } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-tabs aria-label=\"自动关联内容\">\n        <u-tab value=\"overview\">概览</u-tab>\n        <u-tab value=\"details\">详情</u-tab>\n        <template #window>\n            <u-tabs-window-item value=\"overview\">概览内容</u-tabs-window-item>\n            <u-tabs-window-item value=\"details\">详情内容</u-tabs-window-item>\n        </template>\n    </u-tabs>\n</template>\n"
             }
         ],
         "notes": [
@@ -771,7 +773,7 @@ export const pages = [
                 "id": "panel-persistence",
                 "title": "切换与状态保留",
                 "description": "在概览面板输入草稿，再切换到详情并返回；草稿仍在。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel, UTextField } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst draft = ref('');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' }\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"draft\" />\n    <u-tab-panel :model-value=\"selected\" value=\"overview\" id-prefix=\"draft\">\n        <u-text-field v-model=\"draft\" aria-label=\"面板草稿\" />\n    </u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"details\" id-prefix=\"draft\">详情内容</u-tab-panel>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel, UTextField } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst draft = ref('');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"draft\" />\n    <u-tab-panel :model-value=\"selected\" value=\"overview\" id-prefix=\"draft\">\n        <u-text-field v-model=\"draft\" aria-label=\"面板草稿\" />\n    </u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"details\" id-prefix=\"draft\">详情内容</u-tab-panel>\n</template>\n"
             }
         ],
         "notes": [
@@ -791,26 +793,26 @@ export const pages = [
                 "id": "dialog-scrollable",
                 "title": "长表单与固定提示",
                 "description": "只有正文滚动；标题、错误和操作始终可见，滚动条裁剪在圆角内部。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog, UButton } from '@lingyzh/ui';\nconst open = ref(false);\nconst error = ref('');\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" scrollable :error=\"error\" aria-label=\"长表单\">\n        <template #header><h2>编辑配置</h2></template>\n        <p>表单正文</p>\n        <template #footer><u-button @click=\"open = false\">关闭</u-button></template>\n    </u-dialog>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog, UButton } from '@lingyzh/ui';\nconst open = ref(false);\nconst error = ref('');\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" scrollable :error=\"error\" aria-label=\"长表单\">\n        <template #header>\n            <h2>编辑配置</h2>\n        </template>\n        <p>表单正文</p>\n        <template #footer>\n            <u-button @click=\"open = false\">关闭</u-button>\n        </template>\n    </u-dialog>\n</template>\n"
             },
             {
                 "id": "dialog-lifecycle",
                 "title": "原生弹窗与生命周期",
                 "description": "打开弹窗后尝试 Tab、Esc、遮罩和关闭按钮。状态记录覆盖整个进出过程。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UDialog, UTextField } from '@lingyzh/ui';\nconst open = ref(false);\nconst present = ref(false);\nconst closes = ref(0);\n</script>\n\n<template>\n    <u-button @click=\"open = true\">打开示例弹窗</u-button>\n    <u-dialog v-model:open=\"open\" aria-labelledby=\"dialog-title\" @present-change=\"present = $event\" @closed=\"closes++\">\n        <h2 id=\"dialog-title\">共享弹窗</h2>\n        <u-text-field autofocus aria-label=\"弹窗输入\" />\n        <u-button @click=\"open = false\">关闭弹窗</u-button>\n    </u-dialog>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UDialog, UTextField } from '@lingyzh/ui';\nconst open = ref(false);\nconst present = ref(false);\nconst closes = ref(0);\n</script>\n\n<template>\n    <u-button @click=\"open = true\">打开示例弹窗</u-button>\n    <u-dialog\n        v-model:open=\"open\"\n        aria-labelledby=\"dialog-title\"\n        @present-change=\"present = $event\"\n        @closed=\"closes++\"\n    >\n        <h2 id=\"dialog-title\">共享弹窗</h2>\n        <u-text-field autofocus aria-label=\"弹窗输入\" />\n        <u-button @click=\"open = false\">关闭弹窗</u-button>\n    </u-dialog>\n</template>\n"
             },
             {
                 "id": "dialog-sizes",
                 "title": "宽度与侧边抽屉",
                 "description": "size 固定弹窗宽度并始终适应视口；placement=\"end\" 适合任务中心等侧边面板，焦点约束与生命周期不变。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog } from '@lingyzh/ui';\nconst open = ref(false);\nconst drawer = ref(false);\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" size=\"md\" aria-labelledby=\"title\">…</u-dialog>\n    <u-dialog v-model:open=\"drawer\" placement=\"end\" scrollable aria-labelledby=\"drawer-title\">\n        <template #header><h2 id=\"drawer-title\">任务中心</h2></template>\n        …\n    </u-dialog>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog } from '@lingyzh/ui';\nconst open = ref(false);\nconst drawer = ref(false);\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" size=\"md\" aria-labelledby=\"title\">…</u-dialog>\n    <u-dialog v-model:open=\"drawer\" placement=\"end\" scrollable aria-labelledby=\"drawer-title\">\n        <template #header><h2 id=\"drawer-title\">任务中心</h2></template>\n        …\n    </u-dialog>\n</template>\n"
             },
             {
                 "id": "layout-form-dialog",
                 "title": "顶部浮动错误",
                 "description": "错误浮在滚动区顶部，正文高度保持稳定；动态内边距保护第一项，多行错误可实际切换。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog, UForm, UTextField, UButton, URow, UCol } from '@lingyzh/ui';\nconst open = ref(false);\nconst name = ref('');\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" scrollable error=\"配置未保存，请检查表单内容。\">\n        <template #header>\n            <h2>表单配置</h2>\n        </template>\n        <u-form>\n            <u-row>\n                <u-col :cols=\"12\">\n                    <u-text-field v-model=\"name\" label=\"名称\" />\n                </u-col>\n            </u-row>\n        </u-form>\n        <template #footer>\n            <u-button @click=\"open = false\">关闭</u-button>\n        </template>\n    </u-dialog>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDialog, UForm, UTextField, UButton, URow, UCol } from '@lingyzh/ui';\nconst open = ref(false);\nconst name = ref('');\n</script>\n\n<template>\n    <u-dialog v-model:open=\"open\" scrollable error=\"配置未保存，请检查表单内容。\">\n        <template #header>\n            <h2>表单配置</h2>\n        </template>\n        <u-form>\n            <u-row>\n                <u-col :cols=\"12\">\n                    <u-text-field v-model=\"name\" label=\"名称\" />\n                </u-col>\n            </u-row>\n        </u-form>\n        <template #footer>\n            <u-button @click=\"open = false\">关闭</u-button>\n        </template>\n    </u-dialog>\n</template>\n"
             }
         ],
         "notes": [
@@ -832,7 +834,7 @@ export const pages = [
                 "id": "collapse-content",
                 "title": "展开说明与保留输入",
                 "description": "展开后输入草稿，再收起和展开。草稿保留，收起期间内部输入不会进入 Tab 顺序。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UCollapse, UTextField } from '@lingyzh/ui';\nconst expanded = ref(false);\nconst draft = ref('');\n</script>\n\n<template>\n    <u-button :aria-expanded=\"expanded\" aria-controls=\"advanced\" @click=\"expanded = !expanded\">高级选项</u-button>\n    <u-collapse id=\"advanced\" :open=\"expanded\">\n        <u-text-field v-model=\"draft\" aria-label=\"高级选项草稿\" />\n    </u-collapse>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UCollapse, UTextField } from '@lingyzh/ui';\nconst expanded = ref(false);\nconst draft = ref('');\n</script>\n\n<template>\n    <u-button :aria-expanded=\"expanded\" aria-controls=\"advanced\" @click=\"expanded = !expanded\">\n        高级选项\n    </u-button>\n    <u-collapse id=\"advanced\" :open=\"expanded\">\n        <u-text-field v-model=\"draft\" aria-label=\"高级选项草稿\" />\n    </u-collapse>\n</template>\n"
             }
         ],
         "notes": [
@@ -852,7 +854,7 @@ export const pages = [
                 "id": "snackbar-playground",
                 "title": "提示游乐场",
                 "description": "选择位置、时长和类型，连续添加提示。悬停或聚焦关闭按钮都会暂停计时。",
-                "code": "<script setup>\nimport { USnackbarHost, UButton, snackbar } from '@lingyzh/ui';\nfunction show() { snackbar.show('更改已保存，可继续工作。', { position: 'bottom-center', duration: 6000, tone: 'success' }); }\n</script>\n\n<template>\n    <!-- 根组件中挂载一次 -->\n    <u-snackbar-host />\n    <u-button @click=\"show\">显示通知</u-button>\n</template>"
+                "code": "<script setup>\nimport { USnackbarHost, UButton, snackbar } from '@lingyzh/ui';\nfunction show() {\n    snackbar.show('更改已保存，可继续工作。', {\n        position: 'bottom-center',\n        duration: 6000,\n        tone: 'success',\n    });\n}\n</script>\n\n<template>\n    <!-- 根组件中挂载一次 -->\n    <u-snackbar-host />\n    <u-button @click=\"show\">显示通知</u-button>\n</template>\n"
             }
         ],
         "notes": [
@@ -863,7 +865,7 @@ export const pages = [
         ]
     },
     {
-        "id": "snackbar",
+        "id": "snackbar-service",
         "title": "全局提示服务",
         "name": "snackbar",
         "kind": "service",
@@ -874,7 +876,7 @@ export const pages = [
                 "id": "snackbar-service",
                 "title": "创建、撤销与清空",
                 "description": "每次 show 返回数字 id，可按 id 撤销。duration=0 适合必须手动关闭的提示。",
-                "code": "const id = snackbar.show('连接失败，请重试。', {\n    position: 'top-right', duration: 0, tone: 'error'\n});\nsnackbar.dismiss(id);\nsnackbar.clear();\nsnackbar.configure({ position: 'bottom-center', duration: 6000 });"
+                "code": "const id = snackbar.show('连接失败，请重试。', {\n    position: 'top-right',\n    duration: 0,\n    tone: 'error',\n});\nsnackbar.dismiss(id);\nsnackbar.clear();\nsnackbar.configure({ position: 'bottom-center', duration: 6000 });\n"
             }
         ],
         "props": [
@@ -949,20 +951,21 @@ export const pages = [
                     "--font：系统无衬线与中文字体，用于正文与操作。",
                     "--serif：Georgia 与中文宋体，用于文档标题。",
                     "--mono：Cascadia Code / Consolas，用于源码和技术标识。",
-                    "--code-size：默认 13px，代码区支持换行和横向滚动。"
+                    "--code-size：默认 16px，代码区支持换行和横向滚动。",
+                    "字号采用 Vuetify 4 的 display/headline/title/body/label 层级；正文16px、辅助14px、小字12px。详见字体排版页的真实示例。"
                 ]
             },
             {
                 "id": "layout",
                 "title": "布局与间距",
                 "text": "组件尺寸取自 styles.css：常规输入与按钮最小高度 36px，紧凑按钮 29px，按钮圆角 8px，弹窗圆角 15px。布局工具类使用 4px 间距步长，支持 0–16 级和方向组合。",
-                "code": ".workspace-section {\n    padding: 24px;\n    background: var(--surface);\n    border: 1px solid var(--border);\n    color: var(--text);\n}"
+                "code": ".workspace-section {\n    padding: 24px;\n    background: var(--surface);\n    border: 1px solid var(--border);\n    color: var(--text);\n}\n"
             },
             {
                 "id": "theme",
                 "title": "切换主题",
                 "text": "使用 createUiTheme 注册主题，useUiTheme 切换；局部区域使用 UThemeProvider 或 Card/Dialog 的 theme 属性。详见主题页。",
-                "code": "import { useUiTheme } from '@lingyzh/ui';\nconst theme = useUiTheme();\nawait theme.change('dark');\nawait theme.change('system');"
+                "code": "import { useUiTheme } from '@lingyzh/ui';\nconst theme = useUiTheme();\nawait theme.change('dark');\nawait theme.change('system');\n"
             }
         ]
     },
@@ -978,7 +981,7 @@ export const pages = [
                 "id": "names",
                 "title": "每个控件都需要名称",
                 "text": "优先使用可见 label。UField 的 controlAttrs 必须绑定到控件。图标按钮用 aria-label，弹窗用 aria-labelledby 关联可见标题。提示和 placeholder 都不能代替控件名称。",
-                "code": "<u-button icon aria-label=\"关闭面板\"><Icon name=\"close\" /></u-button>\n<u-dialog v-model:open=\"open\" aria-labelledby=\"title\">\n    <h2 id=\"title\">设置</h2>\n</u-dialog>"
+                "code": "<u-button icon aria-label=\"关闭面板\">\n    <Icon name=\"close\" />\n</u-button>\n<u-dialog v-model:open=\"open\" aria-labelledby=\"title\">\n    <h2 id=\"title\">设置</h2>\n</u-dialog>\n"
             },
             {
                 "id": "keyboard",
@@ -1033,13 +1036,13 @@ export const pages = [
                 "title": "尊重减少动效",
                 "text": "系统 prefers-reduced-motion 或应用 data-reduced-motion=\"true\" 任一启用，都关闭非必要动效。使用下面的真实开关试验。",
                 "demo": "motion-toggle",
-                "code": "document.documentElement.dataset.reducedMotion = 'true';"
+                "code": "document.documentElement.dataset.reducedMotion = 'true';\n"
             },
             {
                 "id": "lifecycle",
                 "title": "等待真正关闭",
                 "text": "open=false 是关闭请求，closed 才代表原生弹窗已释放顶层且焦点恢复。present-change 在进入开始发出 true、退出结束发出 false。嵌入视图的隐藏和恢复必须跟随 present 信号。",
-                "code": "<u-dialog v-model:open=\"open\"\n    @present-change=\"embeddedViewHidden = $event\"\n    @closed=\"completeAction\"\n>\n    <!-- 内容 -->\n</u-dialog>"
+                "code": "<u-dialog\n    v-model:open=\"open\"\n    @present-change=\"embeddedViewHidden = $event\"\n    @closed=\"completeAction\"\n>\n    <!-- 内容 -->\n</u-dialog>\n"
             },
             {
                 "id": "persistence",
@@ -1060,30 +1063,36 @@ export const pages = [
                 "id": "card-provider",
                 "title": "紧凑服务卡片",
                 "description": "长地址截断、操作换行；能力图标提供可访问名称和悬停说明。",
-                "code": "<script setup>\nimport { UCard, USwitch, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-card density=\"compact\"><label>启用 <u-switch v-model=\"enabled\" /></label><span title=\"图片输入\" role=\"img\" aria-label=\"图片输入\"><u-icon name=\"image\" :size=\"16\" /></span></u-card>\n</template>"
+                "code": "<script setup>\nimport { UCard, USwitch, UIcon } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-card density=\"compact\">\n        <label>\n            启用\n            <u-switch v-model=\"enabled\" />\n        </label>\n        <span title=\"图片输入\" role=\"img\" aria-label=\"图片输入\">\n            <u-icon name=\"image\" :size=\"16\" />\n        </span>\n    </u-card>\n</template>\n"
             },
             {
                 "id": "card-form",
                 "title": "卡片中的表单",
                 "description": "标题与说明、字段、底部操作各有稳定的区域。紧凑密度适用于侧栏。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCard, UField, UTextField, UButton } from '@lingyzh/ui';\nconst name = ref('UAH');\n</script>\n\n<template>\n    <u-card title=\"工作区偏好\" subtitle=\"保存当前工作区的显示选项。\">\n        <u-text-field label=\"名称\" id=\"card-name\" v-model=\"name\" />\n        <template #actions><u-button variant=\"ghost\">取消</u-button><u-button variant=\"primary\">保存</u-button></template>\n    </u-card>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCard, UField, UTextField, UButton } from '@lingyzh/ui';\nconst name = ref('UAH');\n</script>\n\n<template>\n    <u-card title=\"工作区偏好\" subtitle=\"保存当前工作区的显示选项。\">\n        <u-text-field label=\"名称\" id=\"card-name\" v-model=\"name\" />\n        <template #actions>\n            <u-button variant=\"text\">取消</u-button>\n            <u-button variant=\"flat\" color=\"primary\">保存</u-button>\n        </template>\n    </u-card>\n</template>\n"
+            },
+            {
+                "id": "card-clickable",
+                "title": "整面动作与涟漪",
+                "description": "单一动作使用原生按钮语义，Tab / Enter / Space 可操作；静态卡片不产生涟漪。ripple=false 保留操作、关闭反馈。",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCard } from '@lingyzh/ui';\nconst opened = ref(0);\n</script>\n\n<template>\n    <u-card as=\"button\" type=\"button\" density=\"compact\" @click=\"opened++\">打开工作区</u-card>\n    <u-card as=\"button\" type=\"button\" density=\"compact\" :ripple=\"false\" @click=\"opened++\">\n        关闭反馈\n    </u-card>\n    <u-card>静态说明</u-card>\n    <output>已打开 {{ opened }} 次</output>\n</template>\n"
             },
             {
                 "id": "card-variants",
                 "title": "表面与布局",
                 "description": "outlined、elevated、tonal 与 flat；使用 flush 让 Tabs、代码块或媒体对齐卡片边缘。",
-                "code": "<script setup>\nimport { UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <div class=\"d-flex flex-wrap ga-4\">\n        <u-card v-for=\"variant in ['outlined', 'elevated', 'tonal', 'flat']\" :key=\"variant\" :variant=\"variant\" density=\"compact\" :title=\"variant\">同一套内容与间距。</u-card>\n    </div>\n</template>"
+                "code": "<script setup>\nimport { UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <div class=\"d-flex flex-wrap ga-4\">\n        <u-card\n            v-for=\"variant in ['outlined', 'elevated', 'tonal', 'flat']\"\n            :key=\"variant\"\n            :variant=\"variant\"\n            density=\"compact\"\n            :title=\"variant\"\n        >\n            同一套内容与间距。\n        </u-card>\n    </div>\n</template>\n"
             },
             {
                 "id": "card-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-card title=\"工作区\" >项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" dense>项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" ghost>项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" :rounded=\"false\">项目、文件与最近使用的内容。</u-card>\n</template>"
+                "code": "<script setup>\nimport { UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-card title=\"工作区\">项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" dense>项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" ghost>项目、文件与最近使用的内容。</u-card>\n    <u-card title=\"工作区\" :rounded=\"false\">项目、文件与最近使用的内容。</u-card>\n</template>\n"
             }
         ],
         "notes": [
             "为 section 提供可访问名称，例如 aria-label 或 aria-labelledby。",
-            "卡片本身不是按钮；可点击动作使用真正按钮，避免嵌套交互。",
+            "卡片默认为 section；整面单一动作可用 as=button 和 type=button，容纳多个交互控件时使用普通容器，避免嵌套按钮。",
             "本页提供各变体的独立示例；跨组件组合见“统一样式变体”文档。"
         ]
     },
@@ -1099,19 +1108,19 @@ export const pages = [
                 "id": "scroll-content",
                 "title": "受限高度与键盘滚动",
                 "description": "聚焦后使用方向键或 PageDown；滚动条在整个应用中使用同一份样式。",
-                "code": "<script setup>\nimport { UScrollArea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"运行日志\" max-height=\"220px\">\n        <p v-for=\"line in 24\" :key=\"line\" class=\"px-4 py-2 ma-0\">日志 {{ line }} · 等待任务</p>\n    </u-scroll-area>\n</template>"
+                "code": "<script setup>\nimport { UScrollArea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"运行日志\" max-height=\"220px\">\n        <p v-for=\"line in 24\" :key=\"line\" class=\"px-4 py-2 ma-0\">日志 {{ line }} · 等待任务</p>\n    </u-scroll-area>\n</template>\n"
             },
             {
                 "id": "scroll-horizontal",
                 "title": "横向滑块与常显",
                 "description": "拖动滑块或点击轨道跳转。always 可保持滑块显示，无溢出时自动隐藏。",
-                "code": "<script setup>\nimport { UScrollArea, UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"横向项目\" axis=\"horizontal\" always><div class=\"d-flex ga-4 pa-4\" style=\"width: max-content\"><u-card v-for=\"item in 12\" :key=\"item\" :title=\"`项目 ${item}`\" density=\"compact\" style=\"width: 160px\">水平拖动查看。</u-card></div></u-scroll-area>\n</template>"
+                "code": "<script setup>\nimport { UScrollArea, UCard } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"横向项目\" axis=\"horizontal\" always>\n        <div class=\"d-flex ga-4 pa-4\" style=\"width: max-content\">\n            <u-card\n                v-for=\"item in 12\"\n                :key=\"item\"\n                :title=\"`项目 ${item}`\"\n                density=\"compact\"\n                style=\"width: 160px\"\n            >\n                水平拖动查看。\n            </u-card>\n        </div>\n    </u-scroll-area>\n</template>\n"
             },
             {
                 "id": "scroll-area-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { UScrollArea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always ><p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p></u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always dense><p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p></u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always ghost><p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p></u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always :rounded=\"false\"><p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p></u-scroll-area>\n</template>"
+                "code": "<script setup>\nimport { UScrollArea } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always>\n        <p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p>\n    </u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always dense>\n        <p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p>\n    </u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always ghost>\n        <p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p>\n    </u-scroll-area>\n    <u-scroll-area label=\"运行日志\" height=\"120px\" always :rounded=\"false\">\n        <p v-for=\"line in 10\" :key=\"line\" class=\"pa-3 ma-0\">日志 {{ line }}</p>\n    </u-scroll-area>\n</template>\n"
             }
         ],
         "notes": [
@@ -1134,18 +1143,18 @@ export const pages = [
                 "id": "code-highlight",
                 "title": "Vue 语法高亮",
                 "description": "源码作为字符串展示，绝不执行；复制得到不含高亮标签的原始文本。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCodeBlock, UButton } from '@lingyzh/ui';\nconst source = '<template><u-button>保存</u-button></template>';\n</script>\n\n<template>\n    <u-code-block :code=\"source\" language=\"vue\" />\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCodeBlock, UButton } from '@lingyzh/ui';\nconst source = '<template><u-button>保存</u-button></template>';\n</script>\n\n<template>\n    <u-code-block :code=\"source\" language=\"vue\" />\n</template>\n"
             },
             {
                 "id": "code-block-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { UCodeBlock } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-code-block code=\"const saved = true;\" language=\"javascript\"  />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" dense />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" ghost />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" :rounded=\"false\" />\n</template>"
+                "code": "<script setup>\nimport { UCodeBlock } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" dense />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" ghost />\n    <u-code-block code=\"const saved = true;\" language=\"javascript\" :rounded=\"false\" />\n</template>\n"
             }
         ],
         "notes": [
             "支持真实 Vue SFC 的 script/template/style 高亮。",
-            "代码区最大高度 580px；横向溢出可滚动或手动启用换行。",
+            "默认不限制代码区最大高度；显式传入 max-height 后才在指定高度内滚动。横向溢出可滚动或手动启用换行。",
             "本页提供各变体的独立示例；跨组件组合见“统一样式变体”文档。"
         ]
     },
@@ -1161,23 +1170,31 @@ export const pages = [
                 "id": "demo",
                 "title": "指针与键盘",
                 "demo": "ripple-feedback",
-                "text": "按钮和 Tabs 默认启用。快速点击、长按和连续点击均可验收；扩散 250ms、显现 100ms、最短显示 250ms 后淡出 300ms。自动释放指针焦点不删除波纹。禁用控件和减少动效不产生涟漪。",
-                "code": "import { vRipple } from '@lingyzh/ui';\n// 在 script setup 中导入后可直接使用 v-ripple\n<u-button :ripple=\"{ center: true }\">居中反馈</u-button>\n<button v-ripple class=\"pa-4\">原生按钮</button>"
+                "text": "按钮、Tabs、列表项、菜单选项及其他离散动作入口默认启用。快速点击、长按和连续点击均可验收；扩散 250ms、显现 100ms、最短显示 250ms 后淡出 300ms。自动释放指针焦点不删除波纹。禁用、只读控件和减少动效不产生涟漪。",
+                "code": "<script setup>\nimport { UButton, vRipple } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-button :ripple=\"{ center: true }\">居中反馈</u-button>\n    <button v-ripple class=\"pa-4\">原生按钮</button>\n</template>\n"
             },
             {
                 "id": "options",
                 "title": "修饰符、颜色与传播",
                 "demo": "ripple-options",
                 "text": ".center 固定中心，.circle 使用圆形扩散半径，.stop 只阻止祖先波纹而保留事件冒泡。支持 class 主题辅助类、color 兼容选项和自定义 keys。触摸延迟 80ms，短点按依然完成反馈，滚动在延迟前取消显示。",
-                "code": "<script setup>\nimport { UButton, vRipple } from '@lingyzh/ui';\n</script>\n\n<template>\n    <button v-ripple.center.circle aria-label=\"圆形反馈\" style=\"width:56px;height:56px;border-radius:50%\">+</button>\n    <u-button :ripple=\"{ class: 'text-primary' }\">主题颜色</u-button>\n    <u-button :ripple=\"{ keys: ['a'] }\">按 A 反馈</u-button>\n    <div v-ripple>\n        <button v-ripple>内层反馈</button>\n        <button v-ripple.stop>仅阻止外层反馈</button>\n    </div>\n</template>"
+                "code": "<script setup>\nimport { UButton, vRipple } from '@lingyzh/ui';\n</script>\n\n<template>\n    <button\n        v-ripple.center.circle\n        aria-label=\"圆形反馈\"\n        style=\"width: 56px; height: 56px; border-radius: 50%\"\n    >\n        +\n    </button>\n    <u-button :ripple=\"{ class: 'text-primary' }\">主题颜色</u-button>\n    <u-button :ripple=\"{ keys: ['a'] }\">按 A 反馈</u-button>\n    <div v-ripple>\n        <button v-ripple>内层反馈</button>\n        <button v-ripple.stop>仅阻止外层反馈</button>\n    </div>\n</template>\n"
+            },
+            {
+                "id": "controls",
+                "title": "选择控件的默认反馈",
+                "demo": "ripple-controls",
+                "text": "复选、单选和开关在实际控件表面显示居中反馈，保留原生标签、焦点和尺寸。文本编辑区域、普通文字链接、拖放区与原生 select/file 选择区保留各自交互反馈。列表项的独立按钮示例见列表项文档。",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCheckbox, USwitch, URadio } from '@lingyzh/ui';\nconst checked = ref(false);\nconst sync = ref(false);\nconst mode = ref('default');\n</script>\n\n<template>\n    <u-checkbox v-model=\"checked\">接收通知</u-checkbox>\n    <u-switch v-model=\"sync\" label=\"自动同步\" />\n    <u-radio v-model=\"mode\" value=\"default\">默认模式</u-radio>\n    <u-radio v-model=\"mode\" value=\"custom\" :ripple=\"false\">关闭反馈</u-radio>\n</template>\n"
             },
             {
                 "id": "contract",
                 "title": "使用契约",
                 "items": [
-                    "UButton / UTabs / UTab：ripple 为 boolean 或 { center?: boolean, circle?: boolean, class?: string, color?: string, keys?: string[] }，默认为 true；键盘 keys 默认为 Enter / Space，也接受空格字符。",
+                    "动作组件的 ripple 为 boolean 或 { center?: boolean, circle?: boolean, class?: string, color?: string, keys?: string[] }，默认为 true。包括 Button / Tabs / Tab、ListItem / ListGroup / MenuItem、Treeview、Item / Chip、选择控件、选择器选项与排序、展开、清除、关闭等按钮；具体支持见各组件 API。Card 仅在显式绑定点击、href 或 as=button 时触发。",
+                    "按钮与动作项 keys 默认 Enter / Space；原生复选、单选和开关默认 Space。支持空格字符和自定义按键。ListGroup 自定义 activator 的 props 包含 ripple，需一起绑定。",
                     "v-ripple 只负责视觉；原生元素须自行提供按钮语义、键盘操作与名称。",
-                    "v-ripple 支持 .center / .circle / .stop。嵌套时仅内层产生波纹；.stop 不产生自身波纹，也不调用 stopPropagation。键盘重复按键不会叠加；普通指针失焦不清除波纹，键盘失焦和鼠标离开会完成退场。",
+                    "v-ripple 支持 .center / .circle / .stop。嵌套独立按钮和输入控件由自己处理反馈；子控件 ripple=false 也不会触发父层波纹。普通内容区域可以由宿主统一反馈；.stop 不产生自身波纹，也不调用 stopPropagation。键盘重复按键不会叠加；普通指针失焦不清除波纹，键盘失焦和鼠标离开会完成退场。",
                     "触摸短点按提交延迟中的波纹，滑动／取消不强制提交。动态关闭、禁用、减少动态效果、隐藏页面与卸载清理动画和定时器；默认 UAH 波纹强度保留为 .14，可用 --ripple-opacity 覆盖。不改变宿主 overflow，静态宿主仅在波纹显示时临时定位并恢复。"
                 ]
             }
@@ -1195,7 +1212,7 @@ export const pages = [
                 "id": "demo",
                 "title": "组合布局",
                 "demo": "utility-layout",
-                "code": "<div class=\"d-flex align-center justify-space-between ga-4 pa-4\">\n    <span class=\"flex-grow-1\">工作区</span>\n    <u-button size=\"sm\">打开</u-button>\n</div>"
+                "code": "<div class=\"d-flex align-center justify-space-between ga-4 pa-4\">\n    <span class=\"flex-grow-1\">工作区</span>\n    <u-button size=\"sm\">打开</u-button>\n</div>\n"
             },
             {
                 "id": "spacing",
@@ -1232,7 +1249,7 @@ export const pages = [
                 "id": "playground",
                 "title": "组合预览",
                 "demo": "style-variants",
-                "code": "<u-card dense ghost :rounded=\"false\">\n    <u-text-field v-model=\"name\" dense ghost :rounded=\"false\" aria-label=\"名称\" />\n    <u-button dense ghost :rounded=\"false\">操作</u-button>\n</u-card>"
+                "code": "<u-card dense ghost :rounded=\"false\">\n    <u-text-field v-model=\"name\" dense ghost :rounded=\"false\" aria-label=\"名称\" />\n    <u-button dense ghost :rounded=\"false\">操作</u-button>\n</u-card>\n"
             },
             {
                 "id": "scope",
@@ -1260,13 +1277,14 @@ export const pages = [
                 "title": "指针操作与键盘焦点",
                 "text": "使用真实开关、复选框、单选、按钮、Tabs、色板、折叠和输入框比较两种操作方式。",
                 "demo": "layout-focus",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { USwitch, UCheckbox, URadio, UButton, UTabs, UTabPanel, UColorSwatches, UActivity, UTextField } from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label><u-switch v-model=\"enabled\" />开关</label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs v-model=\"selectedTab\" id-prefix=\"focus\" :items=\"[{ id: 'first', label: '第一项' }, { id: 'second', label: '第二项' }]\" />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">第二项内容</u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabPanel,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">\n        第二项内容\n    </u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
             }
         ]
     }
 ];
 
 pages.push(...tablePages, ...feedbackPages, ...controlPages, ...layoutPages, ...themePages);
+pages.push(typographyPage);
 for (const page of pages) {
     if (page.name?.startsWith('Ui')) page.name = page.name === 'Ui' + 'Input' ? 'UTextField' : page.name === 'Ui' + 'Badge' ? 'UChip' : 'U' + page.name.slice(2);
     if (page.name === 'UChip' && page.id === 'badge') { page.id = 'chip'; page.title = '标签'; }
@@ -1276,7 +1294,8 @@ for (const page of completionPages) {
     if (!existing) pages.push(page);
     else for (const example of page.examples) if (!existing.examples.some(item => item.id === example.id)) existing.examples.push(example);
 }
-pages.find(page => page.name === 'UButton').examples.push(buttonLoadingExample);
+pages.find(page => page.name === 'UButton').examples.push(buttonAppearanceExample, buttonLoadingExample);
+pages.find(page => page.name === 'UCodeBlock').examples.push(codeBlockHeightExample);
 for (const page of pages.filter(page => page.kind === 'component')) {
     const api = componentApi[page.name];
     if (!api) throw new Error(`Missing API reference for ${page.name}`);

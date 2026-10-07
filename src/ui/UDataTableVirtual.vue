@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import { computed, ref, watch } from 'vue';
 import { getPath, itemKey, processItems, type DataHeader, type DataItem } from './data-pipeline';
 import type { TableSort } from './table';
 import { vPointerBlur } from './pointer-focus';
+import { uiText } from './locale';
 
 const rawProps = withDefaults(defineProps<{
     headers: readonly DataHeader[];
@@ -16,7 +18,7 @@ const rawProps = withDefaults(defineProps<{
     overscan?: number;
     loading?: boolean;
     disabled?: boolean;
-}>(), { label: 'Virtual data table', itemValue: 'id', height: 360, itemHeight: 40, overscan: 5 });
+} & { ripple?: RippleOptions }>(), { ripple: true, label: 'Virtual data table', itemValue: 'id', height: 360, itemHeight: 40, overscan: 5 });
 const props = useDefaults(rawProps, 'UDataTableVirtual');
 const sortBy = defineModel<TableSort[]>('sortBy', { default: () => [] });
 const scrollTop = ref(0);
@@ -38,7 +40,7 @@ function sort(key: string): void {
 <template>
     <div class="u-data-table u-data-table-virtual" :style="{ height: `${props.height}px` }" :aria-busy="props.loading || undefined" @scroll="scrollTop = ($event.target as HTMLElement).scrollTop">
         <table :aria-label="props.label">
-            <thead><tr><th v-for="header in props.headers" :key="header.key" scope="col" :style="{ width: header.width, textAlign: header.align }"><button v-if="header.sortable" v-pointer-blur type="button" :disabled="props.disabled || props.loading" @click="sort(header.key)"><slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot> <span aria-hidden="true">{{ sortBy.find((entry) => entry.key === header.key)?.order === 'asc' ? '↑' : sortBy.find((entry) => entry.key === header.key)?.order === 'desc' ? '↓' : '↕' }}</span></button><slot v-else :name="`header.${header.key}`" :header="header">{{ header.title }}</slot></th></tr></thead>
+            <thead><tr><th v-for="header in props.headers" :key="header.key" scope="col" :style="{ width: header.width, textAlign: header.align }" :aria-sort="header.sortable ? (sortBy.find((entry) => entry.key === header.key)?.order === 'asc' ? 'ascending' : sortBy.find((entry) => entry.key === header.key)?.order === 'desc' ? 'descending' : 'none') : undefined"><button v-ripple="props.ripple" v-if="header.sortable" v-pointer-blur type="button" :disabled="props.disabled || props.loading" :aria-label="uiText('table.sort', { title: header.title })" @click="sort(header.key)"><slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot><svg class="ui-table-sort-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 2 10 6H2Z" :class="{ 'is-active': sortBy.find((entry) => entry.key === header.key)?.order === 'asc' }" /><path d="M2 10H10L6 14Z" :class="{ 'is-active': sortBy.find((entry) => entry.key === header.key)?.order === 'desc' }" /></svg></button><slot v-else :name="`header.${header.key}`" :header="header">{{ header.title }}</slot></th></tr></thead>
             <tbody>
                 <tr v-if="props.loading"><td :colspan="props.headers.length"><slot name="loading">Loading…</slot></td></tr>
                 <template v-else>

@@ -6,6 +6,7 @@ import { useDefaults } from './defaults';
 import type { ControlSizing } from './control-sizing';
 import type { FormControlProps } from './form';
 import type { ItemProperty, ValueComparator } from './selection';
+import type { RippleOptions } from './ripple';
 
 export interface SelectItem {
     value: string | number;
@@ -16,6 +17,7 @@ export interface SelectItem {
 }
 defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<ControlSizing & FormControlProps & {
+    ripple?: RippleOptions;
     items?: readonly unknown[];
     menuTitle?: string;
     placeholder?: string;
@@ -31,7 +33,7 @@ const rawProps = withDefaults(defineProps<ControlSizing & FormControlProps & {
     returnObject?: boolean;
     valueComparator?: ValueComparator;
     hideSelected?: boolean;
-}>(), { blurOnSelect: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+}>(), { ripple: true, blurOnSelect: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'USelect');
 const attrs = useAttrs();
 const model = defineModel<any>();

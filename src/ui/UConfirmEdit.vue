@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDefaults } from './defaults';
 import UiButton from './UiButton.vue';
+import UTransition from './UTransition.vue';
 import { ref, watch } from 'vue';
 const rawProps = defineProps<{ disabled?: boolean; readonly?: boolean; validate?: (value: unknown) => boolean | Promise<boolean> }>();
 const props = useDefaults(rawProps, 'UConfirmEdit');
@@ -27,5 +28,5 @@ function cancel(): void { if (saving.value) return; draft.value = model.value; o
 defineExpose({ begin, save, cancel });
 </script>
 <template>
-    <div class="u-confirm-edit"><slot name="activator" :open="open" :begin="begin"><UiButton v-if="!open" :disabled="props.disabled || props.readonly" @click="begin">编辑</UiButton></slot><div v-if="open"><slot :open="open" :draft="draft" :model="draftModel" :begin="begin" :save="save" :cancel="cancel" :saving="saving" /><div class="u-confirm-actions"><UiButton variant="ghost" :disabled="saving" @click="cancel">取消</UiButton><UiButton variant="primary" :loading="saving" @click="save">保存</UiButton></div></div></div>
+    <div class="u-confirm-edit"><slot name="activator" :open="open" :begin="begin"><UiButton v-if="!open" :disabled="props.disabled || props.readonly" @click="begin">编辑</UiButton></slot><UTransition variant="expand"><div v-if="open"><slot :open="open" :draft="draft" :model="draftModel" :begin="begin" :save="save" :cancel="cancel" :saving="saving" /><div class="u-confirm-actions"><UiButton variant="text" :disabled="saving" @click="cancel">取消</UiButton><UiButton variant="flat" color="primary" :loading="saving" @click="save">保存</UiButton></div></div></UTransition></div>
 </template>
