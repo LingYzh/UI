@@ -6,11 +6,11 @@ import { attachWindowMotion, windowContextKey, type WindowContext } from './wind
 const rawProps = defineProps<{ disabled?: boolean; touch?: boolean; keyboard?: boolean; continuous?: boolean; eager?: boolean; label?: string }>();
 const props = useDefaults(rawProps, 'UWindow');
 const model = defineModel<GroupValue | null>({ default: null });
-const group = createGroup(model, { mandatory: true, disabled: props.disabled });
+const group = createGroup(model, { mandatory: true, disabled: () => props.disabled });
 const direction = ref<'forward' | 'backward'>('forward');
 const visited = reactive(new Set<GroupValue>());
 watch(model, (value) => { if (value != null) visited.add(value); }, { immediate: true });
-const context: WindowContext = { ...group, direction, visited };
+const context: WindowContext = Object.assign(group, { direction, visited });
 provide(windowKey, context);
 provide(windowContextKey, context);
 function next(): void {

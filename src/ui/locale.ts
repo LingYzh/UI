@@ -5,6 +5,10 @@ export interface LocaleContext {
     isRtl: ComputedRef<boolean>;
     t: (key: string, params?: Record<string, string | number>) => string;
     n: (value: number, options?: Intl.NumberFormatOptions) => string;
+    /** Optional on legacy providers; nested contexts use it to resolve ancestor messages. */
+    fallback?: ComputedRef<string>;
+    resolve?: (key: string, locale: string) => string | undefined;
+    rtlFor?: (locale: string) => boolean;
 }
 export const localeKey: InjectionKey<LocaleContext> = Symbol('u-locale');
 
@@ -60,6 +64,14 @@ const zh = {
     'table.sort': '{title}排序',
     'table.pagination': '{label}分页',
     'table.perPage': '每页',
+    'table.all': '全部',
+    'table.firstPage': '首页',
+    'table.lastPage': '末页',
+    'table.selectAll': '选择所有行',
+    'table.selectRow': '选择 {title}',
+    'table.selectGroup': '选择 {title} 分组',
+    'table.expandRow': '展开 {title}',
+    'table.collapseRow': '收起 {title}',
     'table.range': '{start}–{end} / {total} 条',
     'table.rangeEmpty': '0 条',
     'table.perPageOption': '{count} 条',
@@ -166,6 +178,14 @@ const en: UiMessages = {
     'table.sort': 'Sort by {title}',
     'table.pagination': '{label} pagination',
     'table.perPage': 'Per page',
+    'table.all': 'All',
+    'table.firstPage': 'First page',
+    'table.lastPage': 'Last page',
+    'table.selectAll': 'Select all rows',
+    'table.selectRow': 'Select {title}',
+    'table.selectGroup': 'Select group {title}',
+    'table.expandRow': 'Expand {title}',
+    'table.collapseRow': 'Collapse {title}',
     'table.range': '{start}–{end} of {total}',
     'table.rangeEmpty': '0 items',
     'table.perPageOption': '{count}',

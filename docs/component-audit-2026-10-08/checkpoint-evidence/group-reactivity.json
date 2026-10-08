@@ -1,0 +1,75 @@
+{
+    "method": "Vite source fixture in Electron; no build",
+    "window": {
+        "enabledExposedNext": "b",
+        "disabledExposedNext": "a",
+        "disabledKeyboard": "a",
+        "disabledTouch": "a",
+        "enabledKeyboard": "b",
+        "enabledTouch": "b"
+    },
+    "carousel": {
+        "disabledKeyboard": "a",
+        "disabledTouch": "a",
+        "enabledKeyboard": "b",
+        "enabledTouch": "b"
+    },
+    "expansionPanels": {
+        "enabledSelect": "a",
+        "disabledClass": "u-expansion-panel is-disabled",
+        "disabledSelect": null,
+        "enabledAgainSelect": "a",
+        "unmountFallbackBefore": "x",
+        "unmountFallbackAfter": "y"
+    },
+    "stepper": {
+        "mandatoryInitially": true,
+        "mandatoryFalse": false,
+        "selectedAfterEnable": "b",
+        "mandatoryTrueAgain": true
+    },
+    "errors": [],
+    "nullModels": {
+        "windowValue": "first",
+        "windowUpdates": 1,
+        "panelValue": "first",
+        "panelUpdates": 1,
+        "stepperValue": "first",
+        "stepperUpdates": 1,
+        "optionalPanelValue": null,
+        "optionalPanelUpdates": 0
+    },
+    "originalObserved": {
+        "uWindowDisabledExposedNext": "b (expected a)",
+        "nullMandatoryExpansionPanels": "y (expected x)",
+        "nullMandatoryStepper": "b (expected a)",
+        "windowBaselineReference": "docs/component-audit-2026-10-08/ROOT-RUNTIME.json"
+    },
+    "screenshots": [
+        {
+            "file": "wide-light.png",
+            "theme": "light",
+            "width": 1280,
+            "height": 900
+        },
+        {
+            "file": "wide-dark.png",
+            "theme": "dark",
+            "width": 1280,
+            "height": 900
+        },
+        {
+            "file": "narrow-light.png",
+            "theme": "light",
+            "width": 390,
+            "height": 844
+        },
+        {
+            "file": "narrow-dark.png",
+            "theme": "dark",
+            "width": 390,
+            "height": 844
+        }
+    ],
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\group-reactivity"
+}

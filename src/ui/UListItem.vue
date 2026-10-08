@@ -5,7 +5,8 @@ import { vPointerBlur } from './pointer-focus';
 import { computed, ref } from 'vue';
 import { useList, type ListValue } from './list-completion';
 import { useDefaults } from './defaults';
-const rawProps = withDefaults(defineProps<{ value?: ListValue; title?: string; subtitle?: string; disabled?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean; href?: string } & { ripple?: RippleOptions }>(), { ripple: true,
+import Icon from '../components/Icon.vue';
+const rawProps = withDefaults(defineProps<{ value?: ListValue; title?: string; subtitle?: string; appendIcon?: string; appendText?: string; disabled?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean; href?: string } & { ripple?: RippleOptions }>(), { ripple: true,
     active: undefined, disabled: false, selectable: true, activatable: true
 });
 const props = useDefaults(rawProps, 'UListItem');
@@ -33,5 +34,45 @@ function keydown(event: KeyboardEvent) {
 </script>
 
 <template>
-    <component :is="props.href ? 'a' : 'div'" ref="element" v-ripple="props.ripple" v-pointer-blur class="ui-list-item" :class="{ 'is-selected': selected, 'is-active': active }" :href="props.disabled ? undefined : props.href" data-ui-list-item :role="itemRole" :aria-selected="itemRole === 'option' ? selected : undefined" :aria-current="!itemRole && active ? 'page' : undefined" :aria-disabled="props.disabled" :tabindex="props.disabled ? -1 : 0" @click="choose" @keydown="keydown"><span v-if="$slots.prepend" class="ui-list-item-prepend"><slot name="prepend" /></span><span class="ui-list-item-content"><span class="ui-list-item-title"><slot name="title">{{ props.title }}<slot v-if="!props.title" /></slot></span><span v-if="props.subtitle || $slots.subtitle" class="ui-list-item-subtitle"><slot name="subtitle">{{ props.subtitle }}</slot></span></span><span v-if="$slots.append" class="ui-list-item-append"><slot name="append" /></span></component>
+    <component :is="props.href ? 'a' : 'div'" ref="element" class="ui-list-item"
+        :class="{ 'is-selected': selected, 'is-active': active, 'has-append-text': !$slots.append && !!props.appendText, 'has-append-icon': !$slots.append && !!props.appendIcon }"
+        :href="props.disabled ? undefined : props.href" data-ui-list-item :role="itemRole"
+        :aria-selected="itemRole === 'option' ? selected : undefined" :aria-current="!itemRole && active ? 'page' : undefined"
+        :aria-disabled="props.disabled" :tabindex="props.disabled ? -1 : 0"
+        v-ripple="props.ripple" v-pointer-blur
+        @click="choose" @keydown="keydown"
+    >
+        <span class="ui-list-item-prepend"
+            v-if="$slots.prepend"
+        >
+            <slot name="prepend" />
+        </span>
+        <span class="ui-list-item-content">
+            <span class="ui-list-item-title">
+                <slot name="title">
+                    {{ props.title }}
+                    <slot v-if="!props.title" />
+                </slot>
+            </span>
+            <span class="ui-list-item-subtitle"
+                v-if="props.subtitle || $slots.subtitle"
+            >
+                <slot name="subtitle">{{ props.subtitle }}</slot>
+            </span>
+        </span>
+        <span class="ui-list-item-append"
+            v-if="$slots.append || props.appendText || props.appendIcon"
+        >
+            <slot name="append">
+                <span class="ui-list-item-append-text" :title="props.appendText"
+                    v-if="props.appendText"
+                >
+                    {{ props.appendText }}
+                </span>
+                <Icon :name="props.appendIcon"
+                    v-if="props.appendIcon"
+                />
+            </slot>
+        </span>
+    </component>
 </template>

@@ -67,7 +67,9 @@ test('slot API recursively includes forwarded names and real payloads', () => {
     for (const name of ['header.*', 'loading', 'error', 'group-header', 'item.*', 'expanded-row', 'no-data', 'footer']) {
         assert.ok(server.some(slot => slot.name === name), `UDataTableServer forwards ${name}`);
     }
-    assert.equal(server.find(slot => slot.name === 'group-header').type, '{ group, toggle }');
+    for (const field of ['item', 'group', 'toggle', 'toggleGroup', 'isGroupOpen', 'columns']) {
+        assert.ok(server.find(slot => slot.name === 'group-header').type.includes(field), `group-header scope includes ${field}`);
+    }
 });
 
 test('explicit undefined inherits shared control defaults while omitted Boolean members keep Vue casting', () => {

@@ -1,0 +1,359 @@
+{
+    "baseline": "Vuetify 4.2.4 source package at artifacts/upstream-table-audit/package",
+    "browser": "Electron with local Vite fixture; all image endpoints are local and deterministic",
+    "image": {
+        "lateDuringNewLoad": {
+            "image": {
+                "rootTag": "DIV",
+                "imageTag": "IMG",
+                "imageAliasMatches": true,
+                "visible": true,
+                "loading": true,
+                "error": false,
+                "state": "loading",
+                "currentSrc": "/__media__/new-fast.svg",
+                "naturalWidth": 0,
+                "naturalHeight": 0,
+                "src": "/__media__/new-fast.svg",
+                "srcset": null,
+                "sizes": null,
+                "alt": "",
+                "crossorigin": null,
+                "referrerpolicy": null,
+                "draggable": "false",
+                "imageClass": "u-img-main",
+                "objectFit": "cover",
+                "objectPosition": "50% 50%",
+                "style": {
+                    "width": "160px",
+                    "height": "80px",
+                    "minWidth": "",
+                    "minHeight": "",
+                    "maxWidth": "",
+                    "maxHeight": "",
+                    "aspectRatio": "auto",
+                    "display": "block",
+                    "position": "relative",
+                    "borderRadius": "0px"
+                }
+            },
+            "events": [
+                {
+                    "type": "loadstart",
+                    "value": "/__media__/old-slow.svg"
+                },
+                {
+                    "type": "loadstart",
+                    "value": "/__media__/new-fast.svg"
+                }
+            ],
+            "nativeEvents": [
+                {
+                    "type": "load",
+                    "currentSrc": "http://127.0.0.1:61323/__media__/old-slow.svg",
+                    "connected": true,
+                    "direct": true
+                }
+            ]
+        },
+        "lateEventSequence": [
+            {
+                "type": "loadstart",
+                "value": "/__media__/old-slow.svg"
+            },
+            {
+                "type": "loadstart",
+                "value": "/__media__/new-fast.svg"
+            },
+            {
+                "type": "load",
+                "payload": {
+                    "kind": "event",
+                    "type": "load",
+                    "targetTag": "IMG",
+                    "currentSrc": "http://127.0.0.1:61323/__media__/new-fast.svg"
+                }
+            }
+        ],
+        "lateLoadSources": [
+            "http://127.0.0.1:61323/__media__/new-fast.svg"
+        ],
+        "lateNativeEvents": [
+            {
+                "type": "load",
+                "currentSrc": "http://127.0.0.1:61323/__media__/old-slow.svg",
+                "connected": true,
+                "direct": true
+            },
+            {
+                "type": "load",
+                "currentSrc": "http://127.0.0.1:61323/__media__/new-fast.svg",
+                "connected": true,
+                "directNew": true
+            }
+        ],
+        "lazyAfterTrigger": {
+            "visible": true,
+            "loading": false,
+            "state": "loaded",
+            "source": "/__media__/lazy.svg",
+            "currentSrc": "http://127.0.0.1:61323/__media__/lazy.svg",
+            "events": [
+                {
+                    "kind": "event",
+                    "type": "load",
+                    "targetTag": "IMG",
+                    "currentSrc": "http://127.0.0.1:61323/__media__/lazy.svg"
+                }
+            ],
+            "observers": [
+                {
+                    "connected": false,
+                    "options": {
+                        "rootMargin": "17px",
+                        "threshold": 0.4
+                    }
+                },
+                {
+                    "connected": false,
+                    "options": {
+                        "rootMargin": "31px",
+                        "threshold": 0.75
+                    }
+                }
+            ]
+        },
+        "demoAtScrollStart": {
+            "rootClasses": "u-img has-ratio",
+            "rootRect": {
+                "x": 66.80000305175781,
+                "y": 462.3999938964844,
+                "width": 539.6000366210938,
+                "height": 220,
+                "top": 462.3999938964844,
+                "right": 606.4000396728516,
+                "bottom": 682.3999938964844,
+                "left": 66.80000305175781
+            },
+            "imageSrc": null,
+            "currentSrc": "",
+            "complete": true,
+            "naturalWidth": 0,
+            "imageDisplay": "none",
+            "scroll": {
+                "top": 0,
+                "height": 1038,
+                "viewport": 1038
+            }
+        },
+        "demoAfterLoad": {
+            "height": "220px",
+            "rectHeight": 220,
+            "imageCurrentSrc": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22320%22%20viewBox%3D%220%200%20640%20320%22%3E%3Crect%20width%3D%22640%22%20height%3D%22320%22%20fill%3D%22%23efe8df%22%2F%3E%3Ccircle%20cx%3D%22480%22%20cy%3D%22100%22%20r%3D%2260%22%20fill%3D%22%23bd6749%22%2F%3E%3Cpath%20d%3D%22M0%20320%20180%2090%20360%20320Z%22%20fill%3D%22%23789380%22%2F%3E%3Cpath%20d%3D%22M230%20320%20420%20150%20640%20320Z%22%20fill%3D%22%23a7b7a5%22%2F%3E%3C%2Fsvg%3E",
+            "imageComplete": true,
+            "naturalWidth": 640
+        },
+        "defaultPayload": "native Event",
+        "standardProtocolPayload": "currentSrc URL string",
+        "loadOrder": [
+            "loadstart",
+            "load"
+        ],
+        "currentSrc": "http://127.0.0.1:61323/__media__/prop-2x.svg",
+        "sourceObjectPropertyOverrides": {
+            "srcset": true,
+            "lazySrc": true,
+            "aspectRatio": true
+        },
+        "inlineSourceRerender": {
+            "events": [
+                "loadstart",
+                "load"
+            ],
+            "parentLoadCount": 1,
+            "requestsBeforeAndAfterRerender": 1,
+            "aspectAfterUpdate": "3 / 1"
+        },
+        "geometry": {
+            "width": "240px",
+            "height": "220px",
+            "minWidth": "190px",
+            "tileBorderRadius": "0px"
+        },
+        "realDemo": {
+            "height": "220px",
+            "rectHeight": 220,
+            "imageCurrentSrc": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22320%22%20viewBox%3D%220%200%20640%20320%22%3E%3Crect%20width%3D%22640%22%20height%3D%22320%22%20fill%3D%22%23efe8df%22%2F%3E%3Ccircle%20cx%3D%22480%22%20cy%3D%22100%22%20r%3D%2260%22%20fill%3D%22%23bd6749%22%2F%3E%3Cpath%20d%3D%22M0%20320%20180%2090%20360%20320Z%22%20fill%3D%22%23789380%22%2F%3E%3Cpath%20d%3D%22M230%20320%20420%20150%20640%20320Z%22%20fill%3D%22%23a7b7a5%22%2F%3E%3C%2Fsvg%3E",
+            "naturalWidth": 640,
+            "complete": true
+        },
+        "naturalAspect": "2 / 1",
+        "pictureCurrentSrc": "http://127.0.0.1:61323/__media__/picture-source.svg",
+        "invalidPayload": {
+            "kind": "event",
+            "type": "error",
+            "targetTag": "IMG",
+            "currentSrc": "http://127.0.0.1:61323/__media__/invalid.svg"
+        },
+        "lateSource": {
+            "currentSrc": "http://127.0.0.1:61323/__media__/new-fast.svg",
+            "eventTypes": [
+                "loadstart",
+                "loadstart",
+                "load"
+            ],
+            "loadSources": [
+                "http://127.0.0.1:61323/__media__/new-fast.svg"
+            ],
+            "staleLoadSources": []
+        },
+        "exposed": {
+            "elementAlias": true,
+            "visible": true,
+            "loading": false,
+            "error": false
+        },
+        "lazyObserver": {
+            "optionsReplaced": true,
+            "disconnectedOnDisabled": true,
+            "disconnectedOnIntersect": true,
+            "cleanedOnUnmount": true,
+            "eagerSkippedObserver": true,
+            "loadedAfterIntersection": true,
+            "requestStarted": true
+        }
+    },
+    "infiniteScroll": {
+        "defaults": {
+            "defaultScroll": "u-infinite-scroll is-vertical",
+            "legacyStart": "u-infinite-scroll is-vertical",
+            "legacyEnd": "u-infinite-scroll is-vertical"
+        },
+        "defaultSlotScope": {
+            "busy": false,
+            "done": false,
+            "error": false,
+            "startStatus": "empty",
+            "endStatus": "ok",
+            "hasLoad": true,
+            "hasRetry": true,
+            "hasReset": true
+        },
+        "doneLoadingRuntime": {
+            "endStatus": "loading",
+            "busy": true
+        },
+        "manualSidePayloads": {
+            "dual": [
+                "start",
+                "end",
+                "end",
+                "end",
+                "start",
+                "start"
+            ],
+            "horizontal": [
+                "start",
+                "end"
+            ]
+        },
+        "startMount": {
+            "scrollTop": 823.2000122070312,
+            "scrollHeight": 1003,
+            "clientHeight": 180
+        },
+        "bothMount": {
+            "scrollTop": 483.20001220703125,
+            "scrollHeight": 1146,
+            "clientHeight": 180
+        },
+        "realDemo": {
+            "initialHeight": "260px",
+            "horizontalHeight": "260px",
+            "horizontalScrollWidth": 1297,
+            "horizontalClientWidth": 540,
+            "horizontalItemWidth": "180px",
+            "horizontalScrolledTo": 757.5999755859375,
+            "directionUpdateMethod": "mounted Vue demo setupState.direction (demo uses custom controls)"
+        },
+        "statusContractEvidence": {
+            "local": {
+                "file": "src/ui/infinite-scroll-state.ts",
+                "lines": [
+                    7,
+                    8,
+                    22
+                ],
+                "doneTypeExcludesLoading": true
+            },
+            "upstreamTypes": {
+                "file": "artifacts/upstream-table-audit/package/lib/components/VInfiniteScroll/VInfiniteScroll.d.ts",
+                "lines": [
+                    4,
+                    220
+                ],
+                "doneTypeIncludesLoading": true
+            },
+            "upstreamRuntime": {
+                "file": "artifacts/upstream-table-audit/package/lib/components/VInfiniteScroll/VInfiniteScroll.js",
+                "lines": [
+                    144,
+                    151
+                ]
+            },
+            "runtimeDoneLoading": {
+                "endStatus": "loading",
+                "busy": true,
+                "resetStatus": "ok"
+            }
+        },
+        "prepend": {
+            "before": {
+                "id": "old-25",
+                "top": 125.80000305175781
+            },
+            "after": {
+                "scrollTop": 887.2000122070312,
+                "visible": {
+                    "id": "old-25",
+                    "top": 125.80000305175781
+                }
+            },
+            "scrollDelta": 64
+        },
+        "nativeObserver": {
+            "events": 1,
+            "status": "empty"
+        }
+    },
+    "screenshots": [
+        "wide-light.png",
+        "wide-dark.png",
+        "narrow-dark.png",
+        "narrow-light.png"
+    ],
+    "requests": [
+        "/__media__/preview-prop.svg",
+        "/__media__/prop-2x.svg",
+        "/__media__/source-base.svg",
+        "/__media__/invalid.svg",
+        "/__media__/old-slow.svg",
+        "/__media__/natural.svg",
+        "/__media__/picture-source.svg",
+        "/__media__/absolute.svg",
+        "/__media__/inline-object.svg",
+        "/__media__/disabled.svg",
+        "/__media__/new-fast.svg",
+        "/__media__/lazy.svg",
+        "/__media__/lazy-eager.svg"
+    ],
+    "errors": [],
+    "productSourceSha256": {
+        "src/ui/UImg.vue": "bb9d54f3839425c263e8d6a48693fbfe0cc79eb589d99a8e79c33c018b3e3a50",
+        "src/ui/UInfiniteScroll.vue": "14fe172ad4fddf068ed0f9f1cefe2ba6a6b335f217e802ce0cc66bcded24a90c",
+        "src/ui/infinite-scroll-state.ts": "8df35b6a437a6d4d08baed84f5c8388bdd52eff5d9551a86d45e381fbc6e89c7",
+        "src/ui/docs/component-examples/img.vue": "f6b6cef60625bfb912f4a2d14f479062cb3166e8e148255116eca59353b1586b",
+        "src/ui/docs/component-examples/infinite-scroll.vue": "6aa0a7e16417706999f44e73f88eba3a171801307b240f4d471c23cb6b4afce4"
+    },
+    "protocolFailures": []
+}

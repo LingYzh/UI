@@ -56,6 +56,13 @@
 .ui-list-item-title, .ui-list-item-subtitle { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .ui-list-item-subtitle { color: var(--muted); font-size: 14px; }
 .ui-list-item-prepend, .ui-list-item-append { display: inline-flex; align-items: center; flex: none; color: var(--muted); }
+/* 辅助名称先省略；标题按自然宽度分配，极长标题仍可在自身区域截断。 */
+.ui-list-item.has-append-text { display: grid; grid-template-columns: minmax(0, max-content) minmax(0, 1fr); }
+.ui-list-item.has-append-text.has-append-icon { grid-template-columns: minmax(0, max-content) minmax(18px, 1fr); }
+.ui-list-item.has-append-text:has(> .ui-list-item-prepend) { grid-template-columns: auto minmax(0, max-content) minmax(0, 1fr); }
+.ui-list-item.has-append-text.has-append-icon:has(> .ui-list-item-prepend) { grid-template-columns: auto minmax(0, max-content) minmax(18px, 1fr); }
+.ui-list-item.has-append-text > .ui-list-item-append { min-width: 0; max-width: 100%; justify-self: end; gap: 6px; }
+.ui-list-item-append-text { min-width: 0; font-size: var(--ui-font-body-small); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ui-list-group-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 36px; padding: 8px 10px; border: 0; border-radius: 7px; background: transparent; color: var(--text); font: inherit; text-align: start; cursor: pointer; }
 .ui-list-group-header:hover { background: var(--hover); }
 .ui-list-group-items { padding-inline-start: 12px; }
@@ -139,6 +146,7 @@
 .ui-label.is-disabled { opacity: .5; }
 .ui-label-required { color: var(--red); }
 .ui-messages { display: flex; flex-direction: column; gap: 2px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.ui-messages-content { display: flex; flex-direction: column; gap: inherit; }
 .ui-messages.is-error, .ui-counter.is-over { color: var(--red); }
 .ui-counter { color: var(--muted); font-size: var(--ui-font-body-small); font-variant-numeric: tabular-nums; }
 .ui-dialog.ui-dialog--fullscreen { width: 100vw; height: 100dvh; max-width: 100vw; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }

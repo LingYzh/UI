@@ -1,0 +1,20 @@
+{
+    "date": "2026-10-08",
+    "component": "UWindow",
+    "verification": "targeted-runtime",
+    "method": "Vite source fixture / Electron, no build",
+    "command": "node artifacts/component-audit-root/probe.mjs",
+    "trigger": "Mount enabled with two items a/b, call next; reset a, set disabled=true, then call exposed next",
+    "enabledNext": "b",
+    "disabled": true,
+    "actualDisabledNext": "b",
+    "expectedDisabledNext": "a",
+    "confirmedBug": true,
+    "errors": [],
+    "originalEvidence": "artifacts/component-audit-root/window-VbAUIi/report.json",
+    "limitations": [
+        "One behavior probe, not a full component or browser matrix.",
+        "The probe and original artifacts are ignored local files; this record preserves the observed facts.",
+        "The defect was recorded, not fixed in this audit."
+    ]
+}

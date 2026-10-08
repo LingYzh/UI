@@ -1,0 +1,151 @@
+{
+    "fixture": "data-iterator-protocols",
+    "method": "Vite source fixture + public src/ui/index.ts + createUI defaults; runtime backend is recorded separately.",
+    "sourceSha256": {
+        "src/ui/UDataIterator.vue": "6b7d538b27add831c2b52d526cb4f4ad1d18200d37954ab21f2cad183eaad938",
+        "src/ui/data-iterator-state.ts": "57073db58d7266d6efdd0000f2daf49e5b4c9d1ee763145139334376108e0f54",
+        "src/ui/docs/component-examples/data-iterator.vue": "5c475ed3c18217e3ff57c3b5fedb1c6fefae85394ea02495a96d899b1000459c",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe"
+    },
+    "checks": [
+        {
+            "name": "demo fixture preserves raw example and full capture height",
+            "details": "The real legacy example explicitly disables the createUI default, and fixture root overflow does not clip the real example screenshot."
+        },
+        {
+            "name": "legacy renderless/raw/default10/search/no-data behavior",
+            "details": "Raw rows, 10-item default, page preservation, header/default/footer order, and no-data omission were exercised."
+        },
+        {
+            "name": "standard wrapper, attrs, wrapped slots, immediate options, exposed methods, and createUI defaults",
+            "details": "Custom tag/attributes and global standardProtocol default were read through the public entry."
+        },
+        {
+            "name": "standard numeric/string page models, page controls, currentItems rows, and model writeback",
+            "details": "Numeric helper methods and string-valued external models were exercised against page slices."
+        },
+        {
+            "name": "itemsLength zero/string manual mode",
+            "details": "Both defined lengths skip local slicing, keep filtering/sorting, and suppress currentItems events."
+        },
+        {
+            "name": "options deep dedupe and standard search page reset",
+            "details": "Search reset, numeric option snapshots, and repeat-assignment suppression were checked."
+        },
+        {
+            "name": "selection, returnObject, comparators, selectable guards, and expansion",
+            "details": "Page strategy, deep/custom comparison, raw object model values, and expanded model updates were exercised."
+        },
+        {
+            "name": "sort cycles, group model, openAll, and standard group-row event payload",
+            "details": "Sort models and group open/close were exercised through exposed methods and rendered slots."
+        },
+        {
+            "name": "loading string/object colors, slot sequence, and standard no-data slot",
+            "details": "Loader scope colors and header/loader-or-empty/footer ordering were checked."
+        },
+        {
+            "name": "runtime standardProtocol switching",
+            "details": "The same mounted instance switched between renderless raw slots and tagged standard wrapper slots."
+        },
+        {
+            "name": "real component example interactions and screenshots",
+            "details": [
+                "demo-wide-light.png",
+                "demo-wide-dark.png",
+                "demo-narrow-390.png"
+            ]
+        }
+    ],
+    "demo": [
+        "real example search, unselectable checkbox, page selection, group collapse/expand, disabled controls, sort, detail expansion, pagination, and no-data were exercised"
+    ],
+    "screenshots": [
+        {
+            "file": "demo-wide-light.png",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1100,
+                "documentWidth": 1280
+            },
+            "backend": "chrome",
+            "target": "real component example locator"
+        },
+        {
+            "file": "demo-wide-dark.png",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1100,
+                "documentWidth": 1280
+            },
+            "backend": "chrome",
+            "target": "real component example locator"
+        },
+        {
+            "file": "demo-narrow-390.png",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "backend": "chrome",
+            "target": "real component example locator"
+        }
+    ],
+    "errors": [],
+    "limits": [
+        "No full project build, full test suite, or visual design acceptance was run.",
+        "Browser assertions use the public source entry and the real component example; no compiled package bundle is involved."
+    ],
+    "previewUrl": "http://127.0.0.1:50281/__data-iterator-protocols",
+    "sourceMainUrl": "http://127.0.0.1:50281/artifacts/component-audit-root/data-iterator-protocols/fixture/main.ts",
+    "serverProbe": [
+        {
+            "name": "virtual-index",
+            "status": 200,
+            "contentType": "text/html; charset=utf-8",
+            "bytes": 1225
+        },
+        {
+            "name": "main-module",
+            "status": 200,
+            "contentType": "text/javascript",
+            "bytes": 1479
+        }
+    ],
+    "launchHost": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\data-iterator-protocols\\fixture\\electron-main.cjs",
+    "electronAttempt": {
+        "failure": "TimeoutError: electronApplication.firstWindow timed out after 10000 ms",
+        "launchConfig": {
+            "disableGpu": true,
+            "disableHardwareAcceleration": true,
+            "browserWindowShow": false,
+            "navigateOnlyAfterFirstWindow": true
+        },
+        "startupDiagnostics": {
+            "appReady": true,
+            "hostStages": [
+                "host-entered",
+                "ready-resolved",
+                "create-window-start"
+            ],
+            "windowCreated": false,
+            "windowCount": 0
+        },
+        "sourceChangedDuringRun": false
+    },
+    "backend": "chrome",
+    "backendLimit": "Chromium browser fixture only; this fallback does not establish Electron renderer acceptance.",
+    "httpErrors": [],
+    "electronOutput": [],
+    "sourceSha256After": {
+        "src/ui/UDataIterator.vue": "6b7d538b27add831c2b52d526cb4f4ad1d18200d37954ab21f2cad183eaad938",
+        "src/ui/data-iterator-state.ts": "57073db58d7266d6efdd0000f2daf49e5b4c9d1ee763145139334376108e0f54",
+        "src/ui/docs/component-examples/data-iterator.vue": "5c475ed3c18217e3ff57c3b5fedb1c6fefae85394ea02495a96d899b1000459c",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe"
+    },
+    "sourceChangedDuringRun": false
+}

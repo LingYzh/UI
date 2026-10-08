@@ -4,10 +4,12 @@ import { buttonAppearanceExample, buttonLoadingExample } from './buttonContent.j
 import { codeBlockHeightExample } from './codeBlockContent.js';
 import { typographyPage } from './typographyContent.js';
 import { tablePages } from './tableContent.js';
+import { tableAlignmentExamples, tableAlignmentNotes } from './tableAlignmentContent.js';
 import { feedbackPages } from './feedbackContent.js';
 import { controlPages } from './controlsContent.js';
 import { layoutPages } from './layoutContent.js';
 import { componentApi } from './apiReference.js';
+import { tooltipProtocolExample } from './tooltipProtocolContent.js';
 
 export const groups = [
     "开始使用",
@@ -271,7 +273,7 @@ export const pages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
@@ -347,13 +349,13 @@ export const pages = [
                 "id": "import",
                 "title": "导入与样式",
                 "text": "运行 npm install @lingyzh/ui；安装包导出 Vue/TypeScript 源码，需使用支持 Vue SFC 的构建工具。本地联调 UAH 可继续使用 file:../UI，并在 Vite 中配置 Vue dedupe。只在应用入口引入一次共享样式。",
-                "code": "import { UButton, UTextField, UField, USnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';\n"
+                "code": "import { UButton, UTextField, UFormField, USnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';\n"
             },
             {
                 "id": "form",
                 "title": "组合一个表单",
-                "text": "UField 提供关联属性，UTextField 接收字符串状态。校验属于页面；同时传入 error 与 invalid，分别提供说明和错误视觉。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UField, UTextField, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n</script>\n\n<template>\n    <form @submit.prevent=\"save\">\n        <u-text-field\n            label=\"项目名称\"\n            id=\"name\"\n            :error-messages=\"error\"\n            v-model=\"name\"\n            :invalid=\"Boolean(error)\"\n        />\n        <u-button type=\"submit\" variant=\"flat\" color=\"primary\">保存</u-button>\n    </form>\n</template>\n"
+                "text": "UFormField 提供关联属性，UTextField 接收字符串状态。校验属于页面；同时传入 error 与 invalid，分别提供说明和错误视觉。",
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFormField, UTextField, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n</script>\n\n<template>\n    <form @submit.prevent=\"save\">\n        <u-text-field\n            label=\"项目名称\"\n            id=\"name\"\n            :error-messages=\"error\"\n            v-model=\"name\"\n            :invalid=\"Boolean(error)\"\n        />\n        <u-button type=\"submit\" variant=\"flat\" color=\"primary\">保存</u-button>\n    </form>\n</template>\n"
             },
             {
                 "id": "host",
@@ -457,7 +459,7 @@ export const pages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
@@ -508,7 +510,7 @@ export const pages = [
                 "id": "select-states",
                 "title": "错误和禁用",
                 "description": "invalid 与 disabled 可分别表达校验结果和当前不可操作状态。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UField, USelect } from '@lingyzh/ui';\nconst project = ref('');\n</script>\n\n<template>\n    <u-select\n        label=\"需要选择的项目\"\n        id=\"project\"\n        :error-messages=\"project ? '' : '请选择项目。'\"\n        v-model=\"project\"\n        :invalid=\"!project\"\n    >\n        <option value=\"\">请选择项目</option>\n        <option value=\"uah\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"unavailable\" disabled aria-label=\"不可用的选择\">\n        <option value=\"unavailable\">尚未启用</option>\n    </u-select>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UFormField, USelect } from '@lingyzh/ui';\nconst project = ref('');\n</script>\n\n<template>\n    <u-select\n        label=\"需要选择的项目\"\n        id=\"project\"\n        :error-messages=\"project ? '' : '请选择项目。'\"\n        v-model=\"project\"\n        :invalid=\"!project\"\n    >\n        <option value=\"\">请选择项目</option>\n        <option value=\"uah\">UAH 工作台</option>\n    </u-select>\n    <u-select model-value=\"unavailable\" disabled aria-label=\"不可用的选择\">\n        <option value=\"unavailable\">尚未启用</option>\n    </u-select>\n</template>\n"
             },
             {
                 "id": "select-shared-variants",
@@ -532,7 +534,7 @@ export const pages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
@@ -565,7 +567,7 @@ export const pages = [
                 "id": "switch-preference",
                 "title": "立即生效的偏好",
                 "description": "“减少动效”同时更新当前文档的根属性。系统偏好仍独立生效。",
-                "code": "<script setup>\nimport { ref, watch } from 'vue';\nimport { UField, USwitch } from '@lingyzh/ui';\nconst reduced = ref(false);\nwatch(reduced, (value) => {\n    document.documentElement.dataset.reducedMotion = String(value);\n});\n</script>\n\n<template>\n    <u-switch label=\"减少动效\" id=\"motion\" v-model=\"reduced\" />\n</template>\n"
+                "code": "<script setup>\nimport { ref, watch } from 'vue';\nimport { UFormField, USwitch } from '@lingyzh/ui';\nconst reduced = ref(false);\nwatch(reduced, (value) => {\n    document.documentElement.dataset.reducedMotion = String(value);\n});\n</script>\n\n<template>\n    <u-switch label=\"减少动效\" id=\"motion\" v-model=\"reduced\" />\n</template>\n"
             },
             {
                 "id": "switch-states",
@@ -583,7 +585,7 @@ export const pages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
@@ -596,9 +598,9 @@ export const pages = [
         ]
     },
     {
-        "id": "field",
+        "id": "form-field",
         "title": "字段",
-        "name": "UiField",
+        "name": "UFormField",
         "description": "自定义表单项的布局容器；标准控件直接使用内置 label 和 hint。说明与错误显示在控件下方。",
         "kind": "component",
         "group": "表单组件",
@@ -606,15 +608,15 @@ export const pages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
         ],
         "notes": [
-            "UField 不执行校验，也不自动创建输入框。",
+            "UFormField 不执行校验，也不自动创建输入框。",
             "即使 controlAttrs 包含 aria-invalid，仍建议给 UTextField 传 invalid 以同步边框状态。",
-            "标准表单控件不需要额外 UField 或 controlAttrs；自定义原生控件仍可用插槽 controlAttrs 关联标签和提示。"
+            "标准表单控件不需要额外 UFormField 或 controlAttrs；自定义原生控件仍可用插槽 controlAttrs 关联标签和提示。"
         ]
     },
     {
@@ -980,7 +982,7 @@ export const pages = [
             {
                 "id": "names",
                 "title": "每个控件都需要名称",
-                "text": "优先使用可见 label。UField 的 controlAttrs 必须绑定到控件。图标按钮用 aria-label，弹窗用 aria-labelledby 关联可见标题。提示和 placeholder 都不能代替控件名称。",
+                "text": "优先使用可见 label。UFormField 的 controlAttrs 必须绑定到控件。图标按钮用 aria-label，弹窗用 aria-labelledby 关联可见标题。提示和 placeholder 都不能代替控件名称。",
                 "code": "<u-button icon aria-label=\"关闭面板\">\n    <Icon name=\"close\" />\n</u-button>\n<u-dialog v-model:open=\"open\" aria-labelledby=\"title\">\n    <h2 id=\"title\">设置</h2>\n</u-dialog>\n"
             },
             {
@@ -1069,7 +1071,7 @@ export const pages = [
                 "id": "card-form",
                 "title": "卡片中的表单",
                 "description": "标题与说明、字段、底部操作各有稳定的区域。紧凑密度适用于侧栏。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCard, UField, UTextField, UButton } from '@lingyzh/ui';\nconst name = ref('UAH');\n</script>\n\n<template>\n    <u-card title=\"工作区偏好\" subtitle=\"保存当前工作区的显示选项。\">\n        <u-text-field label=\"名称\" id=\"card-name\" v-model=\"name\" />\n        <template #actions>\n            <u-button variant=\"text\">取消</u-button>\n            <u-button variant=\"flat\" color=\"primary\">保存</u-button>\n        </template>\n    </u-card>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCard, UFormField, UTextField, UButton } from '@lingyzh/ui';\nconst name = ref('UAH');\n</script>\n\n<template>\n    <u-card title=\"工作区偏好\" subtitle=\"保存当前工作区的显示选项。\">\n        <u-text-field label=\"名称\" id=\"card-name\" v-model=\"name\" />\n        <template #actions>\n            <u-button variant=\"text\">取消</u-button>\n            <u-button variant=\"flat\" color=\"primary\">保存</u-button>\n        </template>\n    </u-card>\n</template>\n"
             },
             {
                 "id": "card-clickable",
@@ -1285,6 +1287,7 @@ export const pages = [
 
 pages.push(...tablePages, ...feedbackPages, ...controlPages, ...layoutPages, ...themePages);
 pages.push(typographyPage);
+pages.find(page => page.id === 'tooltip').examples.push(tooltipProtocolExample);
 for (const page of pages) {
     if (page.name?.startsWith('Ui')) page.name = page.name === 'Ui' + 'Input' ? 'UTextField' : page.name === 'Ui' + 'Badge' ? 'UChip' : 'U' + page.name.slice(2);
     if (page.name === 'UChip' && page.id === 'badge') { page.id = 'chip'; page.title = '标签'; }
@@ -1296,6 +1299,11 @@ for (const page of completionPages) {
 }
 pages.find(page => page.name === 'UButton').examples.push(buttonAppearanceExample, buttonLoadingExample);
 pages.find(page => page.name === 'UCodeBlock').examples.push(codeBlockHeightExample);
+for (const [name, examples] of Object.entries(tableAlignmentExamples)) {
+    const page = pages.find(page => page.name === name);
+    page.examples.push(...examples);
+    page.notes.push(...tableAlignmentNotes);
+}
 for (const page of pages.filter(page => page.kind === 'component')) {
     const api = componentApi[page.name];
     if (!api) throw new Error(`Missing API reference for ${page.name}`);

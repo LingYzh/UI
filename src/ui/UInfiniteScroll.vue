@@ -1,42 +1,66 @@
 <script setup lang="ts">
+import { computed, type CSSProperties } from 'vue';
 import { useDefaults } from './defaults';
 import UiButton from './UiButton.vue';
-import { onBeforeUnmount, ref, watch } from 'vue';
-const rawProps = withDefaults(defineProps<{ disabled?: boolean; rootMargin?: string; direction?: 'end' | 'start' }>(), { rootMargin: '200px', direction: 'end' });
+import { useInfiniteScrollState, type InfiniteScrollDirection, type InfiniteScrollEdge, type InfiniteScrollLoadContext, type InfiniteScrollMode, type InfiniteScrollSide, type InfiniteScrollStatus } from './infinite-scroll-state';
+
+const rawProps = withDefaults(defineProps<{
+    disabled?: boolean;
+    rootMargin?: string;
+    direction?: InfiniteScrollDirection;
+    side?: InfiniteScrollSide;
+    mode?: InfiniteScrollMode;
+    margin?: number | string;
+    color?: string;
+    loadMoreText?: string;
+    emptyText?: string;
+    tag?: string;
+    width?: number | string;
+    height?: number | string;
+    minWidth?: number | string;
+    minHeight?: number | string;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
+}>(), { rootMargin: '200px', direction: 'vertical', side: 'end', mode: 'intersect', tag: 'div', loadMoreText: '加载更多', emptyText: '没有更多内容' });
 const props = useDefaults(rawProps, 'UInfiniteScroll');
-const emit = defineEmits<{ load: [context: { done: (status?: 'ok' | 'empty' | 'error') => void }] }>();
-const sentinel = ref<HTMLElement>();
-const busy = ref(false);
-const done = ref(false);
-const error = ref(false);
-let observer: IntersectionObserver | undefined;
-let active = true;
-function setSentinel(value: HTMLElement | null): void { sentinel.value = value ?? undefined; }
-function load(): void {
-    if (props.disabled || busy.value || done.value) return;
-    busy.value = true;
-    error.value = false;
-    let settled = false;
-    emit('load', { done(status = 'ok') {
-        if (settled || !active) return;
-        settled = true;
-        busy.value = false;
-        done.value = status === 'empty';
-        error.value = status === 'error';
-    } });
+const emit = defineEmits<{ load: [context: InfiniteScrollLoadContext] }>();
+const { root, startSentinel, endSentinel, axis, side, startStatus, endStatus, busy, done, error, load, retry, reset } = useInfiniteScrollState(() => props, context => emit('load', context));
+const edges = computed<InfiniteScrollEdge[]>(() => side.value === 'both' ? ['start', 'end'] : [side.value]);
+function unit(value?: number | string): string | undefined {
+    return typeof value === 'number' || value !== undefined && /^\d+(\.\d+)?$/.test(value) ? `${value}px` : value;
 }
-function retry(): void { if (busy.value) return; error.value = false; load(); }
-function reset(): void { busy.value = false; done.value = false; error.value = false; }
-watch([sentinel, () => props.disabled, () => props.rootMargin], () => {
-    observer?.disconnect();
-    if (props.disabled || !sentinel.value) return;
-    if (typeof IntersectionObserver === 'undefined') return;
-    observer = new IntersectionObserver((entries) => { if (entries.some((entry) => entry.isIntersecting)) load(); }, { rootMargin: props.rootMargin });
-    observer.observe(sentinel.value);
-}, { immediate: true, flush: 'post' });
-onBeforeUnmount(() => { active = false; observer?.disconnect(); });
-defineExpose({ load, retry, reset });
+const styles = computed<CSSProperties>(() => ({
+    width: unit(props.width), height: unit(props.height), minWidth: unit(props.minWidth), minHeight: unit(props.minHeight),
+    maxWidth: unit(props.maxWidth), maxHeight: unit(props.maxHeight)
+}));
+function status(edge: InfiniteScrollEdge): InfiniteScrollStatus { return edge === 'start' ? startStatus.value : endStatus.value; }
+function actionProps(edge: InfiniteScrollEdge) { return { onClick: () => load(edge), color: props.color, disabled: props.disabled }; }
+// Preserve the existing exposed sentinel setter while offering independent edge refs.
+function setSentinel(value: HTMLElement | null): void {
+    if (side.value === 'start') startSentinel.value = value ?? undefined;
+    else endSentinel.value = value ?? undefined;
+}
+defineExpose({ load, retry, reset, root, startStatus, endStatus, startSentinel, endSentinel, setSentinel });
 </script>
+
 <template>
-    <div class="u-infinite-scroll" :aria-busy="busy"><div v-if="props.direction === 'start'" ref="sentinel" class="u-infinite-sentinel" /><slot :busy="busy" :done="done" :error="error" :load="load" :retry="retry" :reset="reset" /><div v-if="props.direction === 'end'" ref="sentinel" class="u-infinite-sentinel" /><div class="u-infinite-status" role="status"><slot v-if="busy" name="loading">正在加载…</slot><slot v-else-if="done" name="empty">没有更多内容</slot><slot v-else-if="error" name="error" :retry="retry"><UiButton variant="text" @click="retry">加载失败，重试</UiButton></slot><slot v-else name="load-more" :load="load"><UiButton variant="text" :disabled="props.disabled" @click="load">加载更多</UiButton></slot></div></div>
+    <component :is="props.tag" ref="root" class="u-infinite-scroll" :class="`is-${axis}`" :style="styles" :aria-busy="busy">
+        <template v-for="edge in edges" :key="edge">
+            <div class="u-infinite-status" :class="`is-${edge}`" role="status">
+                <slot v-if="status(edge) === 'loading'" name="loading" :side="edge" :props="actionProps(edge)">正在加载…</slot>
+                <slot v-else-if="status(edge) === 'empty'" name="empty" :side="edge" :props="actionProps(edge)">{{ props.emptyText }}</slot>
+                <slot v-else-if="status(edge) === 'error'" name="error" :side="edge" :props="actionProps(edge)" :retry="() => retry(edge)">
+                    <UiButton variant="text" :color="props.color" :disabled="props.disabled"
+                        @click="retry(edge)">加载失败，重试</UiButton>
+                </slot>
+                <slot v-else name="load-more" :side="edge" :props="actionProps(edge)" :load="() => load(edge)">
+                    <UiButton variant="text" :color="props.color" :disabled="props.disabled"
+                        @click="load(edge)">{{ props.loadMoreText }}</UiButton>
+                </slot>
+            </div>
+        </template>
+        <div v-if="side === 'start' || side === 'both'" ref="startSentinel" class="u-infinite-sentinel is-start" />
+        <slot :busy="busy" :done="done" :error="error" :load="load" :retry="retry" :reset="reset" :start-status="startStatus" :end-status="endStatus" />
+        <div v-if="side === 'end' || side === 'both'" ref="endSentinel" class="u-infinite-sentinel is-end" />
+    </component>
 </template>

@@ -1,15 +1,26 @@
 <script setup>
 import { ref } from 'vue';
-import { URadioGroup, USelectionControl } from '../../index';
+import { URadioGroup, URadio, USwitch } from '../../index';
 const radio = ref('a');
+const disabled = ref(false);
+const readonly = ref(false);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="URadioGroup">
-        <u-radio-group v-model="radio" label="单选组" hint="值由组统一管理。">
-            <u-selection-control value="a" label="默认" type="radio" />
-            <u-selection-control value="b" label="自定义" type="radio" />
+        <u-switch v-model="disabled" label="禁用整组" />
+        <u-switch v-model="readonly" label="整组只读" />
+        <u-radio-group
+            v-model="radio"
+            :disabled="disabled"
+            :readonly="readonly"
+            label="单选组"
+            hint="URadio读取组的模型、名称、禁用和只读状态。"
+        >
+            <u-radio value="a">默认</u-radio>
+            <u-radio value="b">自定义</u-radio>
         </u-radio-group>
+        <output>当前选择：{{ radio }}</output>
     </div>
 </template>
 

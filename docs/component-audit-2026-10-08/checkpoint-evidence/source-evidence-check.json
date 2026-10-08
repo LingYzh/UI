@@ -1,0 +1,50 @@
+[
+    {
+        "name": "media-scroll-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 0
+    },
+    {
+        "name": "tooltip-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 1
+    },
+    {
+        "name": "lazy-responsive-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 16
+    },
+    {
+        "name": "data-iterator-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 4
+    },
+    {
+        "name": "text-messages-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 11
+    },
+    {
+        "name": "media-containers-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 6
+    },
+    {
+        "name": "item-group-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 18
+    },
+    {
+        "name": "locale-provider-protocols",
+        "failure": null,
+        "mismatches": [],
+        "sources": 5
+    }
+]

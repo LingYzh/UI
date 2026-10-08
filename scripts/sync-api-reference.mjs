@@ -13,6 +13,30 @@ const existingApi = await loadExistingApi(sourceOutput);
 const priorByFile = makePriorByFile(allExports, existingApi);
 
 const commonProps = {
+    rowProps: '静态对象或函数为数据行提供属性，函数接收 { item, internalItem, index }。',
+    cellProps: '静态对象或函数为单元格提供属性，函数接收 { item, internalItem, index, column, value }。',
+    headerProps: '为默认表头单元格提供属性，与每列 headerProps 合并。',
+    sortIcon: '覆盖排序图标；未设置时使用已有双向排序箭头。',
+    sortAscIcon: '覆盖升序图标的本库名称。',
+    sortDescIcon: '覆盖降序图标的本库名称。',
+    groupExpandIcon: '分组关闭时的展开图标。',
+    groupCollapseIcon: '分组打开时的收起图标。',
+    collapseIcon: '数据行展开时的收起图标。',
+    expandIcon: '数据行关闭时的展开图标。',
+    selectAllLabel: '全选控件的可访问名称；省略时使用本库语言包。',
+    noDataText: '空数据提示文字；省略时使用本库语言包。',
+    loadingText: '加载状态文字及进度条的可访问名称。',
+    itemsPerPageText: '每页数量控件的可见标签。',
+    firstPageLabel: '跳到首页按钮的可访问名称。',
+    lastPageLabel: '跳到末页按钮的可访问名称。',
+    prevPageLabel: '上一页按钮的可访问名称。',
+    nextPageLabel: '下一页按钮的可访问名称。',
+    firstIcon: '首页按钮的图标名称。',
+    lastIcon: '末页按钮的图标名称。',
+    prevIcon: '上一页按钮的图标名称。',
+    nextIcon: '下一页按钮的图标名称。',
+    prevLabel: '上一页按钮的可访问名称。',
+    nextLabel: '下一页按钮的可访问名称。',
     ripple: '动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发。',
     label: '控件或区域的可访问名称；有可见标题时仍会关联对应控件。',
     labelWidth: '设置标签左对齐时标签列的宽度；数字按像素处理。',
@@ -70,6 +94,8 @@ const commonProps = {
     eager: '在首次显示前挂载内容；不启用时按组件生命周期延迟挂载。',
     mandatory: '要求选择模型保持至少一个有效值；可用模式见类型。',
     active: '控制当前条目或面板是否处于激活状态。',
+    appendIcon: '在右侧显示图标；append插槽存在时由插槽替换。',
+    appendText: '本库扩展的右侧辅助文本；优先省略并保留完整title提示，append插槽存在时由插槽替换。',
     selected: '控制条目是否作为已选择项呈现。',
     selectable: '允许条目参与选择模型。',
     activatable: '允许条目成为当前活动项，但不要求它改变选择模型。',
@@ -147,7 +173,7 @@ const commonProps = {
     temporary: '在窄屏模式下使用可关闭的临时抽屉。',
     mobileBreakpoint: '低于该像素宽度时启用移动端抽屉行为。',
     numeric: '限制输入内容为数字字符。',
-    speed: '设置视差或动画跟随滚动的速度系数。',
+    speed: '设置视差跟随滚动的速度系数，限制在-1至1；负数反向，0保持静止。',
     bufferValue: '设置进度条缓冲区的当前数值。',
     stream: '显示进度条尾部的动态流动效果。',
     threshold: '设置手势或观察行为触发所需的距离阈值。',
@@ -352,6 +378,20 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (prop.name === 'standardProtocol' && contract.name === 'UImg') return '默认false：load/error给原生DOM Event；true改给浏览器选定的currentSrc URL字符串。';
+    if (prop.name === 'standardProtocol' && contract.name === 'UTooltip') return '默认false：default是触发器，text或content提供提示内容；true使用activator触发器插槽与default内容插槽，default的isActive是可写Ref。';
+    if (prop.name === 'standardProtocol' && contract.name === 'UDataIterator') return '默认false：items为原始项、默认无容器；true提供标准包装项、容器和上游事件协议。原每页10保留，可显式配置5。';
+    if (contract.name === 'UCounter' && prop.name === 'displayMode') return '默认length：字符串按Unicode码点计数；value直接显示字符串。数字value始终直接显示。';
+    if (contract.name === 'UHotkey' && prop.name === 'displayMode') return 'icon/symbol/text选择按键图标、平台符号或文字展示，与platform/keyMap配合；不改变trigger监听。';
+    if (contract.name === 'UHotkey' && prop.name === 'listen') return '本库扩展，默认true保留原快捷键trigger监听；纯展示设false。监听沿用UHotkeyListener的单个组合键语法。';
+    if (contract.name === 'UInfiniteScroll' && prop.name === 'direction') return 'vertical/horizontal指定轴向；旧start/end/both仍指定加载边缘，且优先于side。默认vertical + side=end。';
+    if (contract.name === 'UInfiniteScroll' && prop.name === 'side') return '新方向vertical/horizontal下加载start/end/both；两侧loading/error/empty独立，旧direction边缘值优先。';
+    if (contract.name === 'UInfiniteScroll' && prop.name === 'margin') return '数字和数字字符串按px、带单位字符串原样配置观察边界；显式值优先于旧rootMargin，0也生效。';
+    if (['UItemGroup', 'UChipGroup', 'UBtnGroup', 'UBtnToggle'].includes(contract.name) && prop.name === 'mandatory') return 'true阻止取消最后一项；force还会初始选择第一个可用项。禁用和只读时不会强制写回模型。';
+    if (contract.name === 'UItem' && prop.name === 'tag') return '默认button保留本库包装；false仅渲染作用域插槽，用isSelected/selectedClass/disabled/select/toggle自建交互。';
+    if (contract.name === 'ULocaleProvider' && prop.name === 'fallbackLocale') return '文案缺失时使用的语言；显式旧fallback优先，省略时继承祖先fallback。';
+    if (contract.name === 'UDataIterator' && prop.name === 'itemsLength') return '显式提供总数（0也有效）后跳过本地分页切片，继续过滤、排序和分组；总页数使用此数值。';
+    if (['UField', 'UPicker', 'UHotkey', 'UImg'].includes(contract.name) && prop.name === 'rounded') return '省略时保持本组件圆角；false/0去圆角，数字按px，字符串支持CSS长度及sm/md/lg/xl/pill/circle/shaped、t/b/s/e边角配置。';
     if (contract.name === 'UToolbar' && prop.name === 'density') return 'default/comfortable/compact/prominent：默认内容高度64/56/48/128px；扩展区48/44/40/96px。显式height与extensionHeight参与相同密度计算。';
     if (contract.name === 'UToolbar' && prop.name === 'height') return '内容区基础高度，默认64px；数字或数字字符串。密度会从此基础高度计算最终尺寸。';
     if (contract.name === 'UToolbar' && prop.name === 'extensionHeight') return '扩展区基础高度，默认48px；密度会调整最终高度，不包含内容区。';
@@ -426,7 +466,14 @@ function eventType(event) {
         : '—';
 }
 
-function eventDescription(event, previous) {
+function eventDescription(event, previous, contract) {
+    if (['UItem', 'UChip'].includes(contract.name) && event.name === 'group:selected') return '该项选中状态变化时触发，携带{value:boolean}；不会把初始化渲染当成一次选择事件。';
+    if (contract.name === 'UPullToRefresh' && ['load', 'refresh'].includes(event.name)) return '达到下拉阈值并松开时触发，携带幂等done()；load与保留的refresh共享同一次请求，reset后旧回调无效。';
+    if (contract.name === 'UImg' && ['load', 'error'].includes(event.name)) return '默认携带原生DOM Event；standardProtocol=true携带浏览器选定的currentSrc URL字符串。已被替换的图片源事件会被忽略。';
+    if (['UImg', 'UParallax'].includes(contract.name) && event.name === 'loadstart') return '图片请求开始时触发，携带当前图片URL。';
+    if (contract.name === 'UParallax' && ['load', 'error'].includes(event.name)) return '内置src图片加载成功或失败时触发，携带图片URL；background插槽内自建图片由调用方自行监听。';
+    if (contract.name === 'UDataIterator' && event.name === 'update:currentItems') return '默认携带当前原始项；standardProtocol=true携带分页包装行（含分组行），itemsLength手动分页模式不发此标准事件。';
+    if (contract.name === 'UInfiniteScroll' && event.name === 'load') return '请求指定side（start/end）的数据，携带done(status)；两侧独立结算，reset后的旧回调被忽略。';
     const oldDescription = reusableDescription(previous);
     if (oldDescription) return oldDescription;
     const common = commonEvents[event.name];
@@ -441,6 +488,45 @@ function scopeText(slot) {
 }
 
 function slotDescription(slot, previous, contract) {
+    if (contract?.name === 'UItemGroup' && slot.name === 'default') return 'selected为内部ID数组，isSelected/select按ID操作，selectedValues为公开值；next/prev跳禁用项。保留isValueSelected/toggle按公开值操作。';
+    if (contract?.name === 'UItem' && slot.name === 'default') return '提供标准isSelected/selectedClass/value/disabled/select/toggle，以及兼容selected和扩展id；tag=false只渲染本插槽。';
+    if (contract?.name === 'UTooltip') {
+        const descriptions = { default: '旧默认：触发器；standardProtocol=true时为提示内容，提供可写Ref isActive。', activator: '标准触发器：v-bind props绑定ARIA、指针、键盘和元素ref；isActive为布尔值，targetRef可绑定独立定位目标。', content: '旧协议的自定义提示内容，优先于text；标准协议使用default。' };
+        if (descriptions[slot.name]) return descriptions[slot.name];
+    }
+    if (contract?.name === 'UDataIterator' && ['default', 'header', 'footer'].includes(slot.name)) return '提供分页、排序、选择、展开和分组操作；items默认原始项，standardProtocol=true为包装项。internalItems始终为包装项，groupedItems为当前页分组行。';
+    if (contract?.name === 'UInfiniteScroll' && ['loading', 'empty', 'error', 'load-more'].includes(slot.name)) return '按加载边缘分别渲染，提供side、含onClick/color/disabled的props；error额外retry，load-more额外load兼容入口。';
+    if (['UDataTable', 'UDataTableServer', 'UDataTableVirtual'].includes(contract?.name)) {
+        const descriptions = {
+            top: '表格上方内容；提供完整表格作用域。',
+            default: '替换整个 table 内部内容，提供模型、叶列、表头矩阵、原始 items 与 internalItems。',
+            headers: '替换默认 thead 内部的表头行；headers 为矩阵，columns 为叶列。',
+            'header.*': '自定义列标题；提供 column/header、toggleSort、isSorted、getSortIcon 及选择控制 props。',
+            'item.*': '自定义单元格；提供 item（原始项）、internalItem、column、value、index、选择/展开方法；保留列和控制 props。',
+            item: '替换完整数据行，返回 tr；v-bind props 保留行属性与事件，虚拟模式还提供 itemRef。',
+            'expanded-row': '自定义展开行，标准用法返回 tr/td；提供 item/internalItem/index/columns。旧正文插槽继续自动包裹。',
+            'group-header': '自定义完整分组行，提供 item/group、index、columns、isGroupOpen、toggleGroup 与兼容 toggle。',
+            'group-header.data-table-group': '自定义分组标题单元格内容，提供 item、count 和包含 icon/onClick 的 props。',
+            'group-header.data-table-select': '自定义分组选择控件，props 提供 modelValue/indeterminate/disabled/onUpdate:modelValue。',
+            'group-summary': '自定义分组结束后的汇总行；返回 tr/td，extractRows 递归提取分组内 InternalDataItem。',
+            'mobile.header': '替换移动表头，提供排序、选择模型与完整表格作用域。',
+            caption: '放置原生 caption；与 table 语义关联。',
+            colgroup: '放置原生 colgroup 控制列宽。',
+            thead: '在自动表头后追加独立 thead；hide-default-header 可关闭自动部分。',
+            tbody: '追加独立 tbody；hide-default-body 可关闭自动部分。',
+            tfoot: '放置原生 tfoot；fixed-footer 保留在滚动区域底部。',
+            body: '替换默认 tbody 内部内容；提供完整作用域。',
+            'body.prepend': '在默认数据行前插入 tr/td，提供完整作用域。',
+            'body.append': '在默认数据行后插入 tr/td，提供完整作用域。',
+            bottom: '替换整个默认页脚；提供页码、数量、计数与 setPage/setItemsPerPage/nextPage/prevPage。',
+            footer: '兼容的分页栏替换入口，优先使用标准 bottom。',
+            'footer.prepend': '在默认页脚数量控件前追加内容，提供完整作用域。',
+            loader: '替换表头加载进度条；loading 状态提供完整表格作用域。'
+        };
+        const name = slot.pattern ?? slot.name;
+        if (descriptions[name]) return descriptions[name];
+    }
+    if (contract?.name === 'UListItem' && slot.name === 'append') return '自定义右侧内容，优先替换appendText和appendIcon；独立交互控件不触发父行选择或涟漪。';
     if (contract?.name === 'UToolbar') {
         const descriptions = { title: '自定义内置标题，优先于title属性；长文本自动省略。', prepend: '内容区前置操作，如菜单按钮。', actions: '直接放入操作按钮，自动进入内置右侧操作区；默认text，无需额外ToolbarItems。', append: '兼容的后置操作插槽；存在actions时优先使用actions。', extension: '内容区下方的扩展行；默认存在插槽时显示，可由extended控制。', image: '自定义背景图片层，作用域image提供image属性。', default: '内容区中标题与操作之间的自定义内容。' };
         if (descriptions[slot.name]) return descriptions[slot.name];
@@ -485,7 +571,7 @@ function buildComponentApi(contract) {
         name: event.name,
         type: eventType(event),
         fallback: '—',
-        description: eventDescription(event, oldEvents.get(event.name)),
+        description: eventDescription(event, oldEvents.get(event.name), contract),
     }));
     const slots = contract.slots.map((slot) => ({
         name: slot.name === '<dynamic>' ? slot.pattern : slot.name,

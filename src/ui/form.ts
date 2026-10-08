@@ -122,7 +122,9 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     });
     function resetValidation() {
         runner.invalidate();
-        ownErrors.value = [];
+        // Inline rules arrays are recreated when a Form slot renders. Replacing
+        // an already empty error array would invalidate that same slot again.
+        if (ownErrors.value.length) ownErrors.value = [];
         ownValid.value = null;
     }
     function reset() {
@@ -143,7 +145,27 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
         resetValidation();
         if (!form?.resetting.value && (validationMode.value.trigger === 'input' || (validationMode.value.trigger === 'invalid-input' && invalid))) void runner.validate();
     }, { flush: 'sync' });
+    let previousRules = [...props.rules ?? []];
+    let previousRulesArray = props.rules;
+    let previousDisabled = disabled.value;
+    let previousReadonly = readonly.value;
+    function sameRule(a: ValidationRule, b: ValidationRule): boolean {
+        // Vue recreates inline callbacks along with their rules array on each
+        // slot render. Their identical bodies must not cancel that render's
+        // validation. The runner still reads the latest callbacks on each run.
+        return a === b || (typeof a === 'function' && typeof b === 'function' && a.toString() === b.toString());
+    }
     watch(() => [props.rules, disabled.value, readonly.value], () => {
+        const rules = [...props.rules ?? []];
+        const replacedArray = props.rules !== previousRulesArray;
+        const changed = previousDisabled !== disabled.value || previousReadonly !== readonly.value
+            || rules.length !== previousRules.length || rules.some((rule, index) => replacedArray
+                ? !sameRule(rule, previousRules[index]) : rule !== previousRules[index]);
+        previousRules = rules;
+        previousRulesArray = props.rules;
+        previousDisabled = disabled.value;
+        previousReadonly = readonly.value;
+        if (!changed) return;
         resetValidation();
     }, { deep: true, flush: 'sync' });
     onMounted(() => { void nextTick(() => { initialValue = model.value; if (validationMode.value.eager) void runner.validate(); }); });

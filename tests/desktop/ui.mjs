@@ -14,7 +14,8 @@ async function launch(name, url) {
     delete env.ELECTRON_RUN_AS_NODE;
     delete env.UAH_DEV_URL;
     if (url) env.UAH_UI_PREVIEW_URL = url;
-    const app = await electron.launch({ args: [url ? 'tests/desktop/ui-host.cjs' : '.'], cwd: process.cwd(), env });
+    // Pixel assertions use CSS pixels consistently across Windows display scaling settings.
+    const app = await electron.launch({ args: ['--force-device-scale-factor=1', url ? 'tests/desktop/ui-host.cjs' : '.'], cwd: process.cwd(), env });
     const page = await app.firstWindow();
     page.on('pageerror', (error) => errors.push(error.message));
     return { app, page };
@@ -440,13 +441,15 @@ try {
     await serverVariants.scrollIntoViewIfNeeded();
     const variantFrames = await serverVariants.locator('.docs-variant-sample').evaluateAll((samples) => samples.map((sample) => {
         const frame = sample.querySelector('.ui-data-table-server');
-        const table = frame?.querySelector('.u-data-table');
+        // Server and local tables now share one root frame; inspect the native inner table.
+        const table = frame?.querySelector('table');
         const header = table?.querySelector('th');
         const frameStyle = frame && getComputedStyle(frame);
         const tableStyle = table && getComputedStyle(table);
         const headerStyle = header && getComputedStyle(header);
         return {
             label: sample.querySelector('.docs-variant-label')?.textContent?.trim(),
+            frameCount: sample.querySelectorAll('.u-data-table').length,
             frame: frameStyle && { borderWidth: frameStyle.borderTopWidth, borderStyle: frameStyle.borderTopStyle, borderColor: frameStyle.borderTopColor, background: frameStyle.backgroundColor, radius: frameStyle.borderTopLeftRadius },
             table: tableStyle && { borderWidth: tableStyle.borderTopWidth, background: tableStyle.backgroundColor, radius: tableStyle.borderTopLeftRadius },
             headerBackground: headerStyle?.backgroundColor
@@ -459,6 +462,7 @@ try {
         return value;
     };
     for (const variant of variantFrames) {
+        assert.equal(variant.frameCount, 1, `${variant.label} renders exactly one data-table frame`);
         assert.deepEqual(variant.frame && { borderWidth: variant.frame.borderWidth, borderStyle: variant.frame.borderStyle }, { borderWidth: '1px', borderStyle: 'solid' }, `${variant.label} outer server frame stays 1px`);
         assert.deepEqual(variant.table && { borderWidth: variant.table.borderWidth, radius: variant.table.radius }, { borderWidth: '0px', radius: '0px' }, `${variant.label} does not add a second inner frame`);
     }

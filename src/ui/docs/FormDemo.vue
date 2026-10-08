@@ -13,7 +13,7 @@ import {
     URadio,
     UColorSwatches,
     UButton,
-    UField,
+    UFormField,
     UDialog,
     UTooltip,
 } from '../index';
@@ -288,14 +288,14 @@ async function validate() {
                         />
                     </u-col>
                     <u-col :cols="12">
-                        <u-field
+                        <u-form-field
                             label="自定义项目"
                             for="custom-native"
-                            description="UField 用于自定义内容，说明也在下方。"
+                            description="UFormField 用于自定义内容，说明也在下方。"
                             v-slot="{ controlAttrs }"
                         >
                             <input v-model="name" v-bind="controlAttrs" class="form-demo-native" />
-                        </u-field>
+                        </u-form-field>
                     </u-col>
                 </u-row>
             </u-form>

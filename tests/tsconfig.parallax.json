@@ -1,0 +1,6 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "../src/ui/UParallax.vue"
+    ]
+}

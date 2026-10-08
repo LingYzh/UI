@@ -31,7 +31,7 @@
         "dev": "vite --host 127.0.0.1 --port 5174",
         "build": "vite build && vite build --config vite.lib.config.js",
         "typecheck": "node scripts/typecheck.cjs --noEmit -p tsconfig.json",
-        "docs:sync": "node scripts/sync-typography.mjs && node scripts/format-example-sources.mjs && node scripts/generate-completion-docs.mjs && node scripts/sync-api-reference.mjs",
+        "docs:sync": "node scripts/sync-typography.mjs && node scripts/format-example-sources.mjs && node scripts/generate-completion-docs.mjs && node scripts/sync-table-docs.mjs && node scripts/sync-api-reference.mjs",
         "test": "tsx --test tests/*.test.*",
         "preview": "vite preview --host 127.0.0.1 --port 4174",
         "test:ui": "npm run build && node tests/desktop/ui.mjs"

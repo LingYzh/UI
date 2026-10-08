@@ -6,7 +6,7 @@ import {
     UCheckbox,
     UColorSwatches,
     UCopyButton,
-    UField,
+    UFormField,
     UTextField,
     UProgress,
     URadio,
@@ -176,9 +176,9 @@ const tagName = ref('工作');
         </template>
         <template v-else-if="example === 'swatches-tag'">
             <u-card title="新建标签" density="compact" aria-label="新建标签">
-                <u-field v-slot="{ controlAttrs }" label="名称" for="demo-tag-name">
+                <u-form-field v-slot="{ controlAttrs }" label="名称" for="demo-tag-name">
                     <u-text-field v-model="tagName" v-bind="controlAttrs" dense />
-                </u-field>
+                </u-form-field>
                 <div class="mt-4">
                     <p class="ma-0 mb-2 text-body-2">颜色</p>
                     <u-color-swatches v-model="color" label="标签颜色" />

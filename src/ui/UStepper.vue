@@ -6,7 +6,7 @@ import { stepperContextKey, type StepperContext } from './stepper-state';
 const rawProps = defineProps<{ disabled?: boolean; mandatory?: boolean; linear?: boolean }>();
 const props = useDefaults(rawProps, 'UStepper');
 const model = defineModel<GroupValue | null>({ default: null });
-const group = createGroup(model, { mandatory: props.mandatory ?? true, disabled: props.disabled });
+const group = createGroup(model, { mandatory: () => props.mandatory ?? true, disabled: () => props.disabled });
 const blocked = reactive(new Set<GroupValue>());
 function go(value: GroupValue): void {
     if (props.disabled || blocked.has(value) || !group.values.includes(value)) return;
@@ -23,7 +23,7 @@ function move(delta: number): void {
         if (!blocked.has(group.values[index])) { go(group.values[index]); return; }
     }
 }
-const context: StepperContext = { ...group, blocked, go, next: () => move(1), prev: () => move(-1) };
+const context: StepperContext = Object.assign(group, { blocked, go, next: () => move(1), prev: () => move(-1) });
 provide(stepperContextKey, context);
 provide(windowKey, context);
 defineExpose({ next: context.next, prev: context.prev, go });

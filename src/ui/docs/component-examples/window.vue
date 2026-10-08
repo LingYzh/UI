@@ -1,15 +1,25 @@
 <script setup>
 import { ref } from 'vue';
-import { UButton, UWindow, UWindowItem } from '../../index';
+import { UButton, USwitch, UWindow, UWindowItem } from '../../index';
 const windowValue = ref('a');
+const windowRef = ref();
+const disabled = ref(false);
+function next() {
+    windowRef.value?.next();
+}
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="UWindow">
-        <u-button size="sm" @click="windowValue = windowValue === 'a' ? 'b' : 'a'">
-            切换面板
-        </u-button>
-        <u-window v-model="windowValue" continuous label="内容窗口">
+        <u-switch v-model="disabled" label="禁用窗口交互" />
+        <u-button size="sm" @click="next">调用下一项</u-button>
+        <u-window
+            ref="windowRef"
+            v-model="windowValue"
+            :disabled="disabled"
+            continuous
+            label="内容窗口"
+        >
             <u-window-item value="a">
                 <div class="completion-window-card">概览面板</div>
             </u-window-item>
@@ -17,6 +27,7 @@ const windowValue = ref('a');
                 <div class="completion-window-card">详情面板</div>
             </u-window-item>
         </u-window>
+        <output>当前面板：{{ windowValue }}；禁用后下一项、方向键与触摸均保持当前项。</output>
     </div>
 </template>
 

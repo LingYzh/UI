@@ -6,7 +6,7 @@ import {
     UButton,
     UCard,
     UDialog,
-    UField,
+    UFormField,
     UTextField,
     UMenu,
     UMenuItem,
@@ -302,21 +302,21 @@ const dialogSize = ref('md');
                     </u-button>
                 </template>
                 <div class="demo-filter-panel d-flex flex-column ga-3">
-                    <u-field v-slot="{ controlAttrs }" label="关键字" for="demo-filter-keyword">
+                    <u-form-field v-slot="{ controlAttrs }" label="关键字" for="demo-filter-keyword">
                         <u-text-field
                             v-model="filterKeyword"
                             v-bind="controlAttrs"
                             dense
                             placeholder="邮箱或昵称"
                         />
-                    </u-field>
-                    <u-field v-slot="{ controlAttrs }" label="状态" for="demo-filter-status">
+                    </u-form-field>
+                    <u-form-field v-slot="{ controlAttrs }" label="状态" for="demo-filter-status">
                         <u-select v-model="filterStatus" v-bind="controlAttrs" dense>
                             <option value="any">全部</option>
                             <option value="active">正常</option>
                             <option value="banned">已封禁</option>
                         </u-select>
-                    </u-field>
+                    </u-form-field>
                     <label class="d-flex align-center justify-space-between ga-3 text-body-2">
                         仅显示当前账号
                         <u-switch v-model="onlyActive" />

@@ -2,13 +2,16 @@ import { shallowReactive } from 'vue';
 import {
     mdiAccount, mdiAlertCircleOutline, mdiArrowLeft, mdiArrowRight, mdiCheck, mdiChevronDown, mdiChevronLeft, mdiChevronRight,
     mdiClose, mdiCogOutline, mdiContentCopy, mdiDeleteOutline, mdiFolderOutline, mdiHomeOutline, mdiCalendarMonthOutline,
-    mdiMagnify, mdiPencilOutline, mdiPlus, mdiViewGridOutline, mdiFormTextbox, mdiTextBoxOutline, mdiUpload
+    mdiMagnify, mdiPencilOutline, mdiPlus, mdiViewGridOutline, mdiFormTextbox, mdiTextBoxOutline, mdiUpload,
+    mdiArrowUp, mdiArrowDown, mdiChevronUp, mdiPageFirst, mdiPageLast
 } from '@mdi/js';
 
 /** Small built-in MDI set. Applications import additional paths individually. */
 const paths = shallowReactive<Record<string, string>>({
     'mdi-account': mdiAccount, 'mdi-alert-circle-outline': mdiAlertCircleOutline,
     'mdi-arrow-left': mdiArrowLeft, 'mdi-arrow-right': mdiArrowRight, 'mdi-check': mdiCheck,
+    'mdi-arrow-up': mdiArrowUp, 'mdi-arrow-down': mdiArrowDown, 'mdi-chevron-up': mdiChevronUp,
+    'mdi-page-first': mdiPageFirst, 'mdi-page-last': mdiPageLast,
     'mdi-chevron-down': mdiChevronDown, 'mdi-chevron-left': mdiChevronLeft, 'mdi-chevron-right': mdiChevronRight, 'mdi-close': mdiClose, 'mdi-cog-outline': mdiCogOutline,
     'mdi-content-copy': mdiContentCopy, 'mdi-delete-outline': mdiDeleteOutline,
     'mdi-folder-outline': mdiFolderOutline, 'mdi-home-outline': mdiHomeOutline,

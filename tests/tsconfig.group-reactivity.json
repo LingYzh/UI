@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/group-state.ts",
+        "../src/ui/UWindow.vue",
+        "../src/ui/UCarousel.vue",
+        "../src/ui/UStepper.vue",
+        "./group-reactivity.test.ts"
+    ]
+}

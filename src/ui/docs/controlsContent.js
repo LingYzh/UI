@@ -24,7 +24,7 @@ export const controlPages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
@@ -54,7 +54,7 @@ export const controlPages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
@@ -132,7 +132,7 @@ export const controlPages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             }
@@ -166,7 +166,7 @@ export const controlPages = [
             "required 验证非空路径；失效／禁用路径在验证时显示错误。rules 与 errorMessages 接入 UForm。",
             "↑／↓、Home／End 同级移动，→ 展开下级，← 返回父级，Enter／Space 选择，Esc／Tab 关闭。指针选中释放焦点，键盘选中返回触发器。",
             "选中内容保持单行省略；弹层至少与控件同宽，多列超出视口时在弹层内部横向滚动。依赖原生 Popover 与 CSS anchor positioning。",
-            "label/hint 直接放控件，Row/Col 管理布局；标准级联选择器不需要 UField。"
+            "label/hint 直接放控件，Row/Col 管理布局；标准级联选择器不需要 UFormField。"
         ]
     }
 ];

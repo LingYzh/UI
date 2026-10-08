@@ -1,10 +1,11 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { UActivity, UButton, UTextField, USelect, USwitch, UField, UTabs, UTabPanel, UDialog, UCollapse, UCard, UScrollArea, UCodeBlock, UIcon, UTooltip, snackbar } from '../index';
+import { UActivity, UButton, UTextField, USelect, USwitch, UFormField, UTabs, UTabPanel, UDialog, UCollapse, UCard, UScrollArea, UCodeBlock, UIcon, UTooltip, snackbar } from '../index';
 import Icon from '../../components/Icon.vue';
 import { UTextarea } from '../index';
 import VariantExample from './VariantExample.vue';
 import TableExample from './TableExample.vue';
+import TooltipProtocolDemo from './component-examples/tooltip.vue';
 import DiffDemo from './DiffDemo.vue';
 import RippleDemo from './RippleDemo.vue';
 import ThemeDemo from './ThemeDemo.vue';
@@ -22,6 +23,7 @@ import ButtonAppearanceDemo from './ButtonAppearanceDemo.vue';
 import CodeBlockHeightDemo from './CodeBlockHeightDemo.vue';
 import TypographyDemo from './TypographyDemo.vue';
 const componentDemos = import.meta.glob('./component-examples/*.vue', { eager: true, import: 'default' });
+const tableDemos = import.meta.glob('./table-examples/*.vue', { eager: true, import: 'default' });
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
 
 const feedbackExamples = ['badge-tones', 'badge-custom', 'alert-tones', 'alert-actions', 'spinner-states', 'menu-items', 'menu-panel', 'confirm-basic', 'button-danger', 'dialog-sizes'];
@@ -101,6 +103,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
 <template>
     <div class="live-example">
         <component v-if="example.startsWith('component-')" :is="componentDemos[`./component-examples/${example.slice('component-'.length)}.vue`]" />
+        <component v-else-if="example.startsWith('table-align-')" :is="tableDemos[`./table-examples/${example.slice('table-align-'.length)}.vue`]" />
         <ButtonLoadingDemo v-else-if="example === 'button-loading-size'" />
         <ButtonAppearanceDemo v-else-if="example === 'button-variant-color'" />
         <CascaderDemo v-else-if="example === 'cascader-form'" />
@@ -153,6 +156,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <template v-else-if="example === 'tooltip-capability'">
             <div class="d-flex ga-4"><u-tooltip text="图片输入"><u-icon name="image" /></u-tooltip><u-tooltip text="音频输入"><u-icon name="volume" /></u-tooltip><u-tooltip text="PDF 输入"><u-icon name="file" /></u-tooltip></div>
         </template>
+        <TooltipProtocolDemo v-else-if="example === 'tooltip-protocols'" />
         <template v-else-if="example === 'card-provider'">
             <u-card density="compact" aria-label="紧凑服务卡片">
                 <div class="d-flex align-center justify-space-between ga-3">
@@ -263,7 +267,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
             <div class="demo-row"><u-button @click="error = name.trim().length < 2 ? '请至少输入 2 个字符。' : ''">校验名称</u-button><span v-if="name.trim().length >= 2 && !error" class="demo-success">名称可用</span></div>
         </template>
         <template v-else-if="example === 'field-heading'">
-            <u-field label="运行环境" description="UAH 桌面工作台"><span class="demo-value">本地工作区</span></u-field>
+            <u-form-field label="运行环境" description="UAH 桌面工作台"><span class="demo-value">本地工作区</span></u-form-field>
         </template>
         <template v-else-if="['tabs-soft', 'tabs-variants', 'panel-persistence'].includes(example)">
             <div v-if="example === 'tabs-variants'" class="demo-row"><u-switch v-model="vertical" :id="`${prefix}-vertical`" /><label :for="`${prefix}-vertical`">垂直布局</label></div>

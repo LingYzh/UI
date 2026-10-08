@@ -1,0 +1,1896 @@
+{
+    "acceptanceScope": [
+        "UParallax legacy speed/background/nested scroll and reduced-motion lifecycle",
+        "UParallax explicit scale 0/0.5/1 geometry, imageScale, overscan, dimensions and rounded/tile",
+        "UParallax direct image URL events, UImg props/slots/source/error and custom background precedence",
+        "UPullToRefresh legacy threshold/refresh/indicator and load/pullDownPanel aliases",
+        "UPullToRefresh real mouse/touch gestures, disabled/reset stale done and nearest scroll boundary",
+        "real documentation demos, image decoding, async refresh and responsive evidence"
+    ],
+    "environment": {
+        "serverMode": "Vite development server; HMR disabled to pin the loaded source snapshot",
+        "browser": "Electron renderer controlled through Playwright",
+        "assetNetwork": "local SVG fixture endpoints and data URI demo assets only"
+    },
+    "sourceSha256": {
+        "src/ui/UParallax.vue": "06680dd53ec643b83fa112add542ae8f7265d9e0f847f4b225141c7e4a7cd1db",
+        "src/ui/UPullToRefresh.vue": "436f0425a43c97a7770453419fce13ab398724a3566ff449bae0337232075722",
+        "src/ui/UImg.vue": "bb9d54f3839425c263e8d6a48693fbfe0cc79eb589d99a8e79c33c018b3e3a50",
+        "src/ui/pull-refresh-state.ts": "a1acae0300413d42250440a3edad73b6a4bc052138d17968a6801c7bdc6f5121",
+        "src/ui/docs/component-examples/parallax.vue": "4c5dc061e4e31d81886675457b366e04c516e7d860b9ec6bf6db7e4dbc2a5941",
+        "src/ui/docs/component-examples/pull-to-refresh.vue": "f66022bd2ea80258d02cb8c76204a1b9681d2979bf20286784439ac97c2cb8ad"
+    },
+    "screenshots": [
+        "wide-light.png",
+        "wide-dark.png",
+        "narrow-light.png"
+    ],
+    "parallax": {
+        "directImage": {
+            "events": [
+                {
+                    "type": "loadstart",
+                    "path": "/__media__/event-direct.svg"
+                },
+                {
+                    "type": "load",
+                    "path": "/__media__/event-direct.svg"
+                }
+            ],
+            "decoded": {
+                "currentSrc": "http://127.0.0.1:65353/__media__/picture-slow.svg",
+                "complete": true,
+                "naturalWidth": 640,
+                "naturalHeight": 320
+            },
+            "properties": {
+                "rootTag": "DIV",
+                "imageTag": "IMG",
+                "src": "/__media__/direct-fallback.svg",
+                "srcset": "/__media__/source-1x.svg 1x, /__media__/source-2x.svg 2x",
+                "sizes": "50vw",
+                "alt": "Direct image protocol",
+                "crossorigin": "anonymous",
+                "referrerpolicy": "no-referrer",
+                "draggable": "false",
+                "imageClass": "u-img-main direct-image-class",
+                "objectFit": "cover",
+                "objectPosition": "100% 0%",
+                "selectedSource": "/__media__/picture-slow.svg",
+                "previewSrc": "/__media__/preview.svg",
+                "placeholder": "Direct image placeholder",
+                "gradient": "linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent)",
+                "contentClass": "u-parallax-content direct-content-class",
+                "contentOffset": -314,
+                "contentRatio": 0.023487085293352875,
+                "width": "420px",
+                "height": "220px",
+                "minWidth": "180px",
+                "maxWidth": "600px",
+                "minHeight": "120px",
+                "maxHeight": "320px",
+                "aspectRatio": "16 / 9",
+                "borderRadius": "8px",
+                "backgroundColor": "rgb(250, 240, 230)"
+            },
+            "rerenderEventCount": 2
+        },
+        "pictureSource": {
+            "events": [
+                {
+                    "type": "loadstart",
+                    "path": "/__media__/direct-fallback.svg"
+                },
+                {
+                    "type": "load",
+                    "path": "/__media__/picture-slow.svg"
+                }
+            ],
+            "loadstartPath": "/__media__/direct-fallback.svg",
+            "selectedPath": "/__media__/picture-slow.svg"
+        },
+        "brokenImage": {
+            "events": [
+                {
+                    "type": "loadstart",
+                    "path": "/__media__/broken.svg"
+                },
+                {
+                    "type": "error",
+                    "path": "/__media__/broken.svg"
+                }
+            ],
+            "slot": "Broken image error slot",
+            "state": "u-img is-error"
+        },
+        "imageSourceObject": {
+            "src": "/__media__/object.svg",
+            "srcset": "/__media__/object-1x.svg 1x, /__media__/object-2x.svg 2x",
+            "preview": "/__media__/object-preview.svg",
+            "ratio": "1.5 / 1",
+            "slotOffset": -27
+        },
+        "customBackground": {
+            "slot": "Custom background slot wins",
+            "imageCount": 0,
+            "contentScope": true
+        },
+        "standardScale": {
+            "0": {
+                "offset": -10,
+                "ratio": 0.47641924062670576,
+                "viewportTop": 411.95001220703125,
+                "viewportBottom": 689.9500122070312,
+                "viewportHeight": 278,
+                "sceneTop": 471.75,
+                "sceneHeight": 180,
+                "sceneWidth": 420,
+                "viewportCenter": 550.9500122070312,
+                "imageScale": 1.54444,
+                "transform": "translateY(-10px) scale(1.54444)",
+                "overscan": "0%",
+                "radius": "0px",
+                "styles": {
+                    "width": "420px",
+                    "height": "140px",
+                    "minWidth": "",
+                    "maxWidth": "",
+                    "minHeight": "",
+                    "maxHeight": "",
+                    "aspectRatio": ""
+                },
+                "expectedOffset": -10,
+                "expectedImageScale": 1.5444444444444445
+            },
+            "1": {
+                "offset": 0,
+                "ratio": 0.47641924062670576,
+                "viewportTop": 411.95001220703125,
+                "viewportBottom": 689.9500122070312,
+                "viewportHeight": 278,
+                "sceneTop": 471.75,
+                "sceneHeight": 180,
+                "sceneWidth": 420,
+                "viewportCenter": 550.9500122070312,
+                "imageScale": 1,
+                "transform": "translateY(0px) scale(1)",
+                "overscan": "0%",
+                "radius": "0px",
+                "styles": {
+                    "width": "420px",
+                    "height": "140px",
+                    "minWidth": "",
+                    "maxWidth": "",
+                    "minHeight": "",
+                    "maxHeight": "",
+                    "aspectRatio": ""
+                },
+                "expectedOffset": 0,
+                "expectedImageScale": 1
+            },
+            "0.5": {
+                "offset": -5,
+                "ratio": 0.47641924062670576,
+                "viewportTop": 411.95001220703125,
+                "viewportBottom": 689.9500122070312,
+                "viewportHeight": 278,
+                "sceneTop": 471.75,
+                "sceneHeight": 180,
+                "sceneWidth": 420,
+                "viewportCenter": 550.9500122070312,
+                "imageScale": 1.27222,
+                "transform": "translateY(-5px) scale(1.27222)",
+                "overscan": "0%",
+                "radius": "0px",
+                "styles": {
+                    "width": "420px",
+                    "height": "140px",
+                    "minWidth": "",
+                    "maxWidth": "",
+                    "minHeight": "",
+                    "maxHeight": "",
+                    "aspectRatio": ""
+                },
+                "expectedOffset": -5,
+                "expectedImageScale": 1.2722222222222221
+            }
+        },
+        "legacySpeed": {
+            "before": {
+                "offset": -30.843665243756824,
+                "ratio": 0.21441050700225164,
+                "viewportTop": 411.95001220703125,
+                "viewportBottom": 689.9500122070312,
+                "viewportHeight": 278,
+                "sceneTop": 591.75,
+                "sceneHeight": 180,
+                "sceneWidth": 541.4000244140625,
+                "viewportCenter": 550.9500122070312,
+                "imageScale": 1,
+                "transform": "translateY(-30.8437px) scale(1)",
+                "overscan": "30%",
+                "radius": "0px",
+                "styles": {
+                    "width": "",
+                    "height": "",
+                    "minWidth": "",
+                    "maxWidth": "",
+                    "minHeight": "",
+                    "maxHeight": "",
+                    "aspectRatio": ""
+                }
+            },
+            "after": {
+                "offset": 4.621835500392328,
+                "ratio": 0.5427947731517808,
+                "viewportTop": 411.95001220703125,
+                "viewportBottom": 689.9500122070312,
+                "viewportHeight": 278,
+                "sceneTop": 441.3500061035156,
+                "sceneHeight": 180,
+                "sceneWidth": 541.4000244140625,
+                "viewportCenter": 550.9500122070312,
+                "imageScale": 1,
+                "transform": "translateY(4.62184px) scale(1)",
+                "overscan": "30%",
+                "radius": "0px",
+                "styles": {
+                    "width": "",
+                    "height": "",
+                    "minWidth": "",
+                    "maxWidth": "",
+                    "minHeight": "",
+                    "maxHeight": "",
+                    "aspectRatio": ""
+                }
+            },
+            "image": {
+                "complete": true,
+                "naturalWidth": 640
+            }
+        },
+        "reducedMotion": {
+            "systemPreferenceTested": true,
+            "applicationDataAttributeTested": true
+        },
+        "disabledOffset": 0,
+        "listenerCleanup": {
+            "before": {
+                "added": 9,
+                "removed": 0,
+                "active": 9
+            },
+            "after": {
+                "added": 9,
+                "removed": 1,
+                "active": 8
+            }
+        },
+        "roundedAndTile": {
+            "numericRadius": "8px",
+            "tileRadius": "0px"
+        }
+    },
+    "pullToRefresh": {
+        "legacyThresholdAndSlot": {
+            "eventCount": 1,
+            "indicatorDistance": 30,
+            "event": "refresh"
+        },
+        "defaultThreshold": {
+            "eventCount": 1,
+            "distanceBeforeThreshold": 70,
+            "thresholdDistance": 72,
+            "defaultResistance": 0.5
+        },
+        "newProtocol": {
+            "configuredThreshold": 30,
+            "legacyThresholdProp": 90,
+            "loadAndRefreshSameContext": true,
+            "sharedDoneIdempotence": true,
+            "disabledNewGestures": "covered by fixture controls and component state",
+            "resetLateDone": true,
+            "localBoundary": "scrollable root at top ignores outer positions; otherwise only nearest actual scroll ancestor controls; document is fallback"
+        },
+        "touch": {
+            "method": "Chromium CDP Input.dispatchTouchEvent touchStart/touchMove/touchEnd",
+            "emitted": true
+        },
+        "actualMouseAttempts": [
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 267.9250183105469,
+                        "right": 1216.8000755310059,
+                        "bottom": 407.9250183105469,
+                        "width": 1159.2000732421875,
+                        "height": 140
+                    },
+                    "visible": {
+                        "left": 56.79999923706055,
+                        "top": 203.125,
+                        "right": 1223.200023651123,
+                        "bottom": 423.125
+                    }
+                },
+                "start": {
+                    "x": 927.000057220459,
+                    "y": 309.9250183105469
+                },
+                "end": {
+                    "x": 927.000057220459,
+                    "y": 349.9250183105469
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 927,
+                        "y": 309,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 316,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 323,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 927,
+                        "y": 329,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 329,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 336,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 343,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 349,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 927,
+                        "y": 349,
+                        "buttons": 0,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 267.9250183105469,
+                        "right": 1216.8000755310059,
+                        "bottom": 407.9250183105469,
+                        "width": 1159.2000732421875,
+                        "height": 140
+                    },
+                    "visible": {
+                        "left": 56.79999923706055,
+                        "top": 203.125,
+                        "right": 1223.200023651123,
+                        "bottom": 423.125
+                    }
+                },
+                "start": {
+                    "x": 927.000057220459,
+                    "y": 309.9250183105469
+                },
+                "end": {
+                    "x": 927.000057220459,
+                    "y": 349.9250183105469
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 927,
+                        "y": 309,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 316,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 323,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 329,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 336,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 343,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 349,
+                        "buttons": 1,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 927,
+                        "y": 349,
+                        "buttons": 0,
+                        "target": "P",
+                        "hit": "P",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 407.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 267.9250183105469,
+                        "right": 1216.8000755310059,
+                        "bottom": 887.9250183105469,
+                        "width": 1159.2000732421875,
+                        "height": 620
+                    },
+                    "visible": {
+                        "left": 56.79999923706055,
+                        "top": 203.125,
+                        "right": 1223.200023651123,
+                        "bottom": 423.125
+                    }
+                },
+                "start": {
+                    "x": 927.000057220459,
+                    "y": 347.9250183105469
+                },
+                "end": {
+                    "x": 927.000057220459,
+                    "y": 387.9250183105469
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 927,
+                        "y": 347,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 354,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 361,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 367,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 374,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 381,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 387,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 927,
+                        "y": 387,
+                        "buttons": 0,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 267.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 887.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 303.9250183105469,
+                        "right": 1216.8000755310059,
+                        "bottom": 923.9250183105469,
+                        "width": 1159.2000732421875,
+                        "height": 620
+                    },
+                    "visible": {
+                        "left": 56.79999923706055,
+                        "top": 203.125,
+                        "right": 1223.200023651123,
+                        "bottom": 423.125
+                    }
+                },
+                "start": {
+                    "x": 927.000057220459,
+                    "y": 379.125
+                },
+                "end": {
+                    "x": 927.000057220459,
+                    "y": 419.125
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 927,
+                        "y": 379,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 385,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 392,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 399,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 405,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 412,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 927,
+                        "y": 419,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 927,
+                        "y": 419,
+                        "buttons": 0,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1216.8000755310059,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 56.79999923706055,
+                            "top": 203.125,
+                            "right": 1223.200023651123,
+                            "bottom": 423.125
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 303.9250183105469,
+                        "right": 1222.4000511169434,
+                        "bottom": 923.9250183105469,
+                        "width": 1164.800048828125,
+                        "height": 620
+                    },
+                    "visible": {
+                        "left": 0,
+                        "top": 0,
+                        "right": 1280,
+                        "bottom": 1102
+                    }
+                },
+                "start": {
+                    "x": 931.2000389099121,
+                    "y": 383.9250183105469
+                },
+                "end": {
+                    "x": 931.2000389099121,
+                    "y": 423.9250183105469
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 931,
+                        "y": 383,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 390,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 397,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 403,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 410,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 417,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 423,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 931,
+                        "y": 423,
+                        "buttons": 0,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 303.9250183105469,
+                            "right": 1222.4000511169434,
+                            "bottom": 923.9250183105469
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "#modern-pull",
+                "distance": 40,
+                "geometry": {
+                    "root": {
+                        "left": 57.60000228881836,
+                        "top": 354.32501220703125,
+                        "right": 1222.4000511169434,
+                        "bottom": 974.3250122070312,
+                        "width": 1164.800048828125,
+                        "height": 620
+                    },
+                    "visible": {
+                        "left": 0,
+                        "top": 0,
+                        "right": 1280,
+                        "bottom": 1102
+                    }
+                },
+                "start": {
+                    "x": 931.2000389099121,
+                    "y": 434.32501220703125
+                },
+                "end": {
+                    "x": 931.2000389099121,
+                    "y": 474.32501220703125
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 931,
+                        "y": 434,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 440,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 447,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 454,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 460,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 467,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 931,
+                        "y": 474,
+                        "buttons": 1,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 931,
+                        "y": 474,
+                        "buttons": 0,
+                        "target": "modern-content",
+                        "hit": "modern-content",
+                        "root": {
+                            "left": 57.60000228881836,
+                            "top": 354.32501220703125,
+                            "right": 1222.4000511169434,
+                            "bottom": 974.3250122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            },
+            {
+                "selector": "[data-demo-component=\"UPullToRefresh\"] .u-pull-to-refresh",
+                "distance": 84,
+                "geometry": {
+                    "root": {
+                        "left": 666.7999877929688,
+                        "top": 610.9500122070312,
+                        "right": 1223.2000122070312,
+                        "bottom": 850.9500122070312,
+                        "width": 556.4000244140625,
+                        "height": 240
+                    },
+                    "visible": {
+                        "left": 0,
+                        "top": 0,
+                        "right": 1280,
+                        "bottom": 1102
+                    }
+                },
+                "start": {
+                    "x": 1084.1000061035156,
+                    "y": 682.9500122070312
+                },
+                "end": {
+                    "x": 1084.1000061035156,
+                    "y": 766.9500122070312
+                },
+                "events": [
+                    {
+                        "type": "mousedown",
+                        "x": 1084,
+                        "y": 682,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 696,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 696,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 696,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 710,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 710,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 724,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 738,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 752,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 752,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 766,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mousemove",
+                        "x": 1084,
+                        "y": 766,
+                        "buttons": 1,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseleave",
+                        "x": 1084,
+                        "y": 766,
+                        "buttons": 0,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    },
+                    {
+                        "type": "mouseup",
+                        "x": 1084,
+                        "y": 766,
+                        "buttons": 0,
+                        "target": "LI.py-2",
+                        "hit": "LI.py-2",
+                        "root": {
+                            "left": 666.7999877929688,
+                            "top": 610.9500122070312,
+                            "right": 1223.2000122070312,
+                            "bottom": 850.9500122070312
+                        },
+                        "visible": {
+                            "left": 0,
+                            "top": 0,
+                            "right": 1280,
+                            "bottom": 1102
+                        },
+                        "rootScrollTop": 0
+                    }
+                ]
+            }
+        ],
+        "actualDemo": {
+            "firstRequestTriggered": true,
+            "resetCanceledPendingCount": 0
+        }
+    },
+    "demos": {
+        "parallax": {
+            "standardModeToggle": true,
+            "scaleSliderValueDuringScroll": " scale 0.5；图片已加载",
+            "decodedImage": {
+                "currentSrc": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22320%22%20viewBox%3D%220%200%20640%20320%22%3E%3Crect%20width%3D%22640%22%20height%3D%22320%22%20fill%3D%22%23efe8df%22%2F%3E%3Ccircle%20cx%3D%22480%22%20cy%3D%22100%22%20r%3D%2260%22%20fill%3D%22%23bd6749%22%2F%3E%3Cpath%20d%3D%22M0%20320%20180%2090%20360%20320Z%22%20fill%3D%22%23789380%22%2F%3E%3Cpath%20d%3D%22M230%20320%20420%20150%20640%20320Z%22%20fill%3D%22%23a7b7a5%22%2F%3E%3C%2Fsvg%3E",
+                "complete": true,
+                "naturalWidth": 640,
+                "naturalHeight": 320
+            },
+            "nestedScrollOutputChanged": true
+        },
+        "pullToRefresh": {
+            "firstRequestTriggered": true,
+            "resetCanceledPendingCount": 0
+        }
+    },
+    "requests": [
+        "/__media__/preview.svg",
+        "/__media__/picture-slow.svg",
+        "/__media__/event-direct.svg",
+        "/__media__/broken.svg",
+        "/__media__/object-preview.svg",
+        "/__media__/object-2x.svg",
+        "/__media__/speed.svg",
+        "/__media__/direct-fallback.svg"
+    ],
+    "errors": [],
+    "limitations": [
+        "Screenshots preserve the actual documentation demo components; aesthetic acceptance is left to Root.",
+        "No full build, full test suite, dependency installation, or external image request was run."
+    ],
+    "runtime": {
+        "url": "http://127.0.0.1:65353/__media-containers.html",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.130 Electron/44.4.5 Safari/537.36",
+        "screenshots": [
+            "wide-light.png",
+            "wide-dark.png",
+            "narrow-light.png"
+        ],
+        "externalRequests": [],
+        "imageRequests": [
+            "/__media__/preview.svg",
+            "/__media__/picture-slow.svg",
+            "/__media__/event-direct.svg",
+            "/__media__/broken.svg",
+            "/__media__/object-preview.svg",
+            "/__media__/object-2x.svg",
+            "/__media__/speed.svg",
+            "/__media__/direct-fallback.svg"
+        ],
+        "parallaxScrollListenersBeforeUnmount": {
+            "added": 9,
+            "removed": 1,
+            "active": 8
+        }
+    }
+}

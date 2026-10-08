@@ -1,0 +1,33 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UItem.vue",
+        "../src/ui/UItemGroup.vue",
+        "../src/ui/UChip.vue",
+        "../src/ui/UChipGroup.vue",
+        "../src/ui/UBtnToggle.vue",
+        "../src/ui/UiButton.vue",
+        "../src/ui/UiForm.vue",
+        "../src/ui/item-group-state.ts",
+        "../src/ui/item-group-context.ts",
+        "../src/ui/selection-context.ts",
+        "../src/ui/selection.ts",
+        "../src/ui/button-group.ts",
+        "../src/ui/group-props.ts",
+        "../src/ui/form.ts",
+        "../src/ui/plugin.ts",
+        "../src/ui/component-registry.ts",
+        "../src/ui/index.ts",
+        "../src/ui/docs/component-examples/item.vue",
+        "../src/ui/docs/component-examples/item-group.vue",
+        "../src/ui/docs/component-examples/chip-group.vue"
+    ],
+    "exclude": []
+}

@@ -1860,12 +1860,22 @@ export const componentApi = {
             {
                 "name": "text",
                 "type": "string",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "简短说明文字",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
+            },
+            {
+                "name": "standardProtocol",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "默认false：default是触发器，text或content提供提示内容；true使用activator触发器插槽与default内容插槽，default的isActive是可写Ref。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
             },
             {
                 "name": "focusable",
@@ -1890,13 +1900,135 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "id",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置根元素或原生控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "interactive",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 interactive 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
                 "name": "location",
-                "type": "'top' | 'bottom' | 'left' | 'right'",
+                "type": "string",
                 "fallback": "'top'",
                 "description": "设置浮层或控件在锚点周围的放置位置。 可选值为 'top'、'bottom'、'left'、'right'",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "'top'"
+                },
+                "required": false
+            },
+            {
+                "name": "origin",
+                "type": "string",
+                "fallback": "'auto'",
+                "description": "设置 origin，供 UTooltip 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'auto'"
+                },
+                "required": false
+            },
+            {
+                "name": "offset",
+                "type": "number | string | readonly number[]",
+                "fallback": "8",
+                "description": "设置网格列相对起始边缘的偏移",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "8"
+                },
+                "required": false
+            },
+            {
+                "name": "target",
+                "type": "ElementTarget | readonly [number, number]",
+                "fallback": "—",
+                "description": "设置链接打开目标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "activator",
+                "type": "ElementTarget",
+                "fallback": "—",
+                "description": "指定浮层触发器；若使用 activator 插槽，可自行绑定其 props",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "activatorProps",
+                "type": "Record<string, unknown>",
+                "fallback": "—",
+                "description": "设置 activator Props，供 UTooltip 执行对应行为；公开类型为 Record<string, unknown>",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "contentProps",
+                "type": "Record<string, unknown>",
+                "fallback": "—",
+                "description": "设置 content Props，供 UTooltip 执行对应行为；公开类型为 Record<string, unknown>",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "contentClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 content Class，供 UTooltip 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -1934,8 +2066,18 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "closeOnContentClick",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 close On Content Click 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
                 "name": "openDelay",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "0",
                 "description": "延迟指定毫秒后打开面板",
                 "declaredDefault": {
@@ -1946,7 +2088,7 @@ export const componentApi = {
             },
             {
                 "name": "closeDelay",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "0",
                 "description": "延迟指定毫秒后关闭面板",
                 "declaredDefault": {
@@ -1965,6 +2107,149 @@ export const componentApi = {
                     "source": "false"
                 },
                 "required": false
+            },
+            {
+                "name": "closeOnBack",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 close On Back 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "scrollStrategy",
+                "type": "'close' | 'reposition' | 'block' | 'none'",
+                "fallback": "'close'",
+                "description": "设置浮层打开时对页面滚动的处理方式。 可选值为 'close'、'reposition'、'block'、'none'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'close'"
+                },
+                "required": false
+            },
+            {
+                "name": "locationStrategy",
+                "type": "'connected' | 'static'",
+                "fallback": "'connected'",
+                "description": "设置 location Strategy；可选值为 'connected'、'static'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'connected'"
+                },
+                "required": false
+            },
+            {
+                "name": "eager",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "在首次显示前挂载内容；不启用时按组件生命周期延迟挂载",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "attach",
+                "type": "boolean | string | HTMLElement",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 attach，供 UTooltip 执行对应行为；公开类型为 boolean | string | HTMLElement",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "contained",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 contained 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "zIndex",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置 z Index，供 UTooltip 执行对应行为；公开类型为 number | string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             }
         ],
         "events": [
@@ -1973,14 +2258,178 @@ export const componentApi = {
                 "type": "value: boolean",
                 "fallback": "—",
                 "description": "双向属性 modelValue 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:outside",
+                "type": "event: MouseEvent",
+                "fallback": "—",
+                "description": "用户点击浮层外部时触发"
+            },
+            {
+                "name": "keydown",
+                "type": "event: KeyboardEvent",
+                "fallback": "—",
+                "description": "当 keydown 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "afterEnter",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 after Enter 发生时触发"
+            },
+            {
+                "name": "afterLeave",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 after Leave 发生时触发"
             }
         ],
         "slots": [
             {
-                "name": "default",
-                "type": "—",
+                "name": "activator",
+                "type": "{ props, activatorRef, targetRef, isActive }",
                 "fallback": "—",
-                "description": "非交互图标；外层提供 Tab 焦点"
+                "description": "标准触发器：v-bind props绑定ARIA、指针、键盘和元素ref；isActive为布尔值，targetRef可绑定独立定位目标。"
+            },
+            {
+                "name": "default",
+                "type": "{ isActive }",
+                "fallback": "有默认内容",
+                "description": "旧默认：触发器；standardProtocol=true时为提示内容，提供可写Ref isActive。"
+            },
+            {
+                "name": "content",
+                "type": "{ isActive }",
+                "fallback": "有默认内容",
+                "description": "旧协议的自定义提示内容，优先于text；标准协议使用default。"
+            }
+        ],
+        "methods": [
+            {
+                "name": "isActive",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "visible",
+                "description": "读取 isActive，访问 visible 对应的 UTooltip 成员"
+            },
+            {
+                "name": "activatorEl",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "trigger",
+                "description": "读取 activatorEl，访问 trigger 对应的 UTooltip 成员"
+            },
+            {
+                "name": "contentEl",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "bubble",
+                "description": "读取 contentEl，访问 bubble 对应的 UTooltip 成员"
+            },
+            {
+                "name": "updateLocation",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "position",
+                "description": "读取 updateLocation，访问 position 对应的 UTooltip 成员"
+            },
+            {
+                "name": "open",
+                "type": "function",
+                "kind": "method",
+                "expression": "() => setVisible(true)",
+                "description": "打开组件面板或浮层"
+            },
+            {
+                "name": "close",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "hide",
+                "description": "关闭组件当前打开的面板或浮层"
+            }
+        ],
+        "attributes": []
+    },
+    "UFormField": {
+        "props": [
+            {
+                "name": "label",
+                "type": "string",
+                "fallback": "—",
+                "description": "控件或区域的可访问名称；有可见标题时仍会关联对应控件",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "for",
+                "type": "string",
+                "fallback": "—",
+                "description": "将标签或消息关联到指定控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "fallback": "—",
+                "description": "为条目或控件提供补充说明；具体展示位置由组件决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "error",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示当前错误状态或错误内容；具体呈现由组件决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "layout",
+                "type": "FieldLayout",
+                "fallback": "—",
+                "description": "设置 layout，供 UFormField 执行对应行为；公开类型为 FieldLayout",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "要求表单提交前提供有效值，并暴露原生或 ARIA 必填状态",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDetails",
+                "type": "boolean | 'auto'",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制 hint 与验证消息等辅助信息的显示；auto 会在需要时显示",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            }
+        ],
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "type": "{ controlAttrs }",
+                "fallback": "—",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [],
@@ -1989,10 +2438,264 @@ export const componentApi = {
     "UField": {
         "props": [
             {
+                "name": "id",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置根元素或原生控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "labelId",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 label Id，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "label",
                 "type": "string",
                 "fallback": "—",
                 "description": "自定义表单项的可见标题",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "details",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 details 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "active",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制当前条目或面板是否处于激活状态",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "dirty",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 dirty 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean | null",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用。 也可传入 null 清空或表示当前无值",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "error",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "错误说明，使用 role=alert",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "variant",
+                "type": "'underlined' | 'outlined' | 'filled' | 'solo' | 'solo-inverted' | 'solo-filled' | 'plain'",
+                "fallback": "'outlined'",
+                "description": "选择组件的语义样式变体；可用值见联合类型。 可选值为 'underlined'、'outlined'、'filled'、'solo'、'solo-inverted'、'solo-filled'、'plain'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'outlined'"
+                },
+                "required": false
+            },
+            {
+                "name": "clearable",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "显示清除当前选择或输入值的操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "clearIcon",
+                "type": "string",
+                "fallback": "'mdi-close'",
+                "description": "设置 clear Icon，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'mdi-close'"
+                },
+                "required": false
+            },
+            {
+                "name": "persistentClear",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 persistent Clear 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "prependInnerIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 prepend Inner Icon，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "appendInnerIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 append Inner Icon，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "centerAffix",
+                "type": "boolean",
+                "fallback": "undefined",
+                "description": "控制是否启用 center Affix 行为",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "reverse",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "反转内容或数据的显示顺序",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "singleLine",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 single Line 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "flat",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 flat 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "glow",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 glow 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "baseColor",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 base Color，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "bgColor",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 bg Color，供 UField 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "iconColor",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 icon Color，供 UField 执行对应行为；公开类型为 boolean | string",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "loading",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "表示异步或延迟操作正在进行，并按组件约定限制重复操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean | number | string",
+                "fallback": "true",
+                "description": "省略时保持本组件圆角；false/0去圆角，数字按px，字符串支持CSS长度及sm/md/lg/xl/pill/circle/shaped、t/b/s/e边角配置。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -2013,16 +2716,6 @@ export const componentApi = {
                 "type": "string",
                 "fallback": "—",
                 "description": "自定义控件下方的辅助说明",
-                "declaredDefault": {
-                    "kind": "undefined"
-                },
-                "required": false
-            },
-            {
-                "name": "error",
-                "type": "string",
-                "fallback": "—",
-                "description": "错误说明，使用 role=alert",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -2057,18 +2750,119 @@ export const componentApi = {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
+            },
+            {
+                "name": "focused",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 focused 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
             }
         ],
-        "events": [],
+        "events": [
+            {
+                "name": "update:modelValue",
+                "type": "value: null",
+                "fallback": "—",
+                "description": "双向属性 modelValue 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:clear",
+                "type": "event: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:clear 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:prependInner",
+                "type": "event: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:prepend Inner 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:appendInner",
+                "type": "event: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:append Inner 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "update:focused",
+                "type": "value: boolean",
+                "fallback": "—",
+                "description": "双向属性 focused 更新时触发；参数为最新值"
+            }
+        ],
         "slots": [
             {
+                "name": "loader",
+                "type": "{ isActive, color }",
+                "fallback": "有默认内容",
+                "description": "自定义 loader 区域。 作用域提供 { isActive, color }"
+            },
+            {
+                "name": "prepend-inner",
+                "type": "{ isActive, isFocused, controlRef, iconColor, focus, blur }",
+                "fallback": "有默认内容",
+                "description": "自定义 prepend inner 区域"
+            },
+            {
+                "name": "label",
+                "type": "{ isActive, isFocused, controlRef, iconColor, focus, blur, label, props }",
+                "fallback": "有默认内容",
+                "description": "自定义 label 区域。 作用域提供 { label, props }"
+            },
+            {
                 "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
+                "type": "{ isActive, isFocused, controlRef, iconColor, focus, blur, props, controlAttrs }",
+                "fallback": "有默认内容",
                 "description": "id、aria-describedby、aria-invalid，须 v-bind 到控件"
+            },
+            {
+                "name": "clear",
+                "type": "{ isActive, isFocused, controlRef, iconColor, focus, blur, props }",
+                "fallback": "有默认内容",
+                "description": "自定义 clear 区域。 作用域提供 { props }"
+            },
+            {
+                "name": "append-inner",
+                "type": "{ isActive, isFocused, controlRef, iconColor, focus, blur }",
+                "fallback": "有默认内容",
+                "description": "自定义 append inner 区域"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "controlRef",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "controlRef",
+                "description": "读取 controlRef，访问 controlRef 对应的 UField 成员"
+            },
+            {
+                "name": "fieldIconColor",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "fieldIconColor",
+                "description": "读取 fieldIconColor，访问 fieldIconColor 对应的 UField 成员"
+            },
+            {
+                "name": "focus",
+                "type": "function",
+                "kind": "method",
+                "expression": "focus",
+                "description": "将焦点移到组件的可编辑控件或首个可交互元素"
+            },
+            {
+                "name": "blur",
+                "type": "function",
+                "kind": "method",
+                "expression": "blur",
+                "description": "调用 blur，访问 blur 对应的 UField 成员"
+            }
+        ],
         "attributes": []
     },
     "UContainer": {
@@ -3817,77 +4611,85 @@ export const componentApi = {
     "UTable": {
         "props": [
             {
-                "name": "headers",
-                "type": "readonly TableHeader[]",
-                "fallback": "每次实例化执行 () => []",
-                "description": "key/title，以及可选 align、width、sortable",
-                "declaredDefault": {
-                    "kind": "factory",
-                    "source": "() => []"
-                },
-                "required": false
-            },
-            {
-                "name": "items",
-                "type": "readonly Record<string, unknown>[]",
-                "fallback": "每次实例化执行 () => []",
-                "description": "行数据；不会隐式排序或切片",
-                "declaredDefault": {
-                    "kind": "factory",
-                    "source": "() => []"
-                },
-                "required": false
-            },
-            {
-                "name": "itemValue",
-                "type": "string",
-                "fallback": "'id'",
-                "description": "唯一行键字段；正式数据应提供稳定的唯一键",
-                "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "'id'"
-                },
-                "required": false
-            },
-            {
                 "name": "label",
                 "type": "string",
-                "fallback": "无默认值（必填）",
+                "fallback": "'Table'",
                 "description": "表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "explicit",
+                    "source": "'Table'"
                 },
-                "required": true
+                "required": false
             },
             {
-                "name": "loading",
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "限制视口高度并固定表头",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "fixedHeader",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "加载提示与 aria-busy，避免把旧页显示成新页",
+                "description": "限制视口高度并固定表头",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "emptyText",
-                "type": "string",
-                "fallback": "undefined",
-                "description": "空数据文案",
+                "name": "fixedFooter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "固定 tfoot，在滚动时保留汇总行",
                 "declaredDefault": {
-                    "kind": "explicit-undefined",
-                    "source": "undefined"
+                    "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "sortBy",
-                "type": "readonly TableSort[]",
-                "fallback": "每次实例化执行 () => []",
-                "description": "受控排序指示；基础表格只发事件，不修改数据",
+                "name": "gridlines",
+                "type": "boolean | 'horizontal' | 'vertical' | 'all'",
+                "fallback": "'horizontal'",
+                "description": "水平、垂直、全部网格线；false 不显示网格线",
                 "declaredDefault": {
-                    "kind": "factory",
-                    "source": "() => []"
+                    "kind": "explicit",
+                    "source": "'horizontal'"
+                },
+                "required": false
+            },
+            {
+                "name": "hover",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "启用行悬停反馈",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "striped",
+                "type": "'odd' | 'even'",
+                "fallback": "—",
+                "description": "按奇数或偶数行显示交替底色 可选值为 'odd'、'even'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "density",
+                "type": "'default' | 'comfortable' | 'compact' | null",
+                "fallback": "—",
+                "description": "选择组件内部间距级别；可用值见联合类型。 可选值为 'default'、'comfortable'、'compact'",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -3923,32 +4725,23 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "height",
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
                 "type": "string",
                 "fallback": "—",
-                "description": "限制视口高度并固定表头",
+                "description": "选择当前组件使用的主题名称",
                 "declaredDefault": {
                     "kind": "undefined"
-                },
-                "required": false
-            },
-            {
-                "name": "fixedHeader",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "限制视口高度并固定表头",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "disabled",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
                 },
                 "required": false
             },
@@ -3962,6 +4755,79 @@ export const componentApi = {
                     "source": "true"
                 },
                 "required": false
+            },
+            {
+                "name": "headers",
+                "type": "readonly DataHeader[]",
+                "fallback": "—",
+                "description": "key/title，以及可选 align、width、sortable",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly DataItem[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "行数据；不会隐式排序或切片",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "ItemProperty",
+                "fallback": "'id'",
+                "description": "唯一行键字段；正式数据应提供稳定的唯一键",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'id'"
+                },
+                "required": false
+            },
+            {
+                "name": "loading",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "加载提示与 aria-busy，避免把旧页显示成新页",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "emptyText",
+                "type": "string",
+                "fallback": "—",
+                "description": "空数据文案",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortBy",
+                "type": "readonly TableSort[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "受控排序指示；基础表格只发事件，不修改数据",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
             }
         ],
         "events": [
@@ -3973,6 +4839,18 @@ export const componentApi = {
             }
         ],
         "slots": [
+            {
+                "name": "top",
+                "type": "—",
+                "fallback": "—",
+                "description": "自定义 top 区域"
+            },
+            {
+                "name": "wrapper",
+                "type": "—",
+                "fallback": "有默认内容",
+                "description": "自定义 wrapper 区域"
+            },
             {
                 "name": "default",
                 "type": "—",
@@ -4002,6 +4880,12 @@ export const componentApi = {
                 "type": "—",
                 "fallback": "有默认内容",
                 "description": "自定义没有匹配或可显示条目时的空状态"
+            },
+            {
+                "name": "bottom",
+                "type": "—",
+                "fallback": "—",
+                "description": "自定义 bottom 区域"
             }
         ],
         "methods": [],
@@ -4010,10 +4894,62 @@ export const componentApi = {
     "UDataTableServer": {
         "props": [
             {
-                "name": "ripple",
-                "type": "RippleOptions",
+                "name": "label",
+                "type": "string",
+                "fallback": "'Data table'",
+                "description": "表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'Data table'"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "限制视口高度并固定表头",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "fixedHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "限制视口高度并固定表头",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "fixedFooter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "固定 tfoot，在滚动时保留汇总行",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "gridlines",
+                "type": "boolean | 'horizontal' | 'vertical' | 'all'",
+                "fallback": "'horizontal'",
+                "description": "水平、垂直、全部网格线；false 不显示网格线",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'horizontal'"
+                },
+                "required": false
+            },
+            {
+                "name": "hover",
+                "type": "boolean",
                 "fallback": "true",
-                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "description": "启用行悬停反馈",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "true"
@@ -4021,153 +4957,22 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "headers",
-                "type": "readonly DataHeader[]",
-                "fallback": "无默认值（必填）",
-                "description": "key/title，以及可选 align、width、sortable",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
-            {
-                "name": "items",
-                "type": "readonly DataItem[]",
-                "fallback": "无默认值（必填）",
-                "description": "行数据；不会隐式排序或切片",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
-            {
-                "name": "itemsLength",
-                "type": "number",
-                "fallback": "无默认值（必填）",
-                "description": "服务端总记录数，不是当前页长度",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
-            {
-                "name": "itemValue",
-                "type": "string",
+                "name": "striped",
+                "type": "'odd' | 'even'",
                 "fallback": "—",
-                "description": "唯一行键字段；正式数据应提供稳定的唯一键",
+                "description": "按奇数或偶数行显示交替底色 可选值为 'odd'、'even'",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
                 "required": false
             },
             {
-                "name": "itemTitle",
-                "type": "string",
+                "name": "density",
+                "type": "'default' | 'comfortable' | 'compact' | null",
                 "fallback": "—",
-                "description": "从数据项读取显示文本的字段名或取值函数",
+                "description": "选择组件内部间距级别；可用值见联合类型。 可选值为 'default'、'comfortable'、'compact'",
                 "declaredDefault": {
                     "kind": "undefined"
-                },
-                "required": false
-            },
-            {
-                "name": "label",
-                "type": "string",
-                "fallback": "无默认值（必填）",
-                "description": "表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
-            {
-                "name": "loading",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "加载提示与 aria-busy，避免把旧页显示成新页",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "error",
-                "type": "string",
-                "fallback": "—",
-                "description": "失败时展示错误与重试操作",
-                "declaredDefault": {
-                    "kind": "undefined"
-                },
-                "required": false
-            },
-            {
-                "name": "disabled",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "showSelect",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "在数据行前显示选择控件并启用选择模型",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "returnObject",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "让选择模型返回完整条目对象，而不是条目 value",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "showExpand",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "为数据行显示展开操作及扩展内容区域",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "multiSort",
-                "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
-                "description": "允许排序模型同时包含多个排序字段",
-                "declaredDefault": {
-                    "kind": "vue-boolean-false"
-                },
-                "required": false
-            },
-            {
-                "name": "search",
-                "type": "string",
-                "fallback": "—",
-                "description": "控制或读取候选项过滤使用的搜索文本",
-                "declaredDefault": {
-                    "kind": "undefined"
-                },
-                "required": false
-            },
-            {
-                "name": "itemsPerPageOptions",
-                "type": "readonly number[]",
-                "fallback": "每次实例化执行 () => [10, 25, 50]",
-                "description": "仅接受正整数；保留当前选项",
-                "declaredDefault": {
-                    "kind": "factory",
-                    "source": "() => [10, 25, 50]"
                 },
                 "required": false
             },
@@ -4203,28 +5008,741 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "height",
+                "name": "tag",
                 "type": "string",
                 "fallback": "—",
-                "description": "限制视口高度并固定表头",
+                "description": "选择组件根节点的 HTML 标签",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
                 "required": false
             },
             {
-                "name": "fixedHeader",
-                "type": "boolean",
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "ripple",
+                "type": "RippleOptions",
+                "fallback": "true",
+                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "headers",
+                "type": "readonly DataHeader[]",
+                "fallback": "—",
+                "description": "key/title，以及可选 align、width、sortable",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly DataItem[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "行数据；不会隐式排序或切片",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "itemTitle",
+                "type": "ItemProperty",
+                "fallback": "'title'",
+                "description": "从数据项读取显示文本的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'title'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "ItemProperty",
+                "fallback": "'id'",
+                "description": "唯一行键字段；正式数据应提供稳定的唯一键",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'id'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemSelectable",
+                "type": "ItemProperty",
+                "fallback": "—",
+                "description": "字段路径、路径数组或函数，返回 false 的行不可选择",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "rowProps",
+                "type": "TableAttributes | ((context: RowContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为数据行提供属性，函数接收 { item, internalItem, index }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "cellProps",
+                "type": "TableAttributes | ((context: CellContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为单元格提供属性，函数接收 { item, internalItem, index, column, value }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "headerProps",
+                "type": "TableAttributes",
+                "fallback": "—",
+                "description": "为默认表头单元格提供属性，与每列 headerProps 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "search",
+                "type": "string",
+                "fallback": "—",
+                "description": "控制或读取候选项过滤使用的搜索文本",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customFilter",
+                "type": "FilterFunction",
+                "fallback": "—",
+                "description": "以 value、query、item 和 key 自定义表格过滤",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeyFilter",
+                "type": "Record<string, FilterFunction>",
+                "fallback": "—",
+                "description": "为指定列设置过滤函数，与 header.filter 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterKeys",
+                "type": "string | readonly string[]",
+                "fallback": "—",
+                "description": "限制参与搜索的列 key；支持字符串或数组",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterMode",
+                "type": "'some' | 'every' | 'union' | 'intersection'",
+                "fallback": "'intersection'",
+                "description": "intersection 要求自定义列均匹配；union 允许默认列或自定义列组匹配；every 要求所有列匹配 可选值为 'some'、'every'、'union'、'intersection'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'intersection'"
+                },
+                "required": false
+            },
+            {
+                "name": "ignoreAccents",
+                "type": "boolean | string",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "限制视口高度并固定表头",
+                "description": "忽略重音符号，字符串值指定 Intl 搜索区域",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
+                "name": "noFilter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留所有输入项，跳过本地过滤",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "showSelect",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "在数据行前显示选择控件并启用选择模型",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "selectStrategy",
+                "type": "'single' | 'page' | 'all' | SelectionStrategy",
+                "fallback": "'page'",
+                "description": "设置 select Strategy，供 UDataTableServer 执行对应行为；公开类型为 'single' | 'page' | 'all' | SelectionStrategy",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'page'"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "(a: unknown, b: unknown) => boolean",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "returnObject",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "让选择模型返回完整条目对象，而不是条目 value",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "showExpand",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "为数据行显示展开操作及扩展内容区域",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "expandOnClick",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "点击数据行切换展开；控件点击不触发行操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "expandStrategy",
+                "type": "'single' | 'multiple'",
+                "fallback": "'multiple'",
+                "description": "single 同时只展开一行，multiple 可展开多行 可选值为 'single'、'multiple'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'multiple'"
+                },
+                "required": false
+            },
+            {
+                "name": "expandTransition",
+                "type": "false | { component?: unknown; [key: string]: unknown }",
+                "fallback": "—",
+                "description": "false 关闭展开动画；对象可指定本库的过渡组件和属性",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "multiSort",
+                "type": "boolean | { key?: 'ctrl'; mode?: 'append' | 'prepend'; modifier?: 'alt' | 'shift' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许排序模型同时包含多个排序字段",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "mustSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留至少一个已点击的排序条件",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disableSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用本地排序与表头排序操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "initialSortOrder",
+                "type": "'asc' | 'desc'",
+                "fallback": "'asc'",
+                "description": "首次点击列时的排序方向 可选值为 'asc'、'desc'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'asc'"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeySort",
+                "type": "Record<string, (a: unknown, b: unknown) => number | null>",
+                "fallback": "—",
+                "description": "按列 key 自定义比较函数；返回 null 使用默认比较",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "openAll",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "首次出现的分组自动展开；仍允许用户收起",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "groupKey",
+                "type": "(context: { key: string; value: unknown; parentKey: string | null }) => string",
+                "fallback": "—",
+                "description": "自定义稳定分组 ID，父分组根节点的 parentKey 为 null",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "loading",
+                "type": "boolean | string | { color?: string; side?: 'start' | 'end' | 'both' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "加载提示与 aria-busy，避免把旧页显示成新页",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "loadingText",
+                "type": "string",
+                "fallback": "—",
+                "description": "加载状态文字及进度条的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "noDataText",
+                "type": "string",
+                "fallback": "—",
+                "description": "过滤后没有候选项时呈现的说明文字",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "hideNoData",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏空数据提示行",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "error",
+                "type": "string",
+                "fallback": "—",
+                "description": "失败时展示错误与重试操作",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDefaultFooter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏组件内置分页栏，便于调用方提供自定义页脚",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDefaultHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动表头，仍可通过 thead 插槽补充",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDefaultBody",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动 tbody，仍可通过 tbody 插槽补充",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "表格最小宽度，横向滚动时保留列宽",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sticky",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "fixedHeader 的兼容别名",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "mobile",
+                "type": "boolean | null",
+                "fallback": "undefined",
+                "description": "控制是否启用 mobile 行为",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "mobileBreakpoint",
+                "type": "number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'",
+                "fallback": "'lg'",
+                "description": "低于该像素宽度时启用移动端抽屉行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'lg'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortAscIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖升序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortDescIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖降序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "expandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "collapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行展开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupExpandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupCollapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组打开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectAllLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "全选控件的可访问名称；省略时使用本库语言包",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectRowLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择行控件的无障碍名称，{0} 替换为行标题",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "getMatches",
+                "type": "(item: InternalDataItem) => Record<string, unknown> | undefined",
+                "fallback": "—",
+                "description": "外部提供单元格搜索匹配区间；默认使用内置过滤结果 允许省略或传入 undefined",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "pageBy",
+                "type": "'auto' | 'item' | 'group' | 'any'",
+                "fallback": "'auto'",
+                "description": "auto 有分组时按根分组分页；item 按数据项；group 按根分组；any 按可见行 可选值为 'auto'、'item'、'group'、'any'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'auto'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsPerPageOptions",
+                "type": "readonly (number | { value: number; title: string })[]",
+                "fallback": "每次实例化执行 () => [10, 25, 50, 100, -1]",
+                "description": "仅接受正整数；保留当前选项",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => [10, 25, 50, 100, -1]"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsPerPageText",
+                "type": "string",
+                "fallback": "—",
+                "description": "每页数量控件的可见标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "pageText",
+                "type": "string",
+                "fallback": "—",
+                "description": "{0}、{1}、{2} 分别为起始、结束、总数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "showCurrentPage",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "在页脚显示当前页码与总页数",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "showFirstLastPage",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "在页脚显示首尾页操作",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "firstIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "首页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lastIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "末页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "firstPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "跳到首页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lastPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "跳到末页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsLength",
+                "type": "number | string",
+                "fallback": "无默认值（必填）",
+                "description": "服务端总记录数，不是当前页长度",
+                "declaredDefault": {
+                    "kind": "required"
+                },
+                "required": true
+            },
+            {
                 "name": "page",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "1",
                 "description": "v-model:page：当前页，从 1 开始；总数收缩时校正越界页",
                 "declaredDefault": {
@@ -4235,7 +5753,7 @@ export const componentApi = {
             },
             {
                 "name": "itemsPerPage",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "10",
                 "description": "v-model:itemsPerPage：每页条数",
                 "declaredDefault": {
@@ -4287,14 +5805,67 @@ export const componentApi = {
                     "source": "() => []"
                 },
                 "required": false
+            },
+            {
+                "name": "opened",
+                "type": "string[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 opened 所需的数据集合；类型为 string[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
             }
         ],
         "events": [
             {
                 "name": "update:options",
-                "type": "options: { page: number; itemsPerPage: number; sortBy: TableSort[]; groupBy: DataGroup[]; search: string }",
+                "type": "options: DataOptions",
                 "fallback": "—",
                 "description": "初始化及参数变化时发出；修改每页条数或点击排序会回第一页"
+            },
+            {
+                "name": "update:currentItems",
+                "type": "items: DataRow[]",
+                "fallback": "—",
+                "description": "双向属性 currentItems 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 click:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 dblclick:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 contextmenu:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "click:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 click:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 dblclick:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 contextmenu:group Header 发生时触发，并携带 event、context 参数"
             },
             {
                 "name": "retry",
@@ -4304,13 +5875,13 @@ export const componentApi = {
             },
             {
                 "name": "update:page",
-                "type": "value: number",
+                "type": "value: number | string",
                 "fallback": "—",
                 "description": "双向模型更新"
             },
             {
                 "name": "update:itemsPerPage",
-                "type": "value: number",
+                "type": "value: number | string",
                 "fallback": "—",
                 "description": "双向模型更新"
             },
@@ -4337,9 +5908,117 @@ export const componentApi = {
                 "type": "value: unknown[]",
                 "fallback": "—",
                 "description": "双向属性 expanded 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:opened",
+                "type": "value: string[]",
+                "fallback": "—",
+                "description": "双向属性 opened 更新时触发；参数为最新值"
             }
         ],
         "slots": [
+            {
+                "name": "default",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换整个 table 内部内容，提供模型、叶列、表头矩阵、原始 items 与 internalItems。"
+            },
+            {
+                "name": "top",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "表格上方内容；提供完整表格作用域。"
+            },
+            {
+                "name": "bottom",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换整个默认页脚；提供页码、数量、计数与 setPage/setItemsPerPage/nextPage/prevPage。"
+            },
+            {
+                "name": "wrapper",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "自定义 wrapper 区域"
+            },
+            {
+                "name": "caption",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 caption；与 table 语义关联。"
+            },
+            {
+                "name": "colgroup",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 colgroup 控制列宽。"
+            },
+            {
+                "name": "headers",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 thead 内部的表头行；headers 为矩阵，columns 为叶列。"
+            },
+            {
+                "name": "mobile.header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换移动表头，提供排序、选择模型与完整表格作用域。"
+            },
+            {
+                "name": "loader",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, color, isActive }",
+                "fallback": "有默认内容",
+                "description": "替换表头加载进度条；loading 状态提供完整表格作用域。"
+            },
+            {
+                "name": "thead",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在自动表头后追加独立 thead；hide-default-header 可关闭自动部分。"
+            },
+            {
+                "name": "tbody",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "追加独立 tbody；hide-default-body 可关闭自动部分。"
+            },
+            {
+                "name": "tfoot",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 tfoot；fixed-footer 保留在滚动区域底部。"
+            },
+            {
+                "name": "body",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 tbody 内部内容；提供完整作用域。"
+            },
+            {
+                "name": "body.prepend",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行前插入 tr/td，提供完整作用域。"
+            },
+            {
+                "name": "body.append",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行后插入 tr/td，提供完整作用域。"
+            },
+            {
+                "name": "loading",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "定制加载与空数据状态"
+            },
+            {
+                "name": "no-data",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "自定义没有匹配或可显示条目时的空状态"
+            },
             {
                 "name": "error",
                 "type": "{ error }",
@@ -4347,49 +6026,121 @@ export const componentApi = {
                 "description": "定制失败状态"
             },
             {
-                "name": "no-data",
-                "type": "—",
-                "fallback": "有默认内容",
-                "description": "自定义没有匹配或可显示条目时的空状态"
-            },
-            {
-                "name": "header.*",
-                "type": "{ header }",
-                "fallback": "有默认内容",
-                "description": "定制表头内容，保留排序按钮语义"
-            },
-            {
-                "name": "loading",
-                "type": "—",
-                "fallback": "有默认内容",
-                "description": "定制加载与空数据状态"
-            },
-            {
-                "name": "group-header",
-                "type": "{ group, toggle }",
-                "fallback": "有默认内容",
-                "description": "自定义数据分组标题及其展开、折叠操作。 作用域提供 { group, toggle }"
-            },
-            {
-                "name": "item.*",
-                "type": "{ item, value, index }",
-                "fallback": "有默认内容",
-                "description": "按列定制内容"
+                "name": "item",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "替换完整数据行，返回 tr；v-bind props 保留行属性与事件，虚拟模式还提供 itemRef。"
             },
             {
                 "name": "expanded-row",
-                "type": "{ item, index }",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
                 "fallback": "有默认内容",
-                "description": "自定义展开行内容。 作用域提供 { item, index }"
+                "description": "自定义展开行，标准用法返回 tr/td；提供 item/internalItem/index/columns。旧正文插槽继续自动包裹。"
+            },
+            {
+                "name": "expanded",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "自定义 expanded 区域"
+            },
+            {
+                "name": "group-header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义完整分组行，提供 item/group、index、columns、isGroupOpen、toggleGroup 与兼容 toggle。"
+            },
+            {
+                "name": "group-summary",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "—",
+                "description": "自定义分组结束后的汇总行；返回 tr/td，extractRows 递归提取分组内 InternalDataItem。"
+            },
+            {
+                "name": "group-header.data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组标题单元格内容，提供 item、count 和包含 icon/onClick 的 props。"
+            },
+            {
+                "name": "group-header.data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组选择控件，props 提供 modelValue/indeterminate/disabled/onUpdate:modelValue。"
+            },
+            {
+                "name": "data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table group 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
+            },
+            {
+                "name": "data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table select 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
             },
             {
                 "name": "footer",
-                "type": "{ page, pageCount, itemsPerPage, itemsLength }",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
-                "description": "替换组件内置分页栏。 作用域提供 { page, pageCount, itemsPerPage, itemsLength }"
+                "description": "兼容的分页栏替换入口，优先使用标准 bottom。"
+            },
+            {
+                "name": "footer.prepend",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认页脚数量控件前追加内容，提供完整作用域。"
+            },
+            {
+                "name": "header.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, header, column, props }",
+                "fallback": "有默认内容",
+                "description": "自定义列标题；提供 column/header、toggleSort、isSorted、getSortIcon 及选择控制 props。"
+            },
+            {
+                "name": "item.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches, column }",
+                "fallback": "有默认内容",
+                "description": "自定义单元格；提供 item（原始项）、internalItem、column、value、index、选择/展开方法；保留列和控制 props。"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "scrollToIndex",
+                "type": "function",
+                "kind": "method",
+                "expression": "scrollToIndex",
+                "description": "将虚拟滚动区域定位到指定条目索引"
+            },
+            {
+                "name": "setPage",
+                "type": "function",
+                "kind": "method",
+                "expression": "setPage",
+                "description": "调用 setPage，访问 setPage 对应的 UDataTableServer 成员"
+            },
+            {
+                "name": "setItemsPerPage",
+                "type": "function",
+                "kind": "method",
+                "expression": "setItemsPerPage",
+                "description": "调用 setItemsPerPage，访问 setItemsPerPage 对应的 UDataTableServer 成员"
+            },
+            {
+                "name": "toggleSort",
+                "type": "function",
+                "kind": "method",
+                "expression": "toggleSort",
+                "description": "调用 toggleSort，访问 toggleSort 对应的 UDataTableServer 成员"
+            },
+            {
+                "name": "selectAll",
+                "type": "function",
+                "kind": "method",
+                "expression": "selectAll",
+                "description": "调用 selectAll，访问 selectAll 对应的 UDataTableServer 成员"
+            }
+        ],
         "attributes": []
     },
     "UPagination": {
@@ -4464,6 +6215,56 @@ export const componentApi = {
                 "declaredDefault": {
                     "kind": "explicit-undefined",
                     "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -5111,6 +6912,16 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UChip 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "tone",
                 "type": "'neutral' | 'accent' | 'success' | 'warning' | 'error'",
                 "fallback": "'neutral'",
@@ -5181,6 +6992,12 @@ export const componentApi = {
                 "type": "event: MouseEvent",
                 "fallback": "—",
                 "description": "组件请求关闭时触发；调用方可据此更新可见状态"
+            },
+            {
+                "name": "group:selected",
+                "type": "context: { value: boolean }",
+                "fallback": "—",
+                "description": "该项选中状态变化时触发，携带{value:boolean}；不会把初始化渲染当成一次选择事件。"
             }
         ],
         "slots": [
@@ -6175,12 +7992,42 @@ export const componentApi = {
             {
                 "name": "value",
                 "type": "T",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "本选项代表的值",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
+            },
+            {
+                "name": "trueValue",
+                "type": "T",
+                "fallback": "—",
+                "description": "指定选择控件进入选中状态时写入模型的值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "falseValue",
+                "type": "T",
+                "fallback": "—",
+                "description": "指定选择控件退出选中状态时写入模型的值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "ValueComparator",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             },
             {
                 "name": "ripple",
@@ -8104,9 +9951,9 @@ export const componentApi = {
             },
             {
                 "name": "mandatory",
-                "type": "boolean",
+                "type": "boolean | 'force'",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "要求选择模型保持至少一个有效值；可用模式见类型",
+                "description": "true阻止取消最后一项；force还会初始选择第一个可用项。禁用和只读时不会强制写回模型。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -8137,6 +9984,36 @@ export const componentApi = {
                 "type": "ValueComparator",
                 "fallback": "—",
                 "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UBtnGroup 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8215,9 +10092,9 @@ export const componentApi = {
             },
             {
                 "name": "mandatory",
-                "type": "boolean",
+                "type": "boolean | 'force'",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "要求选择模型保持至少一个有效值；可用模式见类型",
+                "description": "true阻止取消最后一项；force还会初始选择第一个可用项。禁用和只读时不会强制写回模型。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -8248,6 +10125,36 @@ export const componentApi = {
                 "type": "ValueComparator",
                 "fallback": "—",
                 "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UBtnToggle 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8719,9 +10626,9 @@ export const componentApi = {
             },
             {
                 "name": "mandatory",
-                "type": "boolean",
+                "type": "boolean | 'force'",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "要求选择模型保持至少一个有效值；可用模式见类型",
+                "description": "true阻止取消最后一项；force还会初始选择第一个可用项。禁用和只读时不会强制写回模型。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -8752,6 +10659,36 @@ export const componentApi = {
                 "type": "ValueComparator",
                 "fallback": "—",
                 "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UChipGroup 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -9917,7 +11854,7 @@ export const componentApi = {
             },
             {
                 "name": "max",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "—",
                 "description": "限制可选数量、数值上界或展示上限；具体含义由组件和本行类型确定",
                 "declaredDefault": {
@@ -9935,10 +11872,48 @@ export const componentApi = {
                     "source": "true"
                 },
                 "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "displayMode",
+                "type": "'length' | 'value'",
+                "fallback": "'length'",
+                "description": "默认length：字符串按Unicode码点计数；value直接显示字符串。数字value始终直接显示。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'length'"
+                },
+                "required": false
             }
         ],
         "events": [],
-        "slots": [],
+        "slots": [
+            {
+                "name": "default",
+                "type": "{ counter, max, value }",
+                "fallback": "有默认内容",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { counter, max, value }"
+            }
+        ],
         "methods": [],
         "attributes": []
     },
@@ -9946,13 +11921,13 @@ export const componentApi = {
         "props": [
             {
                 "name": "items",
-                "type": "readonly DataItem[]",
-                "fallback": "无默认值（必填）",
+                "type": "readonly unknown[]",
+                "fallback": "—",
                 "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "headers",
@@ -9975,12 +11950,222 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "itemsLength",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "显式提供总数（0也有效）后跳过本地分页切片，继续过滤、排序和分组；总页数使用此数值。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "standardProtocol",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "默认false：items为原始项、默认无容器；true提供标准包装项、容器和上游事件协议。原每页10保留，可显式配置5。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "ItemProperty | null",
+                "fallback": "—",
+                "description": "从数据项读取模型值或稳定键的字段名或取值函数。 也可传入 null 清空或表示当前无值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemSelectable",
+                "type": "ItemProperty | null",
+                "fallback": "—",
+                "description": "设置 item Selectable；也可传入 null 清空或表示当前无值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "returnObject",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "让选择模型返回完整条目对象，而不是条目 value",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "(left: unknown, right: unknown) => boolean",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "customFilter",
-                "type": "(value: unknown, query: string, item: DataItem, key: string) => boolean",
+                "type": "FilterFunction",
                 "fallback": "—",
                 "description": "以 value、query、item 和 key 自定义表格过滤",
                 "declaredDefault": {
                     "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeyFilter",
+                "type": "Record<string, FilterFunction>",
+                "fallback": "—",
+                "description": "设置 custom Key Filter，供 UDataIterator 执行对应行为；公开类型为 Record<string, FilterFunction>",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterKeys",
+                "type": "string | readonly string[]",
+                "fallback": "—",
+                "description": "提供 filter Keys 所需的数据集合；类型为 string | readonly string[]",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterMode",
+                "type": "ProcessOptions['filterMode']",
+                "fallback": "—",
+                "description": "设置 filter Mode，供 UDataIterator 执行对应行为；公开类型为 ProcessOptions['filterMode']",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "ignoreAccents",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 ignore Accents，供 UDataIterator 执行对应行为；公开类型为 boolean | string",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "noFilter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 no Filter 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeySort",
+                "type": "Record<string, (left: unknown, right: unknown) => number | null>",
+                "fallback": "—",
+                "description": "设置 custom Key Sort，供 UDataIterator 执行对应行为；公开类型为 Record<string, (left: unknown, right: unknown) => number | null>",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "disableSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 disable Sort 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "initialSortOrder",
+                "type": "'asc' | 'desc'",
+                "fallback": "—",
+                "description": "设置 initial Sort Order；可选值为 'asc'、'desc'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "multiSort",
+                "type": "boolean | { key?: 'ctrl'; mode?: 'append' | 'prepend'; modifier?: 'alt' | 'shift' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许排序模型同时包含多个排序字段",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "mustSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 must Sort 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "selectStrategy",
+                "type": "'single' | 'page' | 'all' | DataIteratorSelectionStrategy",
+                "fallback": "—",
+                "description": "设置 select Strategy，供 UDataIterator 执行对应行为；公开类型为 'single' | 'page' | 'all' | DataIteratorSelectionStrategy",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "expandStrategy",
+                "type": "'single' | 'multiple'",
+                "fallback": "—",
+                "description": "设置 expand Strategy；可选值为 'single'、'multiple'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "expandOnClick",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 expand On Click 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "groupKey",
+                "type": "(context: { key: string; value: unknown; parentKey: string | null }) => string",
+                "fallback": "—",
+                "description": "设置 group Key，供 UDataIterator 执行对应行为；公开类型为 (context: { key: string; value: unknown; parentKey: string | null }) => string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "openAll",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 open All 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
                 },
                 "required": false
             },
@@ -9995,24 +12180,54 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "itemsPerPage",
-                "type": "number",
-                "fallback": "10",
-                "description": "分页模型每页显示的条目数",
+                "name": "loading",
+                "type": "boolean | string | { color?: string; side?: 'start' | 'end' | 'both' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "表示异步或延迟操作正在进行，并按组件约定限制重复操作",
                 "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "10"
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
             {
                 "name": "page",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "1",
                 "description": "分页模型的当前页码",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "1"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsPerPage",
+                "type": "number | string",
+                "fallback": "10",
+                "description": "分页模型每页显示的条目数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "10"
                 },
                 "required": false
             },
@@ -10026,58 +12241,420 @@ export const componentApi = {
                     "source": "() => []"
                 },
                 "required": false
+            },
+            {
+                "name": "groupBy",
+                "type": "DataGroup[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "分组模型；每项指定用于分组的字段",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "modelValue",
+                "type": "unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "组件的双向绑定值；类型和初始值见本行契约",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "expanded",
+                "type": "unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 expanded 所需的数据集合；类型为 unknown[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "opened",
+                "type": "string[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 opened 所需的数据集合；类型为 string[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
             }
         ],
         "events": [
             {
+                "name": "update:options",
+                "type": "options: DataIteratorOptions",
+                "fallback": "—",
+                "description": "分页、排序、分组或搜索参数变化时触发，并携带最新查询选项"
+            },
+            {
+                "name": "update:currentItems",
+                "type": "items: unknown[]",
+                "fallback": "—",
+                "description": "默认携带当前原始项；standardProtocol=true携带分页包装行（含分组行），itemsLength手动分页模式不发此标准事件。"
+            },
+            {
                 "name": "update:page",
-                "type": "value: number",
+                "type": "value: number | string",
                 "fallback": "—",
                 "description": "双向属性 page 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:itemsPerPage",
+                "type": "value: number | string",
+                "fallback": "—",
+                "description": "双向属性 itemsPerPage 更新时触发；参数为最新值"
             },
             {
                 "name": "update:sortBy",
                 "type": "value: TableSort[]",
                 "fallback": "—",
                 "description": "双向属性 sortBy 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:groupBy",
+                "type": "value: DataGroup[]",
+                "fallback": "—",
+                "description": "双向属性 groupBy 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:modelValue",
+                "type": "value: unknown[]",
+                "fallback": "—",
+                "description": "双向属性 modelValue 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:expanded",
+                "type": "value: unknown[]",
+                "fallback": "—",
+                "description": "双向属性 expanded 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:opened",
+                "type": "value: string[]",
+                "fallback": "—",
+                "description": "双向属性 opened 更新时触发；参数为最新值"
             }
         ],
         "slots": [
             {
-                "name": "default",
-                "type": "{ items, allItems, page, pageCount, sortBy, nextPage, prevPage, total }",
+                "name": "header",
+                "type": "{ page, itemsPerPage, pageCount, itemsLength, itemsCount, total, search, sortBy, groupBy, items, allItems, internalItems, currentItems, groupedItems, groups, allSelected, someSelected, somePageSelected, showSelectAll, expandOnClick, toggleSort, setPage, setItemsPerPage, prevPage, nextPage, isSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { items, allItems, page, pageCount, sortBy, nextPage, prevPage, total }"
+                "description": "提供分页、排序、选择、展开和分组操作；items默认原始项，standardProtocol=true为包装项。internalItems始终为包装项，groupedItems为当前页分组行。"
+            },
+            {
+                "name": "loader",
+                "type": "{ isActive, color }",
+                "fallback": "有默认内容",
+                "description": "自定义 loader 区域。 作用域提供 { isActive, color }"
+            },
+            {
+                "name": "no-data",
+                "type": "—",
+                "fallback": "有默认内容",
+                "description": "自定义没有匹配或可显示条目时的空状态"
+            },
+            {
+                "name": "default",
+                "type": "{ page, itemsPerPage, pageCount, itemsLength, itemsCount, total, search, sortBy, groupBy, items, allItems, internalItems, currentItems, groupedItems, groups, allSelected, someSelected, somePageSelected, showSelectAll, expandOnClick, toggleSort, setPage, setItemsPerPage, prevPage, nextPage, isSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "提供分页、排序、选择、展开和分组操作；items默认原始项，standardProtocol=true为包装项。internalItems始终为包装项，groupedItems为当前页分组行。"
+            },
+            {
+                "name": "footer",
+                "type": "{ page, itemsPerPage, pageCount, itemsLength, itemsCount, total, search, sortBy, groupBy, items, allItems, internalItems, currentItems, groupedItems, groups, allSelected, someSelected, somePageSelected, showSelectAll, expandOnClick, toggleSort, setPage, setItemsPerPage, prevPage, nextPage, isSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "提供分页、排序、选择、展开和分组操作；items默认原始项，standardProtocol=true为包装项。internalItems始终为包装项，groupedItems为当前页分组行。"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "items",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.currentItems",
+                "description": "读取 items，访问 state.currentItems 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "pageCount",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.pageCount",
+                "description": "读取 pageCount，访问 state.pageCount 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "setPage",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.setPage",
+                "description": "读取 setPage，访问 state.setPage 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "setItemsPerPage",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.setItemsPerPage",
+                "description": "读取 setItemsPerPage，访问 state.setItemsPerPage 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "nextPage",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.nextPage",
+                "description": "读取 nextPage，访问 state.nextPage 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "prevPage",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.prevPage",
+                "description": "读取 prevPage，访问 state.prevPage 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "toggleSort",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.toggleSort",
+                "description": "读取 toggleSort，访问 state.toggleSort 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "isSelected",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.isSelected",
+                "description": "读取 isSelected，访问 state.isSelected 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "select",
+                "type": "function",
+                "kind": "method",
+                "expression": "state.select",
+                "description": "选中原生文本输入框中的全部内容"
+            },
+            {
+                "name": "selectAll",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.selectAll",
+                "description": "读取 selectAll，访问 state.selectAll 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "toggleSelect",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.toggleSelect",
+                "description": "读取 toggleSelect，访问 state.toggleSelect 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "isExpanded",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.isExpanded",
+                "description": "读取 isExpanded，访问 state.isExpanded 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "toggleExpand",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.toggleExpand",
+                "description": "读取 toggleExpand，访问 state.toggleExpand 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "isGroupOpen",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.isGroupOpen",
+                "description": "读取 isGroupOpen，访问 state.isGroupOpen 对应的 UDataIterator 成员"
+            },
+            {
+                "name": "toggleGroup",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state.toggleGroup",
+                "description": "读取 toggleGroup，访问 state.toggleGroup 对应的 UDataIterator 成员"
+            }
+        ],
         "attributes": []
     },
     "UDataTable": {
         "props": [
             {
+                "name": "label",
+                "type": "string",
+                "fallback": "'Data table'",
+                "description": "表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'Data table'"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "fixedHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "滚动内容时固定表头",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "fixedFooter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "固定 tfoot，在滚动时保留汇总行",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "gridlines",
+                "type": "boolean | 'horizontal' | 'vertical' | 'all'",
+                "fallback": "'horizontal'",
+                "description": "水平、垂直、全部网格线；false 不显示网格线",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'horizontal'"
+                },
+                "required": false
+            },
+            {
+                "name": "hover",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "启用行悬停反馈",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "striped",
+                "type": "'odd' | 'even'",
+                "fallback": "—",
+                "description": "按奇数或偶数行显示交替底色 可选值为 'odd'、'even'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "density",
+                "type": "'default' | 'comfortable' | 'compact' | null",
+                "fallback": "—",
+                "description": "选择组件内部间距级别；可用值见联合类型。 可选值为 'default'、'comfortable'、'compact'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "dense",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "使用组件提供的紧凑间距与尺寸",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "使用透明或弱化表面，同时保留组件的焦点与错误反馈",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "启用或关闭组件的圆角表面",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "ripple",
+                "type": "RippleOptions",
+                "fallback": "true",
+                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
                 "name": "headers",
                 "type": "readonly DataHeader[]",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "定义表格列的键、标题、排序和显示方式",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "items",
                 "type": "readonly DataItem[]",
-                "fallback": "无默认值（必填）",
+                "fallback": "每次实例化执行 () => []",
                 "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "factory",
+                    "source": "() => []"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "itemTitle",
-                "type": "string",
+                "type": "ItemProperty",
                 "fallback": "'title'",
                 "description": "从数据项读取显示文本的字段名或取值函数",
                 "declaredDefault": {
@@ -10088,7 +12665,7 @@ export const componentApi = {
             },
             {
                 "name": "itemValue",
-                "type": "string",
+                "type": "ItemProperty",
                 "fallback": "'id'",
                 "description": "从数据项读取模型值或稳定键的字段名或取值函数",
                 "declaredDefault": {
@@ -10098,13 +12675,42 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "label",
-                "type": "string",
-                "fallback": "'Data table'",
-                "description": "表格的可访问名称，用于 table 的 aria-label；不生成额外的可见表单标签。",
+                "name": "itemSelectable",
+                "type": "ItemProperty",
+                "fallback": "—",
+                "description": "字段路径、路径数组或函数，返回 false 的行不可选择",
                 "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "'Data table'"
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "rowProps",
+                "type": "TableAttributes | ((context: RowContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为数据行提供属性，函数接收 { item, internalItem, index }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "cellProps",
+                "type": "TableAttributes | ((context: CellContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为单元格提供属性，函数接收 { item, internalItem, index, column, value }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "headerProps",
+                "type": "TableAttributes",
+                "fallback": "—",
+                "description": "为默认表头单元格提供属性，与每列 headerProps 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -10120,11 +12726,62 @@ export const componentApi = {
             },
             {
                 "name": "customFilter",
-                "type": "(value: unknown, query: string, item: DataItem, key: string) => boolean",
+                "type": "FilterFunction",
                 "fallback": "—",
                 "description": "以 value、query、item 和 key 自定义表格过滤",
                 "declaredDefault": {
                     "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeyFilter",
+                "type": "Record<string, FilterFunction>",
+                "fallback": "—",
+                "description": "为指定列设置过滤函数，与 header.filter 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterKeys",
+                "type": "string | readonly string[]",
+                "fallback": "—",
+                "description": "限制参与搜索的列 key；支持字符串或数组",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterMode",
+                "type": "'some' | 'every' | 'union' | 'intersection'",
+                "fallback": "'intersection'",
+                "description": "intersection 要求自定义列均匹配；union 允许默认列或自定义列组匹配；every 要求所有列匹配 可选值为 'some'、'every'、'union'、'intersection'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'intersection'"
+                },
+                "required": false
+            },
+            {
+                "name": "ignoreAccents",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "忽略重音符号，字符串值指定 Intl 搜索区域",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "noFilter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留所有输入项，跳过本地过滤",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
                 },
                 "required": false
             },
@@ -10135,6 +12792,27 @@ export const componentApi = {
                 "description": "在数据行前显示选择控件并启用选择模型",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "selectStrategy",
+                "type": "'single' | 'page' | 'all' | SelectionStrategy",
+                "fallback": "'page'",
+                "description": "设置 select Strategy，供 UDataTable 执行对应行为；公开类型为 'single' | 'page' | 'all' | SelectionStrategy",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'page'"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "(a: unknown, b: unknown) => boolean",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -10159,8 +12837,39 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "multiSort",
+                "name": "expandOnClick",
                 "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "点击数据行切换展开；控件点击不触发行操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "expandStrategy",
+                "type": "'single' | 'multiple'",
+                "fallback": "'multiple'",
+                "description": "single 同时只展开一行，multiple 可展开多行 可选值为 'single'、'multiple'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'multiple'"
+                },
+                "required": false
+            },
+            {
+                "name": "expandTransition",
+                "type": "false | { component?: unknown; [key: string]: unknown }",
+                "fallback": "—",
+                "description": "false 关闭展开动画；对象可指定本库的过渡组件和属性",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "multiSort",
+                "type": "boolean | { key?: 'ctrl'; mode?: 'append' | 'prepend'; modifier?: 'alt' | 'shift' }",
                 "fallback": "false（Vue Boolean 默认值）",
                 "description": "允许排序模型同时包含多个排序字段",
                 "declaredDefault": {
@@ -10169,20 +12878,101 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "server",
+                "name": "mustSort",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "由调用方提供已处理的数据，并通过 options 事件接收查询状态",
+                "description": "保留至少一个已点击的排序条件",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "loading",
+                "name": "disableSort",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用本地排序与表头排序操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "initialSortOrder",
+                "type": "'asc' | 'desc'",
+                "fallback": "'asc'",
+                "description": "首次点击列时的排序方向 可选值为 'asc'、'desc'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'asc'"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeySort",
+                "type": "Record<string, (a: unknown, b: unknown) => number | null>",
+                "fallback": "—",
+                "description": "按列 key 自定义比较函数；返回 null 使用默认比较",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "openAll",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "首次出现的分组自动展开；仍允许用户收起",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "groupKey",
+                "type": "(context: { key: string; value: unknown; parentKey: string | null }) => string",
+                "fallback": "—",
+                "description": "自定义稳定分组 ID，父分组根节点的 parentKey 为 null",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "loading",
+                "type": "boolean | string | { color?: string; side?: 'start' | 'end' | 'both' }",
+                "fallback": "false（Vue Boolean 默认值）",
                 "description": "表示异步或延迟操作正在进行，并按组件约定限制重复操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "loadingText",
+                "type": "string",
+                "fallback": "—",
+                "description": "加载状态文字及进度条的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "noDataText",
+                "type": "string",
+                "fallback": "—",
+                "description": "过滤后没有候选项时呈现的说明文字",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "hideNoData",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏空数据提示行",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -10219,51 +13009,234 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "itemsPerPageOptions",
-                "type": "readonly number[]",
-                "fallback": "每次实例化执行 () => [10, 25, 50]",
-                "description": "供用户选择的每页条数选项",
+                "name": "hideDefaultHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动表头，仍可通过 thead 插槽补充",
                 "declaredDefault": {
-                    "kind": "factory",
-                    "source": "() => [10, 25, 50]"
+                    "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "height",
-                "type": "string",
+                "name": "hideDefaultBody",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动 tbody，仍可通过 tbody 插槽补充",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
                 "fallback": "—",
-                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "description": "表格最小宽度，横向滚动时保留列宽",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
                 "required": false
             },
             {
-                "name": "fixedHeader",
+                "name": "sticky",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "滚动内容时固定表头",
+                "description": "fixedHeader 的兼容别名",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "dense",
+                "name": "mobile",
+                "type": "boolean | null",
+                "fallback": "undefined",
+                "description": "控制是否启用 mobile 行为",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "mobileBreakpoint",
+                "type": "number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'",
+                "fallback": "'lg'",
+                "description": "低于该像素宽度时启用移动端抽屉行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'lg'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortAscIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖升序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortDescIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖降序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "expandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "collapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行展开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupExpandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupCollapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组打开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectAllLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "全选控件的可访问名称；省略时使用本库语言包",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectRowLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择行控件的无障碍名称，{0} 替换为行标题",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "getMatches",
+                "type": "(item: InternalDataItem) => Record<string, unknown> | undefined",
+                "fallback": "—",
+                "description": "外部提供单元格搜索匹配区间；默认使用内置过滤结果 允许省略或传入 undefined",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "pageBy",
+                "type": "'auto' | 'item' | 'group' | 'any'",
+                "fallback": "'auto'",
+                "description": "auto 有分组时按根分组分页；item 按数据项；group 按根分组；any 按可见行 可选值为 'auto'、'item'、'group'、'any'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'auto'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsPerPageOptions",
+                "type": "readonly (number | { value: number; title: string })[]",
+                "fallback": "每次实例化执行 () => [10, 25, 50, 100, -1]",
+                "description": "供用户选择的每页条数选项",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => [10, 25, 50, 100, -1]"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsPerPageText",
+                "type": "string",
+                "fallback": "—",
+                "description": "每页数量控件的可见标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "pageText",
+                "type": "string",
+                "fallback": "—",
+                "description": "{0}、{1}、{2} 分别为起始、结束、总数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "showCurrentPage",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "使用组件提供的紧凑间距与尺寸",
+                "description": "在页脚显示当前页码与总页数",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "ripple",
-                "type": "RippleOptions",
+                "name": "showFirstLastPage",
+                "type": "boolean",
                 "fallback": "true",
-                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "description": "在页脚显示首尾页操作",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "true"
@@ -10271,8 +13244,98 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "firstIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "首页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lastIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "末页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "firstPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "跳到首页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lastPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "跳到末页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "prevPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "上一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextPageLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "下一页按钮的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "server",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "由调用方提供已处理的数据，并通过 options 事件接收查询状态",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
                 "name": "page",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "1",
                 "description": "分页模型的当前页码",
                 "declaredDefault": {
@@ -10283,7 +13346,7 @@ export const componentApi = {
             },
             {
                 "name": "itemsPerPage",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "10",
                 "description": "分页模型每页显示的条目数",
                 "declaredDefault": {
@@ -10335,24 +13398,83 @@ export const componentApi = {
                     "source": "() => []"
                 },
                 "required": false
+            },
+            {
+                "name": "opened",
+                "type": "string[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 opened 所需的数据集合；类型为 string[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
             }
         ],
         "events": [
             {
                 "name": "update:options",
-                "type": "options: { page: number; itemsPerPage: number; sortBy: TableSort[]; groupBy: DataGroup[]; search: string }",
+                "type": "options: DataOptions",
                 "fallback": "—",
                 "description": "分页、排序、分组或搜索参数变化时触发，并携带最新查询选项"
             },
             {
+                "name": "update:currentItems",
+                "type": "items: DataRow[]",
+                "fallback": "—",
+                "description": "双向属性 currentItems 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 click:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 dblclick:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 contextmenu:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "click:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 click:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 dblclick:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 contextmenu:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "retry",
+                "type": "—",
+                "fallback": "—",
+                "description": "用户请求重试当前失败操作时触发"
+            },
+            {
                 "name": "update:page",
-                "type": "value: number",
+                "type": "value: number | string",
                 "fallback": "—",
                 "description": "双向属性 page 更新时触发；参数为最新值"
             },
             {
                 "name": "update:itemsPerPage",
-                "type": "value: number",
+                "type": "value: number | string",
                 "fallback": "—",
                 "description": "双向属性 itemsPerPage 更新时触发；参数为最新值"
             },
@@ -10379,20 +13501,116 @@ export const componentApi = {
                 "type": "value: unknown[]",
                 "fallback": "—",
                 "description": "双向属性 expanded 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:opened",
+                "type": "value: string[]",
+                "fallback": "—",
+                "description": "双向属性 opened 更新时触发；参数为最新值"
             }
         ],
         "slots": [
             {
-                "name": "header.*",
-                "type": "{ header }",
+                "name": "default",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
-                "description": "按列键自定义表格表头。 作用域提供 { header }"
+                "description": "替换整个 table 内部内容，提供模型、叶列、表头矩阵、原始 items 与 internalItems。"
+            },
+            {
+                "name": "top",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "表格上方内容；提供完整表格作用域。"
+            },
+            {
+                "name": "bottom",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换整个默认页脚；提供页码、数量、计数与 setPage/setItemsPerPage/nextPage/prevPage。"
+            },
+            {
+                "name": "wrapper",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "自定义 wrapper 区域"
+            },
+            {
+                "name": "caption",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 caption；与 table 语义关联。"
+            },
+            {
+                "name": "colgroup",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 colgroup 控制列宽。"
+            },
+            {
+                "name": "headers",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 thead 内部的表头行；headers 为矩阵，columns 为叶列。"
+            },
+            {
+                "name": "mobile.header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换移动表头，提供排序、选择模型与完整表格作用域。"
+            },
+            {
+                "name": "loader",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, color, isActive }",
+                "fallback": "有默认内容",
+                "description": "替换表头加载进度条；loading 状态提供完整表格作用域。"
+            },
+            {
+                "name": "thead",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在自动表头后追加独立 thead；hide-default-header 可关闭自动部分。"
+            },
+            {
+                "name": "tbody",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "追加独立 tbody；hide-default-body 可关闭自动部分。"
+            },
+            {
+                "name": "tfoot",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 tfoot；fixed-footer 保留在滚动区域底部。"
+            },
+            {
+                "name": "body",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 tbody 内部内容；提供完整作用域。"
+            },
+            {
+                "name": "body.prepend",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行前插入 tr/td，提供完整作用域。"
+            },
+            {
+                "name": "body.append",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行后插入 tr/td，提供完整作用域。"
             },
             {
                 "name": "loading",
-                "type": "—",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
                 "description": "自定义数据加载期间显示的内容"
+            },
+            {
+                "name": "no-data",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "自定义没有匹配或可显示条目时的空状态"
             },
             {
                 "name": "error",
@@ -10401,61 +13619,125 @@ export const componentApi = {
                 "description": "自定义错误状态内容；作用域包含错误信息。 作用域提供 { error }"
             },
             {
-                "name": "group-header",
-                "type": "{ group, toggle }",
-                "fallback": "有默认内容",
-                "description": "自定义数据分组标题及其展开、折叠操作。 作用域提供 { group, toggle }"
-            },
-            {
-                "name": "item.*",
-                "type": "{ item, value, index }",
-                "fallback": "有默认内容",
-                "description": "按列键自定义表格单元格内容。 作用域提供 { item, value, index }"
+                "name": "item",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "替换完整数据行，返回 tr；v-bind props 保留行属性与事件，虚拟模式还提供 itemRef。"
             },
             {
                 "name": "expanded-row",
-                "type": "{ item, index }",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
                 "fallback": "有默认内容",
-                "description": "自定义展开行内容。 作用域提供 { item, index }"
+                "description": "自定义展开行，标准用法返回 tr/td；提供 item/internalItem/index/columns。旧正文插槽继续自动包裹。"
             },
             {
-                "name": "no-data",
-                "type": "—",
+                "name": "expanded",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "自定义 expanded 区域"
+            },
+            {
+                "name": "group-header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
                 "fallback": "有默认内容",
-                "description": "自定义没有匹配或可显示条目时的空状态"
+                "description": "自定义完整分组行，提供 item/group、index、columns、isGroupOpen、toggleGroup 与兼容 toggle。"
+            },
+            {
+                "name": "group-summary",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "—",
+                "description": "自定义分组结束后的汇总行；返回 tr/td，extractRows 递归提取分组内 InternalDataItem。"
+            },
+            {
+                "name": "group-header.data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组标题单元格内容，提供 item、count 和包含 icon/onClick 的 props。"
+            },
+            {
+                "name": "group-header.data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组选择控件，props 提供 modelValue/indeterminate/disabled/onUpdate:modelValue。"
+            },
+            {
+                "name": "data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table group 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
+            },
+            {
+                "name": "data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table select 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
             },
             {
                 "name": "footer",
-                "type": "{ page, pageCount, itemsPerPage, itemsLength }",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
-                "description": "替换组件内置分页栏。 作用域提供 { page, pageCount, itemsPerPage, itemsLength }"
+                "description": "兼容的分页栏替换入口，优先使用标准 bottom。"
+            },
+            {
+                "name": "footer.prepend",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认页脚数量控件前追加内容，提供完整作用域。"
+            },
+            {
+                "name": "header.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, header, column, props }",
+                "fallback": "有默认内容",
+                "description": "自定义列标题；提供 column/header、toggleSort、isSorted、getSortIcon 及选择控制 props。"
+            },
+            {
+                "name": "item.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches, column }",
+                "fallback": "有默认内容",
+                "description": "自定义单元格；提供 item（原始项）、internalItem、column、value、index、选择/展开方法；保留列和控制 props。"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "scrollToIndex",
+                "type": "function",
+                "kind": "method",
+                "expression": "scrollToIndex",
+                "description": "将虚拟滚动区域定位到指定条目索引"
+            },
+            {
+                "name": "setPage",
+                "type": "function",
+                "kind": "method",
+                "expression": "setPage",
+                "description": "调用 setPage，访问 setPage 对应的 UDataTable 成员"
+            },
+            {
+                "name": "setItemsPerPage",
+                "type": "function",
+                "kind": "method",
+                "expression": "setItemsPerPage",
+                "description": "调用 setItemsPerPage，访问 setItemsPerPage 对应的 UDataTable 成员"
+            },
+            {
+                "name": "toggleSort",
+                "type": "function",
+                "kind": "method",
+                "expression": "toggleSort",
+                "description": "调用 toggleSort，访问 toggleSort 对应的 UDataTable 成员"
+            },
+            {
+                "name": "selectAll",
+                "type": "function",
+                "kind": "method",
+                "expression": "selectAll",
+                "description": "调用 selectAll，访问 selectAll 对应的 UDataTable 成员"
+            }
+        ],
         "attributes": []
     },
     "UDataTableVirtual": {
         "props": [
-            {
-                "name": "headers",
-                "type": "readonly DataHeader[]",
-                "fallback": "无默认值（必填）",
-                "description": "定义表格列的键、标题、排序和显示方式",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
-            {
-                "name": "items",
-                "type": "readonly DataItem[]",
-                "fallback": "无默认值（必填）",
-                "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
-                "declaredDefault": {
-                    "kind": "required"
-                },
-                "required": true
-            },
             {
                 "name": "label",
                 "type": "string",
@@ -10468,29 +13750,8 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "itemValue",
-                "type": "string",
-                "fallback": "'id'",
-                "description": "从数据项读取模型值或稳定键的字段名或取值函数",
-                "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "'id'"
-                },
-                "required": false
-            },
-            {
-                "name": "search",
-                "type": "string",
-                "fallback": "—",
-                "description": "控制或读取候选项过滤使用的搜索文本",
-                "declaredDefault": {
-                    "kind": "undefined"
-                },
-                "required": false
-            },
-            {
                 "name": "height",
-                "type": "number",
+                "type": "number | string",
                 "fallback": "360",
                 "description": "设置组件或滚动区域高度；单位由类型与实现决定",
                 "declaredDefault": {
@@ -10500,44 +13761,115 @@ export const componentApi = {
                 "required": false
             },
             {
-                "name": "itemHeight",
-                "type": "number",
-                "fallback": "40",
-                "description": "设置虚拟列表中每一项的估算或固定高度",
-                "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "40"
-                },
-                "required": false
-            },
-            {
-                "name": "overscan",
-                "type": "number",
-                "fallback": "5",
-                "description": "在可视区域前后额外渲染的条目数量，减少快速滚动时的空白",
-                "declaredDefault": {
-                    "kind": "explicit",
-                    "source": "5"
-                },
-                "required": false
-            },
-            {
-                "name": "loading",
+                "name": "fixedHeader",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "表示异步或延迟操作正在进行，并按组件约定限制重复操作",
+                "description": "滚动内容时固定表头",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
             },
             {
-                "name": "disabled",
+                "name": "fixedFooter",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "description": "固定 tfoot，在滚动时保留汇总行",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "gridlines",
+                "type": "boolean | 'horizontal' | 'vertical' | 'all'",
+                "fallback": "'horizontal'",
+                "description": "水平、垂直、全部网格线；false 不显示网格线",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'horizontal'"
+                },
+                "required": false
+            },
+            {
+                "name": "hover",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "启用行悬停反馈",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "striped",
+                "type": "'odd' | 'even'",
+                "fallback": "—",
+                "description": "按奇数或偶数行显示交替底色 可选值为 'odd'、'even'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "density",
+                "type": "'default' | 'comfortable' | 'compact' | null",
+                "fallback": "—",
+                "description": "选择组件内部间距级别；可用值见联合类型。 可选值为 'default'、'comfortable'、'compact'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "dense",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "使用组件提供的紧凑间距与尺寸",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "使用透明或弱化表面，同时保留组件的焦点与错误反馈",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "启用或关闭组件的圆角表面",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -10553,6 +13885,577 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "headers",
+                "type": "readonly DataHeader[]",
+                "fallback": "—",
+                "description": "定义表格列的键、标题、排序和显示方式",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly DataItem[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "itemTitle",
+                "type": "ItemProperty",
+                "fallback": "'title'",
+                "description": "从数据项读取显示文本的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'title'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "ItemProperty",
+                "fallback": "'id'",
+                "description": "从数据项读取模型值或稳定键的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'id'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemSelectable",
+                "type": "ItemProperty",
+                "fallback": "—",
+                "description": "字段路径、路径数组或函数，返回 false 的行不可选择",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "rowProps",
+                "type": "TableAttributes | ((context: RowContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为数据行提供属性，函数接收 { item, internalItem, index }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "cellProps",
+                "type": "TableAttributes | ((context: CellContext) => TableAttributes)",
+                "fallback": "—",
+                "description": "静态对象或函数为单元格提供属性，函数接收 { item, internalItem, index, column, value }",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "headerProps",
+                "type": "TableAttributes",
+                "fallback": "—",
+                "description": "为默认表头单元格提供属性，与每列 headerProps 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "search",
+                "type": "string",
+                "fallback": "—",
+                "description": "控制或读取候选项过滤使用的搜索文本",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customFilter",
+                "type": "FilterFunction",
+                "fallback": "—",
+                "description": "以 value、query、item 和 key 自定义表格过滤",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeyFilter",
+                "type": "Record<string, FilterFunction>",
+                "fallback": "—",
+                "description": "为指定列设置过滤函数，与 header.filter 合并",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterKeys",
+                "type": "string | readonly string[]",
+                "fallback": "—",
+                "description": "限制参与搜索的列 key；支持字符串或数组",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "filterMode",
+                "type": "'some' | 'every' | 'union' | 'intersection'",
+                "fallback": "'intersection'",
+                "description": "intersection 要求自定义列均匹配；union 允许默认列或自定义列组匹配；every 要求所有列匹配 可选值为 'some'、'every'、'union'、'intersection'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'intersection'"
+                },
+                "required": false
+            },
+            {
+                "name": "ignoreAccents",
+                "type": "boolean | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "忽略重音符号，字符串值指定 Intl 搜索区域",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "noFilter",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留所有输入项，跳过本地过滤",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "showSelect",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "在数据行前显示选择控件并启用选择模型",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "selectStrategy",
+                "type": "'single' | 'page' | 'all' | SelectionStrategy",
+                "fallback": "'page'",
+                "description": "设置 select Strategy，供 UDataTableVirtual 执行对应行为；公开类型为 'single' | 'page' | 'all' | SelectionStrategy",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'page'"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "(a: unknown, b: unknown) => boolean",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "returnObject",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "让选择模型返回完整条目对象，而不是条目 value",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "showExpand",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "为数据行显示展开操作及扩展内容区域",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "expandOnClick",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "点击数据行切换展开；控件点击不触发行操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "expandStrategy",
+                "type": "'single' | 'multiple'",
+                "fallback": "'multiple'",
+                "description": "single 同时只展开一行，multiple 可展开多行 可选值为 'single'、'multiple'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'multiple'"
+                },
+                "required": false
+            },
+            {
+                "name": "expandTransition",
+                "type": "false | { component?: unknown; [key: string]: unknown }",
+                "fallback": "—",
+                "description": "false 关闭展开动画；对象可指定本库的过渡组件和属性",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "multiSort",
+                "type": "boolean | { key?: 'ctrl'; mode?: 'append' | 'prepend'; modifier?: 'alt' | 'shift' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许排序模型同时包含多个排序字段",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "mustSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留至少一个已点击的排序条件",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disableSort",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用本地排序与表头排序操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "initialSortOrder",
+                "type": "'asc' | 'desc'",
+                "fallback": "'asc'",
+                "description": "首次点击列时的排序方向 可选值为 'asc'、'desc'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'asc'"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeySort",
+                "type": "Record<string, (a: unknown, b: unknown) => number | null>",
+                "fallback": "—",
+                "description": "按列 key 自定义比较函数；返回 null 使用默认比较",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "openAll",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "首次出现的分组自动展开；仍允许用户收起",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "groupKey",
+                "type": "(context: { key: string; value: unknown; parentKey: string | null }) => string",
+                "fallback": "—",
+                "description": "自定义稳定分组 ID，父分组根节点的 parentKey 为 null",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "loading",
+                "type": "boolean | string | { color?: string; side?: 'start' | 'end' | 'both' }",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "表示异步或延迟操作正在进行，并按组件约定限制重复操作",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "loadingText",
+                "type": "string",
+                "fallback": "—",
+                "description": "加载状态文字及进度条的可访问名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "noDataText",
+                "type": "string",
+                "fallback": "—",
+                "description": "过滤后没有候选项时呈现的说明文字",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "hideNoData",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏空数据提示行",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "error",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示当前错误状态或错误内容；具体呈现由组件决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDefaultHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动表头，仍可通过 thead 插槽补充",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideDefaultBody",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "隐藏自动 tbody，仍可通过 tbody 插槽补充",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "表格最小宽度，横向滚动时保留列宽",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sticky",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "fixedHeader 的兼容别名",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "mobile",
+                "type": "boolean | null",
+                "fallback": "undefined",
+                "description": "控制是否启用 mobile 行为",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "mobileBreakpoint",
+                "type": "number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'",
+                "fallback": "'lg'",
+                "description": "低于该像素宽度时启用移动端抽屉行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'lg'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortAscIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖升序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sortDescIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "覆盖降序图标的本库名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "expandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "collapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "数据行展开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupExpandIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组关闭时的展开图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "groupCollapseIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "分组打开时的收起图标",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectAllLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "全选控件的可访问名称；省略时使用本库语言包",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "selectRowLabel",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择行控件的无障碍名称，{0} 替换为行标题",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "getMatches",
+                "type": "(item: InternalDataItem) => Record<string, unknown> | undefined",
+                "fallback": "—",
+                "description": "外部提供单元格搜索匹配区间；默认使用内置过滤结果 允许省略或传入 undefined",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemHeight",
+                "type": "number | string",
+                "fallback": "40",
+                "description": "设置虚拟列表中每一项的估算或固定高度",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "40"
+                },
+                "required": false
+            },
+            {
+                "name": "itemKey",
+                "type": "ItemProperty",
+                "fallback": "—",
+                "description": "虚拟行缓存使用的稳定键，可独立于选择模型的 itemValue",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "overscan",
+                "type": "number",
+                "fallback": "5",
+                "description": "在可视区域前后额外渲染的条目数量，减少快速滚动时的空白",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "5"
+                },
+                "required": false
+            },
+            {
                 "name": "sortBy",
                 "type": "TableSort[]",
                 "fallback": "每次实例化执行 () => []",
@@ -10562,43 +14465,337 @@ export const componentApi = {
                     "source": "() => []"
                 },
                 "required": false
+            },
+            {
+                "name": "groupBy",
+                "type": "DataGroup[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "分组模型；每项指定用于分组的字段",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "modelValue",
+                "type": "unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "组件的双向绑定值；类型和初始值见本行契约",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "expanded",
+                "type": "unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 expanded 所需的数据集合；类型为 unknown[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "opened",
+                "type": "string[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "提供 opened 所需的数据集合；类型为 string[]",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
             }
         ],
         "events": [
+            {
+                "name": "update:options",
+                "type": "options: DataOptions",
+                "fallback": "—",
+                "description": "分页、排序、分组或搜索参数变化时触发，并携带最新查询选项"
+            },
+            {
+                "name": "update:currentItems",
+                "type": "items: DataRow[]",
+                "fallback": "—",
+                "description": "双向属性 currentItems 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 click:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 dblclick:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:row",
+                "type": "event: MouseEvent, context: RowContext",
+                "fallback": "—",
+                "description": "当 contextmenu:row 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "click:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 click:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "dblclick:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 dblclick:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "contextmenu:groupHeader",
+                "type": "event: MouseEvent, context: GroupContext",
+                "fallback": "—",
+                "description": "当 contextmenu:group Header 发生时触发，并携带 event、context 参数"
+            },
+            {
+                "name": "retry",
+                "type": "—",
+                "fallback": "—",
+                "description": "用户请求重试当前失败操作时触发"
+            },
             {
                 "name": "update:sortBy",
                 "type": "value: TableSort[]",
                 "fallback": "—",
                 "description": "双向属性 sortBy 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:groupBy",
+                "type": "value: DataGroup[]",
+                "fallback": "—",
+                "description": "双向属性 groupBy 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:modelValue",
+                "type": "value: unknown[]",
+                "fallback": "—",
+                "description": "双向属性 modelValue 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:expanded",
+                "type": "value: unknown[]",
+                "fallback": "—",
+                "description": "双向属性 expanded 更新时触发；参数为最新值"
+            },
+            {
+                "name": "update:opened",
+                "type": "value: string[]",
+                "fallback": "—",
+                "description": "双向属性 opened 更新时触发；参数为最新值"
             }
         ],
         "slots": [
             {
-                "name": "header.*",
-                "type": "{ header }",
+                "name": "default",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
-                "description": "按列键自定义表格表头。 作用域提供 { header }"
+                "description": "替换整个 table 内部内容，提供模型、叶列、表头矩阵、原始 items 与 internalItems。"
+            },
+            {
+                "name": "top",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "表格上方内容；提供完整表格作用域。"
+            },
+            {
+                "name": "bottom",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换整个默认页脚；提供页码、数量、计数与 setPage/setItemsPerPage/nextPage/prevPage。"
+            },
+            {
+                "name": "wrapper",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "自定义 wrapper 区域"
+            },
+            {
+                "name": "caption",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 caption；与 table 语义关联。"
+            },
+            {
+                "name": "colgroup",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 colgroup 控制列宽。"
+            },
+            {
+                "name": "headers",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 thead 内部的表头行；headers 为矩阵，columns 为叶列。"
+            },
+            {
+                "name": "mobile.header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换移动表头，提供排序、选择模型与完整表格作用域。"
+            },
+            {
+                "name": "loader",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, color, isActive }",
+                "fallback": "有默认内容",
+                "description": "替换表头加载进度条；loading 状态提供完整表格作用域。"
+            },
+            {
+                "name": "thead",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在自动表头后追加独立 thead；hide-default-header 可关闭自动部分。"
+            },
+            {
+                "name": "tbody",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "追加独立 tbody；hide-default-body 可关闭自动部分。"
+            },
+            {
+                "name": "tfoot",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "放置原生 tfoot；fixed-footer 保留在滚动区域底部。"
+            },
+            {
+                "name": "body",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "有默认内容",
+                "description": "替换默认 tbody 内部内容；提供完整作用域。"
+            },
+            {
+                "name": "body.prepend",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行前插入 tr/td，提供完整作用域。"
+            },
+            {
+                "name": "body.append",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
+                "fallback": "—",
+                "description": "在默认数据行后插入 tr/td，提供完整作用域。"
             },
             {
                 "name": "loading",
-                "type": "—",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
                 "description": "自定义数据加载期间显示的内容"
             },
             {
-                "name": "item.*",
-                "type": "{ item, value, index }",
-                "fallback": "有默认内容",
-                "description": "按列键自定义表格单元格内容。 作用域提供 { item, value, index }"
-            },
-            {
                 "name": "no-data",
-                "type": "—",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows }",
                 "fallback": "有默认内容",
                 "description": "自定义没有匹配或可显示条目时的空状态"
+            },
+            {
+                "name": "error",
+                "type": "{ error }",
+                "fallback": "有默认内容",
+                "description": "自定义错误状态内容；作用域包含错误信息。 作用域提供 { error }"
+            },
+            {
+                "name": "item",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "替换完整数据行，返回 tr；v-bind props 保留行属性与事件，虚拟模式还提供 itemRef。"
+            },
+            {
+                "name": "expanded-row",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "有默认内容",
+                "description": "自定义展开行，标准用法返回 tr/td；提供 item/internalItem/index/columns。旧正文插槽继续自动包裹。"
+            },
+            {
+                "name": "expanded",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches }",
+                "fallback": "—",
+                "description": "自定义 expanded 区域"
+            },
+            {
+                "name": "group-header",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义完整分组行，提供 item/group、index、columns、isGroupOpen、toggleGroup 与兼容 toggle。"
+            },
+            {
+                "name": "group-summary",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "—",
+                "description": "自定义分组结束后的汇总行；返回 tr/td，extractRows 递归提取分组内 InternalDataItem。"
+            },
+            {
+                "name": "group-header.data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组标题单元格内容，提供 item、count 和包含 icon/onClick 的 props。"
+            },
+            {
+                "name": "group-header.data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义分组选择控件，props 提供 modelValue/indeterminate/disabled/onUpdate:modelValue。"
+            },
+            {
+                "name": "data-table-group",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table group 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
+            },
+            {
+                "name": "data-table-select",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }",
+                "fallback": "有默认内容",
+                "description": "自定义 data table select 区域。 作用域提供 { page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, group, index, count, props, toggle }"
+            },
+            {
+                "name": "header.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, header, column, props }",
+                "fallback": "有默认内容",
+                "description": "自定义列标题；提供 column/header、toggleSort、isSorted、getSortIcon 及选择控制 props。"
+            },
+            {
+                "name": "item.*",
+                "type": "{ page, itemsPerPage, itemsLength, pageCount, sortBy, groupBy, allSelected, someSelected, items, internalItems, groupedItems, columns, headers, toggleSort, isSorted, getSortIcon, setPage, setItemsPerPage, prevPage, nextPage, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, extractRows, item, internalItem, index, value, props, itemRef, getMatches, column }",
+                "fallback": "有默认内容",
+                "description": "自定义单元格；提供 item（原始项）、internalItem、column、value、index、选择/展开方法；保留列和控制 props。"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "scrollToIndex",
+                "type": "function",
+                "kind": "method",
+                "expression": "scrollToIndex",
+                "description": "将虚拟滚动区域定位到指定条目索引"
+            },
+            {
+                "name": "toggleSort",
+                "type": "function",
+                "kind": "method",
+                "expression": "toggleSort",
+                "description": "调用 toggleSort，访问 toggleSort 对应的 UDataTableVirtual 成员"
+            },
+            {
+                "name": "selectAll",
+                "type": "function",
+                "kind": "method",
+                "expression": "selectAll",
+                "description": "调用 selectAll，访问 selectAll 对应的 UDataTableVirtual 成员"
+            }
+        ],
         "attributes": []
     },
     "UDateInput": {
@@ -12307,7 +16504,7 @@ export const componentApi = {
         "methods": [],
         "attributes": []
     },
-    "UHotkey": {
+    "UHotkeyListener": {
         "props": [
             {
                 "name": "keys",
@@ -12326,6 +16523,204 @@ export const componentApi = {
                 "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "preventDefault",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "触发时阻止对应原生浏览器默认行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "allowInput",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许用户直接键入日期或时间值",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            }
+        ],
+        "events": [
+            {
+                "name": "trigger",
+                "type": "event: KeyboardEvent",
+                "fallback": "—",
+                "description": "当 trigger 发生时触发，并携带 event 参数"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "type": "{ keys }",
+                "fallback": "有默认内容",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { keys }"
+            }
+        ],
+        "methods": [],
+        "attributes": []
+    },
+    "UHotkey": {
+        "props": [
+            {
+                "name": "keys",
+                "type": "string",
+                "fallback": "—",
+                "description": "指定触发键盘快捷操作的按键集合",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "displayMode",
+                "type": "HotkeyDisplayMode",
+                "fallback": "'icon'",
+                "description": "icon/symbol/text选择按键图标、平台符号或文字展示，与platform/keyMap配合；不改变trigger监听。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'icon'"
+                },
+                "required": false
+            },
+            {
+                "name": "keyMap",
+                "type": "HotkeyMap",
+                "fallback": "—",
+                "description": "设置 key Map，供 UHotkey 执行对应行为；公开类型为 HotkeyMap",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "platform",
+                "type": "HotkeyPlatform",
+                "fallback": "'auto'",
+                "description": "设置 platform，供 UHotkey 执行对应行为；公开类型为 HotkeyPlatform",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'auto'"
+                },
+                "required": false
+            },
+            {
+                "name": "inline",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "按内容宽度排列，不占满父容器可用宽度",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "prefix",
+                "type": "string",
+                "fallback": "—",
+                "description": "在输入区域前显示固定前缀文本",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "suffix",
+                "type": "string",
+                "fallback": "—",
+                "description": "在输入区域后显示固定后缀文本",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "variant",
+                "type": "'elevated' | 'flat' | 'tonal' | 'outlined' | 'text' | 'plain' | 'contained'",
+                "fallback": "'outlined'",
+                "description": "选择组件的语义样式变体；可用值见联合类型。 可选值为 'elevated'、'flat'、'tonal'、'outlined'、'text'、'plain'、'contained'",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'outlined'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "border",
+                "type": "boolean | string | number",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "显示组件边框",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean | string | number",
+                "fallback": "true",
+                "description": "省略时保持本组件圆角；false/0去圆角，数字按px，字符串支持CSS长度及sm/md/lg/xl/pill/circle/shaped、t/b/s/e边角配置。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "elevation",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置表面阴影层级；0 表示不显示阴影",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "listen",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "本库扩展，默认true保留原快捷键trigger监听；纯展示设false。监听沿用UHotkeyListener的单个组合键语法。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
                 },
                 "required": false
             },
@@ -12421,13 +16816,14 @@ export const componentApi = {
         "props": [
             {
                 "name": "src",
-                "type": "string",
-                "fallback": "无默认值（必填）",
+                "type": "string | ImageSource",
+                "fallback": "''",
                 "description": "设置图片、媒体或内容资源地址",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "explicit",
+                    "source": "''"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "alt",
@@ -12458,38 +16854,333 @@ export const componentApi = {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
+            },
+            {
+                "name": "standardProtocol",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "默认false：load/error给原生DOM Event；true改给浏览器选定的currentSrc URL字符串。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "absolute",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "脱离普通布局流定位组件；位置由组件和父级布局决定",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "cover",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "控制是否启用 cover 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "draggable",
+                "type": "boolean | 'true' | 'false'",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 draggable，供 UImg 执行对应行为；公开类型为 boolean | 'true' | 'false'",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "eager",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "在首次显示前挂载内容；不启用时按组件生命周期延迟挂载",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "gradient",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 gradient，供 UImg 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "imageClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 image Class，供 UImg 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lazySrc",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 lazy Src，供 UImg 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "options",
+                "type": "IntersectionObserverInit",
+                "fallback": "—",
+                "description": "设置 options，供 UImg 执行对应行为；公开类型为 IntersectionObserverInit",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sizes",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 sizes，供 UImg 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "crossorigin",
+                "type": "'' | 'anonymous' | 'use-credentials'",
+                "fallback": "—",
+                "description": "设置 crossorigin；可选值为 ''、'anonymous'、'use-credentials'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "referrerpolicy",
+                "type": "ReferrerPolicy",
+                "fallback": "—",
+                "description": "设置 referrerpolicy，供 UImg 执行对应行为；公开类型为 ReferrerPolicy",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "srcset",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 srcset，供 UImg 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "position",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 position，供 UImg 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "aspectRatio",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置媒体容器的宽高比",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "contentClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 content Class，供 UImg 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "inline",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "按内容宽度排列，不占满父容器可用宽度",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean | number | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "省略时保持本组件圆角；false/0去圆角，数字按px，字符串支持CSS长度及sm/md/lg/xl/pill/circle/shaped、t/b/s/e边角配置。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "tile",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 tile 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "'u-fade'",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'u-fade'"
+                },
+                "required": false
             }
         ],
         "events": [
             {
-                "name": "load",
-                "type": "event: Event",
+                "name": "loadstart",
+                "type": "url: string",
                 "fallback": "—",
-                "description": "当 load 发生时触发，并携带 event 参数"
+                "description": "图片请求开始时触发，携带当前图片URL。"
+            },
+            {
+                "name": "load",
+                "type": "event: Event | string",
+                "fallback": "—",
+                "description": "默认携带原生DOM Event；standardProtocol=true携带浏览器选定的currentSrc URL字符串。已被替换的图片源事件会被忽略。"
             },
             {
                 "name": "error",
-                "type": "event: Event",
+                "type": "event: Event | string",
                 "fallback": "—",
-                "description": "当 error 发生时触发，并携带 event 参数"
+                "description": "默认携带原生DOM Event；standardProtocol=true携带浏览器选定的currentSrc URL字符串。已被替换的图片源事件会被忽略。"
             }
         ],
         "slots": [
             {
-                "name": "placeholder",
+                "name": "sources",
                 "type": "—",
+                "fallback": "—",
+                "description": "自定义 sources 区域"
+            },
+            {
+                "name": "placeholder",
+                "type": "{ loading, error }",
                 "fallback": "—",
                 "description": "自定义尚无内容时显示的占位区域"
             },
             {
                 "name": "error",
-                "type": "—",
+                "type": "{ loading, error }",
                 "fallback": "有默认内容",
                 "description": "自定义错误状态内容；作用域包含错误信息"
             },
             {
                 "name": "default",
-                "type": "{ loading, error }",
+                "type": "{ loading, error, state }",
                 "fallback": "—",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { loading, error }"
             }
@@ -12501,6 +17192,20 @@ export const componentApi = {
                 "kind": "property",
                 "expression": "element",
                 "description": "访问组件关联的根元素或原生控件引用"
+            },
+            {
+                "name": "image",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "element",
+                "description": "读取 image，访问 element 对应的 UImg 成员"
+            },
+            {
+                "name": "root",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "root",
+                "description": "读取 root，访问 root 对应的 UImg 成员"
             },
             {
                 "name": "visible",
@@ -12522,6 +17227,34 @@ export const componentApi = {
                 "kind": "property",
                 "expression": "error",
                 "description": "读取 error，访问 error 对应的 UImg 成员"
+            },
+            {
+                "name": "state",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "state",
+                "description": "读取 state，访问 state 对应的 UImg 成员"
+            },
+            {
+                "name": "currentSrc",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "currentSrc",
+                "description": "读取 currentSrc，访问 currentSrc 对应的 UImg 成员"
+            },
+            {
+                "name": "naturalWidth",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "naturalWidth",
+                "description": "读取 naturalWidth，访问 naturalWidth 对应的 UImg 成员"
+            },
+            {
+                "name": "naturalHeight",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "naturalHeight",
+                "description": "读取 naturalHeight，访问 naturalHeight 对应的 UImg 成员"
             },
             {
                 "name": "onLoad",
@@ -12572,12 +17305,147 @@ export const componentApi = {
             },
             {
                 "name": "direction",
-                "type": "'end' | 'start'",
+                "type": "InfiniteScrollDirection",
+                "fallback": "'vertical'",
+                "description": "vertical/horizontal指定轴向；旧start/end/both仍指定加载边缘，且优先于side。默认vertical + side=end。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'vertical'"
+                },
+                "required": false
+            },
+            {
+                "name": "side",
+                "type": "InfiniteScrollSide",
                 "fallback": "'end'",
-                "description": "设置组件的主方向；可用值见联合类型。 可选值为 'end'、'start'",
+                "description": "新方向vertical/horizontal下加载start/end/both；两侧loading/error/empty独立，旧direction边缘值优先。",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "'end'"
+                },
+                "required": false
+            },
+            {
+                "name": "mode",
+                "type": "InfiniteScrollMode",
+                "fallback": "'intersect'",
+                "description": "选择组件的工作模式；具体可用值见类型列",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'intersect'"
+                },
+                "required": false
+            },
+            {
+                "name": "margin",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "数字和数字字符串按px、带单位字符串原样配置观察边界；显式值优先于旧rootMargin，0也生效。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "loadMoreText",
+                "type": "string",
+                "fallback": "'加载更多'",
+                "description": "设置 load More Text，供 UInfiniteScroll 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'加载更多'"
+                },
+                "required": false
+            },
+            {
+                "name": "emptyText",
+                "type": "string",
+                "fallback": "'没有更多内容'",
+                "description": "没有可显示数据时呈现的空状态文字",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'没有更多内容'"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             }
@@ -12585,64 +17453,106 @@ export const componentApi = {
         "events": [
             {
                 "name": "load",
-                "type": "context: { done: (status?: 'ok' | 'empty' | 'error') => void }",
+                "type": "context: InfiniteScrollLoadContext",
                 "fallback": "—",
-                "description": "当 load 发生时触发，并携带 context 参数"
+                "description": "请求指定side（start/end）的数据，携带done(status)；两侧独立结算，reset后的旧回调被忽略。"
             }
         ],
         "slots": [
             {
-                "name": "default",
-                "type": "{ busy, done, error, load, retry, reset }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { busy, done, error, load, retry, reset }"
-            },
-            {
                 "name": "loading",
-                "type": "—",
+                "type": "{ side, props }",
                 "fallback": "有默认内容",
-                "description": "自定义数据加载期间显示的内容"
+                "description": "按加载边缘分别渲染，提供side、含onClick/color/disabled的props；error额外retry，load-more额外load兼容入口。"
             },
             {
                 "name": "empty",
-                "type": "—",
+                "type": "{ side, props }",
                 "fallback": "有默认内容",
-                "description": "自定义空状态内容"
+                "description": "按加载边缘分别渲染，提供side、含onClick/color/disabled的props；error额外retry，load-more额外load兼容入口。"
             },
             {
                 "name": "error",
-                "type": "{ retry }",
+                "type": "{ side, props, retry }",
                 "fallback": "有默认内容",
-                "description": "自定义错误状态内容；作用域包含错误信息。 作用域提供 { retry }"
+                "description": "按加载边缘分别渲染，提供side、含onClick/color/disabled的props；error额外retry，load-more额外load兼容入口。"
             },
             {
                 "name": "load-more",
-                "type": "{ load }",
+                "type": "{ side, props, load }",
                 "fallback": "有默认内容",
-                "description": "自定义 load more 区域。 作用域提供 { load }"
+                "description": "按加载边缘分别渲染，提供side、含onClick/color/disabled的props；error额外retry，load-more额外load兼容入口。"
+            },
+            {
+                "name": "default",
+                "type": "{ busy, done, error, load, retry, reset, startStatus, endStatus }",
+                "fallback": "—",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { busy, done, error, load, retry, reset }"
             }
         ],
         "methods": [
             {
                 "name": "load",
                 "type": "function",
-                "kind": "method",
+                "kind": "property",
                 "expression": "load",
                 "description": "调用 load，访问 load 对应的 UInfiniteScroll 成员"
             },
             {
                 "name": "retry",
                 "type": "function",
-                "kind": "method",
+                "kind": "property",
                 "expression": "retry",
                 "description": "调用 retry，访问 retry 对应的 UInfiniteScroll 成员"
             },
             {
                 "name": "reset",
                 "type": "function",
-                "kind": "method",
+                "kind": "property",
                 "expression": "reset",
                 "description": "将模型恢复为挂载时记录的初始值，并清除验证状态"
+            },
+            {
+                "name": "root",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "root",
+                "description": "读取 root，访问 root 对应的 UInfiniteScroll 成员"
+            },
+            {
+                "name": "startStatus",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "startStatus",
+                "description": "读取 startStatus，访问 startStatus 对应的 UInfiniteScroll 成员"
+            },
+            {
+                "name": "endStatus",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "endStatus",
+                "description": "读取 endStatus，访问 endStatus 对应的 UInfiniteScroll 成员"
+            },
+            {
+                "name": "startSentinel",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "startSentinel",
+                "description": "读取 startSentinel，访问 startSentinel 对应的 UInfiniteScroll 成员"
+            },
+            {
+                "name": "endSentinel",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "endSentinel",
+                "description": "读取 endSentinel，访问 endSentinel 对应的 UInfiniteScroll 成员"
+            },
+            {
+                "name": "setSentinel",
+                "type": "function",
+                "kind": "method",
+                "expression": "setSentinel",
+                "description": "调用 setSentinel，访问 setSentinel 对应的 UInfiniteScroll 成员"
             }
         ],
         "attributes": []
@@ -12953,12 +17863,12 @@ export const componentApi = {
             {
                 "name": "value",
                 "type": "unknown",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "当前条目或控件代表的值；选择类组件用它与绑定模型比较",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "disabled",
@@ -12967,6 +17877,27 @@ export const componentApi = {
                 "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UItem 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string | false",
+                "fallback": "'button'",
+                "description": "默认button保留本库包装；false仅渲染作用域插槽，用isSelected/selectedClass/disabled/select/toggle自建交互。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'button'"
                 },
                 "required": false
             },
@@ -12982,16 +17913,66 @@ export const componentApi = {
                 "required": false
             }
         ],
-        "events": [],
+        "events": [
+            {
+                "name": "group:selected",
+                "type": "context: { value: boolean }",
+                "fallback": "—",
+                "description": "该项选中状态变化时触发，携带{value:boolean}；不会把初始化渲染当成一次选择事件。"
+            }
+        ],
         "slots": [
             {
                 "name": "default",
-                "type": "{ selected, toggle }",
+                "type": "{ id, selected, isSelected, selectedClass, value, disabled, toggle, select }",
                 "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { selected, toggle }"
+                "description": "提供标准isSelected/selectedClass/value/disabled/select/toggle，以及兼容selected和扩展id；tag=false只渲染本插槽。"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "id",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "id",
+                "description": "读取 id，访问 id 对应的 UItem 成员"
+            },
+            {
+                "name": "isSelected",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "selected",
+                "description": "读取 isSelected，访问 selected 对应的 UItem 成员"
+            },
+            {
+                "name": "value",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "value",
+                "description": "读取 value，访问 value 对应的 UItem 成员"
+            },
+            {
+                "name": "disabled",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "disabled",
+                "description": "读取 disabled，访问 disabled 对应的 UItem 成员"
+            },
+            {
+                "name": "select",
+                "type": "function",
+                "kind": "method",
+                "expression": "select",
+                "description": "选中原生文本输入框中的全部内容"
+            },
+            {
+                "name": "toggle",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "activate",
+                "description": "读取 toggle，访问 activate 对应的 UItem 成员"
+            }
+        ],
         "attributes": []
     },
     "UItemGroup": {
@@ -13008,9 +17989,9 @@ export const componentApi = {
             },
             {
                 "name": "mandatory",
-                "type": "boolean",
+                "type": "boolean | 'force'",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "要求选择模型保持至少一个有效值；可用模式见类型",
+                "description": "true阻止取消最后一项；force还会初始选择第一个可用项。禁用和只读时不会强制写回模型。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -13048,6 +18029,37 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "selectedClass",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 selected Class，供 UItemGroup 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "modelValue",
                 "type": "unknown",
                 "fallback": "—",
@@ -13069,9 +18081,9 @@ export const componentApi = {
         "slots": [
             {
                 "name": "default",
-                "type": "{ selected, toggle }",
+                "type": "{ selected, selectedValues, isSelected, select, next, prev, isValueSelected, toggle }",
                 "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { selected, toggle }"
+                "description": "selected为内部ID数组，isSelected/select按ID操作，selectedValues为公开值；next/prev跳禁用项。保留isValueSelected/toggle按公开值操作。"
             }
         ],
         "methods": [
@@ -13086,7 +18098,7 @@ export const componentApi = {
                 "name": "focus",
                 "type": "function",
                 "kind": "method",
-                "expression": "() => element.value?.querySelector<HTMLElement>('button:not(:disabled)')?.focus()",
+                "expression": "focus",
                 "description": "将焦点移到组件的可编辑控件或首个可交互元素"
             },
             {
@@ -13116,6 +18128,48 @@ export const componentApi = {
                 "kind": "property",
                 "expression": "control.errors",
                 "description": "读取当前控件或表单的验证错误"
+            },
+            {
+                "name": "selected",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "items.selectedIds",
+                "description": "读取 selected，访问 items.selectedIds 对应的 UItemGroup 成员"
+            },
+            {
+                "name": "selectedValues",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "items.selectedValues",
+                "description": "读取 selectedValues，访问 items.selectedValues 对应的 UItemGroup 成员"
+            },
+            {
+                "name": "isSelected",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "items.isSelected",
+                "description": "读取 isSelected，访问 items.isSelected 对应的 UItemGroup 成员"
+            },
+            {
+                "name": "select",
+                "type": "function",
+                "kind": "method",
+                "expression": "items.select",
+                "description": "选中原生文本输入框中的全部内容"
+            },
+            {
+                "name": "next",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "items.next",
+                "description": "移动到下一项"
+            },
+            {
+                "name": "prev",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "items.prev",
+                "description": "移动到上一项"
             }
         ],
         "attributes": []
@@ -13152,6 +18206,16 @@ export const componentApi = {
                 "type": "string",
                 "fallback": "—",
                 "description": "将标签或消息关联到指定控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "text",
+                "type": "string",
+                "fallback": "—",
+                "description": "组件的主要文字内容；存在默认插槽时可改用插槽",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -13239,6 +18303,109 @@ export const componentApi = {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
+            },
+            {
+                "name": "options",
+                "type": "IntersectionObserverInit",
+                "fallback": "—",
+                "description": "设置 options，供 ULazy 执行对应行为；公开类型为 IntersectionObserverInit",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "'u-fade'",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'u-fade'"
+                },
+                "required": false
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "组件的双向绑定值；类型和初始值见本行契约",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
             }
         ],
         "events": [
@@ -13247,6 +18414,12 @@ export const componentApi = {
                 "type": "entry: IntersectionObserverEntry",
                 "fallback": "—",
                 "description": "观察目标进入交叉区域时触发，并携带 IntersectionObserverEntry"
+            },
+            {
+                "name": "update:modelValue",
+                "type": "value: boolean",
+                "fallback": "—",
+                "description": "双向属性 modelValue 更新时触发；参数为最新值"
             }
         ],
         "slots": [
@@ -13263,7 +18436,22 @@ export const componentApi = {
                 "description": "自定义尚无内容时显示的占位区域"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "element",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "element",
+                "description": "访问组件关联的根元素或原生控件引用"
+            },
+            {
+                "name": "visible",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "visible",
+                "description": "读取 visible，访问 visible 对应的 ULazy 成员"
+            }
+        ],
         "attributes": []
     },
     "UList": {
@@ -13556,6 +18744,26 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "appendIcon",
+                "type": "string",
+                "fallback": "—",
+                "description": "在右侧显示图标；append插槽存在时由插槽替换",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "appendText",
+                "type": "string",
+                "fallback": "—",
+                "description": "本库扩展的右侧辅助文本；优先省略并保留完整title提示，append插槽存在时由插槽替换",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "disabled",
                 "type": "boolean",
                 "fallback": "false",
@@ -13657,8 +18865,8 @@ export const componentApi = {
             {
                 "name": "append",
                 "type": "—",
-                "fallback": "—",
-                "description": "在主要内容后追加图标或节点"
+                "fallback": "有默认内容",
+                "description": "自定义右侧内容，优先替换appendText和appendIcon；独立交互控件不触发父行选择或涟漪。"
             }
         ],
         "methods": [],
@@ -13740,8 +18948,18 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "fallbackLocale",
+                "type": "string",
+                "fallback": "—",
+                "description": "文案缺失时使用的语言；显式旧fallback优先，省略时继承祖先fallback。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "messages",
-                "type": "Record<string, Record<string, string>>",
+                "type": "LocaleMessages",
                 "fallback": "—",
                 "description": "提供当前语言环境的消息字典",
                 "declaredDefault": {
@@ -13751,7 +18969,7 @@ export const componentApi = {
             },
             {
                 "name": "rtl",
-                "type": "Record<string, boolean>",
+                "type": "Readonly<Record<string, boolean>>",
                 "fallback": "—",
                 "description": "为指定语言设置从右向左的书写方向",
                 "declaredDefault": {
@@ -13801,7 +19019,7 @@ export const componentApi = {
         "props": [
             {
                 "name": "messages",
-                "type": "string | string[]",
+                "type": "string | readonly string[]",
                 "fallback": "—",
                 "description": "提供当前语言环境的消息字典",
                 "declaredDefault": {
@@ -13829,6 +19047,37 @@ export const componentApi = {
                     "kind": "undefined"
                 },
                 "required": false
+            },
+            {
+                "name": "active",
+                "type": "boolean",
+                "fallback": "true",
+                "description": "控制当前条目或面板是否处于激活状态",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             }
         ],
         "events": [],
@@ -13838,6 +19087,12 @@ export const componentApi = {
                 "type": "—",
                 "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点"
+            },
+            {
+                "name": "message",
+                "type": "{ message }",
+                "fallback": "有默认内容",
+                "description": "自定义 message 区域。 作用域提供 { message }"
             }
         ],
         "methods": [],
@@ -14916,6 +20171,16 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "scale",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置 scale，供 UParallax 执行对应行为；公开类型为 number | string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "disabled",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
@@ -14924,15 +20189,312 @@ export const componentApi = {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
+            },
+            {
+                "name": "src",
+                "type": "string | ImageSource",
+                "fallback": "—",
+                "description": "设置图片、媒体或内容资源地址",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "srcset",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 srcset，供 UParallax 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lazySrc",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 lazy Src，供 UParallax 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "sizes",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 sizes，供 UParallax 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "alt",
+                "type": "string",
+                "fallback": "—",
+                "description": "提供图片或图标的替代文本",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "lazy",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "内容接近可视区域时再创建或加载",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "eager",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "在首次显示前挂载内容；不启用时按组件生命周期延迟挂载",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "options",
+                "type": "IntersectionObserverInit",
+                "fallback": "—",
+                "description": "设置 options，供 UParallax 执行对应行为；公开类型为 IntersectionObserverInit",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "aspectRatio",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置媒体容器的宽高比",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "gradient",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 gradient，供 UParallax 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "position",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 position，供 UParallax 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "imageClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 image Class，供 UParallax 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "contentClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 content Class，供 UParallax 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean | number | string",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "启用或关闭组件的圆角表面",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "tile",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 tile 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "crossorigin",
+                "type": "'' | 'anonymous' | 'use-credentials'",
+                "fallback": "—",
+                "description": "设置 crossorigin；可选值为 ''、'anonymous'、'use-credentials'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "referrerpolicy",
+                "type": "ReferrerPolicy",
+                "fallback": "—",
+                "description": "设置 referrerpolicy，供 UParallax 执行对应行为；公开类型为 ReferrerPolicy",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "draggable",
+                "type": "boolean | 'true' | 'false'",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 draggable，供 UParallax 执行对应行为；公开类型为 boolean | 'true' | 'false'",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             }
         ],
-        "events": [],
+        "events": [
+            {
+                "name": "loadstart",
+                "type": "url: string",
+                "fallback": "—",
+                "description": "图片请求开始时触发，携带当前图片URL。"
+            },
+            {
+                "name": "load",
+                "type": "url: string",
+                "fallback": "—",
+                "description": "内置src图片加载成功或失败时触发，携带图片URL；background插槽内自建图片由调用方自行监听。"
+            },
+            {
+                "name": "error",
+                "type": "url: string",
+                "fallback": "—",
+                "description": "内置src图片加载成功或失败时触发，携带图片URL；background插槽内自建图片由调用方自行监听。"
+            }
+        ],
         "slots": [
             {
                 "name": "background",
                 "type": "—",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "自定义 background 区域"
+            },
+            {
+                "name": "sources",
+                "type": "—",
+                "fallback": "—",
+                "description": "自定义 sources 区域"
+            },
+            {
+                "name": "placeholder",
+                "type": "{ loading, error }",
+                "fallback": "—",
+                "description": "自定义尚无内容时显示的占位区域。 作用域提供 { loading, error }"
+            },
+            {
+                "name": "error",
+                "type": "{ loading, error }",
+                "fallback": "有默认内容",
+                "description": "自定义错误状态内容；作用域包含错误信息。 作用域提供 { loading, error }"
             },
             {
                 "name": "default",
@@ -14941,10 +20503,46 @@ export const componentApi = {
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { offset, ratio }"
             }
         ],
-        "methods": [],
+        "methods": [
+            {
+                "name": "element",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "element",
+                "description": "访问组件关联的根元素或原生控件引用"
+            },
+            {
+                "name": "image",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "image",
+                "description": "读取 image，访问 image 对应的 UParallax 成员"
+            },
+            {
+                "name": "offset",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "offset",
+                "description": "读取 offset，访问 offset 对应的 UParallax 成员"
+            },
+            {
+                "name": "ratio",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "ratio",
+                "description": "读取 ratio，访问 ratio 对应的 UParallax 成员"
+            },
+            {
+                "name": "update",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "schedule",
+                "description": "按当前参数重新计算或提交组件状态"
+            }
+        ],
         "attributes": []
     },
-    "UPicker": {
+    "UOptionPicker": {
         "props": [
             {
                 "name": "items",
@@ -15061,6 +20659,346 @@ export const componentApi = {
                 "type": "{ items, selected, choose, modelValue }",
                 "fallback": "—",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { items, selected, choose, modelValue }"
+            }
+        ],
+        "methods": [],
+        "attributes": []
+    },
+    "UPicker": {
+        "props": [
+            {
+                "name": "title",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示的标题文本；使用 title 插槽时可由插槽内容替代",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "hideTitle",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 hide Title 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "hideHeader",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 hide Header 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "landscape",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 landscape 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "divided",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "控制是否启用 divided 行为",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "bgColor",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 bg Color，供 UPicker 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "theme",
+                "type": "string",
+                "fallback": "—",
+                "description": "选择当前组件使用的主题名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "fallback": "'div'",
+                "description": "选择组件根节点的 HTML 标签",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'div'"
+                },
+                "required": false
+            },
+            {
+                "name": "width",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件或内容区域宽度；数字按像素处理",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件或滚动区域高度；单位由类型与实现决定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "string | number",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "rounded",
+                "type": "boolean | number | string",
+                "fallback": "true",
+                "description": "省略时保持本组件圆角；false/0去圆角，数字按px，字符串支持CSS长度及sm/md/lg/xl/pill/circle/shaped、t/b/s/e边角配置。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "border",
+                "type": "boolean | string | number",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "显示组件边框",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "elevation",
+                "type": "number | string",
+                "fallback": "0",
+                "description": "设置表面阴影层级；0 表示不显示阴影",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "0"
+                },
+                "required": false
+            },
+            {
+                "name": "position",
+                "type": "'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'",
+                "fallback": "—",
+                "description": "设置 position；可选值为 'static'、'relative'、'absolute'、'fixed'、'sticky'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "location",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置浮层或控件在锚点周围的放置位置",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly PickerItem[]",
+                "fallback": "—",
+                "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemTitle",
+                "type": "string",
+                "fallback": "—",
+                "description": "从数据项读取显示文本的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "string",
+                "fallback": "—",
+                "description": "从数据项读取模型值或稳定键的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许选择多个条目；模型通常为数组，具体类型见本行契约",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "保留控件可读与聚焦状态，同时阻止用户修改模型",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "returnObject",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "让选择模型返回完整条目对象，而不是条目 value",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "ripple",
+                "type": "RippleOptions",
+                "fallback": "—",
+                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "modelValue",
+                "type": "PickerValue | PickerValue[]",
+                "fallback": "null",
+                "description": "组件的双向绑定值；类型和初始值见本行契约",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "null"
+                },
+                "required": false
+            }
+        ],
+        "events": [
+            {
+                "name": "update:modelValue",
+                "type": "value: PickerValue | PickerValue[]",
+                "fallback": "—",
+                "description": "双向属性 modelValue 更新时触发；参数为最新值"
+            }
+        ],
+        "slots": [
+            {
+                "name": "title",
+                "type": "—",
+                "fallback": "有默认内容",
+                "description": "替换组件默认标题内容"
+            },
+            {
+                "name": "header",
+                "type": "—",
+                "fallback": "—",
+                "description": "自定义 header 区域"
+            },
+            {
+                "name": "item",
+                "type": "{ item, selected }",
+                "fallback": "有默认内容",
+                "description": "自定义单个候选项或数据项的内容。 作用域提供 { item, selected }"
+            },
+            {
+                "name": "default",
+                "type": "{ items, selected, choose, modelValue }",
+                "fallback": "—",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { items, selected, choose, modelValue }"
+            },
+            {
+                "name": "actions",
+                "type": "—",
+                "fallback": "—",
+                "description": "放置与主要内容关联的操作"
             }
         ],
         "methods": [],
@@ -15256,6 +21194,27 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "pullDownThreshold",
+                "type": "number",
+                "fallback": "—",
+                "description": "设置 pull Down Threshold，供 UPullToRefresh 执行对应行为；公开类型为 number",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "resistance",
+                "type": "number",
+                "fallback": "0.5",
+                "description": "设置 resistance，供 UPullToRefresh 执行对应行为；公开类型为 number",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "0.5"
+                },
+                "required": false
+            },
+            {
                 "name": "disabled",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
@@ -15269,12 +21228,24 @@ export const componentApi = {
         "events": [
             {
                 "name": "refresh",
-                "type": "context: { done: () => void }",
+                "type": "context: PullRefreshLoadContext",
                 "fallback": "—",
-                "description": "用户完成下拉刷新手势时触发；回调参数提供完成方法"
+                "description": "达到下拉阈值并松开时触发，携带幂等done()；load与保留的refresh共享同一次请求，reset后旧回调无效。"
+            },
+            {
+                "name": "load",
+                "type": "context: PullRefreshLoadContext",
+                "fallback": "—",
+                "description": "达到下拉阈值并松开时触发，携带幂等done()；load与保留的refresh共享同一次请求，reset后旧回调无效。"
             }
         ],
         "slots": [
+            {
+                "name": "pullDownPanel",
+                "type": "{ canRefresh, goingUp, refreshing }",
+                "fallback": "有默认内容",
+                "description": "自定义 pull Down Panel 区域。 作用域提供 { canRefresh, goingUp, refreshing }"
+            },
             {
                 "name": "indicator",
                 "type": "{ distance, refreshing }",
@@ -15290,11 +21261,53 @@ export const componentApi = {
         ],
         "methods": [
             {
+                "name": "element",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "root",
+                "description": "访问组件关联的根元素或原生控件引用"
+            },
+            {
+                "name": "distance",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "distance",
+                "description": "读取 distance，访问 distance 对应的 UPullToRefresh 成员"
+            },
+            {
+                "name": "refreshing",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "refreshing",
+                "description": "读取 refreshing，访问 refreshing 对应的 UPullToRefresh 成员"
+            },
+            {
+                "name": "canRefresh",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "canRefresh",
+                "description": "读取 canRefresh，访问 canRefresh 对应的 UPullToRefresh 成员"
+            },
+            {
+                "name": "goingUp",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "goingUp",
+                "description": "读取 goingUp，访问 goingUp 对应的 UPullToRefresh 成员"
+            },
+            {
                 "name": "cancel",
                 "type": "function",
-                "kind": "method",
+                "kind": "property",
                 "expression": "cancel",
                 "description": "取消当前进行中的操作"
+            },
+            {
+                "name": "reset",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "reset",
+                "description": "将模型恢复为挂载时记录的初始值，并清除验证状态"
             }
         ],
         "attributes": []
@@ -16175,10 +22188,76 @@ export const componentApi = {
                     "kind": "undefined"
                 },
                 "required": false
+            },
+            {
+                "name": "minWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小宽度，避免内容区域继续收窄",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxWidth",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大宽度，限制内容区域展开",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "minHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最小高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "maxHeight",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置组件最大高度",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "contentClass",
+                "type": "unknown",
+                "fallback": "—",
+                "description": "设置 content Class，供 UResponsive 执行对应行为；公开类型为 unknown",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "inline",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "按内容宽度排列，不占满父容器可用宽度",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
             }
         ],
         "events": [],
         "slots": [
+            {
+                "name": "additional",
+                "type": "—",
+                "fallback": "—",
+                "description": "自定义 additional 区域"
+            },
             {
                 "name": "default",
                 "type": "{ ratio }",
@@ -16194,18 +22273,28 @@ export const componentApi = {
             {
                 "name": "value",
                 "type": "unknown",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "当前条目或控件代表的值；选择类组件用它与绑定模型比较",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "label",
                 "type": "string",
                 "fallback": "—",
                 "description": "控件或区域的可访问名称；有可见标题时仍会关联对应控件",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置原生控件名称或条目标识",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -16257,6 +22346,16 @@ export const componentApi = {
                 "type": "unknown",
                 "fallback": "—",
                 "description": "指定选择控件退出选中状态时写入模型的值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "valueComparator",
+                "type": "ValueComparator",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
                 "declaredDefault": {
                     "kind": "undefined"
                 },

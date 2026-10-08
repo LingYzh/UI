@@ -156,15 +156,17 @@ Button、Input、Select、Tabs、Card、CodeBlock、ScrollArea 统一支持 `den
 垂直 UiTabs 可设置 `indicator-side="start|end"`，默认 end。LTR 布局中 start 将指示条放在左边，end 放在右边；RTL 随逻辑方向反转。内容在左侧时可用 start，让色条靠近内容；此属性不改变键盘导航或水平布局的底部指示条。Tabs 文档提供内容位置切换示例。
 
 
-## 表格、服务端表格与分页器
+## 表格、数据表与分页器
 
-- `UiTable`：headers/items/item-value/label 描述数据，保留原生 table/th 语义；支持 loading、空数据、固定表头、横向滚动，以及 `item.[key]`、`header.[key]`、loading/no-data 插槽。所有文档 API 表格已迁移。
+- `UTable`（兼容 `UiTable`）：可用原生 caption/thead/tbody/tfoot 和 top/wrapper/default/bottom，支持密度、网格线、交替行、固定表头/页尾与主题；保留 headers/items、列插槽、loading/no-data 的便利接口。文档 API 表格复用该组件。
+- `UDataTable`：本地过滤/高亮、列映射、排序、分页、选择/展开/分组；支持嵌套表头、左右固定列、行/单元格属性和完整结构插槽。headers 可省略推导，value 支持路径、数组或函数。
 - `UDataTableServer`（兼容 `UiDataTableServer`）：接收当前页 items 与总数 items-length，通过 `v-model:page`、`v-model:items-per-page`、`v-model:sort-by` 管理参数；初始化和参数变化触发 `update:options`。排序按升序/降序/取消循环，`multi-sort` 支持多列；提供选择、展开和分组模型。点击排序或修改每页条数回到第一页。加载期间锁定分页和排序，支持 error/retry；不发请求、不对当前页二次排序或切片。
+- `UDataTableVirtual`：全部过滤结果按实际行高虚拟化，分组与展开也参加测量；支持选择/排序/固定列、overscan、itemKey 和公开 scrollToIndex。height 保留外框语义，复用覆盖式滚动条，搜索/排序同时复位真实视口。
 - `UiPagination`：独立 `v-model` 页码，length 表示总页数；自动校正越界值，首尾页、省略号、前后页和 aria-current。total-visible 控制 3–9 个连续页码，首尾页额外保留。原生按钮支持 Tab/Enter/Space。
 
-三者均提供 dense/ghost/rounded 变体及各自文档演示。服务端表格复用分页器和 UiSelect：每页条数、记录范围、页码在窄容器自动换行。公开类型由 ui/index.ts 导出 TableHeader/TableSort/TableOptions。
+四类表格保留 dense/ghost/rounded/ripple 及主题外观。非虚拟数据表共用 UiSelect/UiPagination 页脚：每页选择框13px，自适应选项宽度，数量、记录范围、页码在窄容器换行；-1 表示全部，选项可用数字或 { value, title }。公开 DataHeader/内部项/策略/插槽与原有 TableHeader/TableSort/TableOptions 类型由 ui/index.ts 导出。
 
-服务端示例用本地 450ms 延迟模拟查询，带失败重试和请求序号保护；示例源码提供 fetch + AbortController 的接入方式，实际项目应使用自身 API 模块。调用方负责过期响应隔离和卸载取消。客户端处理使用 `UDataTable`，虚拟滚动使用 `UDataTableVirtual`；服务端负责排序、筛选和分组后的数据，不宣称兼容 Vuetify 全量 API。
+四个已有文档页新增8个真实SFC用例，并同步实际源码。完整远程用例使用350ms模拟查询、参数快照、请求序号保护和失败重试；调用方负责实际 API、过期响应隔离及卸载取消。稳定公开接口以 Vuetify4.2.4 为基准，名称清单与行为专项见 [对齐记录](../../docs/TABLE-ALIGNMENT-2026-10-08.md)。保留 pageBy 默认auto、hover默认开启、虚拟外框height和旧正文展开槽；显式pageBy="any"采用上游可见行分页方式。主题/图标/locale/内部实例仍采用本库协议。
 
 参考 [Vuetify 服务端表格](https://vuetifyjs.com/en/components/data-tables/server-side-tables/) 与 [分页器](https://vuetifyjs.com/en/components/paginations/)，保持 UAH 主题，没有引入 Vuetify Material 组件库依赖。
 
@@ -238,6 +240,8 @@ Tabs 的 #window 内直接放 WindowItem，可自动继承模型和 ID；items �
 
 默认覆盖 ListItem / ListGroup / MenuItem、Treeview 行/展开/选择、Item / Chip、Checkbox / Radio / Switch / SelectionControl / ColorSwatches、Picker / Autocomplete / Combobox / Cascader、表格排序/分组/详情/分页、日期/数值/评级/颜色/轮播按钮，以及清除、关闭和文件/消息操作。关闭配置会转发给组件内部动作；ListGroup 自定义激活器需绑定插槽 props 中的 ripple。静态 Card 不触发，显式点击或 as=button 的单一动作表面触发；文本编辑区、普通链接、拖放区、遮罩和平台原生 select/file 区不整面添加效果。列表项独立按钮与内置选择控件示例位于 `/#/list-item`，不会改变父行选择或叠加父行波纹。
 
+文档侧栏使用 `UList nav` 与带 `href/active` 的 `UListItem`，统一活动项、涟漪和键盘导航。`appendIcon` 对齐 Vuetify 列表项的右侧图标入口；`appendText` 是本库扩展的辅助文本，先保留主标题的自然宽度，辅助文本不足时省略并用原生 `title` 提示完整内容。极长主标题仍在自身区域省略。`#append` 优先替换两个属性的内容，按钮和选择控件保持原有独立交互。真实示例及 API 见 `/#/list-item`。
+
 ## 图标与内容过渡
 
 ListGroup、Treeview、ExpansionPanelTitle、选择器、日期翻页、轮播、分页和表格展开入口使用现有 MDI 图标。展开箭头随状态旋转；ListGroup 收起时保留子内容与输入模型，并立即设置 inert / aria-hidden。自定义 activator 继续通过插槽提供的 props 连接事件和可访问关系，真实示例包含嵌套、禁用和自定义触发器。
@@ -263,3 +267,5 @@ Slider、RangeSlider 和 ColorPicker 的通道滑块在鼠标点击/拖动时不
 
 键盘与鼠标在同一非文本控件上切换时，焦点提示立即跟随输入方式，不依赖浏览器残留的 `:focus-visible`。ColorInput 输入期间保留颜色草稿，失焦后统一为模型格式；外部不同颜色仍同步到文本。
 `UToolbar`内置标题和操作区域，直接使用`title`/`#title`、`#actions`（或`#append`）和`#extension`；常规用法不需要额外组合标题/操作组件。
+
+`UParallax`支持页面、原生overflow容器和`UScrollArea`内部滚动；`background`中的`UImg`或原生图片自动填满背景层，前景通过默认插槽显示。`speed`默认0.3、限制在-1至1，负数反向、0静止；`disabled`与系统/应用减少动效均立即停止位移。真实演示`/#/parallax`包含滚动区域、关闭开关和背景位移读数。

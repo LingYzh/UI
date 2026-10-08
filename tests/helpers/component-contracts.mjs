@@ -84,8 +84,8 @@ function createTypeResolver(root) {
         const nextOrigins = [...origins, `${relative(root, found.sf.fileName)}#${name}`];
         if (ts.isTypeAliasDeclaration(found.declaration)) return typeMembers(found.declaration.type, found.sf, nextOrigins);
         const inherited = found.declaration.heritageClauses?.flatMap((clause) => clause.types.flatMap((base) => typeMembers(base, found.sf, nextOrigins))) || [];
-        const own = found.declaration.members.filter(ts.isPropertySignature).map((member) => ({
-            name: member.name.getText(found.sf).replace(/^['"]|['"]$/g, ''),
+        const own = found.declaration.members.filter(member => ts.isPropertySignature(member) || ts.isIndexSignatureDeclaration(member) && ts.isTemplateLiteralTypeNode(member.parameters[0]?.type)).map((member) => ({
+            name: ts.isIndexSignatureDeclaration(member) ? member.parameters[0].type.getText(found.sf).replace(/^`|`$/g, '').replace(/\$\{[^}]+\}/g, '*') : member.name.getText(found.sf).replace(/^['"]|['"]$/g, ''),
             type: member.type?.getText(found.sf) || 'unknown',
             required: !member.questionToken,
             documentation: documentation(member),
@@ -334,6 +334,26 @@ export function extractComponentContract(root, componentName, componentFile) {
     for (const model of models) emits.push({ name: `update:${model.name}`, parameters: [{ name: 'value', type: model.type, optional: false, rest: false }], origin: 'defineModel' });
     const uniqueEmits = [...new Map(emits.map((event) => [event.name, event])).values()];
     const slots = templateSlots(parsed.descriptor.template?.content);
+    // defineSlots supplies precise public scopes for wrappers that forward through a private renderer.
+    const resolver = createTypeResolver(root);
+    for (const call of callExpressions(sf, 'defineSlots')) {
+        for (const member of resolver.typeMembers(call.typeArguments?.[0], sf)) {
+            const originFile = path.resolve(root, member.origin);
+            const callbackSource = ts.createSourceFile(originFile, read(originFile) + `\ntype __SlotCallback = ${member.type};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+            function callback(node) {
+                if (ts.isFunctionTypeNode(node)) return node;
+                if (ts.isParenthesizedTypeNode(node)) return callback(node.type);
+                if (ts.isUnionTypeNode(node)) return node.types.map(callback).find(Boolean);
+            }
+            const signature = callback(callbackSource.statements.at(-1).type);
+            const payload = signature?.parameters[0]?.type ? resolver.typeMembers(signature.parameters[0].type, callbackSource)
+                .map(field => ({ name: field.name, expression: `scope.${field.name}` })) : [];
+            const pattern = member.name.includes('*') ? member.name : undefined;
+            const existing = slots.find(slot => pattern ? slot.pattern === pattern : slot.name === member.name);
+            if (existing) existing.payload = payload;
+            else slots.push({ name: pattern ? '<dynamic>' : member.name, pattern, payload, hasFallback: false, kind: 'declared' });
+        }
+    }
     return {
         name: componentName,
         file: relative(root, filename),
@@ -384,7 +404,7 @@ function slotForwarding(root, filename, sf, template) {
     return [...unique.values()];
 }
 
-function resolveForwardedSlots(contracts) {
+function resolveForwardedSlots(contracts, root) {
     const byFile = new Map(contracts.map((contract) => [contract.file, contract]));
     const cache = new Map();
     const resolving = new Set();
@@ -396,7 +416,12 @@ function resolveForwardedSlots(contracts) {
         const slots = new Map();
         for (const slot of contract.slots.filter((entry) => entry.kind !== 'forwarded')) slots.set(identity(slot), structuredClone(slot));
         for (const edge of contract.slotForwarding || []) {
-            const target = byFile.get(edge.file);
+            // Public wrappers also forward through private renderers; keep their real slot contracts.
+            let target = byFile.get(edge.file);
+            if (!target && root && existsSync(path.resolve(root, edge.file))) {
+                target = extractComponentContract(root, `private:${edge.file}`, edge.file);
+                byFile.set(edge.file, target);
+            }
             if (!target) continue;
             const childSlots = resolve(target);
             for (const childSlot of childSlots) {
@@ -411,7 +436,7 @@ function resolveForwardedSlots(contracts) {
                 const localBindings = existing.payload || [];
                 const inheritedBindings = childSlot.payload || [];
                 const onlyForwardedPayload = localBindings.every((binding) => binding.name === '<scope>' || binding.name === '<spread>');
-                const payload = onlyForwardedPayload ? inheritedBindings : [...inheritedBindings, ...localBindings.filter((binding) => binding.name !== '<scope>' && binding.name !== '<spread')];
+                const payload = onlyForwardedPayload ? inheritedBindings : [...inheritedBindings.filter(binding => binding.name !== '<scope>' && binding.name !== '<spread>'), ...localBindings.filter(binding => binding.name !== '<scope>' && binding.name !== '<spread>')];
                 existing.payload = payload.filter((binding, index) => payload.findIndex((item) => item.name === binding.name) === index);
                 existing.hasFallback = existing.hasFallback || childSlot.hasFallback;
             }
@@ -433,5 +458,5 @@ export function extractPublicComponentContracts(root, { includeLegacy = false } 
     const selected = components.filter(match => !canonical || includeLegacy || /^U(?!i[A-Z])/.test(match[1]));
     const names = selected.map((match) => match[1]);
     if (new Set(names).size !== names.length) throw new Error('src/ui/index.ts contains duplicate public component names');
-    return resolveForwardedSlots(selected.map((match) => extractComponentContract(root, match[1], path.relative(root, path.resolve(path.dirname(indexFile), match[2])))));
+    return resolveForwardedSlots(selected.map((match) => extractComponentContract(root, match[1], path.relative(root, path.resolve(path.dirname(indexFile), match[2])))), root);
 }

@@ -1,0 +1,410 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + Electron",
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\lazy-responsive-protocols",
+    "sourceSha256": {
+        "src/ui/ULazy.vue": "7f38c587d0348a97757f009503dcbffdcaa70e1a34288a5b76ba6784cdb99e41",
+        "src/ui/UResponsive.vue": "4f5fd0d4c98d6854b65111ee6e8af7e546c3060fea73bd390b4dedb1c3f42cac",
+        "src/ui/UiMaybeTransition.vue": "25fce87ab7e333bea92a78f87d1ce6a71291d079b2ebbeea3c9929e725e60ea3",
+        "src/ui/UCounter.vue": "5d82585281c396b076a9015b64607f9edca44b80f14a24fac9d18c5741926e37",
+        "src/ui/appearance.ts": "e8743843d18500901ec6fe1040203ab42209940794ad708f9286ea3ff0c3d85b",
+        "src/ui/UField.vue": "566145f22b4892d1d75f0aa2ab10fb90c0cd38a44a1afd75f3484903dae12c8c",
+        "src/ui/UPicker.vue": "7649f52417455ce4f8995de032e3582c15c9924070db30b10a695bfa99f674f3",
+        "src/ui/UHotkey.vue": "2e1d24756b1ee9b20aa32a771a28259eaadcdd688538d6f3bc4d37b1cff8bedb",
+        "src/ui/UiScrollArea.vue": "b8c194fa9d7d353f363e3e91ef57d139a4a9df2472006541138e1d03f819c0e6",
+        "src/ui/UiSwitch.vue": "503a65f1f3ee09a2b5fd54a7e96ab8f51fca39a5ce17c3970fc43924a4eba446",
+        "src/ui/UImg.vue": "bb9d54f3839425c263e8d6a48693fbfe0cc79eb589d99a8e79c33c018b3e3a50",
+        "src/ui/UNoSsr.vue": "19e873e9858c48cb7203e36f015b63c4ec413f083485bd3c414947ebcb403680",
+        "src/ui/UiTooltip.vue": "6be59af6edd96ed241466eee10b6c01044182d4055d4e84db1cfc0bd0ed5bda6",
+        "src/ui/docs/component-examples/tooltip.vue": "0f02fcb63d3043de3b9bb59a36f56196002c78494d79f28536d9df3408a82f61",
+        "src/ui/docs/component-examples/lazy.vue": "9ed95d5fe7bd98677990140962d5913e713ae6832daf624d6ac28ada9a1105a5",
+        "src/ui/docs/component-examples/responsive.vue": "a6cd9a1ce74feb16a5cbc8e27ef50a10e88689d2cd69212f5b0f979f78ff19c8"
+    },
+    "registry": {
+        "publicExports": true,
+        "globalNames": [
+            [
+                "u-lazy",
+                true
+            ],
+            [
+                "u-responsive",
+                true
+            ],
+            [
+                "u-counter",
+                true
+            ],
+            [
+                "u-field",
+                true
+            ],
+            [
+                "u-picker",
+                true
+            ],
+            [
+                "u-hotkey",
+                true
+            ],
+            [
+                "u-tooltip",
+                true
+            ]
+        ]
+    },
+    "lazy": {
+        "dimensionsAndAttrs": {
+            "tagName": "section",
+            "className": "u-lazy lazy-extra-class",
+            "nativeAttribute": "kept",
+            "style": {
+                "width": "320px",
+                "height": "84px",
+                "minWidth": "240px",
+                "maxWidth": "360px",
+                "minHeight": "64px",
+                "maxHeight": "96px"
+            }
+        },
+        "onceFalseModelUpdates": [
+            true,
+            false,
+            true,
+            false
+        ],
+        "intersectPayloads": [
+            {
+                "id": "lazy-controlled",
+                "intersecting": true
+            },
+            {
+                "id": "lazy-controlled",
+                "intersecting": true
+            }
+        ],
+        "observerOptions": [
+            {
+                "connected": false,
+                "root": "observer-root",
+                "rootMargin": "12px",
+                "threshold": 0.25
+            },
+            {
+                "connected": true,
+                "root": "observer-root-next",
+                "rootMargin": "28px 4px",
+                "threshold": [
+                    0.1,
+                    0.75
+                ]
+            }
+        ],
+        "staleCallbackIgnored": true,
+        "disabledAtomicUpdate": [
+            {
+                "phase": "after assignment",
+                "disabled": false,
+                "modelValue": false,
+                "contentMounted": true,
+                "observers": []
+            },
+            {
+                "phase": "after Vue nextTicks",
+                "disabled": false,
+                "modelValue": false,
+                "contentMounted": true,
+                "observers": [
+                    {
+                        "connected": false,
+                        "root": null,
+                        "rootMargin": "100px"
+                    },
+                    {
+                        "connected": true,
+                        "root": null,
+                        "rootMargin": "100px"
+                    }
+                ]
+            },
+            {
+                "phase": "after animation frames",
+                "disabled": false,
+                "modelValue": false,
+                "contentMounted": true,
+                "observers": [
+                    {
+                        "connected": false,
+                        "root": null,
+                        "rootMargin": "100px"
+                    },
+                    {
+                        "connected": true,
+                        "root": null,
+                        "rootMargin": "100px"
+                    }
+                ]
+            }
+        ],
+        "onceAndFallback": {
+            "onceModelUpdates": [
+                true,
+                true
+            ],
+            "disabledModelUpdates": [
+                true,
+                true
+            ],
+            "disconnectedOnUnmount": true,
+            "noIntersectionObserverFallback": true,
+            "transitionFalse": true,
+            "stringTransitionClasses": [
+                "u-scale-enter-active u-scale-enter-to"
+            ],
+            "customTransitionAppear": true
+        }
+    },
+    "responsive": {
+        "numeric": {
+            "ratio": "1.5",
+            "style": {
+                "aspectRatio": "1.5 / 1",
+                "width": "300px",
+                "height": "200px",
+                "minWidth": "100px",
+                "maxWidth": "360px",
+                "minHeight": "50px",
+                "maxHeight": "300px"
+            },
+            "contentClasses": "u-responsive-content ratio-array ratio-object",
+            "inline": true,
+            "inlineDisplay": "inline-block",
+            "inlineStyleRuleLoaded": true,
+            "inlineWithText": true,
+            "inlineWithPeer": true,
+            "additionalSibling": true,
+            "additionalOutsideContent": true
+        },
+        "string": {
+            "ratio": "1.7777777777777777",
+            "width": "320px",
+            "aspectRatio": "1.77778 / 1"
+        },
+        "inferred": {
+            "ratio": "2",
+            "aspectRatio": "2 / 1"
+        },
+        "invalid": {
+            "ratio": "",
+            "aspectRatio": "",
+            "width": "auto",
+            "height": "fit-content"
+        },
+        "invalidText": {
+            "ratio": "",
+            "aspectRatio": ""
+        }
+    },
+    "counter": {
+        "values": {
+            "defaultActive": true,
+            "defaultText": "8 / 8",
+            "unicode": {
+                "text": "3 / 2",
+                "over": true,
+                "ariaLabel": "3 of 2 characters"
+            },
+            "valueMode": "剩余 8 个 / 10",
+            "disabled": {
+                "text": "4 / 2",
+                "over": false
+            },
+            "scope": {
+                "counter": "3 / 5",
+                "max": "5",
+                "value": "A😀B"
+            }
+        },
+        "objectTransitionEvents": [
+            "enter",
+            "leave"
+        ],
+        "stringTransitionClasses": [
+            "ui-counter u-scale-enter-from u-scale-enter-active",
+            "ui-counter u-scale-enter-active u-scale-enter-to"
+        ],
+        "falseTransitionRemovesContent": true,
+        "customTransitionDisabledForReducedMotion": true,
+        "reducedMotionHook": {
+            "type": "enter",
+            "className": "ui-counter"
+        }
+    },
+    "appearance": {
+        "fieldNumber": {
+            "radius": "8px"
+        },
+        "fieldCorners": {
+            "startStart": "8px",
+            "startEnd": "9999px"
+        },
+        "picker": {
+            "startBorder": "2px",
+            "endBorder": "4px",
+            "startStart": "8px",
+            "endEnd": "9999px"
+        },
+        "hotkey": {
+            "topBorder": "1px",
+            "bottomBorder": "4px",
+            "radius": "50%"
+        }
+    },
+    "realDemos": {
+        "initial": {
+            "output": "modelValue：false；进入观察区域 0 次。",
+            "placeholder": 1,
+            "image": 0,
+            "observer": [
+                {
+                    "connected": true,
+                    "rootClass": "ui-scroll-viewport",
+                    "rootMargin": "0px",
+                    "threshold": 0.2
+                }
+            ]
+        },
+        "onceFalse": {
+            "modelUpdatesOnEntry": 1,
+            "exitCount": 1,
+            "contentUnmountedOnExit": true,
+            "oneIntersectPerEntry": true
+        },
+        "onceTrue": {
+            "stayedVisibleAfterExit": true,
+            "resetModelReobserved": true
+        },
+        "disabled": {
+            "modelVisibleImmediately": true,
+            "disconnectedObservers": [
+                {
+                    "connected": false,
+                    "rootClass": "ui-scroll-viewport",
+                    "rootMargin": "0px",
+                    "threshold": 0.2
+                },
+                {
+                    "connected": false,
+                    "rootClass": "ui-scroll-viewport",
+                    "rootMargin": "0px",
+                    "threshold": 0.2
+                },
+                {
+                    "connected": false,
+                    "rootClass": "ui-scroll-viewport",
+                    "rootMargin": "0px",
+                    "threshold": 0.2
+                },
+                {
+                    "connected": false,
+                    "rootClass": "ui-scroll-viewport",
+                    "rootMargin": "0px",
+                    "threshold": 0.2
+                }
+            ],
+            "noIntersectionEmission": true,
+            "reenableResetSequence": [
+                "disabled=false",
+                "external model=false"
+            ]
+        },
+        "responsiveWide": {
+            "rootMaxWidth": "640px",
+            "rootWidth": 640,
+            "additionalText": "additional 标记层",
+            "additionalDisplay": "block",
+            "additionalRect": {
+                "width": 92.25,
+                "height": 16
+            },
+            "inlineClass": true,
+            "inlineWidth": 180,
+            "inlineHeight": 90
+        },
+        "responsiveNarrow": {
+            "containerWidth": 314,
+            "scrollWidth": 314,
+            "firstWidth": 314.3999938964844,
+            "inlineWidth": 180,
+            "inlineHeight": 90,
+            "additionalText": "additional 标记层"
+        }
+    },
+    "tooltipDemo": {
+        "source": "src/ui/docs/component-examples/tooltip.vue",
+        "openedBy": "standard activator click",
+        "popupText": "可用 activator 和内容插槽配置提示。"
+    },
+    "screenshots": [
+        {
+            "file": "real-demos-wide-light.png",
+            "component": "ULazy + UResponsive",
+            "state": "lazy placeholder after reset; responsive examples visible",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "capture": "locator",
+            "zoom": 1
+        },
+        {
+            "file": "real-demos-wide-dark.png",
+            "component": "ULazy + UResponsive",
+            "state": "lazy placeholder after reset; responsive examples visible",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "capture": "locator",
+            "zoom": 1
+        },
+        {
+            "file": "real-demos-narrow-light.png",
+            "component": "ULazy + UResponsive",
+            "state": "lazy placeholder after reset; responsive examples visible",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "capture": "locator",
+            "zoom": 1
+        },
+        {
+            "file": "tooltip-open-wide-dark.png",
+            "component": "UTooltip",
+            "state": "standard activator open",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "capture": "fullPage",
+            "zoom": 1
+        },
+        {
+            "file": "tooltip-open-narrow-light.png",
+            "component": "UTooltip",
+            "state": "standard activator open",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "capture": "fullPage",
+            "zoom": 1
+        }
+    ],
+    "errors": []
+}

@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "../src/ui/UImg.vue",
+        "../src/ui/UInfiniteScroll.vue",
+        "../src/ui/infinite-scroll-state.ts",
+        "../src/ui/docs/component-examples/img.vue",
+        "../src/ui/docs/component-examples/infinite-scroll.vue",
+        "../src/ui/markdown-plugins.d.ts"
+    ]
+}

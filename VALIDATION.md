@@ -1,5 +1,87 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-08 新分支交接完整门禁（最新）
+
+用户明确改为 UI 与 UAH 分别提交推送交接分支 `codex/handoff-component-alignment-20261008`，因此运行完整门禁。UI 最终 Node 24.19.0（bundled runtime，进程 PATH 指向同一 Node）下完整 typecheck、152/152 单测、docs/lib 两次 Vite 构建与完整 Electron UI 21/21 组通过，171 文档路由无横向溢出，pageerrors=[]；git diff --check 通过。无版本变更、发布标签或 npm 发布。
+
+首次完整单测 150/152：生成器未同步新增 Field/OptionPicker/HotkeyListener 三项真实示例到 manifest，路由测试漏识别已有 table-align 动态分支。修复生成器输出 manifest，并让路由测试检查 glob 和对应真实文件后，局部8项及最终全量152项通过，没有删除断言。
+
+首次 UI 回归因 Windows 125% 缩放将 1px 报告为 0.8px 失败，Electron 测试入口统一 --force-device-scale-factor=1。随后旧 server 测试查找不存在的内层 UDataTable：现在 server/local 共用 DataTableCore 单根结构，改为检查唯一外框和原生 table 零边框。该检查还发现旧 ghost 表头透明 CSS 只命中旧嵌套结构，补上新单根 server 选择器，保留原有透明表头特性。最终完整 UI 21组通过，Root 复核 server 浅深截图；对应原生截图仍为本机 artifacts/ui-0FjjPI。
+
+完整原始日志：artifacts/handoff-full-tests.log（初次失败）、handoff-full-tests-final.log、handoff-typecheck-final.log、handoff-full-ui.log（125%）、handoff-full-ui-scale1.log（旧结构）、handoff-full-ui-final.log。本轮已接受的专项 JSON 报告、source hash 检查和最终完整 UI report 随 Git 保存在 docs/component-audit-2026-10-08/checkpoint-evidence；截图/长日志/依赖/dist/profile 不随 Git。下节“仅专项、未提交”是切换交接方式前的历史快照。
+
+## 2026-10-08 全库修复与换设备收尾（最新）
+
+本轮按用户确认的兼容策略实施，最后按“做完当前之后停下”收尾。UI main e63b618/package0.3.2 与 UAH main97c43a9/既有dirty均实际核对；未提交、推送或发布。没有完整typecheck/test/build/test:ui，只有下列专项及局部截图验收。旧审计153项及REPORT保留历史状态；修复台账28 partially-verified/125 pending，没有以API名称计数宣称完成深度兼容。
+
+- 状态层：group-reactivity 5项、hotkey 9项、data-iterator-state 14项、item-group-state 13项、locale-context与既有locale合计16项均有专项通过记录；纯helper独立类型检查通过。Radio/Form有实际公共组件validate/reset与rules递归/闭包更新专项。
+- 公共新职责与旧入口：component-repair-protocols验证Field/Picker/Hotkey三新职责/三旧名/Counter和156canonical注册；group-reactivity覆盖Window/Carousel/Stepper/ExpansionPanels最新配置。各自tests/tsconfig.*作用域检查通过。
+- 媒体滚动：media-scroll-protocols（Vite+Electron）实际本地图片源/DOM事件vsURL协议、srcset/picture/lazy/eager/陈旧回调/内联src重建，两侧状态、manual/intersect/reset及prepend保持、横向真实demo；infinite-scroll-state追加数字字符串margin=0须0px的专项通过。最终媒体组件参数的source hash另在media-containers报告。
+- Tooltip：tooltip-protocols通过旧/标准scope、可写isActive Ref、click模式pointer-blur/leave不关、延迟/受控/交互/外部锚点清理、定位/挂载/滚动策略；未声明scrim、自定义函数策略/transition对象完全支持。Root复核真实开态窄屏截图。
+- Lazy/Responsive：lazy-responsive-protocols Vite+Electron和scope types通过，持续observer与原子reenable/model reset严格单通知，options替换旧callback无效；实际scroll/once/reset/disabled、Responsive640px/180×90/additional/inline/窄屏无横溢。Counter对象transition/JS hooks与appearance实际几何一起覆盖。
+- Messages/Label：text-messages-protocols Vite+Electron、scope types通过；active/消息readonly数组/每条slot/旧整列表覆盖/颜色/transition/provider显式false，label text+slot+required/disabled/for原生点击聚焦和attrs。Root复核深色截图。
+- DataIterator：public source Chromium fixture 11组与scope types通过，含默认协议、全局defaults、手动分页/filter/sort/options、选择/展开/分组、真实示例；Electron host尝试停在BrowserWindow创建前，不声明Electron验收。demo旧例显式standardProtocol=false；Root复核390px完整卡片截图。docs generator格式化后source检查正则改为支持跨行标签，行为无改。
+- Parallax/Pull：media-containers-protocols Vite+Electron、scope types、0外网请求/0Vue和控制台错误，真实src/picture/placeholder/error、scale0/.5/1与legacy speed、嵌套scroll/减效/disabled/cleanup，鼠标/触摸与双事件幂等done/nearest scroll boundary/reset、真实demo async/旧请求失效。Root复核wide-dark/narrow-light。pull-refresh-state独立fixture8次load通过。
+- ItemGroup：public source Chromium10组、scope types通过；标准selected ID数组、index/null/object/array单值、force与boolean mandatory/max/disabled/readonly/navigation、keyed反序/移除、button/chip注册与Form validate/reset、真实demo及事件。Root修复实际slot renderer Frame更新钩子漏同步；helper reorder幂等防循环。无Electron声明；Root复核wide-dark/390px。
+- LocaleProvider：locale-provider-protocols Vite+Electron、Provider/demo scope类型检查、无错误，祖先/子覆盖/中英文切换、RTL/tag/数字、旧fallback优先新fallbackLocale、按语言resolve、$vuetify去前缀路径。Root复核真实浅色图。UiPagination全局uiText仍是剩余缺口。
+- 文档：generate-completion-docs/sync-api-reference通过，156canonical/1837属性模型/182事件/313slots/356exposed文档与源码一致，api-reference.test.ts 5/5（含全部发布源码示例解析/编译）通过；只证明当前声明一致。git -c core.safecrlf=false diff --check通过。同目录无CLAUDE.md。
+
+证据位于artifacts/component-audit-root各专项目录，跨设备恢复包包含当前报告/PNG、两仓未提交/untracked文件与HEAD/status/patch/SHA256 manifest，排除node_modules/dist/profile/cache/上游归档。下一步从HANDOFF顶部恢复，先处理三项未答冲突；本机已停止新增修复。
+
+## 2026-10-08 全库逐组件审计专项
+
+- `scripts/prepare-component-audit.mjs`盘点153个canonical U*及三批45/55/53，核官方Vuetify4.2.4包与registry SHA512一致。上游链接由source map还原，类型候选不直接作为支持/缺失结论。
+- 三个gpt-6-luna/max仅写独占审计文件；Root指导原worker补查全部2454候选、手工10个null提取组件与事件/slot payload，再独立复核映射、继承、默认值和组合行为。完整结果为117差异/部分覆盖、10未确认行为缺口、23本库扩展、3同名职责不同；0候选待判。逐项REPORT.md与ROOT-REVIEW.md在docs/component-audit-2026-10-08/。
+- `node scripts/validate-component-audit.mjs --require-complete`通过153/153：名单、分区完整/无重复、文件与行号存在、专项证据路径存在，当前源码SHA256记录在validation.json。它不自动证明语义正确。确认名称缺口按组件累计1282属性、105事件、330插槽，不能将计数当作同严重度故障或功能覆盖率。
+- Root执行`node artifacts/component-audit-root/probe.mjs`（Vite源码fixture/Electron，无build）：UWindow正常next为b，重置a并改disabled=true后公开next仍为b，预期a；已复现缺陷、errors=[]，原证据artifacts/component-audit-root/window-VbAUIi/report.json，跟随版本的观察事实为ROOT-RUNTIME.json。这是缺陷探针，未把错误行为写成正确回归要求，也未在本轮修复。
+- Root单SFC编译观察UiInput的modelModifiers生成，并核当前Vue运行时trim/number处理；源码复核URadio组合、UCounter字符串计数、Carousel interval/VImg链路及NumberInput的omit(validationValue)，纠正审计误报。其余152项均属静态对照，未做全组件浏览器/视觉矩阵。
+- 三个审计脚本`node --check`、完整validator、报告渲染及`git -c core.safecrlf=false diff --check`通过。本轮无完整构建、全量单测、全项目typecheck或完整UI；实际Node22.19.0，未修改全局运行时，项目目标Node24+不变。未提交/推送/发布，未修改UAH-desktop或组件产品代码，保留此前改动。
+
+## 2026-10-08 视差内部滚动专项
+
+- 盘点复用UParallax、UImg、UScrollArea、USwitch，保留speed/disabled与background/default(offset,ratio)插槽。旧window监听无法响应文档内部滚动；基线artifacts/parallax-FN5QMG中场景滚动200px但offset一直13.337px。
+- `node tests/desktop/parallax.mjs`通过9组：内部/页面滚动、实际视口ratio、背景与前景不同速、图片覆盖（含speed=1与滚出视口）、speed反向/0/disabled即时变化、尺寸变化及已滚动状态重挂载、系统/应用减效实时切换、实际文档滚轮/外层裁剪/关闭开关、浅深/390px/125%布局。最终artifacts/parallax-GLu1NL，内部滚动200px后offset由-48到12px；无Vue警告或pageerror。
+- Root直接检查最终滚动前后、深色、窄屏和125%原生PNG；背景覆盖、前景文字与控件可读，无横向溢出。截图等待主题与侧栏过渡结束，避免将中间动画当作验收状态。
+- `node scripts/typecheck.cjs --noEmit -p tests/tsconfig.parallax.json`通过；API属性/插槽与发布源码编译3项通过，最终源码样式更新后再次编译检查通过；`git -c core.safecrlf=false diff --check`通过。
+- 实际专项环境Node22.19.0，未变更全局运行时；项目目标Node24+保持。按用户要求无完整构建、全量单测或全UI；未提交/推送/发布，保留进入前改动。
+
+## 2026-10-08 四类表格稳定接口专项
+
+最新每页数量选择框字号13px。用户确认全面补齐四类表格功能/属性/事件/插槽及真实用例，保留库内外观。实现、官方4.2.4清单与兼容差异见 [对齐记录](docs/TABLE-ALIGNMENT-2026-10-08.md)。
+
+- 指定单测19项、API契约/递归插槽2项、tests/tsconfig.tables.json表格入口及依赖类型检查、git diff --check通过。
+- 源码浏览器19组：真实操作选择/展开/排序/分组、标准结构与分组td插槽、固定列与页尾、服务端跳过本地管线、loader start/end/both、内部currentItems/虚拟options=-1、实际行高虚拟滚动，以及8真实demo交互、浅深/390px/125%、4实际文档路由与源码tab。最终artifacts/table-alignment-F0WPkZ，无Vue警告/pageerror。
+- 页脚源码7组artifacts/table-footer-d0Avdd；虚拟滚动浅深宽窄/125%四组几何及滚轮/键盘/排序/拖动/横向滚动artifacts/virtual-table-qDcB8h，无右侧占宽缝隙。root直接检查相关原生截图。
+- 本轮未运行完整build、全量单测、全项目typecheck或完整UI；提交推送前再执行。未提交、推送或发布。
+
+## 2026-10-08：每页数量选择框字号调整
+
+- 按用户要求，仅ui-table-page-size内的选择框先改为14px，随后最新要求降至13px，保留内容宽度与窄屏换行。
+- 纯字号调整按要求未单独运行测试。后续表格补齐专项覆盖最终13px状态，见上方最新记录；下方旧7组记录为此前阶段。
+
+## 2026-10-08：分页每页数量文本
+
+- 复用UiDataTableServer现有UiSelect/UiPagination，无新增组件/API。原ui-table-page-size选择框固定82px，控件字号16px时内边距/箭头挤压selectedcontent。改为auto宽度、最小7.5em，数量组和range保持自然宽度，窄屏允许页脚按完整区域换行。
+- 仅node tests/desktop/table-footer.mjs与diff-check通过；没有运行完整typecheck、单测、build或test:ui。专项直接使用Vite源码fixture，7组证据artifacts/table-footer-LOvRsu/report.json：900浅色、390深色、800/125%浅色、320浅色、320长10000条选项、320空数据、default/dense/ghost/square四外观。已选10条/10000条和计数文本无省略，页脚无溢出/重叠；切换数量重置第一页、加载禁用选择及页码、空计数验证通过。pageErrors/console errors/Vue warnings均为空。
+- root检查6张最终原生截图：宽屏、深色窄屏、320px、125%、长选项及四外观。默认选择框120px可完整容纳文本和箭头；窄屏页码组换行，长计数保持完整。公共字号与分页业务逻辑保持既有实现。
+
+## 2026-10-08：虚拟表格右侧缝隙
+
+- 盘点复用已有UiScrollArea，无新增组件或API。原虚拟表格使用外框原生滚动，滚动条留出约7个物理像素；源码fixture基线artifacts/virtual-table-rAMcyu测得约5.6 CSS px（Windows125%缩放）。改用覆盖式滚动条后，表头与行背景填满边框内宽度，虚拟窗口由UiScrollArea的scroll事件驱动；公开height仍为外框高度。
+- 仅运行node tests/desktop/virtual-table.mjs及diff-check，没有运行完整typecheck、全量单测、build或test:ui。专项使用Vite源码fixture，报告artifacts/virtual-table-rNEVUx/report.json：1200浅色、600深色、900/125%浅色、390深色，右侧误差绝对值小于0.0001 CSS px，外框保持260px。一万行实际DOM少于30行；PageDown/Ctrl+End到末条、固定表头、任务数降序、滚轮、覆盖式纵向thumb拖动和横向滚动均通过；pageErrors/console errors/Vue warnings为空。
+- root检查最终浅深、宽窄、125%、键盘末条和横向滚动6张原生截图；列背景与边框齐平，滚动条覆盖内容而非占用一条空白轨道。主题切换使用实际theme.change，专项减少动效以避免截图时主题过渡干扰。早期fixture模板/等待/主题捕获问题已修正，未将早期证据计入最终验收。
+- 最新用户规则：日常仅专项，提交推送前才完整测试与构建。已同步AGENTS.md、HANDOFF.md和.Codex/memory/testing.md。
+
+## 2026-10-08：文档侧栏与列表右侧内容
+
+- 盘点：入口已有UList/UListItem、nav/href/active和append插槽；新增appendIcon与appendText属性，不新增组件。appendIcon参考[Vuetify VListItem](https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VList/VListItem.tsx)，appendText明确为本库扩展。append插槽替换属性内容；原先独立按钮和选择控件不触发父行选择的行为保留。
+- 真实list-item示例先验收，再迁移侧栏。共享CSS负责图标尺寸、文本优先级、省略和提示，文档CSS只配置侧栏320px、行密度和辅助名称字体。根节点span误匹配的原规则已随原生导航实现删除。
+- 最终typecheck、87/87单测、build和diff-check通过，日志artifacts/docs-navigation-{typecheck,unit,build}.log。API生成器核对153 canonical、1388 props/models、213 slots、281 exposed；示例源码同步。
+- 新增可复跑生产测试：构建后运行node tests/desktop/docs-navigation.mjs。artifacts/docs-navigation-F41jzi/report.json记录1440浅色、900深色、1280/125%浅色、390深色，每组168项主标题与右侧辅助名均完整单行、行不溢出；活动箭头18px且距右内边距12px。右侧完整title提示、图标+文本、append插槽替换、独立动作、指针/Enter/方向键/Home/End/搜索Enter/移动开关验证通过；pageErrors/console errors/Vue warnings均为空。
+- root检查10张最终原生截图，包括真实组件浅深、侧栏栅格指南和长组件名的浅深宽窄/125%图像。早期截图落在API区和主题过渡中，已修正捕获等待和定位并重新验收；早期原生导航截图不作为最终实现证据。
+- 完整UI21/21通过，覆盖168文档路由，errors为空，证据artifacts/ui-EezjBc。首次旧脚本在Windows125%系统缩放下将物理1px边框读为0.8px；以仅测试进程的--force-device-scale-factor=1重跑通过。测试缩放专项仍单独使用真实125%页面缩放。
+- 额外click-ripple全套未通过：原生缩放首次停在宿主尺寸等待；统一测试进程scale=1后两次均完成109条断言，停在Cascader打开状态检查（false而非true）。其中列表快捷/连续/键盘/禁用/动态配置、父行与独立按钮/checkbox隔离检查均通过；不得将109条成功记作整套通过。证据artifacts/click-ripple-dHTsZ9、artifacts/click-ripple-qFzyIx，日志artifacts/docs-navigation-ripple-scale1{-retry}.log。级联组件及其示例没有改动，失败原因本轮未确认，不归因于现有实现或本次侧栏修改。
+
 ## 2026-10-08：Toolbar 整合与 Vuetify4 字号
 
 - root直接实现标题/操作内置、密度/扩展/折叠/主题/动画，更新三个真实Toolbar示例；全局字号采用Vuetify4的15级rem体系和响应式工具类，新增Typography真实控件示例与15行工具类参考。字号新要求替代此前小字号增量；字体家族与现有设计tokens保留。

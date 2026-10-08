@@ -13,7 +13,7 @@ import {
     UDatePicker,
     UTimePicker,
     UCalendar,
-    UPicker,
+    UOptionPicker,
     UConfirmEdit,
 } from '../index';
 defineProps({ example: String });
@@ -114,7 +114,7 @@ const progress = ref(40);
                         hint="输入 ISO 日期或打开日历选择。"
                     />
                     <UTimePicker v-model="time" label="执行时间" class="mt-4" />
-                    <UPicker v-model="chosen" :items="['设计', '开发', '文档']" class="mt-4" />
+                    <UOptionPicker v-model="chosen" :items="['设计', '开发', '文档']" class="mt-4" />
                 </div>
                 <UDatePicker
                     v-model="range"

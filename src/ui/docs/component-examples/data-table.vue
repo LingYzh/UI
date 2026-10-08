@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { UButton, UDataTable } from '../../index';
+import { UButton, UDataTable, UTextField } from '../../index';
 const headers = [
     { key: 'title', title: '工作区', sortable: true },
     { key: 'category', title: '分类', sortable: true },
@@ -20,6 +20,12 @@ const groups = ref([]);
 
 <template>
     <div class="component-demo" data-demo-component="UDataTable">
+        <u-text-field
+            v-model="search"
+            aria-label="搜索工作区"
+            placeholder="搜索工作区或分类"
+            dense
+        />
         <u-button
             size="sm"
             @click="groups = groups.length ? [] : [{ key: 'category', order: 'asc' }]"
@@ -36,6 +42,8 @@ const groups = ref([]);
             show-select
             show-expand
             multi-sort
+            open-all
+            :mobile="false"
             label="工作区列表"
         >
             <template #expanded-row="{ item }">

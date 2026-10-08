@@ -10,7 +10,7 @@ import {
     UForm,
     UFormSection,
     UFormActions,
-    UField,
+    UFormField,
     UTextField,
     UTextarea,
     USelect,

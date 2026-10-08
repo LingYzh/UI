@@ -1,0 +1,3855 @@
+[
+    {
+        "name": "UContainer",
+        "file": "src/ui/UiContainer.vue",
+        "group": "布局组件",
+        "page": "container",
+        "upstream": {
+            "name": "VContainer",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VGrid/VContainer.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VGrid/VContainer.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "fluid"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VGrid/VContainer.tsx"
+        },
+        "local": {
+            "props": [
+                "fluid",
+                "tag"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width"
+        ],
+        "examples": [
+            {
+                "id": "layout-container",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "URow",
+        "file": "src/ui/UiRow.vue",
+        "group": "布局组件",
+        "page": "row",
+        "upstream": {
+            "name": "VRow",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VGrid/VRow.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VGrid/VRow.d.ts",
+            "props": [
+                "class",
+                "style",
+                "density",
+                "tag",
+                "dense",
+                "align",
+                "alignSm",
+                "alignMd",
+                "alignLg",
+                "alignXl",
+                "alignXxl",
+                "justify",
+                "justifySm",
+                "justifyMd",
+                "justifyLg",
+                "justifyXl",
+                "justifyXxl",
+                "alignContent",
+                "alignContentSm",
+                "alignContentMd",
+                "alignContentLg",
+                "alignContentXl",
+                "alignContentXxl",
+                "noGutters",
+                "gap",
+                "size"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VGrid/VRow.ts"
+        },
+        "local": {
+            "props": [
+                "tag",
+                "size",
+                "gap",
+                "density",
+                "noGutters",
+                "align",
+                "justify"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "dense",
+            "alignSm",
+            "alignMd",
+            "alignLg",
+            "alignXl",
+            "alignXxl",
+            "justifySm",
+            "justifyMd",
+            "justifyLg",
+            "justifyXl",
+            "justifyXxl",
+            "alignContent",
+            "alignContentSm",
+            "alignContentMd",
+            "alignContentLg",
+            "alignContentXl",
+            "alignContentXxl"
+        ],
+        "examples": [
+            {
+                "id": "layout-row",
+                "fullSource": true
+            },
+            {
+                "id": "layout-grid-advanced",
+                "fullSource": true
+            },
+            {
+                "id": "layout-form-grid",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UCol",
+        "file": "src/ui/UiCol.vue",
+        "group": "布局组件",
+        "page": "col",
+        "upstream": {
+            "name": "VCol",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VGrid/VCol.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VGrid/VCol.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "cols",
+                "offset",
+                "order",
+                "orderSm",
+                "orderMd",
+                "orderLg",
+                "orderXl",
+                "orderXxl",
+                "alignSelf",
+                "lg",
+                "md",
+                "offsetLg",
+                "offsetMd",
+                "offsetSm",
+                "offsetXl",
+                "offsetXxl",
+                "sm",
+                "xl",
+                "xxl"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VGrid/VCol.ts"
+        },
+        "local": {
+            "props": [
+                "tag",
+                "cols",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+                "xxl",
+                "offset",
+                "offsetSm",
+                "offsetMd",
+                "offsetLg",
+                "offsetXl",
+                "offsetXxl",
+                "order",
+                "orderSm",
+                "orderMd",
+                "orderLg",
+                "orderXl",
+                "orderXxl",
+                "alignSelf"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "layout-col",
+                "fullSource": true
+            },
+            {
+                "id": "layout-form-grid",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USpacer",
+        "file": "src/ui/UiSpacer.vue",
+        "group": "布局组件",
+        "page": "spacer",
+        "upstream": {
+            "name": "VSpacer",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VGrid/VSpacer.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VGrid/VSpacer.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VGrid/VSpacer.ts"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "layout-spacer",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTabs",
+        "file": "src/ui/UiTabs.vue",
+        "group": "导航组件",
+        "page": "tabs",
+        "upstream": {
+            "name": "VTabs",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabs.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabs.d.ts",
+            "props": [
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "density",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "spaced",
+                "centerActive",
+                "scrollDistance",
+                "scrollSnap",
+                "scrollToActive",
+                "contentClass",
+                "direction",
+                "symbol",
+                "nextIcon",
+                "prevIcon",
+                "showArrows",
+                "sliderTransition",
+                "sliderTransitionDuration",
+                "alignTabs",
+                "color",
+                "fixedTabs",
+                "items",
+                "stacked",
+                "bgColor",
+                "grow",
+                "height",
+                "hideSlider",
+                "inset",
+                "insetPadding",
+                "insetRadius",
+                "sliderColor"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTabs/VTabs.tsx"
+        },
+        "local": {
+            "props": [
+                "items",
+                "idPrefix",
+                "direction",
+                "orientation",
+                "activation",
+                "mandatory",
+                "disabled",
+                "alignTabs",
+                "grow",
+                "fixedTabs",
+                "stacked",
+                "hideSlider",
+                "centerActive",
+                "showArrows",
+                "indicatorSide",
+                "variant",
+                "ripple",
+                "dense",
+                "ghost",
+                "rounded",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "tab",
+                "default",
+                "item",
+                "window"
+            ]
+        },
+        "potentialMissingProps": [
+            "mobile",
+            "mobileBreakpoint",
+            "density",
+            "tag",
+            "multiple",
+            "max",
+            "selectedClass",
+            "spaced",
+            "scrollDistance",
+            "scrollSnap",
+            "scrollToActive",
+            "contentClass",
+            "symbol",
+            "nextIcon",
+            "prevIcon",
+            "sliderTransition",
+            "sliderTransitionDuration",
+            "color",
+            "bgColor",
+            "height",
+            "inset",
+            "insetPadding",
+            "insetRadius",
+            "sliderColor"
+        ],
+        "examples": [
+            {
+                "id": "tabs-declarative",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-items",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-window",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-values",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-scroll",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-soft",
+                "fullSource": false
+            },
+            {
+                "id": "tabs-variants",
+                "fullSource": false
+            },
+            {
+                "id": "tabs-shared-variants",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UTab",
+        "file": "src/ui/UiTab.vue",
+        "group": "导航组件",
+        "page": "tab",
+        "upstream": {
+            "name": "VTab",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTab.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTab.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "value",
+                "disabled",
+                "selectedClass",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "loading",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "activeColor",
+                "baseColor",
+                "icon",
+                "prependIcon",
+                "appendIcon",
+                "readonly",
+                "slim",
+                "stacked",
+                "spaced",
+                "ripple",
+                "text",
+                "fixed",
+                "sliderColor",
+                "sliderTransition",
+                "sliderTransitionDuration",
+                "hideSlider",
+                "inset",
+                "direction"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTabs/VTab.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "text",
+                "disabled",
+                "icon",
+                "ripple"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "size",
+            "tag",
+            "color",
+            "variant",
+            "selectedClass",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "loading",
+            "href",
+            "replace",
+            "to",
+            "exact",
+            "activeColor",
+            "baseColor",
+            "prependIcon",
+            "appendIcon",
+            "readonly",
+            "slim",
+            "stacked",
+            "spaced",
+            "fixed",
+            "sliderColor",
+            "sliderTransition",
+            "sliderTransitionDuration",
+            "hideSlider",
+            "inset",
+            "direction"
+        ],
+        "examples": [
+            {
+                "id": "tabs-declarative",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTabsWindow",
+        "file": "src/ui/UiTabsWindow.vue",
+        "group": "容器组件",
+        "page": "tabs-window",
+        "upstream": {
+            "name": "VTabsWindow",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabsWindow.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabsWindow.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "tag",
+                "reverse",
+                "verticalArrows",
+                "direction",
+                "modelValue",
+                "disabled",
+                "selectedClass",
+                "crossfade",
+                "transitionDuration"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTabs/VTabsWindow.tsx"
+        },
+        "local": {
+            "props": [
+                "idPrefix",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "reverse",
+            "verticalArrows",
+            "direction",
+            "disabled",
+            "selectedClass",
+            "crossfade",
+            "transitionDuration"
+        ],
+        "examples": [
+            {
+                "id": "tabs-declarative",
+                "fullSource": true
+            },
+            {
+                "id": "tabs-window",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTabsWindowItem",
+        "file": "src/ui/UiTabsWindowItem.vue",
+        "group": "容器组件",
+        "page": "tabs-window-item",
+        "upstream": {
+            "name": "VTabsWindowItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabsWindowItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTabs/VTabsWindowItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "value",
+                "disabled",
+                "selectedClass",
+                "eager",
+                "reverseTransition",
+                "transition"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTabs/VTabsWindowItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "eager"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "disabled",
+            "selectedClass",
+            "reverseTransition",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "tabs-window",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTabPanel",
+        "file": "src/ui/UiTabPanel.vue",
+        "group": "容器组件",
+        "page": "tab-panel",
+        "upstream": null,
+        "local": {
+            "props": [
+                "value",
+                "modelValue",
+                "idPrefix"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "panel-persistence",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UCollapse",
+        "file": "src/ui/UiCollapse.vue",
+        "group": "容器组件",
+        "page": "collapse",
+        "upstream": null,
+        "local": {
+            "props": [
+                "open"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "collapse-content",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UCard",
+        "file": "src/ui/UiCard.vue",
+        "group": "容器组件",
+        "page": "card",
+        "upstream": {
+            "name": "VCard",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VCard/VCard.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VCard/VCard.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "loading",
+                "position",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "appendAvatar",
+                "appendIcon",
+                "disabled",
+                "flat",
+                "hover",
+                "image",
+                "link",
+                "prependAvatar",
+                "prependIcon",
+                "ripple",
+                "subtitle",
+                "text",
+                "title"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VCard/VCard.tsx"
+        },
+        "local": {
+            "props": [
+                "theme",
+                "title",
+                "subtitle",
+                "variant",
+                "density",
+                "flush",
+                "as",
+                "dense",
+                "ghost",
+                "rounded",
+                "ripple"
+            ],
+            "events": [],
+            "slots": [
+                "header",
+                "media",
+                "default",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "border",
+            "elevation",
+            "hoverElevation",
+            "tile",
+            "tag",
+            "color",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "loading",
+            "position",
+            "href",
+            "replace",
+            "to",
+            "exact",
+            "appendAvatar",
+            "appendIcon",
+            "disabled",
+            "flat",
+            "hover",
+            "image",
+            "link",
+            "prependAvatar",
+            "prependIcon",
+            "text"
+        ],
+        "examples": [
+            {
+                "id": "card-provider",
+                "fullSource": false
+            },
+            {
+                "id": "card-form",
+                "fullSource": false
+            },
+            {
+                "id": "card-clickable",
+                "fullSource": false
+            },
+            {
+                "id": "card-variants",
+                "fullSource": false
+            },
+            {
+                "id": "card-shared-variants",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UScrollArea",
+        "file": "src/ui/UiScrollArea.vue",
+        "group": "容器组件",
+        "page": "scroll-area",
+        "upstream": null,
+        "local": {
+            "props": [
+                "focusable",
+                "height",
+                "maxHeight",
+                "axis",
+                "label",
+                "always",
+                "dense",
+                "ghost",
+                "rounded"
+            ],
+            "events": [
+                "scroll"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "scroll-content",
+                "fullSource": false
+            },
+            {
+                "id": "scroll-horizontal",
+                "fullSource": false
+            },
+            {
+                "id": "scroll-area-shared-variants",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UPagination",
+        "file": "src/ui/UiPagination.vue",
+        "group": "导航组件",
+        "page": "pagination",
+        "upstream": {
+            "name": "VPagination",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VPagination/VPagination.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VPagination/VPagination.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "activeColor",
+                "start",
+                "modelValue",
+                "disabled",
+                "length",
+                "totalVisible",
+                "firstIcon",
+                "prevIcon",
+                "nextIcon",
+                "lastIcon",
+                "ariaLabel",
+                "pageAriaLabel",
+                "currentPageAriaLabel",
+                "firstAriaLabel",
+                "previousAriaLabel",
+                "nextAriaLabel",
+                "lastAriaLabel",
+                "ellipsis",
+                "showFirstLastPage"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VPagination/VPagination.tsx"
+        },
+        "local": {
+            "props": [
+                "length",
+                "totalVisible",
+                "disabled",
+                "dense",
+                "ghost",
+                "rounded",
+                "label",
+                "prevIcon",
+                "nextIcon",
+                "prevLabel",
+                "nextLabel",
+                "color",
+                "ripple",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "tile",
+            "size",
+            "tag",
+            "variant",
+            "activeColor",
+            "start",
+            "firstIcon",
+            "lastIcon",
+            "ariaLabel",
+            "pageAriaLabel",
+            "currentPageAriaLabel",
+            "firstAriaLabel",
+            "previousAriaLabel",
+            "nextAriaLabel",
+            "lastAriaLabel",
+            "ellipsis",
+            "showFirstLastPage"
+        ],
+        "examples": [
+            {
+                "id": "pagination-basic",
+                "fullSource": true
+            },
+            {
+                "id": "pagination-variants",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UThemeProvider",
+        "file": "src/ui/UiThemeProvider.vue",
+        "group": "容器组件",
+        "page": "theme-provider",
+        "upstream": {
+            "name": "VThemeProvider",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VThemeProvider/VThemeProvider.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VThemeProvider/VThemeProvider.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "tag",
+                "withBackground"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VThemeProvider/VThemeProvider.tsx"
+        },
+        "local": {
+            "props": [
+                "theme",
+                "withBackground",
+                "as"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag"
+        ],
+        "examples": [
+            {
+                "id": "theme-scoped",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UApp",
+        "file": "src/ui/UApp.vue",
+        "group": "布局组件",
+        "page": "app",
+        "upstream": {
+            "name": "VApp",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VApp/VApp.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VApp/VApp.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "overlaps"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VApp/VApp.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "overlaps"
+        ],
+        "examples": [
+            {
+                "id": "component-app",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UAppBar",
+        "file": "src/ui/UAppBar.vue",
+        "group": "布局组件",
+        "page": "app-bar",
+        "upstream": {
+            "name": "VAppBar",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VAppBar/VAppBar.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VAppBar/VAppBar.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "name",
+                "order",
+                "absolute",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "collapse",
+                "collapsePosition",
+                "color",
+                "density",
+                "extended",
+                "extensionHeight",
+                "flat",
+                "floating",
+                "image",
+                "title",
+                "scrollTarget",
+                "scrollThreshold",
+                "scrollBehavior",
+                "modelValue",
+                "location",
+                "height"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VAppBar/VAppBar.tsx"
+        },
+        "local": {
+            "props": [
+                "height",
+                "fixed",
+                "absolute",
+                "order",
+                "color"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "name",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "collapse",
+            "collapsePosition",
+            "density",
+            "extended",
+            "extensionHeight",
+            "flat",
+            "floating",
+            "image",
+            "title",
+            "scrollTarget",
+            "scrollThreshold",
+            "scrollBehavior",
+            "modelValue",
+            "location"
+        ],
+        "examples": [
+            {
+                "id": "component-app-bar",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UAppBarTitle",
+        "file": "src/ui/UAppBarTitle.vue",
+        "group": "布局组件",
+        "page": "app-bar-title",
+        "upstream": {
+            "name": "VAppBarTitle",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VAppBar/VAppBarTitle.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VAppBar/VAppBarTitle.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VAppBar/VAppBarTitle.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-app-bar-title",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBottomNavigation",
+        "file": "src/ui/UBottomNavigation.vue",
+        "group": "导航组件",
+        "page": "bottom-navigation",
+        "upstream": {
+            "name": "VBottomNavigation",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBottomNavigation/VBottomNavigation.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBottomNavigation/VBottomNavigation.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "name",
+                "order",
+                "absolute",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "baseColor",
+                "bgColor",
+                "color",
+                "grow",
+                "mode",
+                "height",
+                "active"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBottomNavigation/VBottomNavigation.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "height",
+                "fixed",
+                "absolute"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "name",
+            "order",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "multiple",
+            "mandatory",
+            "max",
+            "selectedClass",
+            "disabled",
+            "baseColor",
+            "bgColor",
+            "color",
+            "grow",
+            "mode",
+            "active"
+        ],
+        "examples": [
+            {
+                "id": "component-bottom-navigation",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBottomSheet",
+        "file": "src/ui/UBottomSheet.vue",
+        "group": "导航组件",
+        "page": "bottom-sheet",
+        "upstream": {
+            "name": "VBottomSheet",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBottomSheet/VBottomSheet.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBottomSheet/VBottomSheet.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "retainFocus",
+                "captureFocus",
+                "eager",
+                "absolute",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex",
+                "fullscreen",
+                "scrollable",
+                "inset"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBottomSheet/VBottomSheet.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "persistent",
+                "height"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "location",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "scrollStrategy",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "retainFocus",
+            "captureFocus",
+            "eager",
+            "absolute",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "noClickAnimation",
+            "scrim",
+            "zIndex",
+            "fullscreen",
+            "scrollable",
+            "inset"
+        ],
+        "examples": [
+            {
+                "id": "component-bottom-sheet",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBreadcrumbs",
+        "file": "src/ui/UBreadcrumbs.vue",
+        "group": "导航组件",
+        "page": "breadcrumbs",
+        "upstream": {
+            "name": "VBreadcrumbs",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbs.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbs.d.ts",
+            "props": [
+                "class",
+                "style",
+                "density",
+                "rounded",
+                "tile",
+                "tag",
+                "activeClass",
+                "activeColor",
+                "bgColor",
+                "color",
+                "disabled",
+                "divider",
+                "icon",
+                "items"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBreadcrumbs/VBreadcrumbs.tsx"
+        },
+        "local": {
+            "props": [
+                "divider",
+                "ariaLabel"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "density",
+            "rounded",
+            "tile",
+            "tag",
+            "activeClass",
+            "activeColor",
+            "bgColor",
+            "color",
+            "disabled",
+            "icon",
+            "items"
+        ],
+        "examples": [
+            {
+                "id": "component-breadcrumbs",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBreadcrumbsDivider",
+        "file": "src/ui/UBreadcrumbsDivider.vue",
+        "group": "导航组件",
+        "page": "breadcrumbs-divider",
+        "upstream": {
+            "name": "VBreadcrumbsDivider",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbsDivider.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbsDivider.d.ts",
+            "props": [
+                "class",
+                "style",
+                "divider"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBreadcrumbs/VBreadcrumbsDivider.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "divider"
+        ],
+        "examples": [
+            {
+                "id": "component-breadcrumbs-divider",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBreadcrumbsItem",
+        "file": "src/ui/UBreadcrumbsItem.vue",
+        "group": "导航组件",
+        "page": "breadcrumbs-item",
+        "upstream": {
+            "name": "VBreadcrumbsItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbsItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBreadcrumbs/VBreadcrumbsItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "maxWidth",
+                "width",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "active",
+                "activeClass",
+                "activeColor",
+                "color",
+                "disabled",
+                "title"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBreadcrumbs/VBreadcrumbsItem.tsx"
+        },
+        "local": {
+            "props": [
+                "href",
+                "disabled",
+                "active",
+                "title"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "maxWidth",
+            "width",
+            "replace",
+            "to",
+            "exact",
+            "activeClass",
+            "activeColor",
+            "color"
+        ],
+        "examples": [
+            {
+                "id": "component-breadcrumbs-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UCarousel",
+        "file": "src/ui/UCarousel.vue",
+        "group": "容器组件",
+        "page": "carousel",
+        "upstream": {
+            "name": "VCarousel",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VCarousel/VCarousel.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VCarousel/VCarousel.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "tag",
+                "continuous",
+                "nextIcon",
+                "prevIcon",
+                "reverse",
+                "showArrows",
+                "verticalArrows",
+                "touch",
+                "direction",
+                "modelValue",
+                "disabled",
+                "selectedClass",
+                "mandatory",
+                "crossfade",
+                "transitionDuration",
+                "color",
+                "cycle",
+                "delimiterIcon",
+                "height",
+                "hideDelimiters",
+                "hideDelimiterBackground",
+                "interval",
+                "progress",
+                "verticalDelimiters"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VCarousel/VCarousel.tsx"
+        },
+        "local": {
+            "props": [
+                "interval",
+                "cycle",
+                "disabled",
+                "label",
+                "touch",
+                "keyboard",
+                "ripple",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "continuous",
+            "nextIcon",
+            "prevIcon",
+            "reverse",
+            "showArrows",
+            "verticalArrows",
+            "direction",
+            "selectedClass",
+            "mandatory",
+            "crossfade",
+            "transitionDuration",
+            "color",
+            "delimiterIcon",
+            "height",
+            "hideDelimiters",
+            "hideDelimiterBackground",
+            "progress",
+            "verticalDelimiters"
+        ],
+        "examples": [
+            {
+                "id": "component-carousel",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UCarouselItem",
+        "file": "src/ui/UCarouselItem.vue",
+        "group": "容器组件",
+        "page": "carousel-item",
+        "upstream": {
+            "name": "VCarouselItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VCarousel/VCarouselItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VCarousel/VCarouselItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "rounded",
+                "tile",
+                "value",
+                "disabled",
+                "selectedClass",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "aspectRatio",
+                "contentClass",
+                "inline",
+                "absolute",
+                "alt",
+                "cover",
+                "color",
+                "draggable",
+                "gradient",
+                "imageClass",
+                "lazySrc",
+                "options",
+                "sizes",
+                "src",
+                "crossorigin",
+                "referrerpolicy",
+                "srcset",
+                "position",
+                "eager",
+                "reverseTransition",
+                "transition"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VCarousel/VCarouselItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "eager"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "rounded",
+            "tile",
+            "disabled",
+            "selectedClass",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "aspectRatio",
+            "contentClass",
+            "inline",
+            "absolute",
+            "alt",
+            "cover",
+            "color",
+            "draggable",
+            "gradient",
+            "imageClass",
+            "lazySrc",
+            "options",
+            "sizes",
+            "src",
+            "crossorigin",
+            "referrerpolicy",
+            "srcset",
+            "position",
+            "reverseTransition",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "component-carousel-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UExpansionPanel",
+        "file": "src/ui/UExpansionPanel.vue",
+        "group": "容器组件",
+        "page": "expansion-panel",
+        "upstream": {
+            "name": "VExpansionPanel",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanel.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanel.d.ts",
+            "props": [
+                "class",
+                "style",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "value",
+                "disabled",
+                "selectedClass",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "eager",
+                "color",
+                "expandIcon",
+                "collapseIcon",
+                "hideActions",
+                "focusable",
+                "static",
+                "ripple",
+                "readonly",
+                "hover",
+                "title",
+                "text",
+                "bgColor"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VExpansionPanel/VExpansionPanel.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "selectedClass",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "eager",
+            "color",
+            "expandIcon",
+            "collapseIcon",
+            "hideActions",
+            "focusable",
+            "static",
+            "ripple",
+            "readonly",
+            "hover",
+            "title",
+            "text",
+            "bgColor"
+        ],
+        "examples": [
+            {
+                "id": "component-expansion-panel",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UExpansionPanelText",
+        "file": "src/ui/UExpansionPanelText.vue",
+        "group": "容器组件",
+        "page": "expansion-panel-text",
+        "upstream": {
+            "name": "VExpansionPanelText",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanelText.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanelText.d.ts",
+            "props": [
+                "class",
+                "style",
+                "eager"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VExpansionPanel/VExpansionPanelText.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "eager"
+        ],
+        "examples": [
+            {
+                "id": "component-expansion-panel-text",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UExpansionPanelTitle",
+        "file": "src/ui/UExpansionPanelTitle.vue",
+        "group": "容器组件",
+        "page": "expansion-panel-title",
+        "upstream": {
+            "name": "VExpansionPanelTitle",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanelTitle.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanelTitle.d.ts",
+            "props": [
+                "class",
+                "style",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "color",
+                "expandIcon",
+                "collapseIcon",
+                "hideActions",
+                "focusable",
+                "static",
+                "ripple",
+                "readonly",
+                "hover"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VExpansionPanel/VExpansionPanelTitle.tsx"
+        },
+        "local": {
+            "props": [
+                "ripple"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "color",
+            "expandIcon",
+            "collapseIcon",
+            "hideActions",
+            "focusable",
+            "static",
+            "readonly",
+            "hover"
+        ],
+        "examples": [
+            {
+                "id": "component-expansion-panel-title",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UExpansionPanels",
+        "file": "src/ui/UExpansionPanels.vue",
+        "group": "容器组件",
+        "page": "expansion-panels",
+        "upstream": {
+            "name": "VExpansionPanels",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanels.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VExpansionPanel/VExpansionPanels.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "elevation",
+                "tile",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "eager",
+                "color",
+                "expandIcon",
+                "collapseIcon",
+                "hideActions",
+                "focusable",
+                "static",
+                "ripple",
+                "readonly",
+                "hover",
+                "bgColor",
+                "flat",
+                "gap",
+                "noDivider",
+                "rounded",
+                "variant"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VExpansionPanel/VExpansionPanels.tsx"
+        },
+        "local": {
+            "props": [
+                "multiple",
+                "mandatory",
+                "disabled",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "elevation",
+            "tile",
+            "tag",
+            "max",
+            "selectedClass",
+            "eager",
+            "color",
+            "expandIcon",
+            "collapseIcon",
+            "hideActions",
+            "focusable",
+            "static",
+            "ripple",
+            "readonly",
+            "hover",
+            "bgColor",
+            "flat",
+            "gap",
+            "noDivider",
+            "rounded",
+            "variant"
+        ],
+        "examples": [
+            {
+                "id": "component-expansion-panels",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UFooter",
+        "file": "src/ui/UFooter.vue",
+        "group": "布局组件",
+        "page": "footer",
+        "upstream": {
+            "name": "VFooter",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VFooter/VFooter.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VFooter/VFooter.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "name",
+                "order",
+                "absolute",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "app",
+                "color",
+                "height"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VFooter/VFooter.tsx"
+        },
+        "local": {
+            "props": [
+                "height",
+                "fixed",
+                "absolute",
+                "order"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "name",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "app",
+            "color"
+        ],
+        "examples": [
+            {
+                "id": "component-footer",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "ULayout",
+        "file": "src/ui/ULayout.vue",
+        "group": "布局组件",
+        "page": "layout",
+        "upstream": {
+            "name": "VLayout",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VLayout/VLayout.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VLayout/VLayout.d.ts",
+            "props": [
+                "class",
+                "style",
+                "overlaps",
+                "fullHeight",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VLayout/VLayout.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "overlaps",
+            "fullHeight",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width"
+        ],
+        "examples": [
+            {
+                "id": "component-layout",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UList",
+        "file": "src/ui/UList.vue",
+        "group": "导航组件",
+        "page": "list",
+        "upstream": {
+            "name": "VList",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VList.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VList.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemChildren",
+                "itemProps",
+                "itemType",
+                "returnObject",
+                "valueComparator",
+                "activatable",
+                "selectable",
+                "activeStrategy",
+                "selectStrategy",
+                "openStrategy",
+                "opened",
+                "activated",
+                "selected",
+                "mandatory",
+                "itemsRegistration",
+                "baseColor",
+                "activeColor",
+                "activeClass",
+                "bgColor",
+                "disabled",
+                "filterable",
+                "expandIcon",
+                "collapseIcon",
+                "lines",
+                "slim",
+                "prependGap",
+                "indent",
+                "nav",
+                "navigationStrategy",
+                "navigationIndex",
+                "onClick:open",
+                "onClick:select",
+                "onUpdate:opened"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VList.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "activated",
+                "opened",
+                "multiple",
+                "mandatory",
+                "selectable",
+                "activatable",
+                "nav",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemProps"
+            ],
+            "events": [
+                "update:modelValue",
+                "update:activated",
+                "update:opened"
+            ],
+            "slots": [
+                "default",
+                "item",
+                "title"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color",
+            "variant",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "itemChildren",
+            "itemType",
+            "returnObject",
+            "valueComparator",
+            "activeStrategy",
+            "selectStrategy",
+            "openStrategy",
+            "selected",
+            "itemsRegistration",
+            "baseColor",
+            "activeColor",
+            "activeClass",
+            "bgColor",
+            "disabled",
+            "filterable",
+            "expandIcon",
+            "collapseIcon",
+            "lines",
+            "slim",
+            "prependGap",
+            "indent",
+            "navigationStrategy",
+            "navigationIndex",
+            "onClick:open",
+            "onClick:select"
+        ],
+        "examples": [
+            {
+                "id": "component-list",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UListGroup",
+        "file": "src/ui/UListGroup.vue",
+        "group": "导航组件",
+        "page": "list-group",
+        "upstream": {
+            "name": "VListGroup",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VListGroup.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VListGroup.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "activeColor",
+                "baseColor",
+                "color",
+                "collapseIcon",
+                "disabled",
+                "expandIcon",
+                "rawId",
+                "prependIcon",
+                "appendIcon",
+                "fluid",
+                "subgroup",
+                "title",
+                "value"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VListGroup.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "title",
+                "disabled",
+                "modelValue",
+                "ripple"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "activeColor",
+            "baseColor",
+            "color",
+            "collapseIcon",
+            "expandIcon",
+            "rawId",
+            "prependIcon",
+            "appendIcon",
+            "fluid",
+            "subgroup"
+        ],
+        "examples": [
+            {
+                "id": "component-list-group",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UListItem",
+        "file": "src/ui/UListItem.vue",
+        "group": "导航组件",
+        "page": "list-item",
+        "upstream": {
+            "name": "VListItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VListItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VListItem.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "active",
+                "activeClass",
+                "activeColor",
+                "appendAvatar",
+                "appendIcon",
+                "baseColor",
+                "disabled",
+                "lines",
+                "link",
+                "nav",
+                "prependAvatar",
+                "prependIcon",
+                "ripple",
+                "slim",
+                "prependGap",
+                "subtitle",
+                "title",
+                "value",
+                "index",
+                "tabindex",
+                "onClick",
+                "onClickOnce"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VListItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "title",
+                "subtitle",
+                "appendIcon",
+                "appendText",
+                "disabled",
+                "selectable",
+                "activatable",
+                "active",
+                "href",
+                "ripple"
+            ],
+            "events": [
+                "click"
+            ],
+            "slots": [
+                "prepend",
+                "title",
+                "default",
+                "subtitle",
+                "append"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color",
+            "variant",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "replace",
+            "to",
+            "exact",
+            "activeClass",
+            "activeColor",
+            "appendAvatar",
+            "baseColor",
+            "lines",
+            "link",
+            "nav",
+            "prependAvatar",
+            "prependIcon",
+            "slim",
+            "prependGap",
+            "index",
+            "tabindex",
+            "onClick",
+            "onClickOnce"
+        ],
+        "examples": [
+            {
+                "id": "component-list-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UListItemSubtitle",
+        "file": "src/ui/UListItemSubtitle.vue",
+        "group": "导航组件",
+        "page": "list-item-subtitle",
+        "upstream": {
+            "name": "VListItemSubtitle",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VListItemSubtitle.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VListItemSubtitle.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "opacity"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VListItemSubtitle.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "opacity"
+        ],
+        "examples": [
+            {
+                "id": "component-list-item-subtitle",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UListItemTitle",
+        "file": "src/ui/UListItemTitle.vue",
+        "group": "导航组件",
+        "page": "list-item-title",
+        "upstream": {
+            "name": "VListItemTitle",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VListItemTitle.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VListItemTitle.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VListItemTitle.ts"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-list-item-title",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UListSubheader",
+        "file": "src/ui/UListSubheader.vue",
+        "group": "导航组件",
+        "page": "list-subheader",
+        "upstream": {
+            "name": "VListSubheader",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VList/VListSubheader.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VList/VListSubheader.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "color",
+                "inset",
+                "sticky",
+                "title"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VList/VListSubheader.tsx"
+        },
+        "local": {
+            "props": [
+                "title"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "color",
+            "inset",
+            "sticky"
+        ],
+        "examples": [
+            {
+                "id": "component-list-subheader",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UMain",
+        "file": "src/ui/UMain.vue",
+        "group": "布局组件",
+        "page": "main",
+        "upstream": {
+            "name": "VMain",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VMain/VMain.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VMain/VMain.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "scrollable"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VMain/VMain.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "scrollable"
+        ],
+        "examples": [
+            {
+                "id": "component-main",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UNavigationDrawer",
+        "file": "src/ui/UNavigationDrawer.vue",
+        "group": "布局组件",
+        "page": "navigation-drawer",
+        "upstream": {
+            "name": "VNavigationDrawer",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VNavigationDrawer/VNavigationDrawer.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VNavigationDrawer/VNavigationDrawer.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "name",
+                "order",
+                "absolute",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "closeDelay",
+                "openDelay",
+                "retainFocus",
+                "captureFocus",
+                "color",
+                "disableResizeWatcher",
+                "disableRouteWatcher",
+                "expandOnHover",
+                "floating",
+                "modelValue",
+                "permanent",
+                "rail",
+                "railWidth",
+                "scrim",
+                "image",
+                "temporary",
+                "persistent",
+                "touchless",
+                "width",
+                "location",
+                "sticky"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VNavigationDrawer/VNavigationDrawer.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "location",
+                "width",
+                "rail",
+                "railWidth",
+                "temporary",
+                "mobileBreakpoint",
+                "absolute",
+                "order"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "mobile",
+            "name",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "closeDelay",
+            "openDelay",
+            "retainFocus",
+            "captureFocus",
+            "color",
+            "disableResizeWatcher",
+            "disableRouteWatcher",
+            "expandOnHover",
+            "floating",
+            "permanent",
+            "scrim",
+            "image",
+            "persistent",
+            "touchless",
+            "sticky"
+        ],
+        "examples": [
+            {
+                "id": "component-navigation-drawer",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UOverlay",
+        "file": "src/ui/UOverlay.vue",
+        "group": "导航组件",
+        "page": "overlay",
+        "upstream": {
+            "name": "VOverlay",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VOverlay/VOverlay.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VOverlay/VOverlay.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "retainFocus",
+                "captureFocus",
+                "disableInitialFocus",
+                "eager",
+                "absolute",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VOverlay/VOverlay.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "location",
+                "persistent",
+                "scrollStrategy",
+                "width",
+                "maxWidth",
+                "scrim"
+            ],
+            "events": [
+                "update:modelValue",
+                "click:outside"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "height",
+            "maxHeight",
+            "minHeight",
+            "minWidth",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "retainFocus",
+            "captureFocus",
+            "disableInitialFocus",
+            "eager",
+            "absolute",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "noClickAnimation",
+            "zIndex"
+        ],
+        "examples": [
+            {
+                "id": "component-overlay",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USlideGroup",
+        "file": "src/ui/USlideGroup.vue",
+        "group": "导航组件",
+        "page": "slide-group",
+        "upstream": {
+            "name": "VSlideGroup",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSlideGroup/VSlideGroup.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSlideGroup/VSlideGroup.d.ts",
+            "props": [
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "centerActive",
+                "scrollDistance",
+                "scrollSnap",
+                "scrollToActive",
+                "contentClass",
+                "direction",
+                "symbol",
+                "nextIcon",
+                "prevIcon",
+                "showArrows"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSlideGroup/VSlideGroup.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "valueComparator",
+                "direction",
+                "centerActive",
+                "scrollToActive",
+                "scrollDistance",
+                "scrollSnap",
+                "showArrows",
+                "contentClass",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "prev",
+                "default",
+                "next"
+            ]
+        },
+        "potentialMissingProps": [
+            "mobile",
+            "mobileBreakpoint",
+            "tag",
+            "symbol",
+            "nextIcon",
+            "prevIcon"
+        ],
+        "examples": [
+            {
+                "id": "component-slide-group",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USlideGroupItem",
+        "file": "src/ui/USlideGroupItem.vue",
+        "group": "导航组件",
+        "page": "slide-group-item",
+        "upstream": {
+            "name": "VSlideGroupItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSlideGroup/VSlideGroupItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSlideGroup/VSlideGroupItem.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSlideGroup/VSlideGroupItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "disabled",
+                "selectedClass"
+            ],
+            "events": [
+                "group:selected"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-slide-group-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepper",
+        "file": "src/ui/UStepper.vue",
+        "group": "导航组件",
+        "page": "stepper",
+        "upstream": {
+            "name": "VStepper",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepper.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepper.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "color",
+                "prevText",
+                "nextText",
+                "altLabels",
+                "bgColor",
+                "completeIcon",
+                "editIcon",
+                "editable",
+                "errorIcon",
+                "hideActions",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemProps",
+                "nonLinear",
+                "flat"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepper/VStepper.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "mandatory",
+                "linear",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "mobile",
+            "mobileBreakpoint",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "multiple",
+            "max",
+            "selectedClass",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position",
+            "color",
+            "prevText",
+            "nextText",
+            "altLabels",
+            "bgColor",
+            "completeIcon",
+            "editIcon",
+            "editable",
+            "errorIcon",
+            "hideActions",
+            "items",
+            "itemTitle",
+            "itemValue",
+            "itemProps",
+            "nonLinear",
+            "flat"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepperActions",
+        "file": "src/ui/UStepperActions.vue",
+        "group": "导航组件",
+        "page": "stepper-actions",
+        "upstream": {
+            "name": "VStepperActions",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperActions.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperActions.d.ts",
+            "props": [
+                "color",
+                "disabled",
+                "prevText",
+                "nextText"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepper/VStepperActions.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "color",
+            "disabled",
+            "prevText",
+            "nextText"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper-actions",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepperItem",
+        "file": "src/ui/UStepperItem.vue",
+        "group": "导航组件",
+        "page": "stepper-item",
+        "upstream": {
+            "name": "VStepperItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperItem.d.ts",
+            "props": [
+                "value",
+                "disabled",
+                "selectedClass",
+                "color",
+                "title",
+                "subtitle",
+                "complete",
+                "completeIcon",
+                "editable",
+                "editIcon",
+                "error",
+                "errorIcon",
+                "icon",
+                "ripple",
+                "rules"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepper/VStepperItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "title",
+                "complete",
+                "error",
+                "editable",
+                "disabled",
+                "ripple"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "selectedClass",
+            "color",
+            "subtitle",
+            "completeIcon",
+            "editIcon",
+            "errorIcon",
+            "icon",
+            "rules"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepperVertical",
+        "file": "src/ui/UStepperVertical.vue",
+        "group": "导航组件",
+        "page": "stepper-vertical",
+        "upstream": {
+            "name": "VStepperVertical",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepperVertical/VStepperVertical.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepperVertical/VStepperVertical.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "elevation",
+                "tile",
+                "tag",
+                "modelValue",
+                "multiple",
+                "mandatory",
+                "max",
+                "selectedClass",
+                "disabled",
+                "eager",
+                "color",
+                "expandIcon",
+                "collapseIcon",
+                "hideActions",
+                "focusable",
+                "ripple",
+                "readonly",
+                "hover",
+                "bgColor",
+                "flat",
+                "gap",
+                "noDivider",
+                "rounded",
+                "variant",
+                "altLabels",
+                "completeIcon",
+                "editIcon",
+                "editable",
+                "errorIcon",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemProps",
+                "nonLinear",
+                "prevText",
+                "nextText"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepperVertical/VStepperVertical.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "mandatory",
+                "linear",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "mobile",
+            "mobileBreakpoint",
+            "elevation",
+            "tile",
+            "tag",
+            "multiple",
+            "max",
+            "selectedClass",
+            "eager",
+            "color",
+            "expandIcon",
+            "collapseIcon",
+            "hideActions",
+            "focusable",
+            "ripple",
+            "readonly",
+            "hover",
+            "bgColor",
+            "flat",
+            "gap",
+            "noDivider",
+            "rounded",
+            "variant",
+            "altLabels",
+            "completeIcon",
+            "editIcon",
+            "editable",
+            "errorIcon",
+            "items",
+            "itemTitle",
+            "itemValue",
+            "itemProps",
+            "nonLinear",
+            "prevText",
+            "nextText"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper-vertical",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepperWindow",
+        "file": "src/ui/UStepperWindow.vue",
+        "group": "导航组件",
+        "page": "stepper-window",
+        "upstream": {
+            "name": "VStepperWindow",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperWindow.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperWindow.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "tag",
+                "reverse",
+                "verticalArrows",
+                "direction",
+                "modelValue",
+                "disabled",
+                "selectedClass",
+                "crossfade",
+                "transitionDuration"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepper/VStepperWindow.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "reverse",
+            "verticalArrows",
+            "direction",
+            "modelValue",
+            "disabled",
+            "selectedClass",
+            "crossfade",
+            "transitionDuration"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper-window",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UStepperWindowItem",
+        "file": "src/ui/UStepperWindowItem.vue",
+        "group": "导航组件",
+        "page": "stepper-window-item",
+        "upstream": {
+            "name": "VStepperWindowItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperWindowItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VStepper/VStepperWindowItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "value",
+                "disabled",
+                "selectedClass",
+                "eager",
+                "reverseTransition",
+                "transition"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VStepper/VStepperWindowItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "eager"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "disabled",
+            "selectedClass",
+            "reverseTransition",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "component-stepper-window-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USystemBar",
+        "file": "src/ui/USystemBar.vue",
+        "group": "布局组件",
+        "page": "system-bar",
+        "upstream": {
+            "name": "VSystemBar",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSystemBar/VSystemBar.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSystemBar/VSystemBar.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "name",
+                "order",
+                "absolute",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "height",
+                "window"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSystemBar/VSystemBar.tsx"
+        },
+        "local": {
+            "props": [
+                "height",
+                "fixed",
+                "absolute",
+                "order"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "name",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color",
+            "window"
+        ],
+        "examples": [
+            {
+                "id": "component-system-bar",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UToolbar",
+        "file": "src/ui/UToolbar.vue",
+        "group": "布局组件",
+        "page": "toolbar",
+        "upstream": {
+            "name": "VToolbar",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbar.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbar.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "location",
+                "absolute",
+                "collapse",
+                "collapsePosition",
+                "color",
+                "density",
+                "extended",
+                "extensionHeight",
+                "flat",
+                "floating",
+                "height",
+                "image",
+                "title"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VToolbar/VToolbar.tsx"
+        },
+        "local": {
+            "props": [
+                "density",
+                "height",
+                "extensionHeight",
+                "extended",
+                "title",
+                "color",
+                "image",
+                "absolute",
+                "collapse",
+                "collapsePosition",
+                "flat",
+                "floating",
+                "elevation",
+                "border",
+                "rounded",
+                "location",
+                "tag",
+                "theme"
+            ],
+            "events": [],
+            "slots": [
+                "image",
+                "prepend",
+                "title",
+                "default",
+                "actions",
+                "append",
+                "extension",
+                "text"
+            ]
+        },
+        "potentialMissingProps": [
+            "hoverElevation",
+            "tile"
+        ],
+        "examples": [
+            {
+                "id": "component-toolbar",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UToolbarItems",
+        "file": "src/ui/UToolbarItems.vue",
+        "group": "布局组件",
+        "page": "toolbar-items",
+        "upstream": {
+            "name": "VToolbarItems",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbarItems.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbarItems.d.ts",
+            "props": [
+                "class",
+                "style",
+                "color",
+                "variant"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VToolbar/VToolbarItems.tsx"
+        },
+        "local": {
+            "props": [
+                "color",
+                "variant"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "component-toolbar-items",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UToolbarTitle",
+        "file": "src/ui/UToolbarTitle.vue",
+        "group": "布局组件",
+        "page": "toolbar-title",
+        "upstream": {
+            "name": "VToolbarTitle",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbarTitle.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VToolbar/VToolbarTitle.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "text"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VToolbar/VToolbarTitle.tsx"
+        },
+        "local": {
+            "props": [
+                "text",
+                "tag"
+            ],
+            "events": [],
+            "slots": [
+                "text",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "component-toolbar-title",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTreeview",
+        "file": "src/ui/UTreeview.vue",
+        "group": "导航组件",
+        "page": "treeview",
+        "upstream": {
+            "name": "VTreeview",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTreeview/VTreeview.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTreeview/VTreeview.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemChildren",
+                "itemProps",
+                "itemType",
+                "returnObject",
+                "valueComparator",
+                "activatable",
+                "selectable",
+                "activeStrategy",
+                "selectStrategy",
+                "opened",
+                "activated",
+                "selected",
+                "mandatory",
+                "itemsRegistration",
+                "baseColor",
+                "activeColor",
+                "activeClass",
+                "bgColor",
+                "disabled",
+                "filterable",
+                "expandIcon",
+                "collapseIcon",
+                "lines",
+                "slim",
+                "prependGap",
+                "indent",
+                "navigationStrategy",
+                "navigationIndex",
+                "onClick:open",
+                "onClick:select",
+                "onUpdate:opened",
+                "hideActions",
+                "fluid",
+                "loadChildren",
+                "loadingIcon",
+                "openOnClick",
+                "indeterminateIcon",
+                "falseIcon",
+                "trueIcon",
+                "selectedColor",
+                "separateRoots",
+                "openAll",
+                "indentLines",
+                "indentLinesColor",
+                "indentLinesOpacity",
+                "search",
+                "hideNoData",
+                "noDataText",
+                "modelValue"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTreeview/VTreeview.tsx"
+        },
+        "local": {
+            "props": [
+                "items",
+                "modelValue",
+                "opened",
+                "activated",
+                "itemTitle",
+                "itemValue",
+                "itemChildren",
+                "selectable",
+                "multiple",
+                "mandatory",
+                "openOnClick",
+                "ripple"
+            ],
+            "events": [
+                "update:modelValue",
+                "update:opened",
+                "update:activated"
+            ],
+            "slots": [
+                "title"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "customFilter",
+            "customKeyFilter",
+            "filterKeys",
+            "filterMode",
+            "ignoreAccents",
+            "noFilter",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color",
+            "variant",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "itemProps",
+            "itemType",
+            "returnObject",
+            "valueComparator",
+            "activatable",
+            "activeStrategy",
+            "selectStrategy",
+            "selected",
+            "itemsRegistration",
+            "baseColor",
+            "activeColor",
+            "activeClass",
+            "bgColor",
+            "disabled",
+            "filterable",
+            "expandIcon",
+            "collapseIcon",
+            "lines",
+            "slim",
+            "prependGap",
+            "indent",
+            "navigationStrategy",
+            "navigationIndex",
+            "onClick:open",
+            "onClick:select",
+            "hideActions",
+            "fluid",
+            "loadChildren",
+            "loadingIcon",
+            "indeterminateIcon",
+            "falseIcon",
+            "trueIcon",
+            "selectedColor",
+            "separateRoots",
+            "openAll",
+            "indentLines",
+            "indentLinesColor",
+            "indentLinesOpacity",
+            "search",
+            "hideNoData",
+            "noDataText"
+        ],
+        "examples": [
+            {
+                "id": "component-treeview",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UVirtualScroll",
+        "file": "src/ui/UVirtualScroll.vue",
+        "group": "导航组件",
+        "page": "virtual-scroll",
+        "upstream": {
+            "name": "VVirtualScroll",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VVirtualScroll/VVirtualScroll.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VVirtualScroll/VVirtualScroll.d.ts",
+            "props": [
+                "class",
+                "style",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "itemHeight",
+                "itemKey",
+                "items",
+                "renderless"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VVirtualScroll/VVirtualScroll.tsx"
+        },
+        "local": {
+            "props": [
+                "items",
+                "itemHeight",
+                "height",
+                "overscan",
+                "itemKey"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "renderless"
+        ],
+        "examples": [
+            {
+                "id": "component-virtual-scroll",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UWindow",
+        "file": "src/ui/UWindow.vue",
+        "group": "容器组件",
+        "page": "window",
+        "upstream": {
+            "name": "VWindow",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VWindow/VWindow.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VWindow/VWindow.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "tag",
+                "continuous",
+                "nextIcon",
+                "prevIcon",
+                "reverse",
+                "showArrows",
+                "verticalArrows",
+                "touch",
+                "direction",
+                "modelValue",
+                "disabled",
+                "selectedClass",
+                "mandatory",
+                "crossfade",
+                "transitionDuration"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VWindow/VWindow.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "touch",
+                "keyboard",
+                "continuous",
+                "eager",
+                "label",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "nextIcon",
+            "prevIcon",
+            "reverse",
+            "showArrows",
+            "verticalArrows",
+            "direction",
+            "selectedClass",
+            "mandatory",
+            "crossfade",
+            "transitionDuration"
+        ],
+        "examples": [
+            {
+                "id": "component-window",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UWindowItem",
+        "file": "src/ui/UWindowItem.vue",
+        "group": "容器组件",
+        "page": "window-item",
+        "upstream": {
+            "name": "VWindowItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VWindow/VWindowItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VWindow/VWindowItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "value",
+                "disabled",
+                "selectedClass",
+                "eager",
+                "reverseTransition",
+                "transition"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VWindow/VWindowItem.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "eager"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "disabled",
+            "selectedClass",
+            "reverseTransition",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "component-window-item",
+                "fullSource": true
+            }
+        ]
+    }
+]

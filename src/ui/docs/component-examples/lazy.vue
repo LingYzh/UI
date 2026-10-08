@@ -1,5 +1,12 @@
 <script setup>
-import { UImg, ULazy, UNoSsr, UResponsive } from '../../index';
+import { ref, computed } from 'vue';
+import { UImg, ULazy, UNoSsr, UScrollArea, USwitch, UButton } from '../../index';
+const visible = ref(false);
+const once = ref(false);
+const disabled = ref(false);
+const scroll = ref();
+const observed = ref(0);
+const options = computed(() => ({ root: scroll.value?.element, threshold: 0.2 }));
 const image =
     'data:image/svg+xml,' +
     encodeURIComponent(
@@ -9,15 +16,32 @@ const image =
 
 <template>
     <div class="component-demo" data-demo-component="ULazy">
-        <u-lazy class="mt-4">
-            <u-no-ssr>
-                <u-responsive aspect-ratio="4/1">
-                    <u-img :src="image" alt="延迟显示的山丘图形" lazy />
-                </u-responsive>
-                <template #placeholder>客户端加载中…</template>
-            </u-no-ssr>
-            <template #placeholder>等待进入视口…</template>
-        </u-lazy>
+        <u-switch v-model="once" label="进入后保持挂载" />
+        <u-switch v-model="disabled" label="禁用观察并立即显示" />
+        <u-scroll-area ref="scroll" height="220px" label="懒显示示例滚动区域" always>
+            <div class="lazy-spacer">向下滚动，让图片进入观察区域。</div>
+            <u-lazy
+                v-model="visible"
+                :once="once"
+                :disabled="disabled"
+                :options="options"
+                root-margin="0px"
+                min-height="160"
+                tag="section"
+                @intersect="observed++"
+            >
+                <u-no-ssr>
+                    <u-img :src="image" alt="延迟显示的山丘图形" height="160" />
+                    <template #placeholder>客户端加载中…</template>
+                </u-no-ssr>
+                <template #placeholder>
+                    <div class="lazy-placeholder">等待进入视口…</div>
+                </template>
+            </u-lazy>
+            <div class="lazy-spacer">向上返回，观察 once=false 时的卸载。</div>
+        </u-scroll-area>
+        <u-button @click="visible = false">重置可见模型</u-button>
+        <output>modelValue：{{ visible }}；进入观察区域 {{ observed }} 次。</output>
     </div>
 </template>
 
@@ -34,5 +58,20 @@ const image =
 }
 .component-demo > .ui-button {
     justify-self: start;
+}
+.lazy-spacer {
+    display: grid;
+    place-items: center;
+    height: 260px;
+    padding: 16px;
+    text-align: center;
+    color: var(--muted);
+}
+.lazy-placeholder {
+    display: grid;
+    place-items: center;
+    height: 160px;
+    background: var(--surface);
+    color: var(--muted);
 }
 </style>

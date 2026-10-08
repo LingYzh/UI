@@ -1,5 +1,30 @@
 [
     {
+        "name": "UCode",
+        "example": "component-code",
+        "file": "code.vue"
+    },
+    {
+        "name": "USlideGroup",
+        "example": "component-slide-group",
+        "file": "slide-group.vue"
+    },
+    {
+        "name": "USlideGroupItem",
+        "example": "component-slide-group-item",
+        "file": "slide-group-item.vue"
+    },
+    {
+        "name": "USnackbar",
+        "example": "component-snackbar",
+        "file": "snackbar.vue"
+    },
+    {
+        "name": "USnackbarQueue",
+        "example": "component-snackbar-queue",
+        "file": "snackbar-queue.vue"
+    },
+    {
         "name": "UAutocomplete",
         "example": "component-autocomplete",
         "file": "autocomplete.vue"
@@ -118,6 +143,11 @@
         "name": "UCounter",
         "example": "component-counter",
         "file": "counter.vue"
+    },
+    {
+        "name": "UField",
+        "example": "component-field",
+        "file": "field.vue"
     },
     {
         "name": "UInput",
@@ -350,6 +380,11 @@
         "file": "confirm-edit.vue"
     },
     {
+        "name": "UOptionPicker",
+        "example": "component-option-picker",
+        "file": "option-picker.vue"
+    },
+    {
         "name": "UProgressCircular",
         "example": "component-progress-circular",
         "file": "progress-circular.vue"
@@ -470,6 +505,11 @@
         "file": "parallax.vue"
     },
     {
+        "name": "UHotkeyListener",
+        "example": "component-hotkey-listener",
+        "file": "hotkey-listener.vue"
+    },
+    {
         "name": "UInfiniteScroll",
         "example": "component-infinite-scroll",
         "file": "infinite-scroll.vue"
@@ -503,30 +543,5 @@
         "name": "UFab",
         "example": "component-fab",
         "file": "fab.vue"
-    },
-    {
-        "name": "UCode",
-        "example": "component-code",
-        "file": "code.vue"
-    },
-    {
-        "name": "USlideGroup",
-        "example": "component-slide-group",
-        "file": "slide-group.vue"
-    },
-    {
-        "name": "USlideGroupItem",
-        "example": "component-slide-group-item",
-        "file": "slide-group-item.vue"
-    },
-    {
-        "name": "USnackbar",
-        "example": "component-snackbar",
-        "file": "snackbar.vue"
-    },
-    {
-        "name": "USnackbarQueue",
-        "example": "component-snackbar-queue",
-        "file": "snackbar-queue.vue"
     }
 ]

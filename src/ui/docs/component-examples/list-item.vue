@@ -43,6 +43,22 @@ const notifications = ref(false);
             <u-list-item value="disabled" title="归档" disabled />
         </u-list>
         <output>已选：{{ selected }} · 独立操作：{{ appendCount }} 次</output>
+        <div class="demo-append-list">
+            <u-list nav :selectable="false" aria-label="右侧内容与长名称示例">
+                <u-list-item title="栅格与布局规范" href="#/grid" append-icon="arrowRight" active />
+                <u-list-item
+                    title="路径分隔符"
+                    href="#/breadcrumbs-divider"
+                    append-text="UBreadcrumbsDivider"
+                />
+                <u-list-item title="通知设置" append-text="已开启" append-icon="mdi-check" />
+                <u-list-item title="自定义操作" append-text="被插槽替换" append-icon="mdi-check">
+                    <template #append>
+                        <u-button size="sm" variant="text" @click="appendCount++">操作</u-button>
+                    </template>
+                </u-list-item>
+            </u-list>
+        </div>
     </div>
 </template>
 
@@ -59,5 +75,11 @@ const notifications = ref(false);
 }
 .component-demo > .ui-button {
     justify-self: start;
+}
+.demo-append-list {
+    width: 238px;
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 </style>

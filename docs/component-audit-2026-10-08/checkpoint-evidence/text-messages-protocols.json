@@ -1,0 +1,168 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + Electron",
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\text-messages-protocols",
+    "sourceSha256": {
+        "src/ui/UMessages.vue": "3950a78a2cbd86b48e8268b1754f3772158f2599a074c5165d7c44c54d73196f",
+        "src/ui/ULabel.vue": "e57417af8aa6cf147cdf4b622031f5e65141fa09e157ac20fc9b8a1d99f4246a",
+        "src/ui/UiMaybeTransition.vue": "25fce87ab7e333bea92a78f87d1ce6a71291d079b2ebbeea3c9929e725e60ea3",
+        "src/ui/defaults.ts": "fd2457f5631de33413478e40bbe5348879323705afad956736dce2cc3db7b47b",
+        "src/ui/UDefaultsProvider.vue": "8bb0a5f7ad33013190faf20dfbf173ae89b8e44aa85fcd8562072e805a9a126e",
+        "src/ui/plugin.ts": "bfadbbd64328f25783501efea8d4b11e81a5f8d8a01a20b92091547108bf0023",
+        "src/ui/component-registry.ts": "065ef3199351b39ff060739a21330e08def4fc617eb15ea8e061cda2bcdeee57",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe",
+        "src/ui/layout-components.css": "4844ed292ff49447bdacb4bc08d9448e8a550a20020f4ed5c96c2658a82de435",
+        "src/ui/docs/component-examples/messages.vue": "8d28590ea4f028c8b21f74d92d399e60ca87a76d8225f375120ca50b059a7c12",
+        "src/ui/docs/component-examples/label.vue": "d239351bfba19173ce6d08934313e202a6d0952121dc6f92dbb8bb9833b9294f"
+    },
+    "registry": {
+        "publicExports": true,
+        "globalNames": [
+            [
+                "u-messages",
+                true
+            ],
+            [
+                "u-label",
+                true
+            ],
+            [
+                "u-defaults-provider",
+                true
+            ]
+        ]
+    },
+    "messages": {
+        "defaultActive": true,
+        "defaultRole": "status",
+        "readonlyArray": [
+            "readonly first",
+            "readonly second"
+        ],
+        "messageUpdates": [
+            "dynamic first",
+            "dynamic second",
+            "updated string message",
+            ""
+        ],
+        "messageSlotScopes": [
+            "readonly first",
+            "readonly second"
+        ],
+        "defaultSlotOverridesList": true,
+        "emptyTextHasNoItems": true,
+        "errorRoleAndClass": true,
+        "explicitColors": {
+            "token": "var(--ui-theme-primary, primary)",
+            "css": "rgb(12, 34, 56)",
+            "unset": ""
+        },
+        "transitions": {
+            "falseRemovesContent": true,
+            "objectHooks": [
+                "leave",
+                "enter"
+            ]
+        },
+        "layout": {
+            "rowGap": "2px",
+            "measuredGap": 2.000011444091797,
+            "clientWidth": 1162,
+            "scrollWidth": 1162
+        }
+    },
+    "labels": {
+        "textSlotRequiredOrder": {
+            "tagName": "label",
+            "htmlFor": "label-native-input",
+            "id": "label-probe",
+            "nativeAttribute": "native attribute",
+            "textPosition": 0,
+            "slotPosition": 2,
+            "requiredPosition": 4,
+            "required": " *",
+            "requiredAriaHidden": "true",
+            "disabledClass": false
+        },
+        "labelClickFocusesAssociatedInput": true,
+        "disabled": {
+            "class": true,
+            "requiredMarker": true,
+            "nativeAttr": "kept"
+        }
+    },
+    "defaults": {
+        "inheritedMessages": {
+            "active": false,
+            "error": true,
+            "color": "var(--ui-theme-primary, primary)"
+        },
+        "explicitFalseMessages": {
+            "active": false,
+            "error": false
+        },
+        "inheritedLabel": {
+            "required": true,
+            "disabled": true
+        },
+        "explicitFalseLabel": {
+            "required": false,
+            "disabled": false
+        }
+    },
+    "realDemos": {
+        "messages": {
+            "statusInitially": true,
+            "errorButtonTogglesAlert": true,
+            "activeButtonHidesAndRestoresContent": true
+        },
+        "label": {
+            "for": "custom-label-demo",
+            "clickFocusesInput": true
+        },
+        "narrowLayout": {
+            "viewportWidth": 376,
+            "documentWidth": 370,
+            "bodyWidth": 370,
+            "realDemoClientWidth": 345,
+            "realDemoScrollWidth": 345,
+            "contractsClientWidth": 345,
+            "contractsScrollWidth": 345
+        }
+    },
+    "screenshots": [
+        {
+            "file": "messages-label-wide-light.png",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "capture": "real demo locator",
+            "target": "#real-demos",
+            "zoom": 1
+        },
+        {
+            "file": "messages-label-wide-dark.png",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "capture": "real demo locator",
+            "target": "#real-demos",
+            "zoom": 1
+        },
+        {
+            "file": "messages-label-narrow-light.png",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "capture": "real demo locator",
+            "target": "#real-demos",
+            "zoom": 1
+        }
+    ],
+    "errors": []
+}

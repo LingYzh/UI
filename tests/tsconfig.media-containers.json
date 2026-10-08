@@ -1,0 +1,20 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UParallax.vue",
+        "../src/ui/UPullToRefresh.vue",
+        "../src/ui/UImg.vue",
+        "../src/ui/pull-refresh-state.ts",
+        "../src/ui/UiMaybeTransition.vue",
+        "../src/ui/appearance.ts",
+        "../src/ui/docs/component-examples/parallax.vue",
+        "../src/ui/docs/component-examples/pull-to-refresh.vue"
+    ]
+}

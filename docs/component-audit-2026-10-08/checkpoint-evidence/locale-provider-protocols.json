@@ -1,0 +1,48 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + real ULocaleProvider demo + Electron",
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\locale-provider-protocols",
+    "sourceSha256": {
+        "src/ui/locale-context.ts": "b0182142bb425df4ad19a38abf419b8bd9c673cf77a1a00ffd69c2c0f63d46ad",
+        "src/ui/locale.ts": "6213fae390e3e7ced2ee84172c29e3c376ae498ee7c36619440986b1cdd5e0f2",
+        "src/ui/ULocaleProvider.vue": "661caa8d3bd0ad85a4505f5301099680f97fe68afb36b55b645f527edd5b11b7",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe",
+        "src/ui/docs/component-examples/locale-provider.vue": "533382b42af921b9e4fce83b49b52892d618bdd88ef5df7175b8203c87ed04e1"
+    },
+    "registry": {
+        "publicExports": true,
+        "globalName": true
+    },
+    "realDemo": {
+        "english": {
+            "parent": "Hello Ling · Inherited from the outer provider · 1,234.5",
+            "child": "Child says hello to Ling · Inherited from the outer provider · 1,234.5",
+            "parentTag": "div",
+            "childTag": "section",
+            "number": "1,234.5"
+        },
+        "chinese": {
+            "parent": "你好，Ling · 继承外层的自定义文案 · 1,234.5",
+            "childInheritsParentMessage": true,
+            "number": "1,234.5"
+        },
+        "ancestorRtlInheritedByChild": true,
+        "parentChildLocaleSwitch": true
+    },
+    "fallbackAndResolve": {
+        "current": "fr",
+        "fallback": "de",
+        "text": "Legacy fallback wins",
+        "resolvedEnglish": "English resolved by locale",
+        "resolvedChinese": "中文按指定语言解析"
+    },
+    "screenshot": {
+        "file": "locale-provider-demo-wide-light.png",
+        "theme": "light",
+        "viewport": {
+            "width": 1280,
+            "height": 900
+        },
+        "target": "#real-locale-demo"
+    },
+    "errors": []
+}

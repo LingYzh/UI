@@ -7,7 +7,13 @@ const text = ref('');
 <template>
     <div class="component-demo" data-demo-component="UCounter">
         <u-text-field v-model="text" label="名称" />
-        <u-counter :value="text.length" :max="20" />
+        <u-counter :value="text" max="20" />
+        <u-counter value="剩余 8 个名额" display-mode="value" />
+        <u-counter :value="text" max="20">
+            <template #default="{ counter, value }">
+                {{ counter }}（原文：{{ value || '空' }}）
+            </template>
+        </u-counter>
     </div>
 </template>
 

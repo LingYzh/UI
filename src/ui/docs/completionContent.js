@@ -395,14 +395,15 @@ export const completionPages = [
             {
                 "id": "component-radio-group",
                 "title": "单选组的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "可直接组合URadio，组统一管理模型、name、对象比较、禁用和只读；子Radio仍可独立使用v-model。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URadioGroup, USelectionControl } from '@lingyzh/ui';\nconst radio = ref('a');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URadioGroup\">\n        <u-radio-group v-model=\"radio\" label=\"单选组\" hint=\"值由组统一管理。\">\n            <u-selection-control value=\"a\" label=\"默认\" type=\"radio\" />\n            <u-selection-control value=\"b\" label=\"自定义\" type=\"radio\" />\n        </u-radio-group>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URadioGroup, URadio, USwitch } from '@lingyzh/ui';\nconst radio = ref('a');\nconst disabled = ref(false);\nconst readonly = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URadioGroup\">\n        <u-switch v-model=\"disabled\" label=\"禁用整组\" />\n        <u-switch v-model=\"readonly\" label=\"整组只读\" />\n        <u-radio-group\n            v-model=\"radio\"\n            :disabled=\"disabled\"\n            :readonly=\"readonly\"\n            label=\"单选组\"\n            hint=\"URadio读取组的模型、名称、禁用和只读状态。\"\n        >\n            <u-radio value=\"a\">默认</u-radio>\n            <u-radio value=\"b\">自定义</u-radio>\n        </u-radio-group>\n        <output>当前选择：{{ radio }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "可直接组合URadio，组统一管理模型、name、对象比较、禁用和只读；子Radio仍可独立使用v-model。"
         ]
     },
     {
@@ -437,14 +438,15 @@ export const completionPages = [
             {
                 "id": "component-item-group",
                 "title": "选择项组的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "selected插槽统一为标准内部ID数组，isSelected/select接收该ID，next/prev跳过禁用项；selectedValues提供公开值。旧按值判断使用isValueSelected，toggle按值切换继续保留。mandatory=true只阻止取消最后一项，force还初始选择首个可用项。保留表单校验、按钮组与标签组扩展。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UItem, UItemGroup } from '@lingyzh/ui';\nconst selected = ref('a');\nconst disabled = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UItemGroup\">\n        <u-item-group v-model=\"selected\" mandatory>\n            <u-item value=\"a\">概览</u-item>\n            <u-item value=\"b\">详情</u-item>\n            <u-item value=\"c\" disabled>禁用</u-item>\n        </u-item-group>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UItem, UItemGroup, USwitch } from '@lingyzh/ui';\nconst value = ref('a');\nconst multiple = ref(false);\nconst disabled = ref(false);\nconst readonly = ref(false);\nconst events = ref(0);\nfunction changeMultiple(enabled) {\n    value.value = enabled ? [value.value].filter((item) => item !== undefined) : value.value[0];\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UItemGroup\">\n        <div class=\"demo-row\">\n            <u-switch\n                v-model=\"multiple\"\n                label=\"多选，最多两项\"\n                @update:model-value=\"changeMultiple\"\n            />\n            <u-switch v-model=\"disabled\" label=\"禁用\" />\n            <u-switch v-model=\"readonly\" label=\"只读\" />\n        </div>\n        <u-item-group\n            v-model=\"value\"\n            :multiple=\"multiple\"\n            :max=\"2\"\n            :disabled=\"disabled\"\n            :readonly=\"readonly\"\n            mandatory\n            selected-class=\"demo-selected\"\n        >\n            <template #default=\"{ selected, selectedValues, next, prev }\">\n                <u-item value=\"a\" @group:selected=\"events++\">概览</u-item>\n                <u-item value=\"b\" @group:selected=\"events++\">详情</u-item>\n                <u-item value=\"disabled\" disabled>禁用项</u-item>\n                <u-item value=\"c\" @group:selected=\"events++\">设置</u-item>\n                <div class=\"item-navigation\">\n                    <u-button :disabled=\"disabled || readonly\" @click=\"prev\">上一项</u-button>\n                    <u-button :disabled=\"disabled || readonly\" @click=\"next\">下一项</u-button>\n                    <output>\n                        选中 {{ selected.length }} 项：{{ JSON.stringify(selectedValues) }}\n                    </output>\n                </div>\n            </template>\n        </u-item-group>\n        <output>当前值：{{ JSON.stringify(value) }}；选择状态变化 {{ events }} 次。</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.demo-row,\n.item-navigation {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    gap: 12px;\n}\n.item-navigation {\n    flex-basis: 100%;\n    padding-top: 12px;\n}\noutput {\n    color: var(--muted);\n    font-size: 14px;\n    overflow-wrap: anywhere;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "selected插槽统一为标准内部ID数组，isSelected/select接收该ID，next/prev跳过禁用项；selectedValues提供公开值。旧按值判断使用isValueSelected，toggle按值切换继续保留。mandatory=true只阻止取消最后一项，force还初始选择首个可用项。保留表单校验、按钮组与标签组扩展。"
         ]
     },
     {
@@ -458,14 +460,15 @@ export const completionPages = [
             {
                 "id": "component-item",
                 "title": "选择项的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "默认保留本库按钮，tag=false可只输出标准作用域插槽；提供isSelected/selectedClass/value/disabled/select/toggle和扩展id，旧selected布尔仍保留。value省略按当前组索引，group:selected携带{value:boolean}。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UItem, UItemGroup } from '@lingyzh/ui';\nconst selected = ref('a');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UItem\">\n        <u-item-group v-model=\"selected\" mandatory>\n            <u-item value=\"a\">概览</u-item>\n            <u-item value=\"b\">详情</u-item>\n        </u-item-group>\n        <output>当前值：{{ selected }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UItem, UItemGroup } from '@lingyzh/ui';\nconst value = ref('a');\nconst events = ref(0);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UItem\">\n        <u-item-group v-model=\"value\" selected-class=\"demo-selected\" mandatory>\n            <u-item value=\"a\" @group:selected=\"events++\">保留默认按钮</u-item>\n            <u-item\n                v-slot=\"{ isSelected, selectedClass, disabled, toggle }\"\n                value=\"b\"\n                :tag=\"false\"\n                @group:selected=\"events++\"\n            >\n                <u-button\n                    :class=\"selectedClass\"\n                    :disabled=\"disabled\"\n                    :aria-pressed=\"isSelected\"\n                    :variant=\"isSelected ? 'tonal' : 'outlined'\"\n                    @click=\"toggle\"\n                >\n                    自定义按钮\n                </u-button>\n            </u-item>\n            <u-item v-slot=\"{ value: index }\">未传 value，使用索引 {{ index }}</u-item>\n        </u-item-group>\n        <output>当前值：{{ JSON.stringify(value) }}；选择状态变化 {{ events }} 次。</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\noutput {\n    color: var(--muted);\n    font-size: 14px;\n    overflow-wrap: anywhere;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "默认保留本库按钮，tag=false可只输出标准作用域插槽；提供isSelected/selectedClass/value/disabled/select/toggle和扩展id，旧selected布尔仍保留。value省略按当前组索引，group:selected携带{value:boolean}。"
         ]
     },
     {
@@ -584,14 +587,15 @@ export const completionPages = [
             {
                 "id": "component-messages",
                 "title": "控件消息的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "保留active=true和旧default整体替换；新增active控制、color、transition与每条message插槽。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UMessages } from '@lingyzh/ui';\nconst error = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UMessages\">\n        <u-button size=\"sm\" @click=\"error = !error\">切换错误消息</u-button>\n        <u-messages :error=\"error\" :messages=\"error ? ['请检查输入内容。'] : ['配置已保存。']\" />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UMessages } from '@lingyzh/ui';\nconst error = ref(false);\nconst active = ref(true);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UMessages\">\n        <u-button size=\"sm\" @click=\"error = !error\">切换错误消息</u-button>\n        <u-button size=\"sm\" @click=\"active = !active\">\n            {{ active ? '隐藏消息' : '显示消息' }}\n        </u-button>\n        <u-messages\n            :active=\"active\"\n            :error=\"error\"\n            :messages=\"error ? ['请检查输入内容。'] : ['配置已保存。']\"\n        >\n            <template #message=\"{ message }\">\n                <strong>{{ message }}</strong>\n            </template>\n        </u-messages>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "保留active=true和旧default整体替换；新增active控制、color、transition与每条message插槽。"
         ]
     },
     {
@@ -605,14 +609,37 @@ export const completionPages = [
             {
                 "id": "component-counter",
                 "title": "计数的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "active默认true，字符串value默认按Unicode码点统计长度，保留本库行为。displayMode=\"value\"直接显示原值；max支持数字和字符串。default插槽提供{counter,max,value}，disabled仅关闭超限着色。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCounter, UTextField } from '@lingyzh/ui';\nconst text = ref('');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UCounter\">\n        <u-text-field v-model=\"text\" label=\"名称\" />\n        <u-counter :value=\"text.length\" :max=\"20\" />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCounter, UTextField } from '@lingyzh/ui';\nconst text = ref('');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UCounter\">\n        <u-text-field v-model=\"text\" label=\"名称\" />\n        <u-counter :value=\"text\" max=\"20\" />\n        <u-counter value=\"剩余 8 个名额\" display-mode=\"value\" />\n        <u-counter :value=\"text\" max=\"20\">\n            <template #default=\"{ counter, value }\">\n                {{ counter }}（原文：{{ value || '空' }}）\n            </template>\n        </u-counter>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "active默认true，字符串value默认按Unicode码点统计长度，保留本库行为。displayMode=\"value\"直接显示原值；max支持数字和字符串。default插槽提供{counter,max,value}，disabled仅关闭超限着色。"
+        ]
+    },
+    {
+        "id": "field",
+        "title": "字段表面",
+        "name": "UField",
+        "kind": "component",
+        "group": "表单组件",
+        "description": "字段表面的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-field",
+                "title": "字段表面的基本用法",
+                "description": "UField现为输入装饰表面：七种variant、内侧图标、clear/loader/label插槽、focused模型和标准default scope。输入值由使用者管理。旧布局组件更名UFormField，UiField仍指向旧实现；description/error/layout/controlAttrs保留为扩展。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UField, USelect, USwitch } from '@lingyzh/ui';\nconst value = ref('');\nconst focused = ref(false);\nconst disabled = ref(false);\nconst variant = ref('outlined');\nconst variants = [\n    'outlined',\n    'filled',\n    'underlined',\n    'plain',\n    'solo',\n    'solo-inverted',\n    'solo-filled',\n];\nfunction clear() {\n    value.value = '';\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UField\">\n        <u-select v-model=\"variant\" :items=\"variants\" label=\"字段变体\" />\n        <u-switch v-model=\"disabled\" label=\"禁用字段\" />\n        <u-field\n            v-model:focused=\"focused\"\n            :variant=\"variant\"\n            :dirty=\"!!value\"\n            :disabled=\"disabled\"\n            label=\"自定义原生输入\"\n            description=\"字段提供装饰、标签、焦点和 ARIA；输入值由页面管理。\"\n            clearable\n            prepend-inner-icon=\"mdi-account-outline\"\n            @click:clear=\"clear\"\n        >\n            <template #default=\"{ props: inputProps }\">\n                <input v-model=\"value\" v-bind=\"inputProps\" :disabled=\"disabled\" />\n            </template>\n        </u-field>\n        <output>当前值：{{ value || '空' }}；焦点：{{ focused ? '有' : '无' }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "UField现为输入装饰表面：七种variant、内侧图标、clear/loader/label插槽、focused模型和标准default scope。输入值由使用者管理。旧布局组件更名UFormField，UiField仍指向旧实现；description/error/layout/controlAttrs保留为扩展。"
         ]
     },
     {
@@ -689,14 +716,15 @@ export const completionPages = [
             {
                 "id": "component-locale-provider",
                 "title": "局部语言容器的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "子语言容器继承祖先自定义文案、fallback和RTL；支持旧fallback及新fallbackLocale（旧属性显式值优先）。messages可使用原扁平键或嵌套字符串字典，扁平同名键优先，支持$vuetify命名空间路径。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { ULocaleProvider, UPagination } from '@lingyzh/ui';\nconst page = ref(2);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"ULocaleProvider\">\n        <u-locale-provider locale=\"en\">\n            <u-pagination v-model=\"page\" :length=\"5\" label=\"English pagination\" />\n        </u-locale-provider>\n        <output>当前页：{{ page }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { defineComponent, h, ref } from 'vue';\nimport { ULocaleProvider, UPagination, USwitch, useLocale } from '@lingyzh/ui';\nconst page = ref(2);\nconst english = ref(true);\nconst rtl = ref(false);\nconst messages = {\n    en: { demo: { greeting: 'Hello {name}', inherited: 'Inherited from the outer provider' } },\n    zh: { demo: { greeting: '你好，{name}', inherited: '继承外层的自定义文案' } },\n};\nconst MessagePreview = defineComponent({\n    setup() {\n        const locale = useLocale();\n        return () =>\n            h(\n                'output',\n                { class: 'locale-message-preview' },\n                `${locale.t('demo.greeting', { name: 'Ling' })} · ${locale.t('demo.inherited')} · ${locale.n(1234.5)}`\n            );\n    },\n});\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"ULocaleProvider\">\n        <u-switch v-model=\"english\" label=\"英文语言范围\" />\n        <u-switch v-model=\"rtl\" label=\"从右向左排列\" />\n        <u-locale-provider\n            :locale=\"english ? 'en' : 'zh'\"\n            :messages=\"messages\"\n            :rtl=\"{ en: rtl, zh: rtl }\"\n            fallback-locale=\"en\"\n        >\n            <MessagePreview />\n            <u-pagination v-model=\"page\" :length=\"5\" label=\"English pagination\" />\n            <u-locale-provider\n                :messages=\"{ en: { 'demo.greeting': 'Child says hello to {name}' } }\"\n                tag=\"section\"\n            >\n                <MessagePreview />\n            </u-locale-provider>\n        </u-locale-provider>\n        <output>当前页：{{ page }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.component-demo :deep(.locale-message-preview) {\n    display: block;\n    margin-block: 12px;\n    color: var(--muted);\n    font-size: 14px;\n    overflow-wrap: anywhere;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "子语言容器继承祖先自定义文案、fallback和RTL；支持旧fallback及新fallbackLocale（旧属性显式值优先）。messages可使用原扁平键或嵌套字符串字典，扁平同名键优先，支持$vuetify命名空间路径。"
         ]
     },
     {
@@ -965,14 +993,15 @@ export const completionPages = [
             {
                 "id": "component-list-item",
                 "title": "列表项的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "appendIcon沿用Vuetify列表项的右侧图标入口；appendText是本库额外的辅助文本能力，空间不足时优先省略并保留完整title提示。append插槽优先替换两者。nav列表内href保持原生链接和aria-current，方向键/Home/End移动焦点，Enter/Space激活。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UCheckbox, UList, UListItem, USwitch } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst ripple = ref(true);\nconst appendCount = ref(0);\nconst notifications = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UListItem\">\n        <u-switch v-model=\"ripple\" label=\"启用列表项涟漪\" />\n        <u-list v-model=\"selected\">\n            <u-list-item\n                :ripple=\"ripple\"\n                value=\"overview\"\n                title=\"概览\"\n                subtitle=\"快速点击后反馈仍完整淡出\"\n            />\n            <u-list-item :ripple=\"ripple\" value=\"settings\" title=\"设置\">\n                <template #append>\n                    <u-button size=\"sm\" variant=\"text\" @click=\"appendCount++\">独立操作</u-button>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"ripple\" value=\"quiet-action\" title=\"带无涟漪按钮的列表项\">\n                <template #append>\n                    <u-button size=\"sm\" variant=\"text\" :ripple=\"false\" @click=\"appendCount++\">\n                        无涟漪操作\n                    </u-button>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"ripple\" value=\"notifications\" title=\"列表内选择控件\">\n                <template #append>\n                    <u-checkbox v-model=\"notifications\" :ripple=\"ripple\">通知</u-checkbox>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"false\" value=\"quiet\" title=\"此项关闭涟漪\" />\n            <u-list-item\n                :ripple=\"ripple && { center: true, color: 'var(--accent-text)' }\"\n                value=\"center\"\n                title=\"居中主题色反馈\"\n            />\n            <u-list-item value=\"disabled\" title=\"归档\" disabled />\n        </u-list>\n        <output>已选：{{ selected }} · 独立操作：{{ appendCount }} 次</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UCheckbox, UList, UListItem, USwitch } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst ripple = ref(true);\nconst appendCount = ref(0);\nconst notifications = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UListItem\">\n        <u-switch v-model=\"ripple\" label=\"启用列表项涟漪\" />\n        <u-list v-model=\"selected\">\n            <u-list-item\n                :ripple=\"ripple\"\n                value=\"overview\"\n                title=\"概览\"\n                subtitle=\"快速点击后反馈仍完整淡出\"\n            />\n            <u-list-item :ripple=\"ripple\" value=\"settings\" title=\"设置\">\n                <template #append>\n                    <u-button size=\"sm\" variant=\"text\" @click=\"appendCount++\">独立操作</u-button>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"ripple\" value=\"quiet-action\" title=\"带无涟漪按钮的列表项\">\n                <template #append>\n                    <u-button size=\"sm\" variant=\"text\" :ripple=\"false\" @click=\"appendCount++\">\n                        无涟漪操作\n                    </u-button>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"ripple\" value=\"notifications\" title=\"列表内选择控件\">\n                <template #append>\n                    <u-checkbox v-model=\"notifications\" :ripple=\"ripple\">通知</u-checkbox>\n                </template>\n            </u-list-item>\n            <u-list-item :ripple=\"false\" value=\"quiet\" title=\"此项关闭涟漪\" />\n            <u-list-item\n                :ripple=\"ripple && { center: true, color: 'var(--accent-text)' }\"\n                value=\"center\"\n                title=\"居中主题色反馈\"\n            />\n            <u-list-item value=\"disabled\" title=\"归档\" disabled />\n        </u-list>\n        <output>已选：{{ selected }} · 独立操作：{{ appendCount }} 次</output>\n        <div class=\"demo-append-list\">\n            <u-list nav :selectable=\"false\" aria-label=\"右侧内容与长名称示例\">\n                <u-list-item title=\"栅格与布局规范\" href=\"#/grid\" append-icon=\"arrowRight\" active />\n                <u-list-item\n                    title=\"路径分隔符\"\n                    href=\"#/breadcrumbs-divider\"\n                    append-text=\"UBreadcrumbsDivider\"\n                />\n                <u-list-item title=\"通知设置\" append-text=\"已开启\" append-icon=\"mdi-check\" />\n                <u-list-item title=\"自定义操作\" append-text=\"被插槽替换\" append-icon=\"mdi-check\">\n                    <template #append>\n                        <u-button size=\"sm\" variant=\"text\" @click=\"appendCount++\">操作</u-button>\n                    </template>\n                </u-list-item>\n            </u-list>\n        </div>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.demo-append-list {\n    width: 238px;\n    max-width: 100%;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "appendIcon沿用Vuetify列表项的右侧图标入口；appendText是本库额外的辅助文本能力，空间不足时优先省略并保留完整title提示。append插槽优先替换两者。nav列表内href保持原生链接和aria-current，方向键/Home/End移动焦点，Enter/Space激活。"
         ]
     },
     {
@@ -1408,7 +1437,7 @@ export const completionPages = [
                 "title": "客户端数据表格的基本用法",
                 "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UDataTable } from '@lingyzh/ui';\nconst headers = [\n    { key: 'title', title: '工作区', sortable: true },\n    { key: 'category', title: '分类', sortable: true },\n    { key: 'count', title: '任务数', sortable: true, align: 'end' },\n];\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst search = ref('');\nconst selected = ref([]);\nconst expanded = ref([]);\nconst groups = ref([]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataTable\">\n        <u-button\n            size=\"sm\"\n            @click=\"groups = groups.length ? [] : [{ key: 'category', order: 'asc' }]\"\n        >\n            切换分组\n        </u-button>\n        <u-data-table\n            v-model=\"selected\"\n            v-model:expanded=\"expanded\"\n            v-model:group-by=\"groups\"\n            :headers=\"headers\"\n            :items=\"items\"\n            :search=\"search\"\n            show-select\n            show-expand\n            multi-sort\n            label=\"工作区列表\"\n        >\n            <template #expanded-row=\"{ item }\">\n                <strong>{{ item.title }}</strong>\n                <p>{{ item.category }} · 详情内容随高度平滑展开、收起。</p>\n            </template>\n        </u-data-table>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UDataTable, UTextField } from '@lingyzh/ui';\nconst headers = [\n    { key: 'title', title: '工作区', sortable: true },\n    { key: 'category', title: '分类', sortable: true },\n    { key: 'count', title: '任务数', sortable: true, align: 'end' },\n];\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst search = ref('');\nconst selected = ref([]);\nconst expanded = ref([]);\nconst groups = ref([]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataTable\">\n        <u-text-field\n            v-model=\"search\"\n            aria-label=\"搜索工作区\"\n            placeholder=\"搜索工作区或分类\"\n            dense\n        />\n        <u-button\n            size=\"sm\"\n            @click=\"groups = groups.length ? [] : [{ key: 'category', order: 'asc' }]\"\n        >\n            切换分组\n        </u-button>\n        <u-data-table\n            v-model=\"selected\"\n            v-model:expanded=\"expanded\"\n            v-model:group-by=\"groups\"\n            :headers=\"headers\"\n            :items=\"items\"\n            :search=\"search\"\n            show-select\n            show-expand\n            multi-sort\n            open-all\n            :mobile=\"false\"\n            label=\"工作区列表\"\n        >\n            <template #expanded-row=\"{ item }\">\n                <strong>{{ item.title }}</strong>\n                <p>{{ item.category }} · 详情内容随高度平滑展开、收起。</p>\n            </template>\n        </u-data-table>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -1429,7 +1458,7 @@ export const completionPages = [
                 "title": "虚拟数据表格的基本用法",
                 "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDataTableVirtual } from '@lingyzh/ui';\nconst headers = [\n    { key: 'title', title: '工作区', sortable: true },\n    { key: 'category', title: '分类', sortable: true },\n    { key: 'count', title: '任务数', sortable: true, align: 'end' },\n];\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst largeItems = Array.from({ length: 10000 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: '开发',\n    count: index,\n}));\nconst search = ref('');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataTableVirtual\">\n        <u-data-table-virtual\n            :headers=\"headers\"\n            :items=\"largeItems\"\n            :search=\"search\"\n            :height=\"260\"\n            label=\"虚拟工作区列表\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDataTableVirtual } from '@lingyzh/ui';\nconst headers = [\n    { key: 'title', title: '工作区', sortable: true },\n    { key: 'category', title: '分类', sortable: true },\n    { key: 'count', title: '任务数', sortable: true, align: 'end' },\n];\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst largeItems = Array.from({ length: 10000 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: '开发',\n    count: index,\n}));\nconst search = ref('');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataTableVirtual\">\n        <u-data-table-virtual\n            :headers=\"headers\"\n            :items=\"largeItems\"\n            :search=\"search\"\n            :height=\"260\"\n            :mobile=\"false\"\n            label=\"虚拟工作区列表\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -1448,14 +1477,15 @@ export const completionPages = [
             {
                 "id": "component-data-iterator",
                 "title": "数据迭代器的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "默认每页10，items插槽仍给原始项并保持原渲染方式；standardProtocol=true使用包装项、标准容器和分页/选择/展开/分组作用域。itemsLength仅跳过本地切片，过滤和排序仍执行；提供options与currentItems事件。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UCard, UDataIterator } from '@lingyzh/ui';\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst page = ref(1);\nconst title = ref('工作区名称');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataIterator\">\n        <u-data-iterator v-model:page=\"page\" :items=\"items\" :items-per-page=\"4\">\n            <template #default=\"{ items: current, pageCount, nextPage, prevPage }\">\n                <div class=\"completion-grid\">\n                    <u-card\n                        v-for=\"item in current\"\n                        :key=\"item.id\"\n                        :title=\"item.title\"\n                        :subtitle=\"item.category\"\n                    >\n                        {{ item.count }} 个任务\n                    </u-card>\n                </div>\n                <div class=\"completion-toolbar mt-4\">\n                    <u-button :disabled=\"page === 1\" @click=\"prevPage\">上一页</u-button>\n                    <output>{{ page }} / {{ pageCount }}</output>\n                    <u-button :disabled=\"page === pageCount\" @click=\"nextPage\">下一页</u-button>\n                </div>\n            </template>\n        </u-data-iterator>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    UButton,\n    UCard,\n    UDataIterator,\n    UTextField,\n    USwitch,\n    UCheckbox,\n    UCollapse,\n} from '@lingyzh/ui';\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n    selectable: index % 7 !== 0,\n}));\nconst page = ref(1);\nconst selected = ref([]);\nconst expanded = ref([]);\nconst standardPage = ref(1);\nconst group = ref(false);\nconst disabled = ref(false);\nconst search = ref('');\nconst options = ref();\nconst currentCount = ref(0);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDataIterator\">\n        <u-data-iterator\n            v-model:page=\"page\"\n            :items=\"items\"\n            :items-per-page=\"4\"\n            :standard-protocol=\"false\"\n        >\n            <template #default=\"{ items: current, pageCount, nextPage, prevPage }\">\n                <div class=\"completion-grid\">\n                    <u-card\n                        v-for=\"item in current\"\n                        :key=\"item.id\"\n                        :title=\"item.title\"\n                        :subtitle=\"item.category\"\n                    >\n                        {{ item.count }} 个任务\n                    </u-card>\n                </div>\n                <div class=\"completion-toolbar mt-4\">\n                    <u-button :disabled=\"page === 1\" @click=\"prevPage\">上一页</u-button>\n                    <output>{{ page }} / {{ pageCount }}</output>\n                    <u-button :disabled=\"page === pageCount\" @click=\"nextPage\">下一页</u-button>\n                </div>\n            </template>\n        </u-data-iterator>\n        <u-text-field v-model=\"search\" label=\"标准迭代器搜索\" />\n        <u-switch v-model=\"group\" label=\"按类别分组\" />\n        <u-switch v-model=\"disabled\" label=\"禁用选择与分页\" />\n        <u-data-iterator\n            v-model=\"selected\"\n            v-model:page=\"standardPage\"\n            v-model:expanded=\"expanded\"\n            :items=\"items\"\n            :search=\"search\"\n            :items-per-page=\"4\"\n            :group-by=\"group ? [{ key: 'category', order: 'asc' }] : []\"\n            :disabled=\"disabled\"\n            item-selectable=\"selectable\"\n            open-all\n            standard-protocol\n            @update:options=\"options = $event\"\n            @update:current-items=\"currentCount = $event.length\"\n        >\n            <template #header=\"{ selectAll, toggleSort, itemsCount }\">\n                <div class=\"iterator-actions\">\n                    <u-button :disabled=\"disabled\" @click=\"selectAll(true)\">选择本页</u-button>\n                    <u-button :disabled=\"disabled\" @click=\"toggleSort('count')\">\n                        按任务数排序\n                    </u-button>\n                    <span>筛选后 {{ itemsCount }} 条</span>\n                </div>\n            </template>\n            <template\n                #default=\"{\n                    groupedItems,\n                    isGroupOpen,\n                    toggleGroup,\n                    isSelected,\n                    toggleSelect,\n                    isExpanded,\n                    toggleExpand,\n                }\"\n            >\n                <div class=\"iterator-rows\">\n                    <template\n                        v-for=\"item in groupedItems\"\n                        :key=\"item.type === 'group' ? item.id : item.key\"\n                    >\n                        <u-button\n                            v-if=\"item.type === 'group'\"\n                            variant=\"text\"\n                            :disabled=\"disabled\"\n                            :aria-expanded=\"isGroupOpen(item)\"\n                            @click=\"toggleGroup(item)\"\n                        >\n                            {{ isGroupOpen(item) ? '收起' : '展开' }} {{ item.value }} 分组\n                        </u-button>\n                        <u-card v-else :title=\"item.raw.title\" :subtitle=\"item.raw.category\">\n                            <div class=\"iterator-actions\">\n                                <u-checkbox\n                                    :model-value=\"isSelected(item)\"\n                                    :disabled=\"disabled || !item.selectable\"\n                                    @update:model-value=\"toggleSelect(item)\"\n                                >\n                                    选择此项\n                                </u-checkbox>\n                                <u-button\n                                    variant=\"text\"\n                                    :disabled=\"disabled\"\n                                    :aria-expanded=\"isExpanded(item)\"\n                                    @click=\"toggleExpand(item)\"\n                                >\n                                    详情\n                                </u-button>\n                            </div>\n                            <u-collapse :open=\"isExpanded(item)\">\n                                <p>\n                                    {{ item.raw.count }} 个任务；标准包装项包含 raw、value 和\n                                    selectable。\n                                </p>\n                            </u-collapse>\n                        </u-card>\n                    </template>\n                </div>\n            </template>\n            <template #no-data>未找到匹配的工作区。</template>\n            <template #footer=\"{ page: currentPage, pageCount, prevPage, nextPage }\">\n                <div class=\"iterator-actions\">\n                    <u-button :disabled=\"disabled || currentPage === 1\" @click=\"prevPage\">\n                        上一页\n                    </u-button>\n                    <output>{{ currentPage }} / {{ pageCount }}</output>\n                    <u-button :disabled=\"disabled || currentPage === pageCount\" @click=\"nextPage\">\n                        下一页\n                    </u-button>\n                </div>\n            </template>\n        </u-data-iterator>\n        <output>\n            已选 {{ selected.length }} 项；当前事件 {{ currentCount }} 行；查询页码\n            {{ options?.page || 1 }}。上方第一个迭代器保留原始项用法。\n        </output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.iterator-actions {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    gap: 12px;\n    padding-block: 12px;\n}\n.iterator-rows {\n    display: grid;\n    gap: 12px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "默认每页10，items插槽仍给原始项并保持原渲染方式；standardProtocol=true使用包装项、标准容器和分页/选择/展开/分组作用域。itemsLength仅跳过本地切片，过滤和排序仍执行；提供options与currentItems事件。"
         ]
     },
     {
@@ -1553,14 +1583,15 @@ export const completionPages = [
             {
                 "id": "component-picker",
                 "title": "选择面板的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "UPicker现为标题/header/body/actions容器，支持横向布局、分隔线和尺寸。原items/model选项列表能力保留，独立旧实现更名UOptionPicker。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UPicker } from '@lingyzh/ui';\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst chosen = ref('设计');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UPicker\">\n        <u-picker v-model=\"chosen\" :items=\"['设计', '开发', '文档']\" class=\"mt-4\" />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UPicker, UOptionPicker, UButton, USwitch } from '@lingyzh/ui';\nconst value = ref('开发');\nconst landscape = ref(false);\nconst hideHeader = ref(false);\nconst saved = ref('');\nconst items = ['设计', '开发', '文档'];\nfunction save() {\n    saved.value = value.value;\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UPicker\">\n        <u-switch v-model=\"landscape\" label=\"横向布局\" />\n        <u-switch v-model=\"hideHeader\" label=\"隐藏标题区域\" />\n        <u-picker title=\"工作类别\" :landscape=\"landscape\" :hide-header=\"hideHeader\" divided border>\n            <template #header>\n                <strong>{{ value }}</strong>\n            </template>\n            <u-option-picker v-model=\"value\" :items=\"items\" />\n            <template #actions>\n                <u-button @click=\"save\">确认</u-button>\n            </template>\n        </u-picker>\n        <output>已确认：{{ saved || '尚未确认' }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "UPicker现为标题/header/body/actions容器，支持横向布局、分隔线和尺寸。原items/model选项列表能力保留，独立旧实现更名UOptionPicker。"
         ]
     },
     {
@@ -1582,6 +1613,28 @@ export const completionPages = [
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
             "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+        ]
+    },
+    {
+        "id": "option-picker",
+        "title": "选项选择器（旧 Picker）",
+        "name": "UOptionPicker",
+        "kind": "component",
+        "group": "表单组件",
+        "description": "选项选择器（旧 Picker）的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-option-picker",
+                "title": "选项选择器（旧 Picker）的基本用法",
+                "description": "原UPicker选项列表实现更名保留；本轮没有安排弃用日期。新UPicker承载Vuetify容器职责，并可选择开启items扩展。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UOptionPicker } from '@lingyzh/ui';\nconst items = Array.from({ length: 60 }, (_, index) => ({\n    id: index,\n    title: `工作区 ${index + 1}`,\n    category: index % 2 ? '设计' : '开发',\n    count: (index * 7) % 31,\n}));\nconst chosen = ref('设计');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UOptionPicker\">\n        <u-option-picker v-model=\"chosen\" :items=\"['设计', '开发', '文档']\" class=\"mt-4\" />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "原UPicker选项列表实现更名保留；本轮没有安排弃用日期。新UPicker承载Vuetify容器职责，并可选择开启items扩展。"
         ]
     },
     {
@@ -1847,14 +1900,15 @@ export const completionPages = [
             {
                 "id": "component-window",
                 "title": "内容窗口的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "disabled动态变化后，公开next/prev、键盘和触摸均读取最新禁用状态；初始空模型的强制组选择首项。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UWindow, UWindowItem } from '@lingyzh/ui';\nconst windowValue = ref('a');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UWindow\">\n        <u-button size=\"sm\" @click=\"windowValue = windowValue === 'a' ? 'b' : 'a'\">\n            切换面板\n        </u-button>\n        <u-window v-model=\"windowValue\" continuous label=\"内容窗口\">\n            <u-window-item value=\"a\">\n                <div class=\"completion-window-card\">概览面板</div>\n            </u-window-item>\n            <u-window-item value=\"b\">\n                <div class=\"completion-window-card\">详情面板</div>\n            </u-window-item>\n        </u-window>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.completion-window-card {\n    display: grid;\n    place-items: center;\n    min-height: 140px;\n    padding: 20px;\n    background: var(--accent-soft);\n    color: var(--accent-text);\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, USwitch, UWindow, UWindowItem } from '@lingyzh/ui';\nconst windowValue = ref('a');\nconst windowRef = ref();\nconst disabled = ref(false);\nfunction next() {\n    windowRef.value?.next();\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UWindow\">\n        <u-switch v-model=\"disabled\" label=\"禁用窗口交互\" />\n        <u-button size=\"sm\" @click=\"next\">调用下一项</u-button>\n        <u-window\n            ref=\"windowRef\"\n            v-model=\"windowValue\"\n            :disabled=\"disabled\"\n            continuous\n            label=\"内容窗口\"\n        >\n            <u-window-item value=\"a\">\n                <div class=\"completion-window-card\">概览面板</div>\n            </u-window-item>\n            <u-window-item value=\"b\">\n                <div class=\"completion-window-card\">详情面板</div>\n            </u-window-item>\n        </u-window>\n        <output>当前面板：{{ windowValue }}；禁用后下一项、方向键与触摸均保持当前项。</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.completion-window-card {\n    display: grid;\n    place-items: center;\n    min-height: 140px;\n    padding: 20px;\n    background: var(--accent-soft);\n    color: var(--accent-text);\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "disabled动态变化后，公开next/prev、键盘和触摸均读取最新禁用状态；初始空模型的强制组选择首项。"
         ]
     },
     {
@@ -1931,14 +1985,15 @@ export const completionPages = [
             {
                 "id": "component-img",
                 "title": "图片的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "load/error默认仍给原生Event；standardProtocol=true改给浏览器实际currentSrc URL。支持src对象、srcset/sources、lazySrc、aspectRatio与尺寸、cover/position/gradient；lazy由观察器控制src，进入区域后立即请求，避免原生lazy和隐藏图片互等。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UImg } from '@lingyzh/ui';\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UImg\">\n        <u-img :src=\"image\" alt=\"柔和的山丘图形\" lazy />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UImg, USwitch } from '@lingyzh/ui';\nconst cover = ref(true);\nconst standardProtocol = ref(false);\nconst events = ref([]);\nfunction loaded(value) {\n    events.value.push(\n        typeof value === 'string' ? 'URL 协议：图片已加载' : '原生 Event 协议：图片已加载'\n    );\n}\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UImg\">\n        <u-switch v-model=\"cover\" label=\"铺满容器（关闭后完整显示图片）\" />\n        <u-switch v-model=\"standardProtocol\" label=\"load/error 使用标准 URL 协议\" />\n        <u-img\n            :key=\"String(standardProtocol)\"\n            :src=\"{ src: image, aspect: 2 }\"\n            alt=\"柔和的山丘图形\"\n            :cover=\"cover\"\n            :standard-protocol=\"standardProtocol\"\n            height=\"220\"\n            position=\"center\"\n            gradient=\"to top, rgb(0 0 0 / .45), transparent\"\n            lazy\n            @load=\"loaded\"\n        >\n            <template #placeholder>正在加载示例图片…</template>\n            <div class=\"image-caption\">支持图片源对象、裁剪、渐变与内容插槽</div>\n        </u-img>\n        <output>{{ events.at(-1) || '等待图片加载' }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.image-caption {\n    position: absolute;\n    inset: auto 16px 16px;\n    color: white;\n    font-size: 14px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "load/error默认仍给原生Event；standardProtocol=true改给浏览器实际currentSrc URL。支持src对象、srcset/sources、lazySrc、aspectRatio与尺寸、cover/position/gradient；lazy由观察器控制src，进入区域后立即请求，避免原生lazy和隐藏图片互等。"
         ]
     },
     {
@@ -1952,14 +2007,15 @@ export const completionPages = [
             {
                 "id": "component-responsive",
                 "title": "比例容器的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "比例支持数字或宽/高字符串，并保留宽高推导；补齐min/max尺寸、contentClass、inline与additional层。数字及数字字符串尺寸均按px，CSS长度原样使用。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UResponsive } from '@lingyzh/ui';\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UResponsive\">\n        <u-responsive aspect-ratio=\"2/1\">\n            <div class=\"completion-window-card\">2 : 1 的内容区域</div>\n        </u-responsive>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.completion-window-card {\n    display: grid;\n    place-items: center;\n    min-height: 140px;\n    padding: 20px;\n    background: var(--accent-soft);\n    color: var(--accent-text);\n}\n</style>\n"
+                "code": "<script setup>\nimport { UResponsive } from '@lingyzh/ui';\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UResponsive\">\n        <u-responsive\n            aspect-ratio=\"2/1\"\n            :min-width=\"120\"\n            max-width=\"640\"\n            content-class=\"ratio-content\"\n        >\n            <template #additional>\n                <span class=\"ratio-label\">additional 标记层</span>\n            </template>\n            <div class=\"completion-window-card\">2 : 1 的内容区域</div>\n        </u-responsive>\n        <u-responsive :width=\"180\" :height=\"90\" inline>\n            <template #default=\"{ ratio }\">\n                <div class=\"completion-window-card is-small\">宽高推导：{{ ratio }} : 1</div>\n            </template>\n        </u-responsive>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.completion-window-card {\n    display: grid;\n    place-items: center;\n    min-height: 140px;\n    padding: 20px;\n    background: var(--accent-soft);\n    color: var(--accent-text);\n}\n.completion-window-card.is-small {\n    min-height: 0;\n    height: 100%;\n    padding: 12px;\n}\n.ratio-label {\n    position: absolute;\n    inset: 8px auto auto 8px;\n    color: var(--muted);\n    font-size: 12px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "比例支持数字或宽/高字符串，并保留宽高推导；补齐min/max尺寸、contentClass、inline与additional层。数字及数字字符串尺寸均按px，CSS长度原样使用。"
         ]
     },
     {
@@ -1994,14 +2050,15 @@ export const completionPages = [
             {
                 "id": "component-hotkey",
                 "title": "快捷键的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "按platform和displayMode展示组合键，支持keyMap、前后文字与组合/或/顺序分隔；listen控制本库trigger监听功能，纯展示可显式关闭。旧监听组件更名UHotkeyListener，未安排弃用日期。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UHotkey, UKbd } from '@lingyzh/ui';\nconst hotkey = ref(0);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UHotkey\">\n        <u-hotkey keys=\"ctrl+shift+k\" @trigger=\"hotkey++\">\n            <u-kbd keys=\"Ctrl + Shift + K\" />\n        </u-hotkey>\n        <output>快捷键触发 {{ hotkey }} 次</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UHotkey, USelect, USwitch } from '@lingyzh/ui';\nconst mode = ref('symbol');\nconst platform = ref('mac');\nconst disabled = ref(false);\nconst triggered = ref(0);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UHotkey\">\n        <u-select v-model=\"mode\" :items=\"['symbol', 'icon', 'text']\" label=\"快捷键显示方式\" />\n        <u-select v-model=\"platform\" :items=\"['mac', 'pc', 'auto']\" label=\"平台\" />\n        <u-switch v-model=\"disabled\" label=\"禁用快捷键\" />\n        <u-hotkey\n            keys=\"meta+shift+k\"\n            :display-mode=\"mode\"\n            :platform=\"platform\"\n            :disabled=\"disabled\"\n            :listen=\"false\"\n            prefix=\"打开命令面板\"\n        />\n        <u-hotkey\n            keys=\"ctrl+shift+k\"\n            display-mode=\"text\"\n            :disabled=\"disabled\"\n            @trigger=\"triggered++\"\n        />\n        <u-hotkey keys=\"ctrl+k/ctrl+p-g\" display-mode=\"text\" variant=\"contained\" :listen=\"false\" />\n        <output>按 Ctrl + Shift + K：已触发 {{ triggered }} 次；平台展示与监听分别配置。</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "按platform和displayMode展示组合键，支持keyMap、前后文字与组合/或/顺序分隔；listen控制本库trigger监听功能，纯展示可显式关闭。旧监听组件更名UHotkeyListener，未安排弃用日期。"
         ]
     },
     {
@@ -2036,14 +2093,15 @@ export const completionPages = [
             {
                 "id": "component-lazy",
                 "title": "延迟显示的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "受控modelValue、options观察参数、tag、六种尺寸和transition；保留rootMargin=100px、once=true、disabled立即显示，以及placeholder与visible作用域。模型重置false可重新观察，once=false支持进出视口卸载。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UImg, ULazy, UNoSsr, UResponsive } from '@lingyzh/ui';\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"ULazy\">\n        <u-lazy class=\"mt-4\">\n            <u-no-ssr>\n                <u-responsive aspect-ratio=\"4/1\">\n                    <u-img :src=\"image\" alt=\"延迟显示的山丘图形\" lazy />\n                </u-responsive>\n                <template #placeholder>客户端加载中…</template>\n            </u-no-ssr>\n            <template #placeholder>等待进入视口…</template>\n        </u-lazy>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref, computed } from 'vue';\nimport { UImg, ULazy, UNoSsr, UScrollArea, USwitch, UButton } from '@lingyzh/ui';\nconst visible = ref(false);\nconst once = ref(false);\nconst disabled = ref(false);\nconst scroll = ref();\nconst observed = ref(0);\nconst options = computed(() => ({ root: scroll.value?.element, threshold: 0.2 }));\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"ULazy\">\n        <u-switch v-model=\"once\" label=\"进入后保持挂载\" />\n        <u-switch v-model=\"disabled\" label=\"禁用观察并立即显示\" />\n        <u-scroll-area ref=\"scroll\" height=\"220px\" label=\"懒显示示例滚动区域\" always>\n            <div class=\"lazy-spacer\">向下滚动，让图片进入观察区域。</div>\n            <u-lazy\n                v-model=\"visible\"\n                :once=\"once\"\n                :disabled=\"disabled\"\n                :options=\"options\"\n                root-margin=\"0px\"\n                min-height=\"160\"\n                tag=\"section\"\n                @intersect=\"observed++\"\n            >\n                <u-no-ssr>\n                    <u-img :src=\"image\" alt=\"延迟显示的山丘图形\" height=\"160\" />\n                    <template #placeholder>客户端加载中…</template>\n                </u-no-ssr>\n                <template #placeholder>\n                    <div class=\"lazy-placeholder\">等待进入视口…</div>\n                </template>\n            </u-lazy>\n            <div class=\"lazy-spacer\">向上返回，观察 once=false 时的卸载。</div>\n        </u-scroll-area>\n        <u-button @click=\"visible = false\">重置可见模型</u-button>\n        <output>modelValue：{{ visible }}；进入观察区域 {{ observed }} 次。</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n.lazy-spacer {\n    display: grid;\n    place-items: center;\n    height: 260px;\n    padding: 16px;\n    text-align: center;\n    color: var(--muted);\n}\n.lazy-placeholder {\n    display: grid;\n    place-items: center;\n    height: 160px;\n    background: var(--surface);\n    color: var(--muted);\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "受控modelValue、options观察参数、tag、六种尺寸和transition；保留rootMargin=100px、once=true、disabled立即显示，以及placeholder与visible作用域。模型重置false可重新观察，once=false支持进出视口卸载。"
         ]
     },
     {
@@ -2078,14 +2136,37 @@ export const completionPages = [
             {
                 "id": "component-parallax",
                 "title": "视差的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "默认仍使用speed=0.3，支持-1至1（负数反向、0静止）；显式scale改用标准比例与背景缩放。src对象、srcset、lazySrc、图片事件和placeholder/error/sources插槽通过内置UImg实现，load/error给URL。background插槽优先保留自建背景；disabled和减少动效均停止位移。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { UImg, UParallax } from '@lingyzh/ui';\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UParallax\">\n        <u-parallax class=\"mt-4\">\n            <template #background>\n                <u-img :src=\"image\" alt=\"背景山丘\" />\n            </template>\n            <strong>滚动产生轻微视差；减少动效时保持静止。</strong>\n        </u-parallax>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UImg, UParallax, UScrollArea, USwitch, USlider } from '@lingyzh/ui';\nconst disabled = ref(false);\nconst standard = ref(false);\nconst scale = ref(0.5);\nconst loaded = ref(false);\nconst image =\n    'data:image/svg+xml,' +\n    encodeURIComponent(\n        '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"320\" viewBox=\"0 0 640 320\"><rect width=\"640\" height=\"320\" fill=\"#efe8df\"/><circle cx=\"480\" cy=\"100\" r=\"60\" fill=\"#bd6749\"/><path d=\"M0 320 180 90 360 320Z\" fill=\"#789380\"/><path d=\"M230 320 420 150 640 320Z\" fill=\"#a7b7a5\"/></svg>'\n    );\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UParallax\">\n        <label class=\"parallax-control\">\n            <u-switch v-model=\"disabled\" aria-label=\"关闭视差\" />\n            <span>关闭视差</span>\n        </label>\n        <u-switch v-model=\"standard\" label=\"使用 src 与标准 scale\" />\n        <u-slider\n            v-if=\"standard\"\n            v-model=\"scale\"\n            :min=\"0\"\n            :max=\"1\"\n            :step=\"0.1\"\n            label=\"视差比例 scale\"\n        />\n        <p class=\"parallax-note\">在下方区域滚动：山丘背景与标题以不同速度移动。</p>\n        <u-scroll-area class=\"parallax-demo-scroll\" height=\"360px\" label=\"视差演示滚动区域\" always>\n            <div class=\"parallax-spacer\">向下滚动查看效果</div>\n            <u-parallax\n                class=\"parallax-scene\"\n                :src=\"image\"\n                :scale=\"standard ? scale : undefined\"\n                :speed=\"0.6\"\n                :disabled=\"disabled\"\n                alt=\"背景山丘\"\n                @load=\"loaded = true\"\n            >\n                <template v-if=\"!standard\" #background>\n                    <u-img :src=\"image\" alt=\"背景山丘\" />\n                </template>\n                <template #default=\"{ offset }\">\n                    <div class=\"parallax-caption\">\n                        <strong>山丘随滚动轻轻移动</strong>\n                        <output>背景位移：{{ offset.toFixed(1) }} px</output>\n                        <span v-if=\"standard\">\n                            scale {{ scale }}；图片{{ loaded ? '已加载' : '加载中' }}\n                        </span>\n                    </div>\n                </template>\n            </u-parallax>\n            <div class=\"parallax-spacer is-after\">\n                继续滚动，或向上返回；启用减少动效时背景保持静止。\n            </div>\n        </u-scroll-area>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.parallax-control {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n}\n.parallax-note,\n.parallax-spacer {\n    color: var(--muted);\n    font-size: 14px;\n}\n.parallax-demo-scroll {\n    border: 1px solid var(--border);\n    border-radius: 8px;\n    overflow: hidden;\n}\n.parallax-spacer {\n    display: grid;\n    place-items: center;\n    height: 120px;\n    padding: 24px;\n    text-align: center;\n}\n.parallax-spacer.is-after {\n    height: 300px;\n}\n.parallax-scene {\n    height: 240px;\n}\n.parallax-caption {\n    display: grid;\n    gap: 8px;\n    margin: 20px;\n    padding: 16px 20px;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n    background: var(--surface);\n    text-align: center;\n}\n.parallax-caption output {\n    font: 14px/1.5 var(--mono);\n    color: var(--muted);\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "默认仍使用speed=0.3，支持-1至1（负数反向、0静止）；显式scale改用标准比例与背景缩放。src对象、srcset、lazySrc、图片事件和placeholder/error/sources插槽通过内置UImg实现，load/error给URL。background插槽优先保留自建背景；disabled和减少动效均停止位移。"
+        ]
+    },
+    {
+        "id": "hotkey-listener",
+        "title": "快捷键监听（旧 Hotkey）",
+        "name": "UHotkeyListener",
+        "kind": "component",
+        "group": "内容组件",
+        "description": "快捷键监听（旧 Hotkey）的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-hotkey-listener",
+                "title": "快捷键监听（旧 Hotkey）的基本用法",
+                "description": "原UHotkey监听实现更名保留；keys/preventDefault/allowInput/disabled和trigger事件仍使用原协议。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UHotkeyListener, UKbd } from '@lingyzh/ui';\nconst hotkey = ref(0);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UHotkeyListener\">\n        <u-hotkey-listener keys=\"ctrl+shift+k\" @trigger=\"hotkey++\">\n            <u-kbd keys=\"Ctrl + Shift + K\" />\n        </u-hotkey-listener>\n        <output>快捷键触发 {{ hotkey }} 次</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "原UHotkey监听实现更名保留；keys/preventDefault/allowInput/disabled和trigger事件仍使用原协议。"
         ]
     },
     {
@@ -2099,14 +2180,15 @@ export const completionPages = [
             {
                 "id": "component-infinite-scroll",
                 "title": "滚动加载的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "direction同时接受旧start/end/both与新vertical/horizontal，side配置新轴值的加载边缘；默认纵向end。两侧状态与完成回调独立，mode支持manual/intersect，reset使旧回调失效，前端追加记录保持滚动位置；status插槽提供side和操作props。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UInfiniteScroll } from '@lingyzh/ui';\nconst loaded = ref(6);\nfunction load({ done }) {\n    loaded.value += 3;\n    done(loaded.value >= 18 ? 'empty' : 'ok');\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UInfiniteScroll\">\n        <u-infinite-scroll @load=\"load\">\n            <ul>\n                <li v-for=\"item in loaded\" :key=\"item\" class=\"py-2\">示例记录 {{ item }}</li>\n            </ul>\n        </u-infinite-scroll>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref, watch } from 'vue';\nimport { UInfiniteScroll, USelect, USwitch, UButton } from '@lingyzh/ui';\nconst direction = ref('vertical');\nconst side = ref('both');\nconst mode = ref('manual');\nconst disabled = ref(false);\nconst items = ref([1, 2, 3, 4, 5, 6]);\nconst edgeLoads = ref({ start: 0, end: 0 });\nconst instance = ref();\nlet requestVersion = 0;\nfunction reset() {\n    requestVersion++;\n    items.value = [1, 2, 3, 4, 5, 6];\n    edgeLoads.value = { start: 0, end: 0 };\n    instance.value?.reset('both');\n}\nwatch([direction, side, mode], reset);\nasync function load({ side: edge, done }) {\n    const version = requestVersion;\n    await new Promise((resolve) => setTimeout(resolve, 220));\n    // Resetting the example also invalidates the parent's pending data request.\n    if (version !== requestVersion) return;\n    const batch = Array.from({ length: 3 }, (_, index) =>\n        edge === 'start' ? items.value[0] - 3 + index : items.value.at(-1) + 1 + index\n    );\n    items.value = edge === 'start' ? [...batch, ...items.value] : [...items.value, ...batch];\n    edgeLoads.value[edge]++;\n    done(edgeLoads.value[edge] >= 3 ? 'empty' : 'ok');\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UInfiniteScroll\">\n        <u-select v-model=\"direction\" :items=\"['vertical', 'horizontal']\" label=\"滚动方向\" />\n        <u-select v-model=\"side\" :items=\"['start', 'end', 'both']\" label=\"加载边缘\" />\n        <u-select v-model=\"mode\" :items=\"['manual', 'intersect']\" label=\"加载方式\" />\n        <u-switch v-model=\"disabled\" label=\"暂停加载\" />\n        <u-infinite-scroll\n            :key=\"`${direction}-${side}-${mode}`\"\n            ref=\"instance\"\n            :direction=\"direction\"\n            :side=\"side\"\n            :mode=\"mode\"\n            :disabled=\"disabled\"\n            height=\"260\"\n            :margin=\"0\"\n            @load=\"load\"\n        >\n            <div class=\"records\" :class=\"{ 'is-horizontal': direction === 'horizontal' }\">\n                <div v-for=\"item in items\" :key=\"item\" class=\"record\">示例记录 {{ item }}</div>\n            </div>\n            <template #loading=\"{ side: edge }\">\n                {{ edge === 'start' ? '前端' : '后端' }}正在加载…\n            </template>\n            <template #empty=\"{ side: edge }\">\n                {{ edge === 'start' ? '前端' : '后端' }}没有更多记录\n            </template>\n        </u-infinite-scroll>\n        <u-button @click=\"reset\">重置两侧状态</u-button>\n        <output>\n            前端加载 {{ edgeLoads.start }} 次；后端加载 {{ edgeLoads.end }} 次。旧\n            direction=\"start/end\" 用法继续支持。\n        </output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.records {\n    flex: 1 0 auto;\n}\n.records.is-horizontal {\n    display: flex;\n    height: 100%;\n}\n.record {\n    padding: 16px;\n    border-bottom: 1px solid var(--border);\n    white-space: nowrap;\n}\n.records.is-horizontal .record {\n    display: grid;\n    place-items: center;\n    width: 180px;\n    border-bottom: 0;\n    border-inline-end: 1px solid var(--border);\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "direction同时接受旧start/end/both与新vertical/horizontal，side配置新轴值的加载边缘；默认纵向end。两侧状态与完成回调独立，mode支持manual/intersect，reset使旧回调失效，前端追加记录保持滚动位置；status插槽提供side和操作props。"
         ]
     },
     {
@@ -2120,14 +2202,15 @@ export const completionPages = [
             {
                 "id": "component-pull-to-refresh",
                 "title": "下拉刷新的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "补标准load事件、pullDownThreshold与pullDownPanel(canRefresh/goingUp/refreshing)，旧refresh/threshold=72/indicator仍保留。鼠标与单指触摸均可操作，默认阻尼0.5，resistance可显式设1。reset失效旧done，只检查最近实际滚动视口是否到顶。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UPullToRefresh } from '@lingyzh/ui';\nconst refreshed = ref(0);\nfunction refresh({ done }) {\n    refreshed.value++;\n    done();\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UPullToRefresh\">\n        <u-pull-to-refresh style=\"max-height: 240px\" @refresh=\"refresh\">\n            <p>触屏下拉刷新，已刷新 {{ refreshed }} 次。</p>\n            <ul>\n                <li v-for=\"item in 6\" :key=\"item\" class=\"py-2\">示例记录 {{ item }}</li>\n            </ul>\n        </u-pull-to-refresh>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UPullToRefresh, USwitch, UButton } from '@lingyzh/ui';\nconst refreshed = ref(0);\nconst disabled = ref(false);\nconst instance = ref();\nlet requestVersion = 0;\nasync function refresh({ done }) {\n    const version = requestVersion;\n    await new Promise((resolve) => setTimeout(resolve, 400));\n    if (version !== requestVersion) return;\n    refreshed.value++;\n    done();\n}\nfunction reset() {\n    requestVersion++;\n    instance.value?.reset();\n    refreshed.value = 0;\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UPullToRefresh\">\n        <u-switch v-model=\"disabled\" label=\"禁用下拉刷新\" />\n        <u-pull-to-refresh\n            ref=\"instance\"\n            style=\"max-height: 240px\"\n            :disabled=\"disabled\"\n            :pull-down-threshold=\"64\"\n            :resistance=\"1\"\n            @load=\"refresh\"\n        >\n            <template #pullDownPanel=\"{ canRefresh, goingUp, refreshing }\">\n                {{\n                    refreshing\n                        ? '正在刷新…'\n                        : canRefresh\n                          ? '松开刷新'\n                          : goingUp\n                            ? '已回拉'\n                            : '继续下拉'\n                }}\n            </template>\n            <p>鼠标或触屏下拉，松开后刷新。已刷新 {{ refreshed }} 次。</p>\n            <ul>\n                <li v-for=\"item in 10\" :key=\"item\" class=\"py-2\">示例记录 {{ item }}</li>\n            </ul>\n        </u-pull-to-refresh>\n        <u-button @click=\"reset\">重置请求</u-button>\n        <output>\n            旧 refresh、threshold 和 indicator 用法继续保留；默认阻尼0.5，示例显式设为1。\n        </output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "补标准load事件、pullDownThreshold与pullDownPanel(canRefresh/goingUp/refreshing)，旧refresh/threshold=72/indicator仍保留。鼠标与单指触摸均可操作，默认阻尼0.5，resistance可显式设1。reset失效旧done，只检查最近实际滚动视口是否到顶。"
         ]
     },
     {

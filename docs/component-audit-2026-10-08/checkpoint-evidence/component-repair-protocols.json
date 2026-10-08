@@ -1,0 +1,321 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + Electron",
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\component-repair-protocols",
+    "registry": {
+        "canonicalRegisteredCount": 156,
+        "requiredGlobalNames": {
+            "u-field": true,
+            "u-form-field": true,
+            "u-picker": true,
+            "u-option-picker": true,
+            "u-hotkey": true,
+            "u-hotkey-listener": true,
+            "u-counter": true
+        },
+        "missingCanonicalGlobalNames": [],
+        "formFieldAliasIdentity": true,
+        "formFieldCompatibility": {
+            "layout": "horizontal",
+            "labelFor": "legacy-field-input",
+            "inputId": "legacy-field-input",
+            "describedBy": "v-35-description v-35-error",
+            "details": [
+                "旧字段说明",
+                "旧字段错误"
+            ]
+        }
+    },
+    "field": {
+        "scope": {
+            "isActive": false,
+            "isFocused": false,
+            "scopeControlRefIsRef": true,
+            "scopeControlClass": "u-field-surface is-outlined is-error is-center-affix"
+        },
+        "props": {
+            "id": "protocol-field-input",
+            "aria-describedby": "v-34-description v-34-error protocol-field-input-messages",
+            "aria-invalid": true,
+            "class": "u-field-input"
+        },
+        "controlAttrs": {
+            "id": "protocol-field-input",
+            "aria-describedby": "v-34-description v-34-error protocol-field-input-messages",
+            "aria-invalid": true,
+            "class": "u-field-input"
+        },
+        "inputId": "protocol-field-input",
+        "labelFor": "protocol-field-input",
+        "descriptions": [
+            {
+                "id": "v-34-description",
+                "text": "字段说明文本"
+            },
+            {
+                "id": "v-34-error",
+                "text": "字段错误文本"
+            }
+        ],
+        "theme": "dark",
+        "exposedControlClass": "u-field-surface is-outlined is-error is-center-affix",
+        "events": {
+            "prepend": 1,
+            "append": 1,
+            "clear": 1,
+            "modelUpdates": [
+                null
+            ]
+        },
+        "disabledFocusRemains": false
+    },
+    "picker": {
+        "slots": {
+            "tag": "SECTION",
+            "classes": "ui-theme-provider u-picker-container is-landscape is-divided",
+            "width": "260px",
+            "minWidth": "220px",
+            "maxWidth": "320px",
+            "height": "180px",
+            "minHeight": "160px",
+            "maxHeight": "220px",
+            "theme": "dark",
+            "title": "标题插槽",
+            "header": "头部插槽",
+            "body": "默认内容插槽",
+            "actionClass": "ui-button ui-button--variant-text md ui-ripple-target",
+            "outsideClass": "ui-button ui-button--variant-outlined md ui-ripple-target"
+        },
+        "listScope": {
+            "count": 2,
+            "modelValue": "beta",
+            "canChoose": true,
+            "selectedAlpha": false
+        },
+        "models": {
+            "string": "Beta",
+            "objectValue": "b",
+            "returnedObject": {
+                "id": "beta",
+                "title": "Beta"
+            },
+            "multiple": [
+                "blue"
+            ],
+            "readonly": "locked"
+        }
+    },
+    "hotkey": {
+        "platform": "pc",
+        "macAriaLabel": "快捷键 Command + Key-K",
+        "text": "前缀Control+Shift+Key-K后缀",
+        "ariaLabel": "快捷键 Control + Shift + Key-K",
+        "disabledClass": "ui-theme-provider u-hotkey-display is-outlined is-disabled",
+        "listenerPreventDefault": true,
+        "listenerDisabledTriggers": 1,
+        "inputGuardTriggers": 0,
+        "allowInputTriggers": 1,
+        "cleanupTriggers": 1,
+        "nonListeningTriggers": 0,
+        "hotkeyTriggers": 1
+    },
+    "counter": {
+        "unicodeCodepoints": "3 / 2",
+        "valueMode": "剩余 8 个名额",
+        "disabledOver": false,
+        "slot": "3 / 2|2|A😀B",
+        "activeDefault": true
+    },
+    "demos": {
+        "field": {
+            "variants": [
+                "outlined",
+                "filled",
+                "underlined",
+                "plain",
+                "solo",
+                "solo-inverted",
+                "solo-filled"
+            ],
+            "labelFor": "u-field-v-5",
+            "valueAfterClear": "",
+            "disabledInput": true,
+            "narrowGeometry": {
+                "layout": "vertical",
+                "surface": {
+                    "top": 241.8249969482422,
+                    "bottom": 291.42499923706055,
+                    "width": 294.3999938964844
+                },
+                "description": {
+                    "top": 299.4250183105469,
+                    "width": 294.3999938964844
+                }
+            }
+        },
+        "picker": {
+            "selected": "已确认：文档",
+            "landscape": true,
+            "hiddenHeaderCount": 0,
+            "bodyFullWidth": {
+                "containerClientWidth": 931,
+                "bodyWidth": 930.5599975585938
+            }
+        },
+        "hotkey": {
+            "displayMode": "text",
+            "platform": "pc",
+            "triggered": "按 Ctrl + Shift + K：已触发 3 次；平台展示与监听分别配置。"
+        },
+        "hotkeyListener": {
+            "triggerOutput": "快捷键触发 4 次"
+        },
+        "counter": {
+            "value": "A😀B",
+            "counter": "3 / 20"
+        },
+        "radioGroup": {
+            "selected": "当前选择：b",
+            "readonly": true
+        },
+        "window": {
+            "afterNextAndDisabledNext": "当前面板：b；禁用后下一项、方向键与触摸均保持当前项。"
+        }
+    },
+    "errors": [],
+    "screenshots": [
+        {
+            "file": "wide-light.png",
+            "capture": "window",
+            "theme": "light",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "wide-dark.png",
+            "capture": "window",
+            "theme": "dark",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "narrow-light.png",
+            "capture": "window",
+            "theme": "light",
+            "width": 390,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "zoom125-light.png",
+            "capture": "window",
+            "theme": "light",
+            "width": 900,
+            "height": 1600,
+            "zoom": 1.25
+        },
+        {
+            "file": "demo-field-wide-light.png",
+            "component": "field",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "light",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-field-wide-dark.png",
+            "component": "field",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "dark",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-field-narrow-light.png",
+            "component": "field",
+            "capture": "locator",
+            "size": "narrow",
+            "theme": "light",
+            "width": 390,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-picker-wide-light.png",
+            "component": "picker",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "light",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-picker-wide-dark.png",
+            "component": "picker",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "dark",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-picker-narrow-light.png",
+            "component": "picker",
+            "capture": "locator",
+            "size": "narrow",
+            "theme": "light",
+            "width": 390,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-hotkey-wide-light.png",
+            "component": "hotkey",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "light",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-hotkey-wide-dark.png",
+            "component": "hotkey",
+            "capture": "locator",
+            "size": "wide",
+            "theme": "dark",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "demo-hotkey-narrow-light.png",
+            "component": "hotkey",
+            "capture": "locator",
+            "size": "narrow",
+            "theme": "light",
+            "width": 390,
+            "height": 1800,
+            "zoom": 1
+        },
+        {
+            "file": "picker-landscape-hidden-header-wide-light.png",
+            "component": "picker",
+            "capture": "locator",
+            "landscape": true,
+            "headerHidden": true,
+            "size": "wide",
+            "theme": "light",
+            "width": 1280,
+            "height": 1800,
+            "zoom": 1
+        }
+    ]
+}

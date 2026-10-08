@@ -12,10 +12,13 @@ export interface SelectionControlGroupProps extends FormControlProps {
 
 export interface ItemGroupProps extends FormControlProps {
     multiple?: boolean;
-    mandatory?: boolean;
+    mandatory?: boolean | 'force';
     max?: number;
     direction?: 'row' | 'column';
     valueComparator?: ValueComparator;
+    selectedClass?: string;
+    tag?: string;
+    theme?: string;
 }
 
 export type RadioGroupProps = Omit<SelectionControlGroupProps, 'multiple' | 'max'>;

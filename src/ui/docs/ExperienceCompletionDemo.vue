@@ -18,7 +18,7 @@ import {
     UImg,
     UResponsive,
     UHover,
-    UHotkey,
+    UHotkeyListener,
     UKbd,
     ULazy,
     UNoSsr,
@@ -143,9 +143,9 @@ function refresh({ done }) {
                         >
                             <h4>Hover 提供交互状态</h4>
                             <p>{{ isHovering ? '指针或键盘位于此区域' : '移入此区域查看状态' }}</p>
-                            <UHotkey keys="ctrl+shift+k" @trigger="hotkey++">
+                            <UHotkeyListener keys="ctrl+shift+k" @trigger="hotkey++">
                                 <UKbd keys="Ctrl + Shift + K" />
-                            </UHotkey>
+                            </UHotkeyListener>
                             <p>快捷键触发 {{ hotkey }} 次</p>
                         </div>
                     </template>

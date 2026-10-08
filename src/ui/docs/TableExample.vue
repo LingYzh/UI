@@ -33,7 +33,7 @@ function load(next = options.value) {
         const sort = next.sortBy[0];
         if (sort) result = [...result].sort((a, b) => (typeof a[sort.key] === 'number' ? a[sort.key] - b[sort.key] : a[sort.key].localeCompare(b[sort.key])) * (sort.order === 'desc' ? -1 : 1));
         total.value = result.length;
-        rows.value = result.slice((next.page - 1) * next.itemsPerPage, next.page * next.itemsPerPage);
+        rows.value = next.itemsPerPage === -1 ? result : result.slice((next.page - 1) * next.itemsPerPage, next.page * next.itemsPerPage);
         loading.value = false;
     }, 450);
 }

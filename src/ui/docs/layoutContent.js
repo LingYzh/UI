@@ -159,7 +159,7 @@ export const layoutPages = [
             {
                 "id": "layout-form-labels",
                 "title": "标签方向与下方说明",
-                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UField 用于自定义内容。",
+                "description": "上方／左侧由 labelPosition 配置，可在 Form 中统一设置；无说明时不预留空白。UFormField 用于自定义内容。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UForm, UTextField, UTextarea, URow, UCol } from '@lingyzh/ui';\nconst name = ref('');\nconst description = ref('');\n</script>\n\n<template>\n    <u-form label-position=\"left\" label-width=\"120px\">\n        <u-row>\n            <u-col :cols=\"12\">\n                <u-text-field v-model=\"name\" label=\"名称\" hint=\"说明始终位于控件下方。\" />\n            </u-col>\n            <u-col :cols=\"12\">\n                <u-textarea v-model=\"description\" label=\"说明\" label-position=\"top\" />\n            </u-col>\n        </u-row>\n    </u-form>\n</template>\n"
             },
@@ -182,7 +182,7 @@ export const layoutPages = [
             "validate(): Promise<{ valid, errors, cancelled? }>；rules 可返回 true、false 或错误文本，也可返回 Promise。过期异步结果不会提交。",
             "reset() 恢复初始模型并清除验证；resetValidation() 只清除验证；requestSubmit() 触发统一提交验证。",
             "ref 和默认插槽暴露 isValid、isValidating、errors 与验证／重置方法。错误列表为 { id, errorMessages }[]。",
-            "label、hint、rules 直接放在控件上；UField 仅用于自定义表单项。不要嵌套 form。"
+            "label、hint、rules 直接放在控件上；UFormField 仅用于自定义表单项。不要嵌套 form。"
         ]
     },
     {

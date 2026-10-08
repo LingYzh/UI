@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UiTooltip.vue",
+        "../src/ui/plugin.ts",
+        "../src/ui/component-registry.ts",
+        "../src/ui/docs/component-examples/tooltip.vue"
+    ]
+}

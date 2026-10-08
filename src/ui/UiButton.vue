@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { vPointerBlur } from './pointer-focus';
 import { Button } from '@vuetify/v0';
-import { computed, inject, onBeforeUnmount, ref, useId, watch, type CSSProperties } from 'vue';
+import { computed, inject, onBeforeUnmount, provide, ref, useId, watch, type CSSProperties } from 'vue';
 import { buttonGroupKey } from './button-group';
+import { itemGroupKey, itemGroupItemIdKey } from './item-group-context';
 import { formContextKey } from './form';
 import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
@@ -32,7 +33,10 @@ const rawProps = withDefaults(defineProps<{
 const props = useDefaults(rawProps, 'UButton');
 const form = inject(formContextKey, undefined);
 const group = inject(buttonGroupKey, undefined);
-const registration = group?.register(useId());
+const itemGroup = inject(itemGroupKey, undefined);
+const groupId = useId();
+const registration = group?.register(groupId, () => props.value, () => Boolean(props.disabled || props.loading));
+if (registration) provide(itemGroupItemIdKey, groupId);
 onBeforeUnmount(() => registration?.release());
 const groupValue = computed(() => props.value === undefined ? registration?.index.value : props.value);
 const isSelected = computed(() => !!group && group.selected(groupValue.value));
@@ -63,7 +67,7 @@ function guard(event: MouseEvent) {
 
 <template>
     <Button.Root v-slot="{ attrs }" :disabled="isDisabled || props.loading" :loading="props.loading" renderless>
-        <component :is="props.href || props.to ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="props.href ?? (typeof props.to === 'string' ? props.to : undefined)" :type="props.href || props.to ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? props.selectedClass : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" @click="guard">
+        <component :is="props.href || props.to ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="props.href ?? (typeof props.to === 'string' ? props.to : undefined)" :type="props.href || props.to ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" @click="guard">
             <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><span class="ui-button-loading" /></slot></span>
             <span class="ui-button-content" :class="{ 'is-loading': props.loading }">
                 <Icon v-if="typeof props.icon === 'string'" :icon="props.icon" :size="18" />

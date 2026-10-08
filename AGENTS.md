@@ -21,7 +21,9 @@
 ## 构建与发布约定
 
 - `src/ui/index.ts` 是公开组件入口；`src/ui/styles.css` 汇总 tokens、工具类和扩展样式；`src/ui/docs/` 与 `UiPreview.vue` 是真实组件文档。UAH 仍可通过 `file:../UI` 使用源码导出。
-- 开发环境按 README 使用 Node.js 24+。运行 `npm ci`、`npm run typecheck`、`npm test`、`npm run build` 和 `npm run test:ui`；`npm run dev` 在 5174 端口查看文档。
+- 开发环境按 README 使用 Node.js 24+；`npm run dev` 在 5174 端口查看文档。
+- 日常改动只运行与变更相关的专项测试及必要的视觉验收，不默认运行完整测试、完整构建或`npm run test:ui`。专项优先使用开发服务或隔离源码fixture，避免为了测试重新完整构建。
+- 提交推送前再运行完整检查：`npm run typecheck`、`npm test`、`npm run build` 和 `npm run test:ui`；依赖安装需要时运行`npm ci`。发布前继续执行下方打包与消费方验证。
 - `dist/docs` 与 `dist/lib` 是忽略的构建产物。npm 包只发布 `package.json#files` 白名单中的源码及自动包含的 README、LICENSE、package.json；发布前用 `npm pack --dry-run --json` 核查文件列表。
 - 发布面向官方 npm registry，沿用 MIT、公开包与 `latest` dist-tag；版本、Git tag 和发布记录必须一致。不要把本地镜像站当成发布目标。
 

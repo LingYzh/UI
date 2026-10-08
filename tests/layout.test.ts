@@ -79,6 +79,10 @@ test('every component example id has a LiveExample rendering branch', () => {
                 || (example.id.startsWith('markdown-') && liveExample.includes("example.startsWith('markdown-')"))
                 || (example.id.startsWith('theme-') && liveExample.includes("example.startsWith('theme-')"))
                 || (example.id.startsWith('completion-') && liveExample.includes("example.startsWith('completion-')"))
+                || (example.id.startsWith('table-align-')
+                    && liveExample.includes("example.startsWith('table-align-')")
+                    && liveExample.includes("import.meta.glob('./table-examples/*.vue'")
+                    && existsSync(new URL(`../src/ui/docs/table-examples/${example.id.slice('table-align-'.length)}.vue`, import.meta.url)))
                 || (example.id.endsWith('-shared-variants') && liveExample.includes("example.endsWith('-shared-variants')"));
             assert.ok(routedByPattern || liveExample.includes(`'${example.id}'`), `${page.name}.${example.id} needs a LiveExample branch`);
         }

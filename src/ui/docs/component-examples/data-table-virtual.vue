@@ -28,6 +28,7 @@ const search = ref('');
             :items="largeItems"
             :search="search"
             :height="260"
+            :mobile="false"
             label="虚拟工作区列表"
         />
     </div>

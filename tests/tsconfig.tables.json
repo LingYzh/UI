@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "../src/ui/UiTable.vue",
+        "../src/ui/UDataTable.vue",
+        "../src/ui/UiDataTableServer.vue",
+        "../src/ui/UDataTableVirtual.vue"
+    ]
+}

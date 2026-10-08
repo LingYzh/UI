@@ -1,0 +1,166 @@
+{
+    "fixture": "item-group-protocols",
+    "method": "Vite source fixture imports the public src/ui/index.ts entry and renders real SFCs and examples; headless Chromium runtime.",
+    "sourceSha256": {
+        "src/ui/UItem.vue": "242a1148920082b96b5f2d8ca50c79305818007b51b453d0fc8d16aba20e38d8",
+        "src/ui/UItemGroup.vue": "401e09700a769a36f9ce4bdc4bfed1b27aaa9a3b5258cf28d868a2391ea71a02",
+        "src/ui/UChip.vue": "0284c3b2d2c713811df6585137914b14bdd993e5ce5494762e6b667e3dc82fbe",
+        "src/ui/UChipGroup.vue": "73ab2c030fe6aedb0d2d51de4fed265ce9e3a1a5e35f39e4871e6708904e2592",
+        "src/ui/UBtnToggle.vue": "24bfd3ea5c5035f1e556d3aaf3fa451589d6a5802872f146fa4811e77366786b",
+        "src/ui/UiButton.vue": "48e24f461e41e7d4964648b9f6f6c0f5ac4a100efd3faf90d1c4e45b660b4e16",
+        "src/ui/UiForm.vue": "1b18fd9977584313ac87e6e8c466099b4eacf5b9e3fd000ab89d504f0053719c",
+        "src/ui/form.ts": "c1d4d0ac72ffd52f6faa0500827094c086f8efc895b2f277e09119457d6b1974",
+        "src/ui/item-group-state.ts": "789d118784f16f92b5db5d481c48c6033b3a06f5c1473b9d4e265ede77e3dbd2",
+        "src/ui/item-group-context.ts": "8d5752876d284e05a940fa66018c5b1c45e5a8d25302b86c95a0ce6b2c6ce9b6",
+        "src/ui/selection-context.ts": "35d7683736fb53f4e359c5bee8fbcb302275a687f7a43322db8c56c027e204ff",
+        "src/ui/selection.ts": "ca0061e0e573adca029b5afe5ea51bc7e9a4f2d0dbe9721e20867b5e93eb4370",
+        "src/ui/button-group.ts": "bd76d510b6751b62d20797c940067bc3eb9fca7b8f42cd02824613a9bf3673f7",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe",
+        "src/ui/plugin.ts": "bfadbbd64328f25783501efea8d4b11e81a5f8d8a01a20b92091547108bf0023",
+        "src/ui/docs/component-examples/item.vue": "3573542ac3823aa086a543065cca560bf51a7d35cec2e4736e8b916103c76f00",
+        "src/ui/docs/component-examples/item-group.vue": "61a1287cb273712d87b0ac5f9ca659472ae77d5f12a76ac2c3772455ff695274",
+        "src/ui/docs/component-examples/chip-group.vue": "016f26b17dc20cf068e25ab6f63c97f3924befba37c523320e3fb42f398c4468"
+    },
+    "checks": [
+        {
+            "name": "public entry, native attrs/theme/tag, default provider, and UItem slot scope",
+            "details": "The real SFC root kept attrs/style/theme/tag and the default provider; selected IDs and public selected values are distinct, and all UItem slot fields were rendered."
+        },
+        {
+            "name": "legacy/default and renderless UItem, id-based API, legacy value API, and group:selected payload",
+            "details": "Default button and tag=false slots worked; isSelected/select use IDs while toggle/isValueSelected retain their value contract, and group:selected carried { value }."
+        },
+        {
+            "name": "implicit index, explicit null, object comparator, and single array-valued item",
+            "details": "Distinct value shapes selected their matching item without treating a single array model as a multiple-selection array."
+        },
+        {
+            "name": "mandatory boolean and force behavior with disabled/readonly guards",
+            "details": "Boolean mandatory blocks deselection without initializing; force chooses the first enabled entry only when the group is interactive."
+        },
+        {
+            "name": "max, dynamic item/group disabled, and readonly guards",
+            "details": "Selection respected max and live item/group disabled/readonly state without conflating readonly with the native disabled attribute."
+        },
+        {
+            "name": "next/previous empty, cyclic, disabled skipping, and multiple model behavior",
+            "details": "Public exposed navigation skipped disabled entries, wrapped, initialized empty selection, and reduced multiple selection to the target item."
+        },
+        {
+            "name": "keyed reorder, stable identity, omitted-index recalculation, and navigation order",
+            "details": "Reversing keyed children did not remount them; state order, fallback indices, selection and navigation followed rendered order and removal."
+        },
+        {
+            "name": "UBtnToggle and UChipGroup integration",
+            "details": "Button and chip registrations preserved index/explicit values, max, disabled state, selected classes, and their public v-model arrays."
+        },
+        {
+            "name": "UItemGroup form validation and reset integration",
+            "details": "The group rejected invalid input, validated after selection, and restored its setup-time model through both group and form reset APIs."
+        },
+        {
+            "name": "real item/item-group/chip demos",
+            "details": "The shipped examples were clicked through model changes, max, navigation, disabled/readonly guards, and chip selection."
+        }
+    ],
+    "demoInteractions": [
+        "real UItem default/renderless controls and group:selected counter; UItemGroup multi/max/navigation/disabled/readonly controls; UChipGroup selection"
+    ],
+    "screenshots": [
+        {
+            "file": "item-group-wide-light.png",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1100,
+                "documentWidth": 1280
+            },
+            "targetBounds": {
+                "x": 160,
+                "y": 508.265625,
+                "width": 960,
+                "height": 571.453125
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "item-group-wide-dark.png",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1100,
+                "documentWidth": 1280
+            },
+            "targetBounds": {
+                "x": 160,
+                "y": 508.265625,
+                "width": 960,
+                "height": 571.453125
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "item-group-narrow-390.png",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "targetBounds": {
+                "x": 20,
+                "y": 544.046875,
+                "width": 350,
+                "height": 609.84375
+            },
+            "backend": "chrome"
+        }
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "consoleWarnings": [],
+    "httpErrors": [],
+    "requestFailures": [],
+    "limits": [
+        "No Electron renderer, full project build, full test suite, or visual design acceptance was run.",
+        "The fixture validates local source through the public entry; it does not validate the compiled package bundle."
+    ],
+    "previewUrl": "http://127.0.0.1:59119/__item-group-protocols",
+    "serverProbe": [
+        {
+            "name": "virtual-index",
+            "status": 200,
+            "contentType": "text/html; charset=utf-8",
+            "bytes": 979
+        },
+        {
+            "name": "fixture-module",
+            "status": 200,
+            "contentType": "text/javascript",
+            "bytes": 1464
+        }
+    ],
+    "backend": "chrome",
+    "backendLimit": "Chromium browser renderer only; no Electron renderer acceptance is claimed.",
+    "sourceSha256After": {
+        "src/ui/UItem.vue": "242a1148920082b96b5f2d8ca50c79305818007b51b453d0fc8d16aba20e38d8",
+        "src/ui/UItemGroup.vue": "401e09700a769a36f9ce4bdc4bfed1b27aaa9a3b5258cf28d868a2391ea71a02",
+        "src/ui/UChip.vue": "0284c3b2d2c713811df6585137914b14bdd993e5ce5494762e6b667e3dc82fbe",
+        "src/ui/UChipGroup.vue": "73ab2c030fe6aedb0d2d51de4fed265ce9e3a1a5e35f39e4871e6708904e2592",
+        "src/ui/UBtnToggle.vue": "24bfd3ea5c5035f1e556d3aaf3fa451589d6a5802872f146fa4811e77366786b",
+        "src/ui/UiButton.vue": "48e24f461e41e7d4964648b9f6f6c0f5ac4a100efd3faf90d1c4e45b660b4e16",
+        "src/ui/UiForm.vue": "1b18fd9977584313ac87e6e8c466099b4eacf5b9e3fd000ab89d504f0053719c",
+        "src/ui/form.ts": "c1d4d0ac72ffd52f6faa0500827094c086f8efc895b2f277e09119457d6b1974",
+        "src/ui/item-group-state.ts": "789d118784f16f92b5db5d481c48c6033b3a06f5c1473b9d4e265ede77e3dbd2",
+        "src/ui/item-group-context.ts": "8d5752876d284e05a940fa66018c5b1c45e5a8d25302b86c95a0ce6b2c6ce9b6",
+        "src/ui/selection-context.ts": "35d7683736fb53f4e359c5bee8fbcb302275a687f7a43322db8c56c027e204ff",
+        "src/ui/selection.ts": "ca0061e0e573adca029b5afe5ea51bc7e9a4f2d0dbe9721e20867b5e93eb4370",
+        "src/ui/button-group.ts": "bd76d510b6751b62d20797c940067bc3eb9fca7b8f42cd02824613a9bf3673f7",
+        "src/ui/index.ts": "7e7a6ad3ce871f99158d314b977dca0280f436c9f1d09b5abbdc7c6d75e9d2fe",
+        "src/ui/plugin.ts": "bfadbbd64328f25783501efea8d4b11e81a5f8d8a01a20b92091547108bf0023",
+        "src/ui/docs/component-examples/item.vue": "3573542ac3823aa086a543065cca560bf51a7d35cec2e4736e8b916103c76f00",
+        "src/ui/docs/component-examples/item-group.vue": "61a1287cb273712d87b0ac5f9ca659472ae77d5f12a76ac2c3772455ff695274",
+        "src/ui/docs/component-examples/chip-group.vue": "016f26b17dc20cf068e25ab6f63c97f3924befba37c523320e3fb42f398c4468"
+    },
+    "sourceChangedDuringRun": false
+}

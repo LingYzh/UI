@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { UButton, UTextField, USwitch, USnackbarHost, UConfirmHost } from './index';
+import { UButton, UTextField, USwitch, USnackbarHost, UConfirmHost, UList, UListItem } from './index';
 import { useUiThemeWithFallback } from './theme';
 import { previewThemeOptions } from './docs/previewTheme';
 import Icon from '../components/Icon.vue';
@@ -105,13 +105,17 @@ onBeforeUnmount(() => {
             <Transition name="docs-overlay"><button v-if="menuOpen" class="docs-nav-overlay" aria-label="关闭文档导航" @click="menuOpen = false"></button></Transition>
             <aside id="docs-navigation" class="docs-sidebar" :class="{ 'is-open': menuOpen }">
                 <div class="docs-search"><u-text-field ref="searchInput" v-model="search" aria-label="搜索文档" placeholder="搜索文档…" @keydown.enter="searchEnter"><template #leading><Icon name="search" :size="15" /></template><template #trailing><kbd>Ctrl K</kbd></template></u-text-field></div>
-                <nav aria-label="文档导航">
+                <u-list class="docs-navigation" nav :selectable="false" aria-label="文档导航">
                     <div v-for="group in filteredGroups" :key="group.name" class="docs-nav-group">
                         <h2>{{ group.name }}<span>{{ group.pages.length }}</span></h2>
-                        <a v-for="page in group.pages" :key="page.id" :href="`#/${page.id}`" :aria-current="current.id === page.id ? 'page' : undefined" :class="{ active: current.id === page.id }"><span>{{ page.title }}</span><small v-if="page.kind === 'component'">{{ page.name.replace('Ui', '') }}</small><Icon v-else-if="current.id === page.id" name="arrowRight" :size="13" /></a>
+                        <u-list-item :key="page.id" :href="`#/${page.id}`" :title="page.title" :active="current.id === page.id"
+                            :append-text="page.kind === 'component' ? page.name.replace('Ui', '') : undefined"
+                            :append-icon="page.kind !== 'component' && current.id === page.id ? 'arrowRight' : undefined"
+                            v-for="page in group.pages"
+                        />
                     </div>
                     <p v-if="!filteredGroups.length" class="docs-no-results" role="status">未找到“{{ search }}”。试试组件名称，例如 Input。</p>
-                </nav>
+                </u-list>
                 <div class="docs-sidebar-footer"><span class="docs-status-dot"></span><span>与工作台共享实现</span><a href="#/getting-started">接入指南 <Icon name="arrowRight" :size="13" /></a></div>
             </aside>
             <main id="docs-main" ref="content" class="docs-content-scroll" tabindex="-1">

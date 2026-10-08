@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UMessages.vue",
+        "../src/ui/ULabel.vue",
+        "../src/ui/UiMaybeTransition.vue",
+        "../src/ui/defaults.ts",
+        "../src/ui/UDefaultsProvider.vue",
+        "../src/ui/docs/component-examples/messages.vue",
+        "../src/ui/docs/component-examples/label.vue"
+    ]
+}

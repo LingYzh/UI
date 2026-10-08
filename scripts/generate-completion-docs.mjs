@@ -8,7 +8,7 @@ const families = [
     ['表单组件', 'completion-selection', 'FormCompletionDemo', '搜索、创建与对象选择', ['UAutocomplete', 'UCombobox']],
     ['表单组件', 'completion-inputs', 'FormCompletionDemo', '专门输入与统一表单状态', ['UNumberInput', 'UFileInput', 'UFileUpload', 'USlider', 'URangeSlider', 'UOtpInput', 'UColorInput', 'UColorPicker', 'URating']],
     ['表单组件', 'completion-groups', 'FormCompletionDemo', '组管理选择模型', ['USelectionControlGroup', 'USelectionControl', 'URadioGroup', 'UCheckboxGroup', 'UItemGroup', 'UItem', 'UChip', 'UChipGroup', 'UBtnGroup', 'UBtnToggle', 'ULabel', 'UMessages', 'UCounter']],
-    ['表单组件', 'completion-custom-input', 'FormCompletionDemo', '自定义输入与默认配置', ['UInput', 'UValidation', 'UDefaultsProvider', 'ULocaleProvider']],
+    ['表单组件', 'completion-custom-input', 'FormCompletionDemo', '自定义输入与默认配置', ['UField', 'UInput', 'UValidation', 'UDefaultsProvider', 'ULocaleProvider']],
     ['布局组件', 'completion-app', 'LayoutCompletionDemo', '顶部、侧栏、底部与自动内容占位', ['UApp', 'ULayout', 'UMain', 'UAppBar', 'UAppBarTitle', 'UToolbar', 'UToolbarTitle', 'UToolbarItems', 'UFooter', 'USystemBar', 'UNavigationDrawer']],
     ['导航组件', 'completion-lists', 'LayoutCompletionDemo', '列表、树与虚拟滚动', ['UList', 'UListItem', 'UListGroup', 'UListSubheader', 'UListItemTitle', 'UListItemSubtitle', 'UTreeview', 'UVirtualScroll']],
     ['反馈组件', 'completion-surfaces', 'LayoutCompletionDemo', '表面、头像、徽标与占位', ['UAvatar', 'UBadge', 'UDivider', 'USheet', 'UEmptyState', 'USkeletonLoader', 'UBanner', 'UTransition']],
@@ -35,6 +35,13 @@ const titles = {
     UImg: '图片', UResponsive: '比例容器', UHover: '悬停状态', UHotkey: '快捷键', UKbd: '键盘标记', ULazy: '延迟显示', UNoSsr: '客户端内容', UParallax: '视差', UInfiniteScroll: '滚动加载', UPullToRefresh: '下拉刷新', USparkline: '趋势线', UTimeline: '时间线', UTimelineItem: '时间线项', USpeedDial: '快捷操作展开', UFab: '浮动按钮',
 };
 const pages = [];
+const tooltipSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/component-examples/tooltip.vue', import.meta.url), 'utf8'));
+await writeFile(new URL('../src/ui/docs/tooltipProtocolContent.js', import.meta.url), 'export const tooltipProtocolExample = ' + JSON.stringify({ id: 'tooltip-protocols', title: '旧触发器与标准内容插槽', description: '显式standardProtocol使用activator/default；可交互提示、禁用、位置与滚动策略都使用真实组件。旧default触发器协议继续保留。', fullSource: true, code: tooltipSource.replaceAll("from '../../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+families.find(family => family[4].includes('UPicker'))[4].push('UOptionPicker');
+families.find(family => family[4].includes('UHotkey'))[4].push('UHotkeyListener');
+titles.UField = '字段表面';
+titles.UOptionPicker = '选项选择器（旧 Picker）';
+titles.UHotkeyListener = '快捷键监听（旧 Hotkey）';
 titles.ULocaleProvider = '局部语言容器';
 titles.UCode = '行内代码';
 titles.USlideGroup = '滑动选择组';
@@ -42,6 +49,26 @@ titles.USlideGroupItem = '滑动选择项';
 titles.USnackbar = '受控消息';
 titles.USnackbarQueue = '消息队列';
 const focusNotes = {
+    UField: 'UField现为输入装饰表面：七种variant、内侧图标、clear/loader/label插槽、focused模型和标准default scope。输入值由使用者管理。旧布局组件更名UFormField，UiField仍指向旧实现；description/error/layout/controlAttrs保留为扩展。',
+    UPicker: 'UPicker现为标题/header/body/actions容器，支持横向布局、分隔线和尺寸。原items/model选项列表能力保留，独立旧实现更名UOptionPicker。',
+    UOptionPicker: '原UPicker选项列表实现更名保留；本轮没有安排弃用日期。新UPicker承载Vuetify容器职责，并可选择开启items扩展。',
+    UHotkey: '按platform和displayMode展示组合键，支持keyMap、前后文字与组合/或/顺序分隔；listen控制本库trigger监听功能，纯展示可显式关闭。旧监听组件更名UHotkeyListener，未安排弃用日期。',
+    UHotkeyListener: '原UHotkey监听实现更名保留；keys/preventDefault/allowInput/disabled和trigger事件仍使用原协议。',
+    URadioGroup: '可直接组合URadio，组统一管理模型、name、对象比较、禁用和只读；子Radio仍可独立使用v-model。',
+    UWindow: 'disabled动态变化后，公开next/prev、键盘和触摸均读取最新禁用状态；初始空模型的强制组选择首项。',
+    UCounter: 'active默认true，字符串value默认按Unicode码点统计长度，保留本库行为。displayMode="value"直接显示原值；max支持数字和字符串。default插槽提供{counter,max,value}，disabled仅关闭超限着色。',
+    UImg: 'load/error默认仍给原生Event；standardProtocol=true改给浏览器实际currentSrc URL。支持src对象、srcset/sources、lazySrc、aspectRatio与尺寸、cover/position/gradient；lazy由观察器控制src，进入区域后立即请求，避免原生lazy和隐藏图片互等。',
+    UInfiniteScroll: 'direction同时接受旧start/end/both与新vertical/horizontal，side配置新轴值的加载边缘；默认纵向end。两侧状态与完成回调独立，mode支持manual/intersect，reset使旧回调失效，前端追加记录保持滚动位置；status插槽提供side和操作props。',
+    UDataIterator: '默认每页10，items插槽仍给原始项并保持原渲染方式；standardProtocol=true使用包装项、标准容器和分页/选择/展开/分组作用域。itemsLength仅跳过本地切片，过滤和排序仍执行；提供options与currentItems事件。',
+    UParallax: '默认仍使用speed=0.3，支持-1至1（负数反向、0静止）；显式scale改用标准比例与背景缩放。src对象、srcset、lazySrc、图片事件和placeholder/error/sources插槽通过内置UImg实现，load/error给URL。background插槽优先保留自建背景；disabled和减少动效均停止位移。',
+    ULazy: '受控modelValue、options观察参数、tag、六种尺寸和transition；保留rootMargin=100px、once=true、disabled立即显示，以及placeholder与visible作用域。模型重置false可重新观察，once=false支持进出视口卸载。',
+    UResponsive: '比例支持数字或宽/高字符串，并保留宽高推导；补齐min/max尺寸、contentClass、inline与additional层。数字及数字字符串尺寸均按px，CSS长度原样使用。',
+    UMessages: '保留active=true和旧default整体替换；新增active控制、color、transition与每条message插槽。',
+    UItemGroup: 'selected插槽统一为标准内部ID数组，isSelected/select接收该ID，next/prev跳过禁用项；selectedValues提供公开值。旧按值判断使用isValueSelected，toggle按值切换继续保留。mandatory=true只阻止取消最后一项，force还初始选择首个可用项。保留表单校验、按钮组与标签组扩展。',
+    UItem: '默认保留本库按钮，tag=false可只输出标准作用域插槽；提供isSelected/selectedClass/value/disabled/select/toggle和扩展id，旧selected布尔仍保留。value省略按当前组索引，group:selected携带{value:boolean}。',
+    ULocaleProvider: '子语言容器继承祖先自定义文案、fallback和RTL；支持旧fallback及新fallbackLocale（旧属性显式值优先）。messages可使用原扁平键或嵌套字符串字典，扁平同名键优先，支持$vuetify命名空间路径。',
+    UPullToRefresh: '补标准load事件、pullDownThreshold与pullDownPanel(canRefresh/goingUp/refreshing)，旧refresh/threshold=72/indicator仍保留。鼠标与单指触摸均可操作，默认阻尼0.5，resistance可显式设1。reset失效旧done，只检查最近实际滚动视口是否到顶。',
+    UListItem: 'appendIcon沿用Vuetify列表项的右侧图标入口；appendText是本库额外的辅助文本能力，空间不足时优先省略并保留完整title提示。append插槽优先替换两者。nav列表内href保持原生链接和aria-current，方向键/Home/End移动焦点，Enter/Space激活。',
     UToolbar: '标题和操作区内置：title属性或title插槽配置标题，actions插槽直接放按钮（也支持append），无需额外标题/操作组件。extension显示扩展内容；四种密度采用64/56/48/128px。保留本库字体、间距、圆角和按钮尺寸，不注册应用布局占位。',
     UToolbarTitle: '此组件保留用于兼容自定义组合；常用标题直接使用UToolbar的title属性或title插槽。text属性、text插槽与默认插槽均支持，长文本省略，不挤掉操作。',
     UToolbarItems: '此组件保留用于兼容自定义组合；常用操作直接放入UToolbar的actions插槽。color/variant统一下发给按钮，显式属性优先；按钮使用本库圆角、尺寸和间距。',
@@ -64,6 +91,13 @@ for (const [group, example, demo, title, names] of families) {
     }
 }
 await writeFile(new URL('../src/ui/docs/completionContent.js', import.meta.url), '// Generated from root-authored real demos.\nexport const completionPages = ' + JSON.stringify(pages, null, 4) + ';\n');
+// Keep the dedicated-demo registry aligned when public components are added or renamed.
+const componentManifest = pages.map(page => ({
+    name: page.name,
+    example: page.examples[0].id,
+    file: page.examples[0].id.slice('component-'.length) + '.vue'
+}));
+await writeFile(new URL('../src/ui/docs/componentExampleManifest.json', import.meta.url), JSON.stringify(componentManifest, null, 4) + '\n');
 const buttonSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonLoadingDemo.vue', import.meta.url), 'utf8'));
 const buttonAppearanceSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonAppearanceDemo.vue', import.meta.url), 'utf8'));
 await writeFile(new URL('../src/ui/docs/buttonContent.js', import.meta.url), 'export const buttonAppearanceExample = ' + JSON.stringify({ id: 'button-variant-color', title: '样式变体与颜色独立配置', description: '六种 variant 与主题颜色独立组合；也可输入 CSS 颜色。切换禁用和加载，比较表面、边框、前景与尺寸。', fullSource: true, code: buttonAppearanceSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n\nexport const buttonLoadingExample = ' + JSON.stringify({ id: 'button-loading-size', title: '加载时保留尺寸和样式', description: '六种 variant、独立颜色、紧凑、图标、指定宽度与自定义 loader。加载前后保持大小、底色、边框和文字颜色，阻止重复操作。', fullSource: true, code: buttonSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');

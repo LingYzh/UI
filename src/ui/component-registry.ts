@@ -5,7 +5,8 @@ import UTextarea from './UiTextarea.vue';
 import USelect from './UiSelect.vue';
 import USwitch from './UiSwitch.vue';
 import UTooltip from './UiTooltip.vue';
-import UField from './UiField.vue';
+import UFormField from './UiField.vue';
+import UField from './UField.vue';
 import UContainer from './UiContainer.vue';
 import URow from './UiRow.vue';
 import UCol from './UiCol.vue';
@@ -88,6 +89,7 @@ import UFab from './UFab.vue';
 import UFileInput from './UFileInput.vue';
 import UFileUpload from './UFileUpload.vue';
 import UFooter from './UFooter.vue';
+import UHotkeyListener from './UHotkeyListener.vue';
 import UHotkey from './UHotkey.vue';
 import UHover from './UHover.vue';
 import UImg from './UImg.vue';
@@ -114,6 +116,7 @@ import UNumberInput from './UNumberInput.vue';
 import UOtpInput from './UOtpInput.vue';
 import UOverlay from './UOverlay.vue';
 import UParallax from './UParallax.vue';
+import UOptionPicker from './UOptionPicker.vue';
 import UPicker from './UPicker.vue';
 import UProgressCircular from './UProgressCircular.vue';
 import UProgressLinear from './UProgressLinear.vue';
@@ -208,6 +211,7 @@ export const components = {
     USelect,
     USwitch,
     UTooltip,
+    UFormField,
     UField,
     UContainer,
     URow,
@@ -291,6 +295,7 @@ export const components = {
     UFileInput,
     UFileUpload,
     UFooter,
+    UHotkeyListener,
     UHotkey,
     UHover,
     UImg,
@@ -317,6 +322,7 @@ export const components = {
     UOtpInput,
     UOverlay,
     UParallax,
+    UOptionPicker,
     UPicker,
     UProgressCircular,
     UProgressLinear,

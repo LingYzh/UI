@@ -1,55 +1,107 @@
 <script setup lang="ts">
-import { vRipple, type RippleOptions } from './ripple';
+import { ref } from 'vue';
+import DataTableCore from './DataTableCore.vue';
 import { useDefaults } from './defaults';
-import { computed, ref, watch } from 'vue';
-import { getPath, itemKey, processItems, type DataHeader, type DataItem } from './data-pipeline';
+import type {
+    DataTableProps,
+    TablePaginationProps,
+    TableVirtualProps,
+    RowContext,
+    GroupContext,
+    DataTableSlots,
+} from './data-table-types';
+import type { DataGroup, DataOptions, DataRow } from './data-pipeline';
 import type { TableSort } from './table';
-import { vPointerBlur } from './pointer-focus';
-import { uiText } from './locale';
-
-const rawProps = withDefaults(defineProps<{
-    headers: readonly DataHeader[];
-    items: readonly DataItem[];
-    label?: string;
-    itemValue?: string;
-    search?: string;
-    height?: number;
-    itemHeight?: number;
-    overscan?: number;
-    loading?: boolean;
-    disabled?: boolean;
-} & { ripple?: RippleOptions }>(), { ripple: true, label: 'Virtual data table', itemValue: 'id', height: 360, itemHeight: 40, overscan: 5 });
+defineOptions({ inheritAttrs: false });
+const rawProps = withDefaults(
+    defineProps<Omit<DataTableProps, 'hideDefaultFooter'> & TableVirtualProps>(),
+    {
+        ripple: true,
+        rounded: true,
+        hover: true,
+        mobile: undefined,
+        mobileBreakpoint: 'lg',
+        gridlines: 'horizontal',
+        itemValue: 'id',
+        itemTitle: 'title',
+        initialSortOrder: 'asc',
+        selectStrategy: 'page',
+        expandStrategy: 'multiple',
+        items: () => [],
+        label: 'Virtual data table',
+        filterMode: 'intersection',
+        height: 360,
+        itemHeight: 40,
+        overscan: 5,
+    }
+);
 const props = useDefaults(rawProps, 'UDataTableVirtual');
+defineSlots<Omit<DataTableSlots, 'footer' | 'footer.prepend'>>();
+const emit = defineEmits<{
+    'update:options': [options: DataOptions];
+    'update:currentItems': [items: DataRow[]];
+    'click:row': [event: MouseEvent, context: RowContext];
+    'dblclick:row': [event: MouseEvent, context: RowContext];
+    'contextmenu:row': [event: MouseEvent, context: RowContext];
+    'click:groupHeader': [event: MouseEvent, context: GroupContext];
+    'dblclick:groupHeader': [event: MouseEvent, context: GroupContext];
+    'contextmenu:groupHeader': [event: MouseEvent, context: GroupContext];
+    retry: [];
+}>();
 const sortBy = defineModel<TableSort[]>('sortBy', { default: () => [] });
-const scrollTop = ref(0);
-const sorted = computed(() => processItems(props.items, { headers: props.headers, search: props.search, sortBy: sortBy.value }));
-const rowHeight = computed(() => Math.max(24, props.itemHeight));
-const first = computed(() => Math.max(0, Math.floor(scrollTop.value / rowHeight.value) - props.overscan));
-const count = computed(() => Math.ceil(props.height / rowHeight.value) + props.overscan * 2);
-const windowItems = computed(() => sorted.value.slice(first.value, first.value + count.value));
-const before = computed(() => first.value * rowHeight.value);
-const after = computed(() => Math.max(0, (sorted.value.length - first.value - windowItems.value.length) * rowHeight.value));
-watch([() => props.search, sortBy], () => { scrollTop.value = 0; });
-function sort(key: string): void {
-    if (props.loading || props.disabled) return;
-    const current = sortBy.value.find((entry) => entry.key === key);
-    sortBy.value = current?.order === 'asc' ? [{ key, order: 'desc' }] : current?.order === 'desc' ? [] : [{ key, order: 'asc' }];
+const groupBy = defineModel<DataGroup[]>('groupBy', { default: () => [] });
+const selected = defineModel<unknown[]>({ default: () => [] });
+const expanded = defineModel<unknown[]>('expanded', { default: () => [] });
+const opened = defineModel<string[]>('opened', { default: () => [] });
+const core = ref<InstanceType<typeof DataTableCore>>();
+function scrollToIndex(index: number) {
+    core.value?.scrollToIndex(index);
 }
+function setPage(value: number) {
+    core.value?.setPage(value);
+}
+function setItemsPerPage(value: number) {
+    core.value?.setItemsPerPage(value);
+}
+function toggleSort(column: string | { key?: string }, event?: MouseEvent, mandatory?: boolean) {
+    core.value?.toggleSort(column, event, mandatory);
+}
+function selectAll(value: boolean) {
+    core.value?.selectAll(value);
+}
+defineExpose({ scrollToIndex, toggleSort, selectAll });
 </script>
 
 <template>
-    <div class="u-data-table u-data-table-virtual" :style="{ height: `${props.height}px` }" :aria-busy="props.loading || undefined" @scroll="scrollTop = ($event.target as HTMLElement).scrollTop">
-        <table :aria-label="props.label">
-            <thead><tr><th v-for="header in props.headers" :key="header.key" scope="col" :style="{ width: header.width, textAlign: header.align }" :aria-sort="header.sortable ? (sortBy.find((entry) => entry.key === header.key)?.order === 'asc' ? 'ascending' : sortBy.find((entry) => entry.key === header.key)?.order === 'desc' ? 'descending' : 'none') : undefined"><button v-ripple="props.ripple" v-if="header.sortable" v-pointer-blur type="button" :disabled="props.disabled || props.loading" :aria-label="uiText('table.sort', { title: header.title })" @click="sort(header.key)"><slot :name="`header.${header.key}`" :header="header">{{ header.title }}</slot><svg class="ui-table-sort-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 2 10 6H2Z" :class="{ 'is-active': sortBy.find((entry) => entry.key === header.key)?.order === 'asc' }" /><path d="M2 10H10L6 14Z" :class="{ 'is-active': sortBy.find((entry) => entry.key === header.key)?.order === 'desc' }" /></svg></button><slot v-else :name="`header.${header.key}`" :header="header">{{ header.title }}</slot></th></tr></thead>
-            <tbody>
-                <tr v-if="props.loading"><td :colspan="props.headers.length"><slot name="loading">Loading…</slot></td></tr>
-                <template v-else>
-                    <tr v-if="before" aria-hidden="true" :style="{ height: `${before}px` }"><td :colspan="props.headers.length" /></tr>
-                    <tr v-for="(item, index) in windowItems" :key="itemKey(item, props.itemValue, first + index)" :style="{ height: `${rowHeight}px` }"><td v-for="header in props.headers" :key="header.key" :style="{ textAlign: header.align }"><slot :name="`item.${header.key}`" :item="item" :value="getPath(item, header.value ?? header.key)" :index="first + index">{{ getPath(item, header.value ?? header.key) ?? '—' }}</slot></td></tr>
-                    <tr v-if="after" aria-hidden="true" :style="{ height: `${after}px` }"><td :colspan="props.headers.length" /></tr>
-                    <tr v-if="!sorted.length"><td :colspan="props.headers.length"><slot name="no-data">No data</slot></td></tr>
-                </template>
-            </tbody>
-        </table>
-    </div>
+    <DataTableCore
+        ref="core"
+        v-bind="{ ...$attrs, ...props }"
+        virtual
+        v-model:sort-by="sortBy"
+        v-model:group-by="groupBy"
+        v-model="selected"
+        v-model:expanded="expanded"
+        v-model:opened="opened"
+        @update:options="emit('update:options', $event)"
+        @update:current-items="emit('update:currentItems', $event)"
+        @click:row="(event, context) => emit('click:row', event, context)"
+        @dblclick:row="(event, context) => emit('dblclick:row', event, context)"
+        @contextmenu:row="(event, context) => emit('contextmenu:row', event, context)"
+        @click:group-header="(event, context) => emit('click:groupHeader', event, context)"
+        @dblclick:group-header="(event, context) => emit('dblclick:groupHeader', event, context)"
+        @contextmenu:group-header="
+            (event, context) => emit('contextmenu:groupHeader', event, context)
+        "
+        @retry="emit('retry')"
+    >
+        <template
+            v-for="name in (Object.keys($slots) as Array<keyof DataTableSlots>).filter(
+                (name) => name !== 'footer' && name !== 'footer.prepend'
+            )"
+            #[name]="scope"
+        >
+            <!-- 动态 name 与 scope 在同一转发链中配对；模板类型系统无法表达此相关性。 -->
+            <slot :name="name" v-bind="scope as any" />
+        </template>
+    </DataTableCore>
 </template>

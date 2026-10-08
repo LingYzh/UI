@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/ULazy.vue",
+        "../src/ui/UResponsive.vue",
+        "../src/ui/UiMaybeTransition.vue",
+        "../src/ui/UCounter.vue",
+        "../src/ui/appearance.ts",
+        "../src/ui/UField.vue",
+        "../src/ui/UPicker.vue",
+        "../src/ui/UHotkey.vue",
+        "../src/ui/UiTooltip.vue",
+        "../src/ui/docs/component-examples/tooltip.vue",
+        "../src/ui/docs/component-examples/lazy.vue",
+        "../src/ui/docs/component-examples/responsive.vue"
+    ]
+}

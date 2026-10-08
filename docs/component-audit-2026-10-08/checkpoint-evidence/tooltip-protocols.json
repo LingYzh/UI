@@ -1,0 +1,216 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + Electron",
+    "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\tooltip-protocols",
+    "sourceSha256": "6be59af6edd96ed241466eee10b6c01044182d4055d4e84db1cfc0bd0ed5bda6",
+    "registry": {
+        "namedComponent": true,
+        "globalName": true
+    },
+    "legacy": {
+        "tabFocus": true,
+        "defaultTrigger": {
+            "triggerTop": 597.2000122070312,
+            "tooltipBottom": 589.2000389099121,
+            "text": "legacy default text",
+            "popover": "manual",
+            "open": true
+        },
+        "scrollClose": true,
+        "persistentEscapeCloses": true,
+        "namedContent": true
+    },
+    "standard": {
+        "scope": {
+            "activatorActive": false,
+            "propsDescribedBy": "standard-tip",
+            "activatorRefType": "function",
+            "targetRefType": "function",
+            "contentIsRef": true,
+            "contentActive": false
+        },
+        "targetRefGeometry": {
+            "anchorTop": 900,
+            "tooltipTop": 857.4000244140625,
+            "tooltipHeight": 34.60000228881836
+        },
+        "updates": [
+            true,
+            false
+        ],
+        "userClicks": 1,
+        "keydown": [
+            "ArrowDown"
+        ],
+        "afterEnter": 1,
+        "afterLeave": 1
+    },
+    "timing": {
+        "openDelay": true,
+        "closeDelay": true,
+        "disabledPendingOpen": {
+            "remainsClosed": true,
+            "updates": []
+        },
+        "unmountPendingOpen": true
+    },
+    "interactive": {
+        "contentHoverKeepsOpen": true,
+        "contentClickCanClose": true,
+        "mouseCanMoveIntoContent": true,
+        "closeContentUpdates": [
+            true,
+            false
+        ]
+    },
+    "outside": {
+        "outsidePayloadTarget": "outside-area",
+        "nonPersistentCloses": true,
+        "persistentIgnoresOutsideAndEscape": true,
+        "persistentExposedClose": true,
+        "closeOnBack": true
+    },
+    "controlled": {
+        "emitsOpenAndCloseWithoutMutatingParentModel": true,
+        "parentModelUpdatesControlVisibility": true
+    },
+    "external": {
+        "activatorAttrsApplied": {
+            "title": "temporary activator title",
+            "describedBy": "external-tip",
+            "bound": "yes"
+        },
+        "originalAttrsRestored": {
+            "title": "original activator title",
+            "describedBy": "existing-description",
+            "bound": null
+        },
+        "clickOpens": true
+    },
+    "positioning": {
+        "clickModeSurvivesPointerLeave": true,
+        "bottomStartOffsetsAndElementTarget": {
+            "anchor": {
+                "left": 150,
+                "top": 900,
+                "bottom": 936
+            },
+            "tooltip": {
+                "left": 162,
+                "top": 946,
+                "width": 120,
+                "height": 40
+            },
+            "style": {
+                "width": "120px",
+                "height": "40px",
+                "minWidth": "100px",
+                "minHeight": "30px",
+                "maxWidth": "180px",
+                "maxHeight": "60px",
+                "backgroundColor": "var(--ui-theme-rebeccapurple, rebeccapurple)",
+                "colorScheme": "dark"
+            },
+            "theme": "dark",
+            "title": "position content title",
+            "contentAttribute": "preserved",
+            "triggerDescribedBy": "position-tip",
+            "role": "tooltip",
+            "ariaHidden": "false"
+        },
+        "reactiveLocation": {
+            "anchor": {
+                "left": 150,
+                "top": 900
+            },
+            "tooltip": {
+                "left": 162,
+                "top": 850,
+                "height": 40
+            }
+        },
+        "scrollReposition": {
+            "before": {
+                "top": 850,
+                "anchor": 900,
+                "styleTop": "850px",
+                "scrollY": 0
+            },
+            "after": {
+                "top": 730,
+                "anchor": 780,
+                "styleTop": "730px",
+                "scrollY": 120,
+                "ariaHidden": "false",
+                "popoverOpen": true
+            }
+        },
+        "coordinateFlipAndClamp": {
+            "left": 8,
+            "top": 18,
+            "right": 108,
+            "bottom": 58,
+            "width": 1266,
+            "height": 1038
+        }
+    },
+    "scrolling": {
+        "closeOnScroll": true,
+        "reposition": true,
+        "noneRemainsOpen": true,
+        "blockLockReferenceCounted": true,
+        "originalOverflow": ""
+    },
+    "placementModes": {
+        "attach": "#attach-destination",
+        "contained": {
+            "popover": null,
+            "contained": true,
+            "wrapper": true,
+            "position": "absolute"
+        },
+        "eagerFalse": true,
+        "staticLocationStrategy": {
+            "left": "",
+            "top": "",
+            "strategy": "manual"
+        }
+    },
+    "demo": {
+        "source": "src/ui/docs/component-examples/tooltip.vue",
+        "screenshots": 3
+    },
+    "limits": [
+        "Scrim behavior was not claimed or tested.",
+        "Function-valued positioning strategies and custom transition objects were not claimed or tested."
+    ],
+    "errors": [],
+    "screenshots": [
+        {
+            "file": "demo-wide-light.png",
+            "component": "UTooltip",
+            "capture": "locator",
+            "theme": "light",
+            "width": 1280,
+            "height": 1500,
+            "zoom": 1
+        },
+        {
+            "file": "demo-wide-dark.png",
+            "component": "UTooltip",
+            "capture": "locator",
+            "theme": "dark",
+            "width": 1280,
+            "height": 1500,
+            "zoom": 1
+        },
+        {
+            "file": "demo-narrow-light.png",
+            "component": "UTooltip",
+            "capture": "locator",
+            "theme": "light",
+            "width": 390,
+            "height": 1500,
+            "zoom": 1
+        }
+    ]
+}

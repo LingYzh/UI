@@ -1,0 +1,4127 @@
+[
+    {
+        "name": "UButton",
+        "file": "src/ui/UiButton.vue",
+        "group": "操作组件",
+        "page": "button",
+        "upstream": {
+            "name": "VBtn",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBtn/VBtn.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBtn/VBtn.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "value",
+                "disabled",
+                "selectedClass",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "loading",
+                "position",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "active",
+                "activeColor",
+                "baseColor",
+                "symbol",
+                "flat",
+                "icon",
+                "prependIcon",
+                "appendIcon",
+                "block",
+                "readonly",
+                "slim",
+                "stacked",
+                "spaced",
+                "ripple",
+                "text"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBtn/VBtn.tsx"
+        },
+        "local": {
+            "props": [
+                "variant",
+                "size",
+                "density",
+                "color",
+                "value",
+                "selectedClass",
+                "href",
+                "to",
+                "loading",
+                "disabled",
+                "icon",
+                "type",
+                "ripple",
+                "dense",
+                "ghost",
+                "rounded"
+            ],
+            "events": [],
+            "slots": [
+                "loader",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "tile",
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position",
+            "replace",
+            "exact",
+            "active",
+            "activeColor",
+            "baseColor",
+            "symbol",
+            "flat",
+            "prependIcon",
+            "appendIcon",
+            "block",
+            "readonly",
+            "slim",
+            "stacked",
+            "spaced",
+            "text"
+        ],
+        "examples": [
+            {
+                "id": "button-variants",
+                "fullSource": false
+            },
+            {
+                "id": "button-states",
+                "fullSource": false
+            },
+            {
+                "id": "button-shared-variants",
+                "fullSource": false
+            },
+            {
+                "id": "button-danger",
+                "fullSource": false
+            },
+            {
+                "id": "button-variant-color",
+                "fullSource": true
+            },
+            {
+                "id": "button-loading-size",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTooltip",
+        "file": "src/ui/UiTooltip.vue",
+        "group": "反馈组件",
+        "page": "tooltip",
+        "upstream": {
+            "name": "VTooltip",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTooltip/VTooltip.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTooltip/VTooltip.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "eager",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex",
+                "id",
+                "interactive",
+                "text",
+                "color"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTooltip/VTooltip.tsx"
+        },
+        "local": {
+            "props": [
+                "text",
+                "focusable",
+                "modelValue",
+                "location",
+                "openOnHover",
+                "openOnFocus",
+                "openOnClick",
+                "openDelay",
+                "closeDelay",
+                "persistent"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "scrollStrategy",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "target",
+            "activator",
+            "activatorProps",
+            "closeOnContentClick",
+            "eager",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "noClickAnimation",
+            "scrim",
+            "zIndex",
+            "id",
+            "interactive",
+            "color"
+        ],
+        "examples": [
+            {
+                "id": "tooltip-capability",
+                "fullSource": false
+            },
+            {
+                "id": "layout-form-tooltip",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDialog",
+        "file": "src/ui/UiDialog.vue",
+        "group": "反馈组件",
+        "page": "dialog",
+        "upstream": {
+            "name": "VDialog",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDialog/VDialog.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDialog/VDialog.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "retainFocus",
+                "captureFocus",
+                "eager",
+                "absolute",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex",
+                "fullscreen",
+                "scrollable"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDialog/VDialog.tsx"
+        },
+        "local": {
+            "props": [
+                "theme",
+                "open",
+                "modelValue",
+                "persistent",
+                "fullscreen",
+                "scrollable",
+                "error",
+                "contentLabel",
+                "size",
+                "placement"
+            ],
+            "events": [
+                "update:open",
+                "update:modelValue",
+                "present-change",
+                "opened",
+                "closed"
+            ],
+            "slots": [
+                "header",
+                "default",
+                "footer"
+            ]
+        },
+        "potentialMissingProps": [
+            "locationStrategy",
+            "location",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "scrollStrategy",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "retainFocus",
+            "captureFocus",
+            "eager",
+            "absolute",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "noClickAnimation",
+            "scrim",
+            "zIndex"
+        ],
+        "examples": [
+            {
+                "id": "dialog-scrollable",
+                "fullSource": false
+            },
+            {
+                "id": "dialog-lifecycle",
+                "fullSource": false
+            },
+            {
+                "id": "dialog-sizes",
+                "fullSource": false
+            },
+            {
+                "id": "layout-form-dialog",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USnackbarHost",
+        "file": "src/ui/UiSnackbarHost.vue",
+        "group": "反馈组件",
+        "page": "snackbar-host",
+        "upstream": null,
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "snackbar-playground",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UCodeBlock",
+        "file": "src/ui/UiCodeBlock.vue",
+        "group": "内容组件",
+        "page": "code-block",
+        "upstream": null,
+        "local": {
+            "props": [
+                "code",
+                "language",
+                "maxHeight",
+                "streaming",
+                "dense",
+                "ghost",
+                "rounded"
+            ],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "code-highlight",
+                "fullSource": false
+            },
+            {
+                "id": "code-block-shared-variants",
+                "fullSource": false
+            },
+            {
+                "id": "code-height",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTable",
+        "file": "src/ui/UiTable.vue",
+        "group": "内容组件",
+        "page": "table",
+        "upstream": {
+            "name": "VTable",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTable/VTable.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTable/VTable.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "density",
+                "tag",
+                "gridlines",
+                "fixedHeader",
+                "fixedFooter",
+                "height",
+                "hover",
+                "striped"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTable/VTable.tsx"
+        },
+        "local": {
+            "props": [
+                "label",
+                "height",
+                "fixedHeader",
+                "fixedFooter",
+                "gridlines",
+                "hover",
+                "striped",
+                "density",
+                "dense",
+                "ghost",
+                "rounded",
+                "tag",
+                "theme",
+                "ripple",
+                "headers",
+                "items",
+                "itemValue",
+                "loading",
+                "emptyText",
+                "sortBy",
+                "disabled"
+            ],
+            "events": [
+                "sort"
+            ],
+            "slots": [
+                "top",
+                "wrapper",
+                "default",
+                "header.*",
+                "loading",
+                "item.*",
+                "no-data",
+                "bottom"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "table-basic",
+                "fullSource": true
+            },
+            {
+                "id": "table-fixed",
+                "fullSource": true
+            },
+            {
+                "id": "table-variants",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-layout",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDataTableServer",
+        "file": "src/ui/UiDataTableServer.vue",
+        "group": "内容组件",
+        "page": "data-table-server",
+        "upstream": {
+            "name": "VDataTableServer",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTableServer.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTableServer.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "expandOnClick",
+                "showExpand",
+                "expanded",
+                "expandStrategy",
+                "initialSortOrder",
+                "sortBy",
+                "customKeySort",
+                "multiSort",
+                "mustSort",
+                "groupBy",
+                "opened",
+                "openAll",
+                "groupKey",
+                "items",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "returnObject",
+                "showSelect",
+                "selectStrategy",
+                "modelValue",
+                "valueComparator",
+                "density",
+                "tag",
+                "loading",
+                "page",
+                "itemsPerPage",
+                "pageBy",
+                "showFirstLastPage",
+                "color",
+                "prevIcon",
+                "nextIcon",
+                "firstIcon",
+                "lastIcon",
+                "itemsPerPageText",
+                "pageText",
+                "firstPageLabel",
+                "prevPageLabel",
+                "nextPageLabel",
+                "lastPageLabel",
+                "itemsPerPageOptions",
+                "showCurrentPage",
+                "headers",
+                "disableSort",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "headerProps",
+                "selectAllLabel",
+                "sticky",
+                "groupCollapseIcon",
+                "groupExpandIcon",
+                "collapseIcon",
+                "expandIcon",
+                "getMatches",
+                "loadingText",
+                "hideNoData",
+                "noDataText",
+                "expandTransition",
+                "gridlines",
+                "fixedHeader",
+                "fixedFooter",
+                "height",
+                "hover",
+                "striped",
+                "hideDefaultBody",
+                "hideDefaultFooter",
+                "hideDefaultHeader",
+                "width",
+                "search",
+                "itemsLength"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataTable/VDataTableServer.tsx"
+        },
+        "local": {
+            "props": [
+                "label",
+                "height",
+                "fixedHeader",
+                "fixedFooter",
+                "gridlines",
+                "hover",
+                "striped",
+                "density",
+                "dense",
+                "ghost",
+                "rounded",
+                "tag",
+                "theme",
+                "ripple",
+                "headers",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "headerProps",
+                "search",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "showSelect",
+                "selectStrategy",
+                "valueComparator",
+                "returnObject",
+                "showExpand",
+                "expandOnClick",
+                "expandStrategy",
+                "expandTransition",
+                "multiSort",
+                "mustSort",
+                "disableSort",
+                "initialSortOrder",
+                "customKeySort",
+                "openAll",
+                "groupKey",
+                "loading",
+                "loadingText",
+                "noDataText",
+                "hideNoData",
+                "error",
+                "disabled",
+                "hideDefaultFooter",
+                "hideDefaultHeader",
+                "hideDefaultBody",
+                "width",
+                "sticky",
+                "mobile",
+                "mobileBreakpoint",
+                "color",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "expandIcon",
+                "collapseIcon",
+                "groupExpandIcon",
+                "groupCollapseIcon",
+                "selectAllLabel",
+                "selectRowLabel",
+                "getMatches",
+                "pageBy",
+                "itemsPerPageOptions",
+                "itemsPerPageText",
+                "pageText",
+                "showCurrentPage",
+                "showFirstLastPage",
+                "firstIcon",
+                "lastIcon",
+                "prevIcon",
+                "nextIcon",
+                "firstPageLabel",
+                "lastPageLabel",
+                "prevPageLabel",
+                "nextPageLabel",
+                "itemsLength",
+                "page",
+                "itemsPerPage",
+                "sortBy",
+                "groupBy",
+                "modelValue",
+                "expanded",
+                "opened"
+            ],
+            "events": [
+                "update:options",
+                "update:currentItems",
+                "click:row",
+                "dblclick:row",
+                "contextmenu:row",
+                "click:groupHeader",
+                "dblclick:groupHeader",
+                "contextmenu:groupHeader",
+                "retry",
+                "update:page",
+                "update:itemsPerPage",
+                "update:sortBy",
+                "update:groupBy",
+                "update:modelValue",
+                "update:expanded",
+                "update:opened"
+            ],
+            "slots": [
+                "default",
+                "top",
+                "bottom",
+                "wrapper",
+                "caption",
+                "colgroup",
+                "headers",
+                "mobile.header",
+                "loader",
+                "thead",
+                "tbody",
+                "tfoot",
+                "body",
+                "body.prepend",
+                "body.append",
+                "loading",
+                "no-data",
+                "error",
+                "item",
+                "expanded-row",
+                "expanded",
+                "group-header",
+                "group-summary",
+                "group-header.data-table-group",
+                "group-header.data-table-select",
+                "data-table-group",
+                "data-table-select",
+                "footer",
+                "footer.prepend",
+                "header.*",
+                "item.*"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "table-server",
+                "fullSource": true
+            },
+            {
+                "id": "server-variants",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-server",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UIcon",
+        "file": "src/components/Icon.vue",
+        "group": "内容组件",
+        "page": "icons",
+        "upstream": {
+            "name": "VIcon",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VIcon/VIcon.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VIcon/VIcon.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "size",
+                "tag",
+                "color",
+                "disabled",
+                "start",
+                "end",
+                "icon",
+                "opacity"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VIcon/VIcon.tsx"
+        },
+        "local": {
+            "props": [
+                "name",
+                "icon",
+                "color",
+                "path",
+                "label",
+                "size"
+            ],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "disabled",
+            "start",
+            "end",
+            "opacity"
+        ],
+        "examples": [
+            {
+                "id": "layout-icons",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UActivity",
+        "file": "src/ui/UiActivity.vue",
+        "group": "内容组件",
+        "page": "activity",
+        "upstream": null,
+        "local": {
+            "props": [
+                "title",
+                "status",
+                "tone",
+                "scrollable",
+                "variant",
+                "icon",
+                "filename",
+                "added",
+                "removed",
+                "ripple",
+                "open"
+            ],
+            "events": [
+                "update:open"
+            ],
+            "slots": [
+                "default",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "activity-basic",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UDiff",
+        "file": "src/ui/UiDiff.vue",
+        "group": "内容组件",
+        "page": "diff",
+        "upstream": null,
+        "local": {
+            "props": [
+                "before",
+                "after",
+                "path",
+                "proposed",
+                "compact",
+                "inspectable",
+                "ripple"
+            ],
+            "events": [
+                "inspect"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "diff-content",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UMarkdown",
+        "file": "src/ui/UiMarkdown.vue",
+        "group": "内容组件",
+        "page": "markdown",
+        "upstream": null,
+        "local": {
+            "props": [
+                "source",
+                "streaming"
+            ],
+            "events": [
+                "link-click",
+                "rendered"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "markdown-rich",
+                "fullSource": false
+            },
+            {
+                "id": "markdown-navigation",
+                "fullSource": false
+            },
+            {
+                "id": "markdown-streaming",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UFileChanges",
+        "file": "src/ui/UiFileChanges.vue",
+        "group": "内容组件",
+        "page": "file-changes",
+        "upstream": null,
+        "local": {
+            "props": [
+                "title",
+                "items",
+                "ripple"
+            ],
+            "events": [
+                "select",
+                "view-all"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "conversation-inline",
+                "fullSource": false
+            },
+            {
+                "id": "conversation-file-states",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UMessageActions",
+        "file": "src/ui/UiMessageActions.vue",
+        "group": "操作组件",
+        "page": "message-actions",
+        "upstream": null,
+        "local": {
+            "props": [
+                "label",
+                "actions",
+                "ripple"
+            ],
+            "events": [
+                "action"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "conversation-actions",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UUsageMeter",
+        "file": "src/ui/UiUsageMeter.vue",
+        "group": "内容组件",
+        "page": "usage-meter",
+        "upstream": null,
+        "local": {
+            "props": [
+                "used",
+                "capacity",
+                "estimated",
+                "label",
+                "compact",
+                "disabled",
+                "segments",
+                "compositionLabel",
+                "compositionEstimated",
+                "ripple"
+            ],
+            "events": [
+                "inspect"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "usage-meter-basic",
+                "fullSource": false
+            }
+        ]
+    },
+    {
+        "name": "UChip",
+        "file": "src/ui/UChip.vue",
+        "group": "内容组件",
+        "page": "chip",
+        "upstream": {
+            "name": "VChip",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VChip/VChip.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VChip/VChip.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "value",
+                "disabled",
+                "selectedClass",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "activeClass",
+                "appendAvatar",
+                "appendIcon",
+                "baseColor",
+                "closable",
+                "closeIcon",
+                "closeLabel",
+                "draggable",
+                "filter",
+                "filterIcon",
+                "label",
+                "link",
+                "pill",
+                "prependAvatar",
+                "prependIcon",
+                "ripple",
+                "text",
+                "modelValue",
+                "onClick",
+                "onClickOnce"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VChip/VChip.tsx"
+        },
+        "local": {
+            "props": [
+                "value",
+                "disabled",
+                "closable",
+                "selected",
+                "tone",
+                "variant",
+                "color",
+                "dense",
+                "closeLabel",
+                "ripple"
+            ],
+            "events": [
+                "close"
+            ],
+            "slots": [
+                "icon",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "size",
+            "tag",
+            "selectedClass",
+            "href",
+            "replace",
+            "to",
+            "exact",
+            "activeClass",
+            "appendAvatar",
+            "appendIcon",
+            "baseColor",
+            "closeIcon",
+            "draggable",
+            "filter",
+            "filterIcon",
+            "label",
+            "link",
+            "pill",
+            "prependAvatar",
+            "prependIcon",
+            "text",
+            "modelValue",
+            "onClick",
+            "onClickOnce"
+        ],
+        "examples": [
+            {
+                "id": "badge-tones",
+                "fullSource": true
+            },
+            {
+                "id": "badge-custom",
+                "fullSource": true
+            },
+            {
+                "id": "component-chip",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UAlert",
+        "file": "src/ui/UiAlert.vue",
+        "group": "反馈组件",
+        "page": "alert",
+        "upstream": {
+            "name": "VAlert",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VAlert/VAlert.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VAlert/VAlert.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "iconSize",
+                "iconSizes",
+                "border",
+                "borderColor",
+                "closable",
+                "closeIcon",
+                "closeLabel",
+                "icon",
+                "modelValue",
+                "prominent",
+                "title",
+                "text",
+                "type"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VAlert/VAlert.tsx"
+        },
+        "local": {
+            "props": [
+                "tone",
+                "title",
+                "dense"
+            ],
+            "events": [],
+            "slots": [
+                "icon",
+                "default",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color",
+            "variant",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position",
+            "iconSize",
+            "iconSizes",
+            "border",
+            "borderColor",
+            "closable",
+            "closeIcon",
+            "closeLabel",
+            "icon",
+            "modelValue",
+            "prominent",
+            "text",
+            "type"
+        ],
+        "examples": [
+            {
+                "id": "alert-tones",
+                "fullSource": true
+            },
+            {
+                "id": "alert-actions",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USpinner",
+        "file": "src/ui/UiSpinner.vue",
+        "group": "反馈组件",
+        "page": "spinner",
+        "upstream": null,
+        "local": {
+            "props": [
+                "size",
+                "label"
+            ],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "spinner-states",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UMenu",
+        "file": "src/ui/UiMenu.vue",
+        "group": "操作组件",
+        "page": "menu",
+        "upstream": {
+            "name": "VMenu",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VMenu/VMenu.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VMenu/VMenu.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "retainFocus",
+                "captureFocus",
+                "disableInitialFocus",
+                "eager",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex",
+                "_disableKeys",
+                "id",
+                "submenu",
+                "openOnArrow"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VMenu/VMenu.tsx"
+        },
+        "local": {
+            "props": [
+                "placement",
+                "location",
+                "modelValue",
+                "open",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "openDelay",
+                "closeDelay",
+                "persistent",
+                "panel",
+                "label"
+            ],
+            "events": [
+                "update:open",
+                "update:modelValue"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "scrollStrategy",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "target",
+            "activator",
+            "activatorProps",
+            "closeOnContentClick",
+            "retainFocus",
+            "captureFocus",
+            "disableInitialFocus",
+            "eager",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "noClickAnimation",
+            "scrim",
+            "zIndex",
+            "_disableKeys",
+            "id",
+            "submenu",
+            "openOnArrow"
+        ],
+        "examples": [
+            {
+                "id": "menu-items",
+                "fullSource": true
+            },
+            {
+                "id": "menu-panel",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UMenuItem",
+        "file": "src/ui/UiMenuItem.vue",
+        "group": "操作组件",
+        "page": "menu-item",
+        "upstream": null,
+        "local": {
+            "props": [
+                "checked",
+                "disabled",
+                "danger",
+                "keepOpen",
+                "ripple"
+            ],
+            "events": [
+                "click"
+            ],
+            "slots": [
+                "icon",
+                "default",
+                "trailing"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "layout-menu-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UConfirmHost",
+        "file": "src/ui/UiConfirmHost.vue",
+        "group": "反馈组件",
+        "page": "confirm-host",
+        "upstream": null,
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "layout-confirm-host",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UProgress",
+        "file": "src/ui/UiProgress.vue",
+        "group": "反馈组件",
+        "page": "progress",
+        "upstream": null,
+        "local": {
+            "props": [
+                "value",
+                "max",
+                "tone",
+                "dense",
+                "label"
+            ],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "progress-tones",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UCopyButton",
+        "file": "src/ui/UiCopyButton.vue",
+        "group": "操作组件",
+        "page": "copy-button",
+        "upstream": null,
+        "local": {
+            "props": [
+                "text",
+                "label",
+                "copiedLabel",
+                "dense",
+                "disabled"
+            ],
+            "events": [
+                "copied",
+                "error"
+            ],
+            "slots": []
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "copy-inline",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UAvatar",
+        "file": "src/ui/UAvatar.vue",
+        "group": "反馈组件",
+        "page": "avatar",
+        "upstream": {
+            "name": "VAvatar",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VAvatar/VAvatar.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VAvatar/VAvatar.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "density",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "badge",
+                "start",
+                "end",
+                "icon",
+                "image",
+                "text"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VAvatar/VAvatar.tsx"
+        },
+        "local": {
+            "props": [
+                "image",
+                "icon",
+                "text",
+                "alt",
+                "size",
+                "rounded",
+                "color"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "density",
+            "tile",
+            "tag",
+            "variant",
+            "badge",
+            "start",
+            "end"
+        ],
+        "examples": [
+            {
+                "id": "component-avatar",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBadge",
+        "file": "src/ui/UBadge.vue",
+        "group": "反馈组件",
+        "page": "badge",
+        "upstream": {
+            "name": "VBadge",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBadge/VBadge.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBadge/VBadge.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "rounded",
+                "tile",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "transition",
+                "bordered",
+                "color",
+                "content",
+                "dot",
+                "dotSize",
+                "floating",
+                "icon",
+                "inline",
+                "label",
+                "max",
+                "modelValue",
+                "offsetX",
+                "offsetY",
+                "textColor"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBadge/VBadge.tsx"
+        },
+        "local": {
+            "props": [
+                "content",
+                "dot",
+                "max",
+                "color",
+                "location",
+                "offsetX",
+                "offsetY",
+                "modelValue",
+                "inline"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "rounded",
+            "tile",
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "bordered",
+            "dotSize",
+            "floating",
+            "icon",
+            "label",
+            "textColor"
+        ],
+        "examples": [
+            {
+                "id": "component-badge",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UBanner",
+        "file": "src/ui/UBanner.vue",
+        "group": "反馈组件",
+        "page": "banner",
+        "upstream": {
+            "name": "VBanner",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VBanner/VBanner.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VBanner/VBanner.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "avatar",
+                "bgColor",
+                "color",
+                "icon",
+                "lines",
+                "stacked",
+                "sticky",
+                "text"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VBanner/VBanner.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "icon",
+                "text",
+                "color",
+                "sticky",
+                "ripple"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "icon",
+                "default",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "mobile",
+            "mobileBreakpoint",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position",
+            "avatar",
+            "bgColor",
+            "lines",
+            "stacked"
+        ],
+        "examples": [
+            {
+                "id": "component-banner",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UCode",
+        "file": "src/ui/UCode.vue",
+        "group": "内容组件",
+        "page": "code",
+        "upstream": null,
+        "local": {
+            "props": [
+                "tag"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-code",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDataIterator",
+        "file": "src/ui/UDataIterator.vue",
+        "group": "内容组件",
+        "page": "data-iterator",
+        "upstream": {
+            "name": "VDataIterator",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDataIterator/VDataIterator.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDataIterator/VDataIterator.d.ts",
+            "props": [
+                "class",
+                "style",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "expandOnClick",
+                "showExpand",
+                "expanded",
+                "expandStrategy",
+                "initialSortOrder",
+                "sortBy",
+                "customKeySort",
+                "multiSort",
+                "mustSort",
+                "groupBy",
+                "opened",
+                "openAll",
+                "groupKey",
+                "showSelect",
+                "selectStrategy",
+                "modelValue",
+                "valueComparator",
+                "tag",
+                "transition",
+                "page",
+                "itemsPerPage",
+                "pageBy",
+                "items",
+                "itemValue",
+                "itemSelectable",
+                "returnObject",
+                "search",
+                "loading",
+                "itemsLength"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataIterator/VDataIterator.tsx"
+        },
+        "local": {
+            "props": [
+                "items",
+                "headers",
+                "search",
+                "customFilter",
+                "disabled",
+                "itemsPerPage",
+                "page",
+                "sortBy"
+            ],
+            "events": [
+                "update:page",
+                "update:sortBy"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "customKeyFilter",
+            "filterKeys",
+            "filterMode",
+            "ignoreAccents",
+            "noFilter",
+            "expandOnClick",
+            "showExpand",
+            "expanded",
+            "expandStrategy",
+            "initialSortOrder",
+            "customKeySort",
+            "multiSort",
+            "mustSort",
+            "groupBy",
+            "opened",
+            "openAll",
+            "groupKey",
+            "showSelect",
+            "selectStrategy",
+            "modelValue",
+            "valueComparator",
+            "tag",
+            "transition",
+            "pageBy",
+            "itemValue",
+            "itemSelectable",
+            "returnObject",
+            "loading",
+            "itemsLength"
+        ],
+        "examples": [
+            {
+                "id": "component-data-iterator",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDataTable",
+        "file": "src/ui/UDataTable.vue",
+        "group": "内容组件",
+        "page": "data-table",
+        "upstream": {
+            "name": "VDataTable",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTable.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTable.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "expandOnClick",
+                "showExpand",
+                "expanded",
+                "expandStrategy",
+                "initialSortOrder",
+                "sortBy",
+                "customKeySort",
+                "multiSort",
+                "mustSort",
+                "groupBy",
+                "opened",
+                "openAll",
+                "groupKey",
+                "items",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "returnObject",
+                "showSelect",
+                "selectStrategy",
+                "modelValue",
+                "valueComparator",
+                "density",
+                "tag",
+                "loading",
+                "page",
+                "itemsPerPage",
+                "pageBy",
+                "showFirstLastPage",
+                "color",
+                "prevIcon",
+                "nextIcon",
+                "firstIcon",
+                "lastIcon",
+                "itemsPerPageText",
+                "pageText",
+                "firstPageLabel",
+                "prevPageLabel",
+                "nextPageLabel",
+                "lastPageLabel",
+                "itemsPerPageOptions",
+                "showCurrentPage",
+                "headers",
+                "disableSort",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "headerProps",
+                "selectAllLabel",
+                "sticky",
+                "groupCollapseIcon",
+                "groupExpandIcon",
+                "collapseIcon",
+                "expandIcon",
+                "getMatches",
+                "loadingText",
+                "hideNoData",
+                "noDataText",
+                "expandTransition",
+                "gridlines",
+                "fixedHeader",
+                "fixedFooter",
+                "height",
+                "hover",
+                "striped",
+                "hideDefaultBody",
+                "hideDefaultFooter",
+                "hideDefaultHeader",
+                "width",
+                "search"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataTable/VDataTable.tsx"
+        },
+        "local": {
+            "props": [
+                "label",
+                "height",
+                "fixedHeader",
+                "fixedFooter",
+                "gridlines",
+                "hover",
+                "striped",
+                "density",
+                "dense",
+                "ghost",
+                "rounded",
+                "tag",
+                "theme",
+                "ripple",
+                "headers",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "headerProps",
+                "search",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "showSelect",
+                "selectStrategy",
+                "valueComparator",
+                "returnObject",
+                "showExpand",
+                "expandOnClick",
+                "expandStrategy",
+                "expandTransition",
+                "multiSort",
+                "mustSort",
+                "disableSort",
+                "initialSortOrder",
+                "customKeySort",
+                "openAll",
+                "groupKey",
+                "loading",
+                "loadingText",
+                "noDataText",
+                "hideNoData",
+                "error",
+                "disabled",
+                "hideDefaultFooter",
+                "hideDefaultHeader",
+                "hideDefaultBody",
+                "width",
+                "sticky",
+                "mobile",
+                "mobileBreakpoint",
+                "color",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "expandIcon",
+                "collapseIcon",
+                "groupExpandIcon",
+                "groupCollapseIcon",
+                "selectAllLabel",
+                "selectRowLabel",
+                "getMatches",
+                "pageBy",
+                "itemsPerPageOptions",
+                "itemsPerPageText",
+                "pageText",
+                "showCurrentPage",
+                "showFirstLastPage",
+                "firstIcon",
+                "lastIcon",
+                "prevIcon",
+                "nextIcon",
+                "firstPageLabel",
+                "lastPageLabel",
+                "prevPageLabel",
+                "nextPageLabel",
+                "server",
+                "page",
+                "itemsPerPage",
+                "sortBy",
+                "groupBy",
+                "modelValue",
+                "expanded",
+                "opened"
+            ],
+            "events": [
+                "update:options",
+                "update:currentItems",
+                "click:row",
+                "dblclick:row",
+                "contextmenu:row",
+                "click:groupHeader",
+                "dblclick:groupHeader",
+                "contextmenu:groupHeader",
+                "retry",
+                "update:page",
+                "update:itemsPerPage",
+                "update:sortBy",
+                "update:groupBy",
+                "update:modelValue",
+                "update:expanded",
+                "update:opened"
+            ],
+            "slots": [
+                "default",
+                "top",
+                "bottom",
+                "wrapper",
+                "caption",
+                "colgroup",
+                "headers",
+                "mobile.header",
+                "loader",
+                "thead",
+                "tbody",
+                "tfoot",
+                "body",
+                "body.prepend",
+                "body.append",
+                "loading",
+                "no-data",
+                "error",
+                "item",
+                "expanded-row",
+                "expanded",
+                "group-header",
+                "group-summary",
+                "group-header.data-table-group",
+                "group-header.data-table-select",
+                "data-table-group",
+                "data-table-select",
+                "footer",
+                "footer.prepend",
+                "header.*",
+                "item.*"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "component-data-table",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-columns",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-filter-sort",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-selection-expand",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-grouping",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-slots",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDataTableVirtual",
+        "file": "src/ui/UDataTableVirtual.vue",
+        "group": "内容组件",
+        "page": "data-table-virtual",
+        "upstream": {
+            "name": "VDataTableVirtual",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTableVirtual.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDataTable/VDataTableVirtual.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "mobile",
+                "mobileBreakpoint",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "expandOnClick",
+                "showExpand",
+                "expanded",
+                "expandStrategy",
+                "initialSortOrder",
+                "sortBy",
+                "customKeySort",
+                "multiSort",
+                "mustSort",
+                "groupBy",
+                "opened",
+                "openAll",
+                "groupKey",
+                "items",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "returnObject",
+                "showSelect",
+                "selectStrategy",
+                "modelValue",
+                "valueComparator",
+                "density",
+                "tag",
+                "loading",
+                "itemHeight",
+                "itemKey",
+                "height",
+                "headers",
+                "color",
+                "disableSort",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "headerProps",
+                "selectAllLabel",
+                "sticky",
+                "groupCollapseIcon",
+                "groupExpandIcon",
+                "collapseIcon",
+                "expandIcon",
+                "getMatches",
+                "loadingText",
+                "hideNoData",
+                "noDataText",
+                "expandTransition",
+                "gridlines",
+                "fixedHeader",
+                "fixedFooter",
+                "hover",
+                "striped",
+                "hideDefaultBody",
+                "hideDefaultHeader",
+                "width",
+                "search"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataTable/VDataTableVirtual.tsx"
+        },
+        "local": {
+            "props": [
+                "label",
+                "height",
+                "fixedHeader",
+                "fixedFooter",
+                "gridlines",
+                "hover",
+                "striped",
+                "density",
+                "dense",
+                "ghost",
+                "rounded",
+                "tag",
+                "theme",
+                "ripple",
+                "headers",
+                "items",
+                "itemTitle",
+                "itemValue",
+                "itemSelectable",
+                "rowProps",
+                "cellProps",
+                "headerProps",
+                "search",
+                "customFilter",
+                "customKeyFilter",
+                "filterKeys",
+                "filterMode",
+                "ignoreAccents",
+                "noFilter",
+                "showSelect",
+                "selectStrategy",
+                "valueComparator",
+                "returnObject",
+                "showExpand",
+                "expandOnClick",
+                "expandStrategy",
+                "expandTransition",
+                "multiSort",
+                "mustSort",
+                "disableSort",
+                "initialSortOrder",
+                "customKeySort",
+                "openAll",
+                "groupKey",
+                "loading",
+                "loadingText",
+                "noDataText",
+                "hideNoData",
+                "error",
+                "disabled",
+                "hideDefaultHeader",
+                "hideDefaultBody",
+                "width",
+                "sticky",
+                "mobile",
+                "mobileBreakpoint",
+                "color",
+                "sortIcon",
+                "sortAscIcon",
+                "sortDescIcon",
+                "expandIcon",
+                "collapseIcon",
+                "groupExpandIcon",
+                "groupCollapseIcon",
+                "selectAllLabel",
+                "selectRowLabel",
+                "getMatches",
+                "itemHeight",
+                "itemKey",
+                "overscan",
+                "sortBy",
+                "groupBy",
+                "modelValue",
+                "expanded",
+                "opened"
+            ],
+            "events": [
+                "update:options",
+                "update:currentItems",
+                "click:row",
+                "dblclick:row",
+                "contextmenu:row",
+                "click:groupHeader",
+                "dblclick:groupHeader",
+                "contextmenu:groupHeader",
+                "retry",
+                "update:sortBy",
+                "update:groupBy",
+                "update:modelValue",
+                "update:expanded",
+                "update:opened"
+            ],
+            "slots": [
+                "default",
+                "top",
+                "bottom",
+                "wrapper",
+                "caption",
+                "colgroup",
+                "headers",
+                "mobile.header",
+                "loader",
+                "thead",
+                "tbody",
+                "tfoot",
+                "body",
+                "body.prepend",
+                "body.append",
+                "loading",
+                "no-data",
+                "error",
+                "item",
+                "expanded-row",
+                "expanded",
+                "group-header",
+                "group-summary",
+                "group-header.data-table-group",
+                "group-header.data-table-select",
+                "data-table-group",
+                "data-table-select",
+                "header.*",
+                "item.*"
+            ]
+        },
+        "potentialMissingProps": [],
+        "examples": [
+            {
+                "id": "component-data-table-virtual",
+                "fullSource": true
+            },
+            {
+                "id": "table-align-virtual",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UDivider",
+        "file": "src/ui/UDivider.vue",
+        "group": "反馈组件",
+        "page": "divider",
+        "upstream": {
+            "name": "VDivider",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VDivider/VDivider.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VDivider/VDivider.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "color",
+                "contentOffset",
+                "gradient",
+                "inset",
+                "length",
+                "opacity",
+                "thickness",
+                "vertical",
+                "variant"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDivider/VDivider.tsx"
+        },
+        "local": {
+            "props": [
+                "vertical",
+                "inset",
+                "thickness",
+                "color"
+            ],
+            "events": [],
+            "slots": []
+        },
+        "potentialMissingProps": [
+            "theme",
+            "contentOffset",
+            "gradient",
+            "length",
+            "opacity",
+            "variant"
+        ],
+        "examples": [
+            {
+                "id": "component-divider",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UEmptyState",
+        "file": "src/ui/UEmptyState.vue",
+        "group": "反馈组件",
+        "page": "empty-state",
+        "upstream": {
+            "name": "VEmptyState",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VEmptyState/VEmptyState.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VEmptyState/VEmptyState.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "size",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "actionText",
+                "bgColor",
+                "color",
+                "icon",
+                "image",
+                "justify",
+                "headline",
+                "title",
+                "text",
+                "textWidth",
+                "href",
+                "to"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VEmptyState/VEmptyState.tsx"
+        },
+        "local": {
+            "props": [
+                "icon",
+                "title",
+                "text"
+            ],
+            "events": [],
+            "slots": [
+                "media",
+                "title",
+                "text",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "size",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "actionText",
+            "bgColor",
+            "color",
+            "image",
+            "justify",
+            "headline",
+            "textWidth",
+            "href",
+            "to"
+        ],
+        "examples": [
+            {
+                "id": "component-empty-state",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UFab",
+        "file": "src/ui/UFab.vue",
+        "group": "内容组件",
+        "page": "fab",
+        "upstream": {
+            "name": "VFab",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VFab/VFab.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VFab/VFab.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "name",
+                "order",
+                "absolute",
+                "border",
+                "density",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "color",
+                "variant",
+                "value",
+                "disabled",
+                "selectedClass",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "loading",
+                "position",
+                "href",
+                "replace",
+                "to",
+                "exact",
+                "active",
+                "activeColor",
+                "baseColor",
+                "symbol",
+                "flat",
+                "icon",
+                "prependIcon",
+                "appendIcon",
+                "block",
+                "readonly",
+                "slim",
+                "stacked",
+                "ripple",
+                "text",
+                "transition",
+                "app",
+                "appear",
+                "extended",
+                "layout",
+                "offset",
+                "modelValue"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VFab/VFab.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "loading",
+                "label"
+            ],
+            "events": [
+                "click"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "name",
+            "order",
+            "absolute",
+            "border",
+            "density",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "size",
+            "tag",
+            "color",
+            "variant",
+            "value",
+            "selectedClass",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position",
+            "href",
+            "replace",
+            "to",
+            "exact",
+            "active",
+            "activeColor",
+            "baseColor",
+            "symbol",
+            "flat",
+            "icon",
+            "prependIcon",
+            "appendIcon",
+            "block",
+            "readonly",
+            "slim",
+            "stacked",
+            "ripple",
+            "text",
+            "transition",
+            "app",
+            "appear",
+            "extended",
+            "layout",
+            "offset",
+            "modelValue"
+        ],
+        "examples": [
+            {
+                "id": "component-fab",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UHotkey",
+        "file": "src/ui/UHotkey.vue",
+        "group": "内容组件",
+        "page": "hotkey",
+        "upstream": {
+            "name": "VHotkey",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VHotkey/VHotkey.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VHotkey/VHotkey.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "keys",
+                "displayMode",
+                "keyMap",
+                "platform",
+                "inline",
+                "disabled",
+                "prefix",
+                "suffix",
+                "variant",
+                "color"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VHotkey/VHotkey.tsx"
+        },
+        "local": {
+            "props": [
+                "keys",
+                "disabled",
+                "preventDefault",
+                "allowInput"
+            ],
+            "events": [
+                "trigger"
+            ],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "displayMode",
+            "keyMap",
+            "platform",
+            "inline",
+            "prefix",
+            "suffix",
+            "variant",
+            "color"
+        ],
+        "examples": [
+            {
+                "id": "component-hotkey",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UHover",
+        "file": "src/ui/UHover.vue",
+        "group": "内容组件",
+        "page": "hover",
+        "upstream": {
+            "name": "VHover",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VHover/VHover.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VHover/VHover.d.ts",
+            "props": [
+                "closeDelay",
+                "openDelay",
+                "disabled",
+                "modelValue"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VHover/VHover.tsx"
+        },
+        "local": {
+            "props": [
+                "openDelay",
+                "closeDelay",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "modelValue"
+        ],
+        "examples": [
+            {
+                "id": "component-hover",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UImg",
+        "file": "src/ui/UImg.vue",
+        "group": "内容组件",
+        "page": "img",
+        "upstream": {
+            "name": "VImg",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VImg/VImg.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VImg/VImg.d.ts",
+            "props": [
+                "class",
+                "style",
+                "rounded",
+                "tile",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "aspectRatio",
+                "contentClass",
+                "inline",
+                "absolute",
+                "alt",
+                "cover",
+                "color",
+                "draggable",
+                "eager",
+                "gradient",
+                "imageClass",
+                "lazySrc",
+                "options",
+                "sizes",
+                "src",
+                "crossorigin",
+                "referrerpolicy",
+                "srcset",
+                "position"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VImg/VImg.tsx"
+        },
+        "local": {
+            "props": [
+                "src",
+                "alt",
+                "lazy",
+                "disabled"
+            ],
+            "events": [
+                "load",
+                "error"
+            ],
+            "slots": [
+                "placeholder",
+                "error",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "rounded",
+            "tile",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "aspectRatio",
+            "contentClass",
+            "inline",
+            "absolute",
+            "cover",
+            "color",
+            "draggable",
+            "eager",
+            "gradient",
+            "imageClass",
+            "lazySrc",
+            "options",
+            "sizes",
+            "crossorigin",
+            "referrerpolicy",
+            "srcset",
+            "position"
+        ],
+        "examples": [
+            {
+                "id": "component-img",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UInfiniteScroll",
+        "file": "src/ui/UInfiniteScroll.vue",
+        "group": "内容组件",
+        "page": "infinite-scroll",
+        "upstream": {
+            "name": "VInfiniteScroll",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VInfiniteScroll/VInfiniteScroll.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VInfiniteScroll/VInfiniteScroll.d.ts",
+            "props": [
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "color",
+                "direction",
+                "side",
+                "mode",
+                "margin",
+                "loadMoreText",
+                "emptyText"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VInfiniteScroll/VInfiniteScroll.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "rootMargin",
+                "direction"
+            ],
+            "events": [
+                "load"
+            ],
+            "slots": [
+                "default",
+                "loading",
+                "empty",
+                "error",
+                "load-more"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "color",
+            "side",
+            "mode",
+            "margin",
+            "loadMoreText",
+            "emptyText"
+        ],
+        "examples": [
+            {
+                "id": "component-infinite-scroll",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UKbd",
+        "file": "src/ui/UKbd.vue",
+        "group": "内容组件",
+        "page": "kbd",
+        "upstream": {
+            "name": "VKbd",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VKbd/VKbd.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VKbd/VKbd.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "color"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VKbd/VKbd.tsx"
+        },
+        "local": {
+            "props": [
+                "keys"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "border",
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "tag",
+            "color"
+        ],
+        "examples": [
+            {
+                "id": "component-kbd",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "ULazy",
+        "file": "src/ui/ULazy.vue",
+        "group": "内容组件",
+        "page": "lazy",
+        "upstream": {
+            "name": "VLazy",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VLazy/VLazy.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VLazy/VLazy.d.ts",
+            "props": [
+                "class",
+                "style",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "modelValue",
+                "options"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VLazy/VLazy.tsx"
+        },
+        "local": {
+            "props": [
+                "rootMargin",
+                "once",
+                "disabled"
+            ],
+            "events": [
+                "intersect"
+            ],
+            "slots": [
+                "default",
+                "placeholder"
+            ]
+        },
+        "potentialMissingProps": [
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "modelValue",
+            "options"
+        ],
+        "examples": [
+            {
+                "id": "component-lazy",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UNoSsr",
+        "file": "src/ui/UNoSsr.vue",
+        "group": "内容组件",
+        "page": "no-ssr",
+        "upstream": {
+            "name": "VNoSsr",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VNoSsr/VNoSsr.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VNoSsr/VNoSsr.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VNoSsr/VNoSsr.tsx"
+        },
+        "local": {
+            "props": [],
+            "events": [],
+            "slots": [
+                "default",
+                "placeholder"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-no-ssr",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UParallax",
+        "file": "src/ui/UParallax.vue",
+        "group": "内容组件",
+        "page": "parallax",
+        "upstream": {
+            "name": "VParallax",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VParallax/VParallax.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VParallax/VParallax.d.ts",
+            "props": [
+                "class",
+                "style",
+                "scale"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VParallax/VParallax.tsx"
+        },
+        "local": {
+            "props": [
+                "speed",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "background",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "scale"
+        ],
+        "examples": [
+            {
+                "id": "component-parallax",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UProgressCircular",
+        "file": "src/ui/UProgressCircular.vue",
+        "group": "反馈组件",
+        "page": "progress-circular",
+        "upstream": {
+            "name": "VProgressCircular",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VProgressCircular/VProgressCircular.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VProgressCircular/VProgressCircular.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "size",
+                "tag",
+                "reveal",
+                "bgColor",
+                "color",
+                "indeterminate",
+                "rounded",
+                "modelValue",
+                "rotate",
+                "transition",
+                "width"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VProgressCircular/VProgressCircular.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "max",
+                "indeterminate",
+                "size",
+                "width",
+                "label",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "tag",
+            "reveal",
+            "bgColor",
+            "color",
+            "rounded",
+            "rotate",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "component-progress-circular",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UProgressLinear",
+        "file": "src/ui/UProgressLinear.vue",
+        "group": "反馈组件",
+        "page": "progress-linear",
+        "upstream": {
+            "name": "VProgressLinear",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VProgressLinear/VProgressLinear.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VProgressLinear/VProgressLinear.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "rounded",
+                "tile",
+                "tag",
+                "reveal",
+                "location",
+                "chunkCount",
+                "chunkWidth",
+                "chunkGap",
+                "variant",
+                "absolute",
+                "active",
+                "bgColor",
+                "bgOpacity",
+                "bufferValue",
+                "bufferColor",
+                "bufferOpacity",
+                "clickable",
+                "color",
+                "height",
+                "indeterminate",
+                "max",
+                "modelValue",
+                "opacity",
+                "reverse",
+                "stream",
+                "striped",
+                "roundedBar",
+                "transition"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VProgressLinear/VProgressLinear.tsx"
+        },
+        "local": {
+            "props": [
+                "modelValue",
+                "max",
+                "bufferValue",
+                "indeterminate",
+                "stream",
+                "label",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "rounded",
+            "tile",
+            "tag",
+            "reveal",
+            "location",
+            "chunkCount",
+            "chunkWidth",
+            "chunkGap",
+            "variant",
+            "absolute",
+            "active",
+            "bgColor",
+            "bgOpacity",
+            "bufferColor",
+            "bufferOpacity",
+            "clickable",
+            "color",
+            "height",
+            "opacity",
+            "reverse",
+            "striped",
+            "roundedBar",
+            "transition"
+        ],
+        "examples": [
+            {
+                "id": "component-progress-linear",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UPullToRefresh",
+        "file": "src/ui/UPullToRefresh.vue",
+        "group": "内容组件",
+        "page": "pull-to-refresh",
+        "upstream": {
+            "name": "VPullToRefresh",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VPullToRefresh/VPullToRefresh.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VPullToRefresh/VPullToRefresh.d.ts",
+            "props": null,
+            "extraction": "manual-review-required",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VPullToRefresh/VPullToRefresh.tsx"
+        },
+        "local": {
+            "props": [
+                "threshold",
+                "disabled"
+            ],
+            "events": [
+                "refresh"
+            ],
+            "slots": [
+                "indicator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-pull-to-refresh",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UResponsive",
+        "file": "src/ui/UResponsive.vue",
+        "group": "内容组件",
+        "page": "responsive",
+        "upstream": {
+            "name": "VResponsive",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VResponsive/VResponsive.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VResponsive/VResponsive.d.ts",
+            "props": [
+                "class",
+                "style",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "aspectRatio",
+                "contentClass",
+                "inline"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VResponsive/VResponsive.tsx"
+        },
+        "local": {
+            "props": [
+                "aspectRatio",
+                "width",
+                "height"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "contentClass",
+            "inline"
+        ],
+        "examples": [
+            {
+                "id": "component-responsive",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USheet",
+        "file": "src/ui/USheet.vue",
+        "group": "反馈组件",
+        "page": "sheet",
+        "upstream": {
+            "name": "VSheet",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSheet/VSheet.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSheet/VSheet.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "border",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "color"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSheet/VSheet.tsx"
+        },
+        "local": {
+            "props": [
+                "elevation",
+                "rounded",
+                "color",
+                "border"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "hoverElevation",
+            "tile",
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "location",
+            "position"
+        ],
+        "examples": [
+            {
+                "id": "component-sheet",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USkeletonLoader",
+        "file": "src/ui/USkeletonLoader.vue",
+        "group": "反馈组件",
+        "page": "skeleton-loader",
+        "upstream": {
+            "name": "VSkeletonLoader",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSkeletonLoader/VSkeletonLoader.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSkeletonLoader/VSkeletonLoader.d.ts",
+            "props": [
+                "theme",
+                "elevation",
+                "hoverElevation",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "boilerplate",
+                "color",
+                "loading",
+                "loadingText",
+                "type",
+                "types"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSkeletonLoader/VSkeletonLoader.tsx"
+        },
+        "local": {
+            "props": [
+                "type",
+                "lines",
+                "width",
+                "height",
+                "loading"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "elevation",
+            "hoverElevation",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "boilerplate",
+            "color",
+            "loadingText",
+            "types"
+        ],
+        "examples": [
+            {
+                "id": "component-skeleton-loader",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USnackbar",
+        "file": "src/ui/USnackbar.vue",
+        "group": "反馈组件",
+        "page": "snackbar",
+        "upstream": {
+            "name": "VSnackbar",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSnackbar/VSnackbar.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSnackbar/VSnackbar.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "origin",
+                "rounded",
+                "tile",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "eager",
+                "absolute",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "modelValue",
+                "zIndex",
+                "collapsed",
+                "loading",
+                "prependAvatar",
+                "prependIcon",
+                "queueGap",
+                "queueIndex",
+                "title",
+                "text",
+                "reverseTimer",
+                "timer",
+                "timerColor",
+                "timeout",
+                "vertical"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSnackbar/VSnackbar.tsx"
+        },
+        "local": {
+            "props": [
+                "title",
+                "text",
+                "timeout",
+                "location",
+                "color",
+                "variant",
+                "vertical",
+                "loading",
+                "closable",
+                "closeText",
+                "contained",
+                "attach",
+                "rounded",
+                "timer",
+                "timerColor",
+                "reverseTimer",
+                "queueIndex",
+                "modelValue"
+            ],
+            "events": [
+                "after-leave",
+                "after-enter",
+                "timeout",
+                "update:modelValue"
+            ],
+            "slots": [
+                "activator",
+                "prepend",
+                "header",
+                "title",
+                "text",
+                "default",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "origin",
+            "tile",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "position",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "eager",
+            "absolute",
+            "closeOnBack",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "zIndex",
+            "collapsed",
+            "prependAvatar",
+            "prependIcon",
+            "queueGap"
+        ],
+        "examples": [
+            {
+                "id": "component-snackbar",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USnackbarQueue",
+        "file": "src/ui/USnackbarQueue.vue",
+        "group": "反馈组件",
+        "page": "snackbar-queue",
+        "upstream": {
+            "name": "VSnackbarQueue",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSnackbarQueue/VSnackbarQueue.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSnackbarQueue/VSnackbarQueue.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "origin",
+                "rounded",
+                "tile",
+                "color",
+                "variant",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "location",
+                "position",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "eager",
+                "absolute",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "zIndex",
+                "loading",
+                "prependAvatar",
+                "prependIcon",
+                "title",
+                "text",
+                "reverseTimer",
+                "timer",
+                "timerColor",
+                "timeout",
+                "vertical",
+                "closable",
+                "closeText",
+                "collapsed",
+                "displayStrategy",
+                "modelValue",
+                "totalVisible",
+                "gap"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSnackbarQueue/VSnackbarQueue.tsx"
+        },
+        "local": {
+            "props": [
+                "title",
+                "text",
+                "timeout",
+                "location",
+                "color",
+                "variant",
+                "vertical",
+                "loading",
+                "closable",
+                "closeText",
+                "contained",
+                "attach",
+                "rounded",
+                "timer",
+                "timerColor",
+                "reverseTimer",
+                "queueIndex",
+                "totalVisible",
+                "displayStrategy",
+                "gap",
+                "collapsed",
+                "modelValue"
+            ],
+            "events": [
+                "dismiss",
+                "update:modelValue"
+            ],
+            "slots": [
+                "header",
+                "text",
+                "actions"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "origin",
+            "tile",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "position",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "eager",
+            "absolute",
+            "closeOnBack",
+            "contentClass",
+            "contentProps",
+            "disabled",
+            "opacity",
+            "zIndex",
+            "prependAvatar",
+            "prependIcon"
+        ],
+        "examples": [
+            {
+                "id": "component-snackbar-queue",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USparkline",
+        "file": "src/ui/USparkline.vue",
+        "group": "内容组件",
+        "page": "sparkline",
+        "upstream": {
+            "name": "VSparkline",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSparkline/VSparkline.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSparkline/VSparkline.d.ts",
+            "props": [
+                "animation",
+                "autoDraw",
+                "autoDrawDuration",
+                "autoDrawEasing",
+                "color",
+                "gradient",
+                "gradientDirection",
+                "height",
+                "labels",
+                "labelSize",
+                "lineWidth",
+                "id",
+                "itemValue",
+                "modelValue",
+                "min",
+                "max",
+                "padding",
+                "markerSize",
+                "markerStroke",
+                "inset",
+                "showLabels",
+                "showMarkers",
+                "smooth",
+                "smoothMode",
+                "interactive",
+                "tooltip",
+                "width",
+                "autoLineWidth",
+                "fill",
+                "type"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSparkline/VSparkline.tsx"
+        },
+        "local": {
+            "props": [
+                "values",
+                "width",
+                "height",
+                "min",
+                "max"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "animation",
+            "autoDraw",
+            "autoDrawDuration",
+            "autoDrawEasing",
+            "color",
+            "gradient",
+            "gradientDirection",
+            "labels",
+            "labelSize",
+            "lineWidth",
+            "id",
+            "itemValue",
+            "modelValue",
+            "padding",
+            "markerSize",
+            "markerStroke",
+            "inset",
+            "showLabels",
+            "showMarkers",
+            "smooth",
+            "smoothMode",
+            "interactive",
+            "tooltip",
+            "autoLineWidth",
+            "fill",
+            "type"
+        ],
+        "examples": [
+            {
+                "id": "component-sparkline",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "USpeedDial",
+        "file": "src/ui/USpeedDial.vue",
+        "group": "内容组件",
+        "page": "speed-dial",
+        "upstream": {
+            "name": "VSpeedDial",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VSpeedDial/VSpeedDial.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VSpeedDial/VSpeedDial.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "locationStrategy",
+                "location",
+                "origin",
+                "offset",
+                "stickToTarget",
+                "viewportMargin",
+                "scrollStrategy",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "transition",
+                "closeDelay",
+                "openDelay",
+                "target",
+                "activator",
+                "activatorProps",
+                "openOnClick",
+                "openOnHover",
+                "openOnFocus",
+                "closeOnContentClick",
+                "retainFocus",
+                "captureFocus",
+                "disableInitialFocus",
+                "eager",
+                "attach",
+                "closeOnBack",
+                "contained",
+                "contentClass",
+                "contentProps",
+                "disabled",
+                "opacity",
+                "noClickAnimation",
+                "modelValue",
+                "persistent",
+                "scrim",
+                "zIndex",
+                "_disableKeys",
+                "id",
+                "submenu",
+                "openOnArrow"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VSpeedDial/VSpeedDial.tsx"
+        },
+        "local": {
+            "props": [
+                "disabled",
+                "closeOnClick",
+                "modelValue"
+            ],
+            "events": [
+                "update:modelValue"
+            ],
+            "slots": [
+                "activator",
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "locationStrategy",
+            "location",
+            "origin",
+            "offset",
+            "stickToTarget",
+            "viewportMargin",
+            "scrollStrategy",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "transition",
+            "closeDelay",
+            "openDelay",
+            "target",
+            "activator",
+            "activatorProps",
+            "openOnClick",
+            "openOnHover",
+            "openOnFocus",
+            "closeOnContentClick",
+            "retainFocus",
+            "captureFocus",
+            "disableInitialFocus",
+            "eager",
+            "attach",
+            "closeOnBack",
+            "contained",
+            "contentClass",
+            "contentProps",
+            "opacity",
+            "noClickAnimation",
+            "persistent",
+            "scrim",
+            "zIndex",
+            "_disableKeys",
+            "id",
+            "submenu",
+            "openOnArrow"
+        ],
+        "examples": [
+            {
+                "id": "component-speed-dial",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTimeline",
+        "file": "src/ui/UTimeline.vue",
+        "group": "内容组件",
+        "page": "timeline",
+        "upstream": {
+            "name": "VTimeline",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTimeline/VTimeline.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTimeline/VTimeline.d.ts",
+            "props": [
+                "theme",
+                "class",
+                "style",
+                "density",
+                "size",
+                "tag",
+                "dotColor",
+                "fillDot",
+                "hideOpposite",
+                "iconColor",
+                "lineInset",
+                "align",
+                "direction",
+                "justify",
+                "side",
+                "lineThickness",
+                "lineColor",
+                "truncateLine"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTimeline/VTimeline.tsx"
+        },
+        "local": {
+            "props": [
+                "side",
+                "reverse"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": [
+            "theme",
+            "density",
+            "size",
+            "tag",
+            "dotColor",
+            "fillDot",
+            "hideOpposite",
+            "iconColor",
+            "lineInset",
+            "align",
+            "direction",
+            "justify",
+            "lineThickness",
+            "lineColor",
+            "truncateLine"
+        ],
+        "examples": [
+            {
+                "id": "component-timeline",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTimelineItem",
+        "file": "src/ui/UTimelineItem.vue",
+        "group": "内容组件",
+        "page": "timeline-item",
+        "upstream": {
+            "name": "VTimelineItem",
+            "file": "artifacts/upstream-table-audit/package/lib/components/VTimeline/VTimelineItem.js",
+            "typeFile": "artifacts/upstream-table-audit/package/lib/components/VTimeline/VTimelineItem.d.ts",
+            "props": [
+                "class",
+                "style",
+                "elevation",
+                "hoverElevation",
+                "rounded",
+                "tile",
+                "size",
+                "tag",
+                "height",
+                "maxHeight",
+                "maxWidth",
+                "minHeight",
+                "minWidth",
+                "width",
+                "density",
+                "dotColor",
+                "fillDot",
+                "hideDot",
+                "hideOpposite",
+                "icon",
+                "iconColor",
+                "lineInset",
+                "side"
+            ],
+            "extraction": "published-factory-default-keys",
+            "url": "https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VTimeline/VTimelineItem.tsx"
+        },
+        "local": {
+            "props": [
+                "title",
+                "subtitle",
+                "side",
+                "color"
+            ],
+            "events": [],
+            "slots": [
+                "icon",
+                "default",
+                "opposite"
+            ]
+        },
+        "potentialMissingProps": [
+            "elevation",
+            "hoverElevation",
+            "rounded",
+            "tile",
+            "size",
+            "tag",
+            "height",
+            "maxHeight",
+            "maxWidth",
+            "minHeight",
+            "minWidth",
+            "width",
+            "density",
+            "dotColor",
+            "fillDot",
+            "hideDot",
+            "hideOpposite",
+            "icon",
+            "iconColor",
+            "lineInset"
+        ],
+        "examples": [
+            {
+                "id": "component-timeline-item",
+                "fullSource": true
+            }
+        ]
+    },
+    {
+        "name": "UTransition",
+        "file": "src/ui/UTransition.vue",
+        "group": "反馈组件",
+        "page": "transition",
+        "upstream": null,
+        "local": {
+            "props": [
+                "variant",
+                "mode",
+                "appear",
+                "disabled"
+            ],
+            "events": [],
+            "slots": [
+                "default"
+            ]
+        },
+        "potentialMissingProps": null,
+        "examples": [
+            {
+                "id": "component-transition",
+                "fullSource": true
+            }
+        ]
+    }
+]
