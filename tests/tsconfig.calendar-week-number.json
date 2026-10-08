@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/calendar.ts",
+        "../src/ui/UDatePicker.vue",
+        "calendar-week-number.test.ts"
+    ]
+}

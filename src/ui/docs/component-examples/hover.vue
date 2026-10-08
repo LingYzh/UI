@@ -1,10 +1,14 @@
 <script setup>
-import { UButton, UHover } from '../../index';
+import { ref } from 'vue';
+import { UButton, UHover, USwitch } from '../../index';
+const disabled = ref(false);
+const hovering = ref(null);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="UHover">
-        <u-hover v-slot="{ isHovering, props: hoverProps }">
+        <u-switch v-model="disabled" label="禁用状态同步（仍记录区域内的指针状态）" />
+        <u-hover v-model="hovering" :disabled="disabled" v-slot="{ isHovering, props: hoverProps }">
             <div
                 v-bind="hoverProps"
                 class="completion-panel"
@@ -14,6 +18,11 @@ import { UButton, UHover } from '../../index';
                 <u-button size="sm" class="mt-3">可聚焦的操作</u-button>
             </div>
         </u-hover>
+        <output>
+            公开悬停状态：{{
+                hovering === null ? '尚未进入' : hovering ? '已进入' : '已离开'
+            }}；禁用时保留，恢复时同步。
+        </output>
     </div>
 </template>
 

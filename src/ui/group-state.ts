@@ -7,7 +7,7 @@ export interface GroupContext {
     mandatory: boolean;
     multiple: boolean;
     disabled: boolean;
-    register: (value: GroupValue) => () => void;
+    register: (value: GroupValue, disabled?: MaybeRefOrGetter<boolean | undefined>) => () => void;
     isSelected: (value: GroupValue) => boolean;
     select: (value: GroupValue) => void;
     next: () => void;
@@ -19,22 +19,29 @@ export const stepperKey: InjectionKey<GroupContext> = Symbol('u-stepper');
 export const windowKey: InjectionKey<GroupContext> = Symbol('u-window');
 
 export interface GroupOptions {
-    mandatory?: MaybeRefOrGetter<boolean | undefined>;
+    mandatory?: MaybeRefOrGetter<boolean | 'force' | undefined>;
     multiple?: MaybeRefOrGetter<boolean | undefined>;
     disabled?: MaybeRefOrGetter<boolean | undefined>;
+    forceOnlyInitial?: boolean;
 }
 
 export function createGroup(selected: Ref<GroupValue | GroupValue[] | null | undefined>, options: GroupOptions): GroupContext {
     const values = reactive<GroupValue[]>([]);
+    const itemDisabled = new Map<GroupValue, () => boolean>();
     const current = computed<GroupValue[]>(() => Array.isArray(selected.value) ? selected.value : selected.value == null ? [] : [selected.value]);
     // Controlled model props can lag until the parent render, so sibling setup registrations share one initial selection.
     let pendingInitialSelection: GroupValue | null | undefined;
-    const isMandatory = (): boolean => toValue(options.mandatory) ?? false;
+    const isMandatory = (): boolean => Boolean(toValue(options.mandatory));
     const isMultiple = (): boolean => toValue(options.multiple) ?? false;
     const isDisabled = (): boolean => toValue(options.disabled) ?? false;
-    function register(value: GroupValue): () => void {
+    const shouldInitialize = (): boolean => toValue(options.mandatory) === 'force' || !options.forceOnlyInitial && isMandatory();
+    const isItemDisabled = (value: GroupValue): boolean => itemDisabled.get(value)?.() ?? false;
+    const firstEnabledValue = (): GroupValue | undefined => values.find((value) => !isItemDisabled(value));
+    function register(value: GroupValue, disabled?: MaybeRefOrGetter<boolean | undefined>): () => void {
+        const isDisabledItem = () => toValue(disabled) ?? false;
+        itemDisabled.set(value, isDisabledItem);
         if (!values.includes(value)) values.push(value);
-        if (isMandatory() && !current.value.length && !isDisabled()) {
+        if (shouldInitialize() && !current.value.length && !isDisabled() && !isDisabledItem()) {
             if (pendingInitialSelection === undefined) {
                 pendingInitialSelection = value;
                 selected.value = isMultiple() ? [value] : value;
@@ -47,6 +54,7 @@ export function createGroup(selected: Ref<GroupValue | GroupValue[] | null | und
         return () => {
             const index = values.indexOf(value);
             if (index >= 0) values.splice(index, 1);
+            if (itemDisabled.get(value) === isDisabledItem) itemDisabled.delete(value);
             const handledPendingInitial = pendingInitialSelection === value;
             if (handledPendingInitial) {
                 const rest = current.value.filter((entry) => entry !== value && values.includes(entry));
@@ -55,7 +63,7 @@ export function createGroup(selected: Ref<GroupValue | GroupValue[] | null | und
                     pendingInitialSelection = undefined;
                     selected.value = multiple ? rest : rest[0];
                 } else {
-                    const fallback = isMandatory() ? values[0] : undefined;
+                    const fallback = shouldInitialize() ? firstEnabledValue() : undefined;
                     pendingInitialSelection = fallback ?? null;
                     selected.value = multiple ? (fallback === undefined ? [] : [fallback]) : fallback ?? null;
                 }
@@ -63,12 +71,13 @@ export function createGroup(selected: Ref<GroupValue | GroupValue[] | null | und
             if (!handledPendingInitial && current.value.includes(value)) {
                 const rest = current.value.filter((entry) => entry !== value);
                 const multiple = isMultiple();
-                selected.value = multiple ? (rest.length ? rest : isMandatory() && values.length ? [values[0]] : []) : isMandatory() ? (values[0] ?? null) : null;
+                const fallback = shouldInitialize() ? firstEnabledValue() : undefined;
+                selected.value = multiple ? (rest.length ? rest : fallback === undefined ? [] : [fallback]) : fallback ?? null;
             }
         };
     }
     function select(value: GroupValue): void {
-        if (isDisabled() || !values.includes(value)) return;
+        if (isDisabled() || !values.includes(value) || isItemDisabled(value)) return;
         const active = current.value.includes(value);
         if (isMultiple()) {
             if (active && isMandatory() && current.value.length <= 1) return;
@@ -78,8 +87,19 @@ export function createGroup(selected: Ref<GroupValue | GroupValue[] | null | und
     function move(delta: number): void {
         if (isDisabled() || !values.length) return;
         const index = values.findIndex((entry) => current.value.includes(entry));
-        const next = values[(index + delta + values.length) % values.length];
-        selected.value = isMultiple() ? [next] : next;
+        if (index < 0) {
+            const first = firstEnabledValue();
+            if (first === undefined) return;
+            selected.value = isMultiple() ? [first] : first;
+            return;
+        }
+        for (let offset = 1; offset <= values.length; offset++) {
+            const nextIndex = (index + delta * offset + values.length * (offset + 1)) % values.length;
+            const next = values[nextIndex];
+            if (isItemDisabled(next)) continue;
+            selected.value = isMultiple() ? [next] : next;
+            return;
+        }
     }
     return {
         values,

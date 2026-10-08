@@ -1,12 +1,25 @@
 <script setup>
 import { ref } from 'vue';
 import { URangeSlider } from '../../index';
-const range = ref([20, 70]);
+const range = ref([20.125, 70.875]);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="URangeSlider">
-        <u-range-slider v-model="range" label="可接受范围" hint="两个手柄不能越过彼此。" />
+        <u-range-slider
+            v-model="range"
+            label="连续小数范围"
+            hint="默认步长为 0，两个手柄不能越过彼此。"
+        />
+        <output>{{ range }}</output>
+        <u-range-slider
+            :model-value="[25, 75]"
+            direction="vertical"
+            :ticks="{ 0: '0', 50: '50', 100: '100' }"
+            show-ticks
+            thumb-label="always"
+            label="纵向范围"
+        />
     </div>
 </template>
 

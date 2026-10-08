@@ -1,0 +1,30 @@
+{
+    "sourceSha256": {
+        "src/ui/UConfirmEdit.vue": "6426346fc6218c0031a1fee66b9a5fa7d94fefa44a89be15e57a92931363941f",
+        "src/ui/confirm-edit.ts": "40ced21c5ad705a8e9f1159d1e42e071e5c62efe57f0b2d553b0219d0bd92278",
+        "src/ui/docs/component-examples/confirm-edit.vue": "ead1a5954e72fdc0d3406e5cbb0145ff05309c2fd887d4ae8eaff62b6b94e781"
+    },
+    "runtime": "Chromium source renderer",
+    "checks": [
+        "always visible; pristine disables actions by default",
+        "deep object isolation and cancel resets draft",
+        "save commits snapshot; later draft edits remain isolated",
+        "external replacement and nested model updates refresh draft",
+        "per-action disabling; explicit false overrides pristine",
+        "readonly and failed validation guard commit",
+        "pending validation cannot overwrite newer model",
+        "hideActions and provided actions suppress duplicate defaults",
+        "real demo light/dark/narrow/125%; no overflow or Vue/page errors"
+    ],
+    "screenshots": [
+        "confirm-demo-light-1280-1.png",
+        "confirm-demo-dark-390-1.png",
+        "confirm-demo-dark-900-1.25.png"
+    ],
+    "sourceSha256After": {
+        "src/ui/UConfirmEdit.vue": "6426346fc6218c0031a1fee66b9a5fa7d94fefa44a89be15e57a92931363941f",
+        "src/ui/confirm-edit.ts": "40ced21c5ad705a8e9f1159d1e42e071e5c62efe57f0b2d553b0219d0bd92278",
+        "src/ui/docs/component-examples/confirm-edit.vue": "ead1a5954e72fdc0d3406e5cbb0145ff05309c2fd887d4ae8eaff62b6b94e781"
+    },
+    "sourceChangedDuringRun": false
+}

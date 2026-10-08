@@ -1,17 +1,33 @@
-const openOverlays: HTMLDialogElement[] = [];
+const openOverlays: HTMLElement[] = [];
 const scrollLocks = new Set<symbol>();
 let previousOverflow = '';
 
-export function pushOverlay(element: HTMLDialogElement) {
+/** Keep the native top layer without making the rest of the document inert. */
+export function presentOverlay(element: HTMLDialogElement, modal: boolean) {
+    if (modal) element.showModal();
+    else {
+        element.setAttribute('popover', 'manual');
+        element.setAttribute('open', '');
+        element.showPopover();
+    }
+}
+
+export function dismissOverlay(element: HTMLDialogElement) {
+    if (element.matches(':popover-open')) element.hidePopover();
+    element.close();
+    element.removeAttribute('popover');
+}
+
+export function pushOverlay(element: HTMLElement) {
     if (!openOverlays.includes(element)) openOverlays.push(element);
 }
 
-export function popOverlay(element: HTMLDialogElement) {
+export function popOverlay(element: HTMLElement) {
     const index = openOverlays.indexOf(element);
     if (index >= 0) openOverlays.splice(index, 1);
 }
 
-export function isTopOverlay(element: HTMLDialogElement) {
+export function isTopOverlay(element: HTMLElement) {
     return openOverlays.at(-1) === element;
 }
 
@@ -25,4 +41,89 @@ export function acquireScrollLock(token: symbol) {
 export function releaseScrollLock(token: symbol) {
     if (!scrollLocks.delete(token)) return;
     if (scrollLocks.size === 0) document.body.style.overflow = previousOverflow;
+}
+
+type ElementProps = Record<string, unknown>;
+
+function classValue(value: unknown): string {
+    if (typeof value === 'string' || typeof value === 'number') return String(value);
+    if (Array.isArray(value)) return value.map(classValue).filter(Boolean).join(' ');
+    if (value && typeof value === 'object') {
+        return Object.entries(value).filter(([, active]) => Boolean(active)).map(([name]) => name).join(' ');
+    }
+    return '';
+}
+
+function styleValue(value: unknown): string {
+    if (typeof value === 'string') return value;
+    if (Array.isArray(value)) return value.map(styleValue).filter(Boolean).join(';');
+    if (!value || typeof value !== 'object') return '';
+    return Object.entries(value).filter(([, item]) => item !== null && item !== undefined && item !== false && item !== '')
+        .map(([name, item]) => {
+            const property = name.startsWith('--') ? name : name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+            return `${property}:${String(item)}`;
+        }).join(';');
+}
+
+function invokeHandler(handler: unknown, event: Event) {
+    if (Array.isArray(handler)) {
+        for (const callback of handler) invokeHandler(callback, event);
+    } else if (typeof handler === 'function') {
+        handler(event);
+    }
+}
+
+const booleanAttributes = new Set(['autofocus', 'checked', 'disabled', 'hidden', 'multiple', 'readonly', 'required', 'selected']);
+
+/** Apply Vue-style attrs and listeners to an externally supplied activator, restoring prior DOM state on cleanup. */
+export function bindElementProps(element: HTMLElement, props: ElementProps): () => void {
+    const previous = new Map<string, string | null>();
+    const listeners: Array<{ name: string; callback: EventListener; options: AddEventListenerOptions }> = [];
+    const remember = (name: string) => {
+        if (!previous.has(name)) previous.set(name, element.getAttribute(name));
+    };
+
+    for (const [key, value] of Object.entries(props)) {
+        if (key === 'ref' || key === 'key' || key === 'ref_for' || key === 'ref_key' || key === 'innerHTML' || key === 'textContent') continue;
+        if (key === 'class' || key === 'style') {
+            remember(key);
+            const current = element.getAttribute(key);
+            const additional = key === 'class' ? classValue(value) : styleValue(value);
+            const combined = [current, additional].filter(Boolean).join(key === 'class' ? ' ' : ';');
+            if (combined) element.setAttribute(key, combined);
+            else element.removeAttribute(key);
+            continue;
+        }
+
+        const eventMatch = key.match(/^on([A-Z][A-Za-z0-9]*?)(Capture|Once|Passive)*$/);
+        if (eventMatch) {
+            const eventName = eventMatch[1].replace(/[A-Z]/g, (letter) => letter.toLowerCase());
+            const suffix = key.slice(2 + eventMatch[1].length);
+            const options = { capture: suffix.includes('Capture'), once: suffix.includes('Once'), passive: suffix.includes('Passive') };
+            const callback: EventListener = (event) => invokeHandler(value, event);
+            element.addEventListener(eventName, callback, options);
+            listeners.push({ name: eventName, callback, options });
+            continue;
+        }
+
+        if (key.startsWith('on')) continue;
+        const attribute = key === 'tabIndex' ? 'tabindex' : key === 'htmlFor' ? 'for' : key;
+        if (!/^(?:[a-zA-Z_:][\w:.-]*)$/.test(attribute)) continue;
+        remember(attribute);
+        if (value === null || value === undefined || (booleanAttributes.has(attribute.toLowerCase()) && value === false)) {
+            element.removeAttribute(attribute);
+        } else if (booleanAttributes.has(attribute.toLowerCase())) {
+            element.setAttribute(attribute, '');
+        } else {
+            element.setAttribute(attribute, String(value));
+        }
+    }
+
+    return () => {
+        for (const { name, callback, options } of listeners) element.removeEventListener(name, callback, options);
+        for (const [name, value] of previous) {
+            if (value === null) element.removeAttribute(name);
+            else element.setAttribute(name, value);
+        }
+    };
 }

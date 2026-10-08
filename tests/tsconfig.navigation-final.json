@@ -1,0 +1,26 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/index.ts",
+        "../src/ui/USlideGroup.vue",
+        "../src/ui/USlideGroupItem.vue",
+        "../src/ui/UExpansionPanels.vue",
+        "../src/ui/UExpansionPanel.vue",
+        "../src/ui/UExpansionPanelTitle.vue",
+        "../src/ui/UCarousel.vue",
+        "../src/ui/UCarouselItem.vue",
+        "../src/ui/UWindow.vue",
+        "../src/ui/UWindowItem.vue",
+        "../src/ui/group-state.ts",
+        "../src/ui/slide-group.ts",
+        "../src/ui/window-state.ts"
+    ],
+    "exclude": []
+}

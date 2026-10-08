@@ -4,19 +4,21 @@ import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import UiControlFrame from './UiControlFrame.vue';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
+import { useDefaults } from './defaults';
 import { selectionGroupKey } from './selection-context';
 import { defaultValueComparator, type ValueComparator } from './selection';
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<FormControlProps & {
+type RadioProps = FormControlProps & {
     /** 本单选项代表的值；与 v-model 相等时选中。 */
     value?: T;
     trueValue?: T;
     falseValue?: T;
     valueComparator?: ValueComparator;
     ripple?: RippleOptions;
-}>(), {
+};
+const rawProps = withDefaults(defineProps<RadioProps>(), {
     ripple: true,
     disabled: false,
     dense: undefined,
@@ -25,6 +27,8 @@ const props = withDefaults(defineProps<FormControlProps & {
     hideDetails: undefined,
     persistentHint: undefined
 });
+const props = useDefaults(rawProps, 'URadio') as RadioProps;
+defineEmits<{ 'update:focused': [value: boolean] }>();
 
 const standaloneModel = defineModel<T | null>({ default: null });
 const group = inject(selectionGroupKey, undefined);
@@ -75,7 +79,7 @@ defineExpose({
         v-bind="props"
         :framed="control.framed.value"
         :for="control.id()"
-        :error="control.errors.value.join('\n')"
+        :error="control.displayErrors.value.join('\n')"
         :required="attrs.required !== undefined && attrs.required !== false"
         :label-position="control.labelPosition.value"
         :label-width="control.labelWidth.value"
@@ -106,6 +110,7 @@ defineExpose({
                     :aria-invalid="control.state.value === false || undefined"
                     @click="control.guard"
                     @keydown="control.guardKeys"
+                    @focus="control.focus"
                     @blur="control.blur"
                     @change="change"
                 />
@@ -131,6 +136,7 @@ defineExpose({
                 :aria-invalid="control.state.value === false || undefined"
                 @click="control.guard"
                 @keydown="control.guardKeys"
+                @focus="control.focus"
                 @blur="control.blur"
                 @change="change"
             />

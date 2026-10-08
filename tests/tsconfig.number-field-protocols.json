@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/UNumberInput.vue",
+        "../src/ui/specialized-inputs.ts",
+        "../src/ui/form.ts",
+        "../src/ui/defaults.ts",
+        "../src/ui/locale-context.ts",
+        "../src/ui/locale.ts",
+        "../src/ui/UiControlFrame.vue",
+        "../src/ui/UiField.vue",
+        "../src/ui/UiButton.vue",
+        "../src/ui/ripple.ts"
+    ]
+}

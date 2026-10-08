@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, mergeProps, nextTick, normalizeClass, onMounted, onBeforeUnmount, ref, useId, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
+import { computed, mergeProps, nextTick, normalizeClass, onMounted, onBeforeUnmount, provide, ref, useId, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
 import { vPointerBlur } from './pointer-focus';
 import { useDefaults } from './defaults';
 import { acquireScrollLock, releaseScrollLock } from './overlay-lifecycle';
 import { provideUiTheme } from './theme';
+import { menuContextKey } from './menu';
 
 type ElementTarget = string | HTMLElement | ComponentPublicInstance;
 const rawProps = withDefaults(defineProps<{
@@ -51,6 +52,7 @@ const rawProps = withDefaults(defineProps<{
     persistent: false, scrollStrategy: 'close', locationStrategy: 'connected', eager: true
 });
 const props = useDefaults(rawProps, 'UTooltip');
+provide(menuContextKey, null);
 const emit = defineEmits<{
     'update:modelValue': [value: boolean]; 'click:outside': [event: MouseEvent];
     keydown: [event: KeyboardEvent]; afterEnter: []; afterLeave: [];

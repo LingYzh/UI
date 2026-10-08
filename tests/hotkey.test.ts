@@ -1,6 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultHotkeyMap, formatHotkeys, type HotkeyMap } from '../src/ui/hotkey';
+import {
+    defaultHotkeyMap,
+    formatHotkeys,
+    HotkeySequenceMatcher,
+    parseHotkeySequences,
+    type HotkeyKeyboardEvent,
+    type HotkeyMap
+} from '../src/ui/hotkey';
+
+function keyEvent(key: string, modifiers: Partial<HotkeyKeyboardEvent> = {}, timeStamp = 0): HotkeyKeyboardEvent {
+    return {
+        key,
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        shiftKey: false,
+        timeStamp,
+        ...modifiers
+    };
+}
 
 test('formats nested combo, alternate and sequence grammar with their own dividers', () => {
     const [tokens] = formatHotkeys('ctrl+k/meta+p-shift+enter', 'text', defaultHotkeyMap, false);
@@ -85,7 +104,7 @@ test('uses a supplied custom map and preserves unknown keys in uppercase', () =>
     ]);
 });
 
-test('normalizes custom text tokens but leaves Vuetify locale tokens pending', () => {
+test('normalizes custom text tokens and preserves Vuetify tokens without a translator', () => {
     const map: HotkeyMap = {
         custom: {
             default: { text: '$ctrl' }
@@ -107,6 +126,44 @@ test('normalizes custom text tokens but leaves Vuetify locale tokens pending', (
     assert.equal(localized[0].kind === 'key' ? localized[0].content : '', '$vuetify.hotkey.ctrl');
 });
 
+test('translates Vuetify text tokens and localized dividers without changing icon or symbol values', () => {
+    const map: HotkeyMap = {
+        ctrl: {
+            default: { text: '$vuetify.hotkey.ctrl', symbol: '⌃', icon: 'control-icon' }
+        },
+        meta: {
+            default: { text: '$vuetify.hotkey.meta', symbol: '⌘', icon: 'command-icon' }
+        }
+    };
+    const translate = (key: string) => ({
+        '$vuetify.hotkey.ctrl': 'Control key',
+        '$vuetify.hotkey.meta': 'Command key',
+        'hotkey.separator.or': 'or localized',
+        'hotkey.separator.then': 'then localized'
+    }[key] ?? key);
+    const [textTokens] = formatHotkeys('ctrl/meta-ctrl', 'text', map, false, translate);
+    const [symbolTokens] = formatHotkeys('ctrl', 'symbol', map, false, translate);
+    const [iconTokens] = formatHotkeys('ctrl', 'icon', map, false, translate);
+
+    assert.deepEqual(textTokens.map(token => token.kind === 'key' ? token.text : token.content), [
+        'Control key', 'or localized', 'Command key', 'then localized', 'Control key'
+    ]);
+    assert.deepEqual(symbolTokens[0], {
+        kind: 'key',
+        key: 'ctrl',
+        mode: 'symbol',
+        content: '⌃',
+        text: 'Control key'
+    });
+    assert.deepEqual(iconTokens[0], {
+        kind: 'key',
+        key: 'ctrl',
+        mode: 'icon',
+        content: 'control-icon',
+        text: 'Control key'
+    });
+});
+
 test('does not guess the nonstandard mod alias', () => {
     const [tokens] = formatHotkeys('mod+k', 'text', defaultHotkeyMap, false);
 
@@ -118,4 +175,63 @@ test('returns no combinations for an empty value and an empty token list for inv
     assert.deepEqual(formatHotkeys('', 'text', defaultHotkeyMap, false), []);
     assert.deepEqual(formatHotkeys('ctrl+', 'text', defaultHotkeyMap, false), [[]]);
     assert.deepEqual(formatHotkeys('ctrl++k', 'text', defaultHotkeyMap, false), [[]]);
+});
+
+test('compiles the same sequence, alternate and independent-shortcut grammar used by display', () => {
+    const sequences = parseHotkeySequences('ctrl+k/meta+p-shift+enter control+up');
+
+    assert.equal(sequences.length, 3);
+    assert.deepEqual(sequences.map(sequence => sequence.map(chord => [chord.key, chord.modifiers])), [
+        [
+            ['k', { ctrl: true, meta: false, alt: false, shift: false }],
+            ['enter', { ctrl: false, meta: false, alt: false, shift: true }]
+        ],
+        [
+            ['p', { ctrl: false, meta: true, alt: false, shift: false }],
+            ['enter', { ctrl: false, meta: false, alt: false, shift: true }]
+        ],
+        [['arrowup', { ctrl: true, meta: false, alt: false, shift: false }]]
+    ]);
+    assert.deepEqual(parseHotkeySequences('a+b'), [], 'unmodified simultaneous keys cannot be represented by KeyboardEvent modifiers');
+});
+
+test('matches modifier chords and completes either parsed alternative sequence', () => {
+    const matcher = new HotkeySequenceMatcher();
+    matcher.setSequences(parseHotkeySequences('ctrl+k/meta+p-shift+enter'));
+
+    assert.deepEqual(matcher.match(keyEvent('p', { metaKey: true }, 10)), { matched: true, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 20)), { matched: true, triggered: true });
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true }, 30)), { matched: true, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 40)), { matched: true, triggered: true });
+});
+
+test('drops a mismatched sequence step and lets that key restart from a first chord', () => {
+    const matcher = new HotkeySequenceMatcher();
+    matcher.setSequences(parseHotkeySequences('ctrl+k-shift+enter'));
+
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true }, 0)), { matched: true, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('x', { ctrlKey: true }, 10)), { matched: false, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 20)), { matched: false, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true }, 30)), { matched: true, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true }, 40)), { matched: true, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 50)), { matched: true, triggered: true });
+});
+
+test('expires partial sequences at the configured timeout and resets explicitly', () => {
+    const matcher = new HotkeySequenceMatcher();
+    matcher.setSequences(parseHotkeySequences('ctrl+k-shift+enter'));
+
+    matcher.match(keyEvent('k', { ctrlKey: true }, 0), { sequenceTimeout: 50 });
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 51), { sequenceTimeout: 50 }), { matched: false, triggered: false });
+    matcher.match(keyEvent('k', { ctrlKey: true }, 60), { sequenceTimeout: 50 });
+    matcher.reset();
+    assert.deepEqual(matcher.match(keyEvent('Enter', { shiftKey: true }, 70), { sequenceTimeout: 50 }), { matched: false, triggered: false });
+});
+
+test('exact defaults to the legacy modifier equality and can accept extra modifiers when disabled', () => {
+    const matcher = new HotkeySequenceMatcher();
+    matcher.setSequences(parseHotkeySequences('ctrl+shift+k'));
+
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true, shiftKey: true, altKey: true }, 1)), { matched: false, triggered: false });
+    assert.deepEqual(matcher.match(keyEvent('k', { ctrlKey: true, shiftKey: true, altKey: true }, 2), { exact: false }), { matched: true, triggered: true });
 });

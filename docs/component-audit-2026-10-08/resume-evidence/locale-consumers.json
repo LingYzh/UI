@@ -1,0 +1,671 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + createUI + Electron",
+    "displayScope": "Hotkey combo, alternate and sequence cases use listen:false; this fixture validates display text only.",
+    "evidence": "D:\\UI\\artifacts\\component-audit-root\\locale-consumers",
+    "sourceSha256": {
+        "src/ui/locale.ts": "60f4759b711bc661a35a9bb9582fdf52702e0bd91b38ac3a07819fe64d5ce6a7",
+        "src/ui/locale-context.ts": "eb6585bb7ba127c1df8d69483b28060a108bbeb6a6b7b089b458fa9ee540a499",
+        "src/ui/hotkey.ts": "ab806737fbf0b032415c69b5c9e7d8460b9ddaac008d36988e8459adb74c68af",
+        "src/ui/UHotkey.vue": "4c8dc1ab6d8c6997be189d7f14348a7e51391e57b119dd6747963357a295aec4",
+        "src/ui/UiPagination.vue": "cec9b843aa4fb5c2a991a0a6c57f18462201ab4e1324f9bd520ea85ea13eaf2a",
+        "src/ui/ULocaleProvider.vue": "97c89646c2c2a8f98f63f23a80190b9855a006ebcd874233be0b01fbd1c581a5",
+        "src/ui/docs/component-examples/locale-provider.vue": "735e2a50aa77f4c7f93582981f9f641ab505b9800b86ca3416985bb2f591d361",
+        "src/ui/index.ts": "c84a7fc949ecfe20786feec042f1d51ed6a52689ed727fc6737293c739c5ecc7"
+    },
+    "registry": {
+        "localeProvider": true,
+        "pagination": true,
+        "hotkey": true,
+        "useLocale": true
+    },
+    "realDemo": {
+        "english": {
+            "parentPreview": "Hello Ling · Inherited from the outer provider · 1,234.5",
+            "childPreview": "Child says hello to Ling · Inherited from the outer provider · 1,234.5",
+            "pagination": "Pagination",
+            "hotkey": "Keyboard shortcut Save or ENTER then G"
+        },
+        "chinese": {
+            "parentPreview": "你好，Ling · 继承外层的自定义文案 · 1,234.5",
+            "childInheritsParentMessage": true,
+            "pagination": "分页",
+            "hotkey": "快捷键 保存 或 ENTER 然后 G"
+        }
+    },
+    "builtinLocales": {
+        "english": {
+            "pagination": "Pagination",
+            "previous": "Previous page",
+            "page": "Page 2",
+            "hotkey": "Keyboard shortcut Ctrl + K or Ctrl + P then Shift + Enter"
+        },
+        "chinese": {
+            "pagination": "分页",
+            "previous": "上一页",
+            "page": "第 2 页",
+            "hotkey": "快捷键 Ctrl"
+        }
+    },
+    "scopedConsumers": {
+        "english": {
+            "pagination": "Scoped pagination",
+            "page": "Scoped page 2",
+            "hotkey": "Shortcut Control EN + Meta EN OR EN Shift EN THEN EN Control EN"
+        },
+        "chinese": {
+            "pagination": "父级分页",
+            "page": "父级第 2 页",
+            "hotkey": "父级快捷键 控制键 + 命令键 或 Shift 键 然后 控制键"
+        }
+    },
+    "explicitLabels": {
+        "english": {
+            "ordinary": "Manual pagination",
+            "token": "Explicit token pagination",
+            "tokenPrevious": "Explicit token previous"
+        },
+        "chinese": {
+            "ordinary": "Manual pagination",
+            "token": "父级令牌分页",
+            "tokenPrevious": "父级令牌上一页"
+        }
+    },
+    "hotkeyModes": {
+        "english": {
+            "symbol": "⌃",
+            "symbolTitle": "Control EN",
+            "iconTitle": "Control EN",
+            "iconPath": "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M8 13h8M8 17h6",
+            "textLabel": "Shortcut Control EN + Meta EN OR EN Shift EN THEN EN Control EN"
+        },
+        "chinese": {
+            "symbol": "⌃",
+            "symbolTitle": "控制键",
+            "iconTitle": "控制键",
+            "iconPath": "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M8 13h8M8 17h6",
+            "textLabel": "父级快捷键 控制键 + 命令键 或 Shift 键 然后 控制键"
+        }
+    },
+    "inheritanceAndIsolation": {
+        "childInheritsLocaleAndMessages": "父级分页",
+        "independentPagination": "独立分页",
+        "independentHotkey": "独立快捷键 独立控制键",
+        "globalPagination": "分页",
+        "globalHotkey": "快捷键 Ctrl"
+    },
+    "layout": {
+        "narrowAt125Percent": {
+            "innerWidth": 299,
+            "clientWidth": 294,
+            "documentWidth": 294,
+            "documentHeight": 1589,
+            "appHeight": 1565,
+            "panelBounds": [
+                {
+                    "panel": "real-locale-demo",
+                    "element": "h2",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "element": "real demo",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "element": "h2",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "element": "h2",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "element": "h2",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "element": "h2",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "element": "nav",
+                    "right": 268.8,
+                    "innerRight": 268.8,
+                    "fits": true
+                }
+            ],
+            "navButtonBounds": [
+                {
+                    "panel": "real-locale-demo",
+                    "label": "上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "real-locale-demo",
+                    "label": "下一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "global-panel",
+                    "label": "下一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Previous page",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Page 1",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Page 2",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Page 3",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Page 4",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Page 5",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "builtin-en-panel",
+                    "label": "Next page",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级下一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "Manual previous",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "Manual next",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级令牌上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "Manual token next",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "scope-panel",
+                    "label": "父级下一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立上一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立第 1 页",
+                    "right": 98.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立第 2 页",
+                    "right": 138.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立第 3 页",
+                    "right": 176.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立第 4 页",
+                    "right": 214.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立第 5 页",
+                    "right": 252.35,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                },
+                {
+                    "panel": "independent-panel",
+                    "label": "独立下一页",
+                    "right": 60.8,
+                    "navInnerRight": 268.8,
+                    "fits": true
+                }
+            ]
+        }
+    },
+    "screenshots": [
+        {
+            "file": "locale-consumers-wide-light.png",
+            "viewport": {
+                "width": 1280,
+                "height": 900
+            },
+            "theme": "light",
+            "capture": "fullPage"
+        },
+        {
+            "file": "locale-consumers-390-dark-125-fullpage-diagnostic.png",
+            "viewport": {
+                "width": 390,
+                "height": 900
+            },
+            "theme": "dark",
+            "zoom": 1.25,
+            "capture": "Playwright fullPage diagnostic",
+            "visualAcceptance": false,
+            "note": "Zoomed fullPage capture is CSS-clipped; use the native Electron captures for visual acceptance."
+        },
+        {
+            "file": "locale-consumers-390-dark-125-native-top.png",
+            "viewport": {
+                "width": 390,
+                "height": 900
+            },
+            "theme": "dark",
+            "zoom": 1.25,
+            "scrollTarget": "page top with real locale demo",
+            "capture": "Electron webContents.capturePage NativeImage",
+            "visualAcceptance": true,
+            "pixelSize": {
+                "width": 374,
+                "height": 835
+            }
+        },
+        {
+            "file": "locale-consumers-390-dark-125-native-scope.png",
+            "viewport": {
+                "width": 390,
+                "height": 900
+            },
+            "theme": "dark",
+            "zoom": 1.25,
+            "scrollTarget": "scope panel",
+            "capture": "Electron webContents.capturePage NativeImage",
+            "visualAcceptance": true,
+            "pixelSize": {
+                "width": 374,
+                "height": 835
+            }
+        },
+        {
+            "file": "locale-consumers-390-dark-125-native-independent.png",
+            "viewport": {
+                "width": 390,
+                "height": 900
+            },
+            "theme": "dark",
+            "zoom": 1.25,
+            "scrollTarget": "independent scope panel",
+            "capture": "Electron webContents.capturePage NativeImage",
+            "visualAcceptance": true,
+            "pixelSize": {
+                "width": 374,
+                "height": 835
+            }
+        }
+    ],
+    "errors": []
+}

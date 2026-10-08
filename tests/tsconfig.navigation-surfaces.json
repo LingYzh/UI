@@ -1,0 +1,38 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UBottomNavigation.vue",
+        "../src/ui/UBottomSheet.vue",
+        "../src/ui/UStepperWindow.vue",
+        "../src/ui/UStepperWindowItem.vue",
+        "../src/ui/stepper-window-context.ts",
+        "../src/ui/UItemGroup.vue",
+        "../src/ui/UiButton.vue",
+        "../src/ui/UOverlay.vue",
+        "../src/ui/UWindow.vue",
+        "../src/ui/UWindowItem.vue",
+        "../src/ui/UStepper.vue",
+        "../src/ui/UStepperItem.vue",
+        "../src/ui/group-state.ts",
+        "../src/ui/window-state.ts",
+        "../src/ui/stepper-state.ts",
+        "../src/ui/bottom-navigation.ts",
+        "../src/ui/button-group.ts",
+        "../src/ui/item-group-context.ts",
+        "../src/ui/item-group-state.ts",
+        "../src/ui/selection-context.ts",
+        "../src/ui/selection.ts",
+        "../src/ui/layout-completion.ts",
+        "../src/ui/overlay-props.ts",
+        "../src/ui/overlay-back.ts",
+        "../src/ui/overlay-lifecycle.ts"
+    ],
+    "exclude": []
+}

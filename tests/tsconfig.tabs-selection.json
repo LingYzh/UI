@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/UiTabs.vue",
+        "../src/ui/UiTab.vue",
+        "../src/ui/UiTabsWindow.vue",
+        "../src/ui/UiTabsWindowItem.vue",
+        "../src/ui/tabs.ts",
+        "../src/ui/tabs-window-context.ts"
+    ],
+    "exclude": []
+}

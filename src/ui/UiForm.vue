@@ -11,7 +11,7 @@ const rawProps = withDefaults(defineProps<{
     validateOn?: ValidateOn; fastFail?: boolean;
     density?: 'default' | 'comfortable' | 'compact'; variant?: 'outlined' | 'filled' | 'underlined' | 'plain';
     color?: string; hideDetails?: boolean | 'auto'; resetMode?: 'initial' | 'empty'; submitMode?: 'validated' | 'promise';
-}>(), { labelPosition: 'top', labelWidth: '180px', validateOn: 'input', rounded: true, hideDetails: undefined, resetMode: 'initial', submitMode: 'validated' });
+}>(), { labelPosition: 'top', labelWidth: '180px', validateOn: 'input', rounded: true, hideDetails: undefined, resetMode: 'empty', submitMode: 'promise' });
 const props = useDefaults(rawProps, 'UForm');
 const model = defineModel<boolean | null>({ default: null });
 const emit = defineEmits<{ submit: [event: SubmitEvent & Partial<Promise<FormValidationResult>>, result?: FormValidationResult]; invalid: [result: FormValidationResult]; validated: [result: FormValidationResult] }>();
@@ -65,11 +65,11 @@ async function validate(): Promise<FormValidationResult> {
         return { valid: !errors.value.length && ![...controls].some(control => control.state.value === false), errors: errors.value };
     } finally { if (current === generation) isValidating.value = false; }
 }
-function resetValidation() {
+async function resetValidation() {
     generation++;
     isValidating.value = false;
     nativeErrors.value = [];
-    controls.forEach(control => control.resetValidation());
+    await Promise.all([...controls].map(control => control.resetValidation()));
 }
 async function reset() {
     resetting.value = true;
@@ -77,9 +77,9 @@ async function reset() {
         nativeResetting = true;
         element.value?.reset();
         nativeResetting = false;
-        controls.forEach(control => control.reset());
+        await Promise.all([...controls].map(control => control.reset()));
         await nextTick();
-        resetValidation();
+        await resetValidation();
     } finally { nativeResetting = false; resetting.value = false; }
 }
 function handleReset(event: Event) {

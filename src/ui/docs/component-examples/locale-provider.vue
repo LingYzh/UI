@@ -1,13 +1,20 @@
 <script setup>
 import { defineComponent, h, ref } from 'vue';
-import { ULocaleProvider, UPagination, USwitch, useLocale } from '../../index';
+import { UHotkey, ULocaleProvider, UPagination, USwitch, useLocale } from '../../index';
 const page = ref(2);
 const english = ref(true);
 const rtl = ref(false);
 const messages = {
-    en: { demo: { greeting: 'Hello {name}', inherited: 'Inherited from the outer provider' } },
-    zh: { demo: { greeting: '你好，{name}', inherited: '继承外层的自定义文案' } },
+    en: {
+        demo: { greeting: 'Hello {name}', inherited: 'Inherited from the outer provider' },
+        hotkey: { save: 'Save' },
+    },
+    zh: {
+        demo: { greeting: '你好，{name}', inherited: '继承外层的自定义文案' },
+        hotkey: { save: '保存' },
+    },
 };
+const keyMap = { save: { default: { text: '$vuetify.hotkey.save' } } };
 const MessagePreview = defineComponent({
     setup() {
         const locale = useLocale();
@@ -32,7 +39,8 @@ const MessagePreview = defineComponent({
             fallback-locale="en"
         >
             <MessagePreview />
-            <u-pagination v-model="page" :length="5" label="English pagination" />
+            <u-pagination v-model="page" :length="5" />
+            <u-hotkey keys="save/enter-g" display-mode="text" :key-map="keyMap" :listen="false" />
             <u-locale-provider
                 :messages="{ en: { 'demo.greeting': 'Child says hello to {name}' } }"
                 tag="section"

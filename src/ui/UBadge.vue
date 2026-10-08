@@ -8,5 +8,5 @@ const label = computed(() => typeof props.content === 'number' && props.content 
 </script>
 
 <template>
-    <span class="ui-attached-badge" :class="{ 'is-inline': props.inline }"><slot /><UTransition variant="fade"><span v-if="props.modelValue" class="ui-attached-badge-content" :class="{ 'is-dot': props.dot }" :data-location="props.location" :style="{ background: props.color, '--ui-badge-offset-x': props.offsetX + 'px', '--ui-badge-offset-y': props.offsetY + 'px' }" :aria-label="props.dot ? '有新消息' : label">{{ props.dot ? '' : label }}</span></UTransition></span>
+    <span class="ui-attached-badge" :class="{ 'is-inline': props.inline }"><slot /><UTransition variant="fade"><span v-if="props.modelValue" class="ui-attached-badge-content" :class="{ 'is-dot': props.dot }" :data-location="props.location" :style="{ background: props.color, '--ui-badge-offset-x': props.offsetX + 'px', '--ui-badge-offset-y': props.offsetY + 'px' }" :aria-label="props.dot ? '有新消息' : label"><slot name="badge">{{ props.dot ? '' : label }}</slot></span></UTransition></span>
 </template>

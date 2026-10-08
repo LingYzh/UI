@@ -1,4 +1,4 @@
-import { inject, provide, reactive, type InjectionKey } from 'vue';
+import { inject, provide, reactive, type InjectionKey, type Ref } from 'vue';
 
 export type ListValue = string | number | boolean | null;
 export type ListContext = {
@@ -10,7 +10,11 @@ export type ListContext = {
     activate: (value: ListValue) => void;
     toggleOpen: (value: ListValue) => void;
     focus: (direction: number | 'first' | 'last', current?: HTMLElement) => void;
+    register?: (value: ListValue, parent: ListValue | undefined, branch: boolean, disabled: () => boolean) => () => void;
+    disabled?: () => boolean;
+    readonly?: () => boolean;
 };
+export const listParentKey: InjectionKey<Ref<ListValue | undefined>> = Symbol('ui-list-parent');
 export const listKey: InjectionKey<ListContext> = Symbol('ui-list');
 export function provideList(context: ListContext) { provide(listKey, context); }
 export function useList() { return inject(listKey, null); }

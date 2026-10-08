@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/USlideGroup.vue",
+        "../src/ui/USlideGroupItem.vue",
+        "../src/ui/slide-group.ts",
+        "../src/ui/display.ts"
+    ],
+    "exclude": []
+}

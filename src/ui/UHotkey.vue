@@ -7,6 +7,7 @@ import Icon from '../components/Icon.vue';
 import { useDefaults } from './defaults';
 import { defaultHotkeyMap, formatHotkeys, type HotkeyMap, type HotkeyDisplayMode, type HotkeyPlatform } from './hotkey';
 import { borderStyles, roundedStyles } from './appearance';
+import { useLocale } from './locale-context';
 
 const rawProps = withDefaults(defineProps<{
     keys?: string;
@@ -30,9 +31,15 @@ const rawProps = withDefaults(defineProps<{
 }>(), { displayMode: 'icon', platform: 'auto', variant: 'outlined', listen: true, preventDefault: true, rounded: true });
 const props = useDefaults(rawProps, 'UHotkey');
 const emit = defineEmits<{ trigger: [event: KeyboardEvent] }>();
+const locale = useLocale();
 const isMac = computed(() => props.platform === 'mac' || props.platform === 'auto' && typeof navigator !== 'undefined' && /macintosh|mac os/i.test(navigator.userAgent));
-const combinations = computed(() => formatHotkeys(props.keys, props.displayMode, props.keyMap ?? defaultHotkeyMap, isMac.value));
-const accessibleLabel = computed(() => `快捷键 ${combinations.value.map(keys => keys.map(key => key.kind === 'key' ? key.text : key.content).join(' ')).join('，')}`.trim());
+const combinations = computed(() => formatHotkeys(props.keys, props.displayMode, props.keyMap ?? defaultHotkeyMap, isMac.value, locale.t));
+const accessibleLabel = computed(() => {
+    const keys = combinations.value
+        .map(combination => combination.map(key => key.kind === 'key' ? key.text : key.content).join(' '))
+        .join(locale.t('hotkey.separator.combination'));
+    return locale.t('hotkey.label', { keys }).trim();
+});
 const keyStyles = computed(() => ({
     color: props.color && /^[a-z][\w-]*$/i.test(props.color) ? `var(--ui-theme-${props.color}, ${props.color})` : props.color,
     ...borderStyles(props.border),

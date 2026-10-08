@@ -115,7 +115,7 @@
     inset: auto;
     margin: 0;
     min-width: max(180px, anchor-size(width));
-    max-width: min(360px, calc(100vw - 16px));
+    max-width: min(360px, calc(100vw - 16px), calc(100% - 16px));
     max-height: min(420px, 70dvh);
     overflow: auto;
     overscroll-behavior: contain;
@@ -142,7 +142,7 @@
 .ui-menu-surface[data-placement^="top"]:popover-open { transform: none; }
 @starting-style { .ui-menu-surface[data-placement^="top"]:popover-open { transform: translateY(3px); } }
 .ui-menu-surface:focus-visible:not([data-ui-pointer-focus]) { outline: none; }
-.ui-menu-surface.is-panel { max-width: calc(100vw - 16px); max-height: min(640px, 80dvh); padding: 14px; }
+.ui-menu-surface.is-panel { max-width: min(calc(100vw - 16px), calc(100% - 16px)); max-height: min(640px, 80dvh, calc(100% - 16px)); padding: 14px; }
 /* Fields stack inside panels, matching UiCard content: label above a full-width control. */
 .ui-menu-surface.is-panel .ui-field { flex-direction: column; align-items: stretch; gap: 6px; padding: 0; border: 0; font-size: 14px; }
 .ui-menu-surface.is-panel .ui-field :is(.ui-input, .ui-select) { width: 100%; }

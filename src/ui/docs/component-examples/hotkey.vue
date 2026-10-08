@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import { UHotkey, USelect, USwitch } from '../../index';
+import { UHotkey, ULocaleProvider, USelect, USwitch } from '../../index';
 const mode = ref('symbol');
 const platform = ref('mac');
 const disabled = ref(false);
 const triggered = ref(0);
+const english = ref(false);
+const keyMap = { save: { default: { text: '$vuetify.hotkey.save' } } };
+const messages = { zh: { hotkey: { save: '保存' } }, en: { hotkey: { save: 'Save' } } };
 </script>
 
 <template>
@@ -27,6 +30,10 @@ const triggered = ref(0);
             @trigger="triggered++"
         />
         <u-hotkey keys="ctrl+k/ctrl+p-g" display-mode="text" variant="contained" :listen="false" />
+        <u-switch v-model="english" label="英文展示范围" />
+        <u-locale-provider :locale="english ? 'en' : 'zh'" :messages="messages">
+            <u-hotkey keys="save/enter-g" display-mode="text" :key-map="keyMap" :listen="false" />
+        </u-locale-provider>
         <output>按 Ctrl + Shift + K：已触发 {{ triggered }} 次；平台展示与监听分别配置。</output>
     </div>
 </template>

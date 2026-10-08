@@ -121,7 +121,7 @@ const commonProps = {
     openOnFocus: '触发器获得键盘焦点时打开面板。',
     openDelay: '延迟指定毫秒后打开面板。',
     closeDelay: '延迟指定毫秒后关闭面板。',
-    firstDayOfWeek: '设置日历一周的起始日；0 表示星期日。',
+    firstDayOfWeek: '设置日历一周的起始日；0 表示星期日。未指定时按最近语言地区推断。',
     touch: '启用触摸手势切换或交互。',
     keyboard: '启用键盘快捷键或方向键交互。',
     itemHeight: '设置虚拟列表中每一项的估算或固定高度。',
@@ -378,6 +378,19 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (contract.name === 'UTabs' && prop.name === 'modelValue') return '支持对象、数组、字符串、数字和 null 标签值；null 是有效值，空列表或取消选择时可为 undefined。multiple 时模型为选中值数组，max 限制选中数量，valueComparator 控制比较。';
+    if (contract.name === 'UTabsWindowItem' && prop.name === 'eager') return '省略时继承 UTabsWindow 的 eager；true 提前挂载并保留内容。默认首次激活时挂载，离场动画结束后卸载。';
+    if (contract.name === 'UFileInput' && ['counterString', 'counterSizeString'].includes(prop.name)) return '计数文案或最近语言作用域中的字典键；支持 {0}/{1}（文件数/可读大小）及 {count}/{size} 命名模板。';
+    if (contract.name === 'UApp' && prop.name === 'fullHeight') return '默认 true，最小高度为 100dvh；false 将默认最小高度设为 0。';
+    if (contract.name === 'ULayout' && prop.name === 'fullHeight') return '显式 true 时最小高度为 100dvh；尺寸属性可覆盖默认高度约束。';
+    if (contract.name === 'UConfirmEdit') {
+        const descriptions = { disabled: '未提供时按isPristine禁用操作；boolean统一控制，数组只禁用save/cancel中的指定操作。', hideActions: '隐藏默认操作按钮，使用默认插槽的save/cancel或actions自定义操作区。', cancelText: '取消按钮文本；显式$vuetify命名空间token按最近语言作用域解析。', okText: '确认按钮文本；显式$vuetify命名空间token按最近语言作用域解析。' };
+        if (descriptions[prop.name]) return descriptions[prop.name];
+    }
+    if (contract.name === 'UDefaultsProvider') {
+        const descriptions = { reset: '按祖先链回溯：true等效数字1，数字或字符串指定父层数；不再清空继承。', root: 'true回溯根配置；字符串同时叠加该名称的默认配置字典。', scoped: '只提供本层配置，不合并父配置；优先于reset和root。', disabled: '直接透传父配置，忽略本层defaults、scoped、reset和root。' };
+        if (descriptions[prop.name]) return descriptions[prop.name];
+    }
     if (prop.name === 'standardProtocol' && contract.name === 'UImg') return '默认false：load/error给原生DOM Event；true改给浏览器选定的currentSrc URL字符串。';
     if (prop.name === 'standardProtocol' && contract.name === 'UTooltip') return '默认false：default是触发器，text或content提供提示内容；true使用activator触发器插槽与default内容插槽，default的isActive是可写Ref。';
     if (prop.name === 'standardProtocol' && contract.name === 'UDataIterator') return '默认false：items为原始项、默认无容器；true提供标准包装项、容器和上游事件协议。原每页10保留，可显式配置5。';
@@ -488,7 +501,8 @@ function scopeText(slot) {
 }
 
 function slotDescription(slot, previous, contract) {
-    if (contract?.name === 'UItemGroup' && slot.name === 'default') return 'selected为内部ID数组，isSelected/select按ID操作，selectedValues为公开值；next/prev跳禁用项。保留isValueSelected/toggle按公开值操作。';
+    if (['UItemGroup', 'UChipGroup', 'UBtnToggle'].includes(contract?.name) && slot.name === 'default') return 'selected为内部ID数组，isSelected/select按ID操作，selectedValues为公开值；next/prev跳禁用项。保留isValueSelected/toggle按公开值操作。';
+    if (contract?.name === 'UConfirmEdit' && slot.name === 'default') return 'model为深克隆草稿Ref；save/cancel提交或重置，isPristine为未修改状态。actions提供按钮渲染函数，消费后不重复渲染默认操作区。open恒为true，begin兼容重置草稿，saving表示本库异步校验。';
     if (contract?.name === 'UItem' && slot.name === 'default') return '提供标准isSelected/selectedClass/value/disabled/select/toggle，以及兼容selected和扩展id；tag=false只渲染本插槽。';
     if (contract?.name === 'UTooltip') {
         const descriptions = { default: '旧默认：触发器；standardProtocol=true时为提示内容，提供可写Ref isActive。', activator: '标准触发器：v-bind props绑定ARIA、指针、键盘和元素ref；isActive为布尔值，targetRef可绑定独立定位目标。', content: '旧协议的自定义提示内容，优先于text；标准协议使用default。' };
@@ -548,6 +562,15 @@ function methodType(member, previous) {
 }
 
 function methodDescription(contract, member, previous) {
+    if (['UItemGroup', 'UChipGroup', 'UBtnToggle'].includes(contract.name)) {
+        const descriptions = { selected: '读取当前选中项的内部ID数组，随子组实时更新。', selectedValues: '读取当前选中项的公开值数组，随子组实时更新。', isSelected: '按内部ID判断当前条目是否选中。', select: '按内部ID设置选中状态，第二参数可指定选中或取消。', next: '选择后一可用项，遵守组禁用、只读和选择约束。', prev: '选择前一可用项，遵守组禁用、只读和选择约束。' };
+        if (descriptions[member.name]) return descriptions[member.name];
+    }
+    if (contract.name === 'UItem' && member.name === 'select') return '设置当前条目的选中状态；省略参数时选中，false取消。';
+    if (contract.name === 'UConfirmEdit') {
+        const descriptions = { begin: '兼容方法：将始终可见的草稿重置为最新模型，不控制展开。', save: '校验并提交深克隆草稿，发出save事件；更新后的父模型使旧校验结果失效。', cancel: '将草稿深克隆重置到当前模型，发出cancel事件。', isPristine: '读取草稿是否与当前模型深度相等。' };
+        if (descriptions[member.name]) return descriptions[member.name];
+    }
     const oldDescription = reusableDescription(previous);
     if (oldDescription) return oldDescription;
     return commonMethods[member.name] || `${member.kind === 'method' ? '调用' : '读取'} ${member.name}，访问 ${member.expression} 对应的 ${contract.name} 成员。`;

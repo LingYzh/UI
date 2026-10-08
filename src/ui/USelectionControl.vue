@@ -3,11 +3,12 @@ import { computed, inject, ref, useAttrs } from 'vue';
 import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { selectionGroupKey } from './selection-context';
-import type { ValueComparator } from './selection';
+import { defaultValueComparator, type ValueComparator } from './selection';
+import { useDefaults } from './defaults';
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<{
+const rawProps = withDefaults(defineProps<{
     value?: unknown;
     label?: string;
     name?: string;
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<{
     ripple: true,
     type: 'checkbox'
 });
+const props = useDefaults(rawProps, 'USelectionControl');
 
 const model = defineModel<unknown>();
 const group = inject(selectionGroupKey, undefined);
@@ -31,7 +33,7 @@ const readonly = computed(() => !!props.readonly || !!group?.readonly.value);
 const effectiveTrueValue = computed(() => props.trueValue !== undefined
     ? props.trueValue
     : props.value !== undefined ? props.value : true);
-const comparator = computed(() => props.valueComparator ?? Object.is);
+const comparator = computed(() => props.valueComparator ?? defaultValueComparator);
 const name = computed(() => group?.name ?? props.name ?? attrs.name as string | undefined);
 const checked = computed(() => {
     if (group) return group.selected(effectiveTrueValue.value);
@@ -79,13 +81,13 @@ defineExpose({ element: input, focus: () => input.value?.focus() });
 
 <template>
     <label class="u-selection-control" :class="[$attrs.class, { 'is-disabled': disabled }]" :style="$attrs.style as any">
-        <span class="ui-selection-ripple" :class="`is-${type}`" v-ripple.center.circle="disabled || readonly ? false : props.ripple">
+        <span class="ui-selection-ripple" :class="`is-${props.type}`" v-ripple.center.circle="disabled || readonly ? false : props.ripple">
             <input
                 v-pointer-blur
                 ref="input"
                 v-bind="{ ...$attrs, class: undefined, style: undefined }"
-                :type="type === 'radio' ? 'radio' : 'checkbox'"
-                :class="type === 'radio' ? 'ui-radio-control' : type === 'switch' ? 'ui-switch' : 'ui-checkbox-control'"
+                :type="props.type === 'radio' ? 'radio' : 'checkbox'"
+                :class="props.type === 'radio' ? 'ui-radio-control' : props.type === 'switch' ? 'ui-switch' : 'ui-checkbox-control'"
                 :name="name"
                 :value="effectiveTrueValue as any"
                 :checked="checked"
@@ -96,6 +98,6 @@ defineExpose({ element: input, focus: () => input.value?.focus() });
                 @change="change"
             />
         </span>
-        <span v-if="label || $slots.default" class="u-selection-control-label"><slot>{{ label }}</slot></span>
+        <span v-if="props.label || $slots.default" class="u-selection-control-label"><slot>{{ props.label }}</slot></span>
     </label>
 </template>

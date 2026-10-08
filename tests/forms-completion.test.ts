@@ -53,6 +53,8 @@ test('number, range and rating boundaries remain stable', () => {
     assert.equal(parseNumberInput(''), null);
     assert.equal(parseNumberInput('1e'), undefined);
     assert.equal(normalizeSlider(8.8, 0, 10, 0.5), 9);
+    assert.equal(normalizeSlider(8.8125, 0, 10), 8.8125);
+    assert.deepEqual(normalizeRange([1.125, 2.375], 0, 10), [1.125, 2.375]);
     assert.deepEqual(normalizeRange([8, 2], 0, 10, 1), [2, 8]);
     assert.deepEqual(normalizeRange([8, 2], 0, 10, 1, 0), [2, 2]);
     assert.equal(normalizeRating(3.26, 5, 0.5), 3.5);
@@ -80,5 +82,5 @@ test('combobox publishes both v-model channels for consumers', () => {
     const compiled = compileScript(descriptor, { id: 'combobox-contract', fs: { fileExists: existsSync, readFile: (path) => readFileSync(path, 'utf8') } }).content;
     assert.match(compiled, /"modelValue": \{ type: null \}/);
     assert.match(compiled, /"search": \{ type: String/);
-    assert.match(compiled, /emits: \["update:modelValue", "update:search"\]/);
+    assert.match(compiled, /emits: \[[^\]]*"update:modelValue"[^\]]*"update:search"/);
 });

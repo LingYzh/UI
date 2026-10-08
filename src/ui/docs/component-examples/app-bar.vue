@@ -1,5 +1,5 @@
 <script setup>
-import { UApp, UAppBar, UAppBarTitle, UMain } from '../../index';
+import { UApp, UAppBar, UAppBarTitle, UButton, UMain } from '../../index';
 </script>
 
 <template>
@@ -8,6 +8,12 @@ import { UApp, UAppBar, UAppBarTitle, UMain } from '../../index';
             <u-app>
                 <u-app-bar :height="48">
                     <u-app-bar-title>应用顶栏</u-app-bar-title>
+                    <template #actions>
+                        <u-button variant="text">操作</u-button>
+                    </template>
+                    <template #extension>
+                        <u-app-bar-title text="可复用扩展区" />
+                    </template>
                 </u-app-bar>
                 <u-main>
                     <p class="pa-4">主要内容自动避开已注册的栏。</p>

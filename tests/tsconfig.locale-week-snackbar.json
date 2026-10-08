@@ -1,0 +1,4 @@
+{
+    "extends": "./tsconfig.date-protocols.json",
+    "include": ["../src/ui/markdown-plugins.d.ts", "../src/ui/UDatePicker.vue", "../src/ui/UCalendar.vue", "../src/ui/USnackbar.vue", "../src/ui/UiTextarea.vue"]
+}

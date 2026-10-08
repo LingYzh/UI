@@ -1,0 +1,21 @@
+{
+    "evidence": [
+        {
+            "report": "confirm-edit-protocols.json",
+            "sha256": "969a8b5fcf86861b9b071ec2104ddbed7a3eefe876e399f929dbb87618ec4b9e"
+        },
+        {
+            "report": "group-wrapper-protocols.json",
+            "sha256": "ad20fab959a8f7971b94fa3fc9ea0a018825cfdccf71ce1a31de0be5fd19b974"
+        },
+        {
+            "report": "hover-defaults-protocols.json",
+            "sha256": "35000b8c40e2d291d2472de28fbe0f1cc35ba4c5fbaf73987c380442e9ac2a5a"
+        },
+        {
+            "report": "locale-consumers.json",
+            "sha256": "d543f79fa511d8551d032e5c55fcecc74a4613e0187ef045b7161111963d8c9b"
+        }
+    ],
+    "boundary": "Targeted source checks only; screenshots are local ignored artifacts; no full library alignment claim."
+}

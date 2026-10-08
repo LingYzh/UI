@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/form.ts",
+        "../src/ui/validation.ts",
+        "../src/ui/UiForm.vue",
+        "../src/ui/UiInput.vue",
+        "../src/ui/UiTextarea.vue",
+        "../src/ui/UInput.vue",
+        "../src/ui/UValidation.vue"
+    ]
+}

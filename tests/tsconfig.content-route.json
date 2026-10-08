@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UiCard.vue",
+        "../src/ui/UiButton.vue",
+        "../src/ui/UEmptyState.vue",
+        "../src/ui/UTreeview.vue",
+        "../src/ui/UiLinkSurface.vue",
+        "../src/ui/router.ts"
+    ]
+}

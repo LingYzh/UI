@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UColorInput.vue",
+        "../src/ui/UColorPicker.vue",
+        "../src/ui/color-model.ts"
+    ]
+}

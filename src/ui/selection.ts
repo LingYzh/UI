@@ -14,6 +14,8 @@ export interface SelectionItemsOptions {
     itemProps?: ItemProperty | boolean;
 }
 
+type ComparisonCache = WeakMap<object, WeakMap<object, boolean>>;
+
 function getPath(value: unknown, path: string): unknown {
     return path.split('.').reduce<unknown>((current, part) => current && typeof current === 'object'
         ? (current as Record<string, unknown>)[part] : undefined, value);
@@ -30,7 +32,10 @@ export function normalizeItems(items: readonly unknown[], options: SelectionItem
         const object = raw !== null && typeof raw === 'object' ? raw as Record<string, unknown> : undefined;
         const title = property(raw, options.itemTitle ?? 'title', object?.label ?? object?.title ?? raw);
         const value = property(raw, options.itemValue ?? 'value', object?.value ?? raw);
-        const selectedProps = options.itemProps === true ? object : property(raw, options.itemProps || undefined, undefined);
+        const itemProps = options.itemProps === undefined ? 'props' : options.itemProps;
+        const selectedProps = itemProps === true
+            ? object && 'children' in object ? Object.fromEntries(Object.entries(object).filter(([key]) => key !== 'children')) : object
+            : itemProps === false ? undefined : property(raw, itemProps, undefined);
         const props = selectedProps && typeof selectedProps === 'object' ? { ...selectedProps as Record<string, unknown> } : {};
         const children = Array.isArray(object?.children) ? normalizeItems(object.children, options) : undefined;
         return { title: String(title ?? ''), value, raw, props, disabled: Boolean(props.disabled ?? object?.disabled), children };
@@ -38,13 +43,39 @@ export function normalizeItems(items: readonly unknown[], options: SelectionItem
 }
 
 export type ValueComparator = (a: unknown, b: unknown) => boolean;
-export const defaultValueComparator: ValueComparator = (a, b) => {
-    if (Object.is(a, b)) return true;
-    if (a && b && typeof a === 'object' && typeof b === 'object') {
-        try { return JSON.stringify(a) === JSON.stringify(b); } catch { return false; }
-    }
-    return false;
-};
+
+function findCachedComparison(a: object, b: object, cache: ComparisonCache): boolean | undefined {
+    const direct = cache.get(a)?.get(b);
+    if (typeof direct === 'boolean') return direct;
+    const reverse = cache.get(b)?.get(a);
+    return typeof reverse === 'boolean' ? reverse : undefined;
+}
+
+function deepEqual(a: unknown, b: unknown, cache: ComparisonCache): boolean {
+    if (a === b) return true;
+    if (a instanceof Date && b instanceof Date && a.getTime() !== b.getTime()) return false;
+    if (a !== Object(a) || b !== Object(b)) return false;
+
+    const left = a as object;
+    const right = b as object;
+    const keys = Object.keys(left);
+    if (keys.length !== Object.keys(right).length) return false;
+
+    const cached = findCachedComparison(left, right, cache);
+    if (cached !== undefined) return cached;
+
+    const leftPairs = cache.get(left);
+    if (leftPairs) leftPairs.set(right, true);
+    else cache.set(left, new WeakMap([[right, true]]));
+
+    return keys.every(key => deepEqual(
+        (left as Record<string, unknown>)[key],
+        (right as Record<string, unknown>)[key],
+        cache
+    ));
+}
+
+export const defaultValueComparator: ValueComparator = (a, b) => deepEqual(a, b, new WeakMap());
 
 export function selectedValue(item: SelectionItem, returnObject: boolean): unknown {
     return returnObject ? item.raw : item.value;

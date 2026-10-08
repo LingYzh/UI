@@ -15,6 +15,7 @@ export interface SnackbarProps {
     timer?: boolean | 'top' | 'bottom';
     timerColor?: string;
     reverseTimer?: boolean;
+    persistent?: boolean;
     queueIndex?: number;
 }
 export type SnackbarDismissReason = 'dismissed' | 'cleared' | 'overflow' | 'auto';

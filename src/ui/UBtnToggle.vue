@@ -18,10 +18,30 @@ defineExpose({
     reset: () => child.value?.reset(),
     resetValidation: () => child.value?.resetValidation(),
     get element() { return child.value?.element; },
-    get errors() { return child.value?.errors; }
+    get errors() { return child.value?.errors; },
+    get selected() { return child.value?.selected ?? []; },
+    get selectedValues() { return child.value?.selectedValues ?? []; },
+    isSelected: (id: string) => child.value?.isSelected(id) ?? false,
+    select: (id: string, selected?: boolean) => child.value?.select(id, selected),
+    next: () => child.value?.next(),
+    prev: () => child.value?.prev()
 });
+defineSlots<{
+    default?: (scope: {
+        selected: string[];
+        selectedValues: unknown[];
+        isSelected: (id: string) => boolean;
+        select: (id: string, selected?: boolean) => void;
+        next: () => void;
+        prev: () => void;
+        isValueSelected: (value: unknown) => boolean;
+        toggle: (value: unknown) => void;
+    }) => any;
+}>();
 </script>
 
 <template>
-    <UItemGroup ref="child" v-model="model" class="u-btn-group" v-bind="{ ...props, ...attrs }"><slot /></UItemGroup>
+    <UItemGroup ref="child" v-model="model" class="u-btn-group" v-bind="{ ...props, ...attrs }" v-slot="scope">
+        <slot v-bind="scope" />
+    </UItemGroup>
 </template>

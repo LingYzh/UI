@@ -34,11 +34,11 @@ test('published Tabs API documents manual activation, optional models and all sl
     assert.equal(prop('items').required, false);
     assert.deepEqual(prop('activation').declaredDefault, { kind: 'explicit', source: "'manual'" });
     assert.deepEqual(prop('mandatory').declaredDefault, { kind: 'explicit', source: "'force'" });
-    assert.equal(prop('modelValue').type, 'TabValue | null | undefined');
+    assert.equal(prop('modelValue').type, 'unknown');
     assert.equal(prop('modelValue').required, false);
     assert.deepEqual(prop('modelValue').declaredDefault, { kind: 'undefined' });
     assert.match(prop('modelValue').description, /空列表或取消选择时可为 undefined/);
-    assert.equal(tabs.events.find(event => event.name === 'update:modelValue')?.type, 'value: TabValue | null | undefined');
+    assert.equal(tabs.events.find(event => event.name === 'update:modelValue')?.type, 'value: unknown');
     assert.match(tabs.events.find(event => event.name === 'update:modelValue')?.description ?? '', /payload 可为 undefined/);
     assert.deepEqual(tabs.slots.map(slot => [slot.name, slot.type]).sort(([a], [b]) => a.localeCompare(b)), [
         ['default', '{ item }'],
@@ -48,7 +48,7 @@ test('published Tabs API documents manual activation, optional models and all sl
     ]);
 });
 
-test('declarative Tab and Window contracts expose optional index values and lazy-preserve defaults', () => {
+test('declarative Tab and Window contracts expose arbitrary values and inherited lazy defaults', () => {
     const tab = componentApi.UTab;
     const window = componentApi.UTabsWindow;
     const windowItem = componentApi.UTabsWindowItem;
@@ -56,10 +56,10 @@ test('declarative Tab and Window contracts expose optional index values and lazy
     assert.deepEqual(tab.props.find(item => item.name === 'ripple')?.declaredDefault, { kind: 'explicit-undefined', source: 'undefined' });
     assert.ok(tab.methods.some(method => method.name === 'focus'));
     assert.deepEqual(window.props.find(item => item.name === 'modelValue')?.declaredDefault, { kind: 'undefined' });
-    assert.equal(window.props.find(item => item.name === 'modelValue')?.type, 'TabValue | null | undefined');
-    assert.equal(window.events.find(event => event.name === 'update:modelValue')?.type, 'value: TabValue | null | undefined');
+    assert.equal(window.props.find(item => item.name === 'modelValue')?.type, 'unknown');
+    assert.equal(window.events.find(event => event.name === 'update:modelValue')?.type, 'value: unknown');
     assert.ok(window.events.some(event => event.name === 'update:modelValue'));
     assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /仅在 UTabs 后代或 #window 上下文中/);
     assert.match(window.props.find(item => item.name === 'modelValue')?.description ?? '', /相邻兄弟 UTabs 配对时需绑定同一模型/);
-    assert.deepEqual(windowItem.props.find(item => item.name === 'eager')?.declaredDefault, { kind: 'vue-boolean-false' });
+    assert.deepEqual(windowItem.props.find(item => item.name === 'eager')?.declaredDefault, { kind: 'explicit-undefined', source: 'undefined' });
 });

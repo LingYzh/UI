@@ -35,6 +35,43 @@ type HotkeyNode = string | {
     parts: HotkeyNode[];
 };
 
+export interface HotkeyModifiers {
+    ctrl: boolean;
+    meta: boolean;
+    alt: boolean;
+    shift: boolean;
+}
+
+export interface HotkeyChord {
+    /** The non-modifier key, or null when the chord itself is a modifier. */
+    key: string | null;
+    /** Modifier keys that may be pressed as the primary key for modifier-only chords. */
+    modifierKeys: string[];
+    modifiers: HotkeyModifiers;
+}
+
+export type HotkeySequence = HotkeyChord[];
+
+export interface HotkeyKeyboardEvent {
+    key: string;
+    ctrlKey: boolean;
+    metaKey: boolean;
+    altKey: boolean;
+    shiftKey: boolean;
+    timeStamp: number;
+}
+
+export interface HotkeySequenceMatchOptions {
+    exact?: boolean;
+    sequenceTimeout?: number;
+    now?: number;
+}
+
+export interface HotkeySequenceMatchResult {
+    matched: boolean;
+    triggered: boolean;
+}
+
 const aliases = new Map<string, string>([
     ['control', 'ctrl'],
     ['command', 'cmd'],
@@ -120,7 +157,8 @@ function isSeparator(value: string | undefined): boolean {
     return value !== undefined && ['-', '/', '+', '_'].includes(value);
 }
 
-function displayText(value: string): string {
+function displayText(value: string, translate?: (key: string) => string): string {
+    if (value.startsWith('$vuetify.')) return translate ? translate(value) : value;
     if (value.startsWith('$') && !value.startsWith('$vuetify.')) return value.slice(1).toUpperCase();
     return value;
 }
@@ -192,7 +230,176 @@ function parseCombination(input: string): HotkeyNode {
     return result;
 }
 
-function formatKey(key: string, mode: HotkeyDisplayMode, map: HotkeyMap, isMac: boolean): HotkeyDisplayKey {
+const modifierNames = new Set(['ctrl', 'cmd', 'meta', 'alt', 'shift']);
+
+function createChord(parts: string[]): HotkeyChord | undefined {
+    const modifiers: HotkeyModifiers = { ctrl: false, meta: false, alt: false, shift: false };
+    const modifierKeys: string[] = [];
+    const keys: string[] = [];
+
+    for (const part of parts) {
+        const key = normalizeKey(part);
+        if (modifierNames.has(key)) {
+            const modifier = key === 'cmd' ? 'meta' : key;
+            modifiers[modifier as keyof HotkeyModifiers] = true;
+            if (!modifierKeys.includes(modifier)) modifierKeys.push(modifier);
+        } else {
+            keys.push(key);
+        }
+    }
+
+    // KeyboardEvent exposes one primary key plus modifier flags. Arbitrary
+    // simultaneous non-modifier keys cannot be matched through that protocol.
+    if (keys.length > 1) return undefined;
+
+    return {
+        key: keys[0] ?? null,
+        modifierKeys,
+        modifiers
+    };
+}
+
+function expandHotkeyNode(node: HotkeyNode): HotkeySequence[] {
+    if (typeof node === 'string') {
+        const chord = createChord([node]);
+        return chord ? [[chord]] : [];
+    }
+
+    if (node.type === 'combo') {
+        const parts = node.parts.filter((part): part is string => typeof part === 'string');
+        if (parts.length !== node.parts.length) return [];
+        const chord = createChord(parts);
+        return chord ? [[chord]] : [];
+    }
+
+    if (node.type === 'alternate') return node.parts.flatMap(expandHotkeyNode);
+
+    return node.parts.reduce<HotkeySequence[]>((sequences, part) => {
+        const alternatives = expandHotkeyNode(part);
+        return sequences.flatMap(sequence => alternatives.map(alternative => [...sequence, ...alternative]));
+    }, [[]]);
+}
+
+/** Compile the display grammar into the sequences consumed by UHotkeyListener. */
+export function parseHotkeySequences(keys: string | undefined): HotkeySequence[] {
+    if (!keys) return [];
+
+    return keys.split(/\b \b/).flatMap(combination => {
+        try {
+            return expandHotkeyNode(parseCombination(combination));
+        } catch (error) {
+            if (error instanceof HotkeyParseError) return [];
+            throw error;
+        }
+    });
+}
+
+function normalizeEventKey(key: string): string {
+    return normalizeKey(key === ' ' ? 'space' : key);
+}
+
+function matchesChord(event: HotkeyKeyboardEvent, chord: HotkeyChord, exact: boolean): boolean {
+    const eventKey = normalizeEventKey(event.key);
+    const keyMatches = chord.key === null
+        ? chord.modifierKeys.includes(eventKey)
+        : chord.key === eventKey;
+    if (!keyMatches) return false;
+
+    const actual: HotkeyModifiers = {
+        ctrl: event.ctrlKey,
+        meta: event.metaKey,
+        alt: event.altKey,
+        shift: event.shiftKey
+    };
+
+    return (Object.keys(chord.modifiers) as Array<keyof HotkeyModifiers>).every(modifier =>
+        chord.modifiers[modifier] ? actual[modifier] : !exact || !actual[modifier]
+    );
+}
+
+interface ActiveHotkeySequence {
+    sequenceIndex: number;
+    nextChordIndex: number;
+    lastMatchedAt: number;
+}
+
+/** Stateful matcher shared by the component listener and protocol tests. */
+export class HotkeySequenceMatcher {
+    private sequences: HotkeySequence[] = [];
+    private active: ActiveHotkeySequence[] = [];
+
+    setSequences(sequences: HotkeySequence[]): void {
+        this.sequences = sequences;
+        this.reset();
+    }
+
+    reset(): void {
+        this.active = [];
+    }
+
+    match(
+        event: HotkeyKeyboardEvent,
+        options: HotkeySequenceMatchOptions = {}
+    ): HotkeySequenceMatchResult {
+        const exact = options.exact ?? true;
+        const timeout = options.sequenceTimeout ?? 1000;
+        const now = options.now ?? event.timeStamp;
+        const nextActive: ActiveHotkeySequence[] = [];
+        let matched = false;
+        let triggered = false;
+
+        for (const active of this.active) {
+            const sequence = this.sequences[active.sequenceIndex];
+            if (!sequence || now - active.lastMatchedAt > timeout) continue;
+
+            const chord = sequence[active.nextChordIndex];
+            if (!chord || !matchesChord(event, chord, exact)) continue;
+
+            matched = true;
+            if (active.nextChordIndex === sequence.length - 1) {
+                triggered = true;
+            } else {
+                nextActive.push({
+                    ...active,
+                    nextChordIndex: active.nextChordIndex + 1,
+                    lastMatchedAt: now
+                });
+            }
+        }
+
+        // Every key can start a fresh branch, even while an earlier sequence
+        // is in progress. This also lets a mismatching key restart the gesture.
+        for (let sequenceIndex = 0; sequenceIndex < this.sequences.length; sequenceIndex++) {
+            const sequence = this.sequences[sequenceIndex];
+            const firstChord = sequence[0];
+            if (!firstChord || !matchesChord(event, firstChord, exact)) continue;
+
+            matched = true;
+            if (sequence.length === 1) {
+                triggered = true;
+                continue;
+            }
+
+            nextActive.push({ sequenceIndex, nextChordIndex: 1, lastMatchedAt: now });
+        }
+
+        const unique = new Map<string, ActiveHotkeySequence>();
+        for (const active of nextActive) {
+            unique.set(`${active.sequenceIndex}:${active.nextChordIndex}`, active);
+        }
+        this.active = [...unique.values()];
+
+        return { matched, triggered };
+    }
+}
+
+function formatKey(
+    key: string,
+    mode: HotkeyDisplayMode,
+    map: HotkeyMap,
+    isMac: boolean,
+    translate?: (key: string) => string
+): HotkeyDisplayKey {
     const config = Object.hasOwn(map, key) ? map[key] : undefined;
     if (!config) {
         const text = key.toUpperCase();
@@ -200,7 +407,7 @@ function formatKey(key: string, mode: HotkeyDisplayMode, map: HotkeyMap, isMac: 
     }
 
     const platformConfig = isMac && config.mac ? config.mac : config.default;
-    const text = displayText(platformConfig.text);
+    const text = displayText(platformConfig.text, translate);
     const requestedContent = mode === 'text' ? text : platformConfig[mode];
     const resolvedMode = mode !== 'text' && !requestedContent ? 'text' : mode;
     const content = resolvedMode === 'text' ? text : platformConfig[resolvedMode] ?? text;
@@ -213,32 +420,45 @@ function formatKey(key: string, mode: HotkeyDisplayMode, map: HotkeyMap, isMac: 
     };
 }
 
-function divider(type: 'sequence' | 'alternate' | 'combo'): HotkeyDisplayDivider {
-    if (type === 'sequence') return { kind: 'divider', separator: 'then', content: '然后' };
-    if (type === 'alternate') return { kind: 'divider', separator: 'or', content: '或' };
+function divider(type: 'sequence' | 'alternate' | 'combo', translate?: (key: string) => string): HotkeyDisplayDivider {
+    if (type === 'sequence') return { kind: 'divider', separator: 'then', content: translate ? translate('hotkey.separator.then') : '然后' };
+    if (type === 'alternate') return { kind: 'divider', separator: 'or', content: translate ? translate('hotkey.separator.or') : '或' };
     return { kind: 'divider', separator: 'and', content: '+' };
 }
 
-function appendNode(node: HotkeyNode, result: HotkeyDisplayToken[], mode: HotkeyDisplayMode, map: HotkeyMap, isMac: boolean): void {
+function appendNode(
+    node: HotkeyNode,
+    result: HotkeyDisplayToken[],
+    mode: HotkeyDisplayMode,
+    map: HotkeyMap,
+    isMac: boolean,
+    translate?: (key: string) => string
+): void {
     if (typeof node === 'string') {
-        result.push(formatKey(node, mode, map, isMac));
+        result.push(formatKey(node, mode, map, isMac, translate));
         return;
     }
 
     node.parts.forEach((part, index) => {
-        if (index > 0) result.push(divider(node.type));
-        appendNode(part, result, mode, map, isMac);
+        if (index > 0) result.push(divider(node.type, translate));
+        appendNode(part, result, mode, map, isMac, translate);
     });
 }
 
-export function formatHotkeys(keys: string | undefined, mode: HotkeyDisplayMode, map: HotkeyMap, isMac: boolean): HotkeyDisplayToken[][] {
+export function formatHotkeys(
+    keys: string | undefined,
+    mode: HotkeyDisplayMode,
+    map: HotkeyMap,
+    isMac: boolean,
+    translate?: (key: string) => string
+): HotkeyDisplayToken[][] {
     if (!keys) return [];
 
     return keys.split(/\b \b/).map((combination) => {
         try {
             const node = parseCombination(combination);
             const result: HotkeyDisplayToken[] = [];
-            appendNode(node, result, mode, map, isMac);
+            appendNode(node, result, mode, map, isMac, translate);
             return result;
         } catch (error) {
             if (error instanceof HotkeyParseError) return [];

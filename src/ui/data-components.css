@@ -20,13 +20,33 @@
 .u-stepper-vertical .u-stepper-window { margin-inline-start: 25px; padding-inline-start: 24px; border-inline-start: 1px solid var(--border); }
 .u-window { display: grid; position: relative; width: 100%; min-width: 0; overflow: clip; }
 .u-window-item { grid-area: 1 / 1; width: 100%; min-width: 0; }
+.u-window-controls { position: absolute; inset: 0; pointer-events: none; }
+.u-window-controls > * { pointer-events: auto; }
+.u-window-prev, .u-window-next { position: absolute; top: 50%; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--text); transform: translateY(-50%); cursor: pointer; }
+.u-window-prev { inset-inline-start: 12px; }
+.u-window-next { inset-inline-end: 12px; }
+.u-window.is-vertical .u-window-prev { top: 12px; inset-inline: 50% auto; transform: translateX(-50%) rotate(90deg); }
+.u-window.is-vertical .u-window-next { top: auto; bottom: 12px; inset-inline: 50% auto; transform: translateX(-50%) rotate(90deg); }
+:is(.u-window-prev, .u-window-next, .u-carousel-prev, .u-carousel-next):disabled { opacity: .45; cursor: default; }
+.u-window.show-arrows-on-hover .u-window-controls, .u-carousel.show-arrows-on-hover > :is(.u-carousel-prev, .u-carousel-next) { opacity: 0; transition: opacity var(--ui-motion-fast) var(--ui-motion-ease); }
+:is(.u-window, .u-carousel).show-arrows-on-hover:is(:hover, :focus-within) :is(.u-window-controls, .u-carousel-prev, .u-carousel-next) { opacity: 1; }
+:is(.u-window-prev, .u-window-next):focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 .u-carousel { position: relative; min-width: 0; overflow: clip; border-radius: 10px; background: var(--soft); }
-.u-carousel-content { display: grid; position: relative; min-height: 180px; overflow: clip; }
+.u-carousel-content { display: grid; position: relative; min-height: 180px; height: 100%; overflow: clip; }
 .u-carousel-item { grid-area: 1 / 1; min-height: 180px; }
 .u-carousel-prev, .u-carousel-next { position: absolute; top: 50%; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--text); font-size: 24px; transform: translateY(-50%); cursor: pointer; }
 .u-carousel-prev { inset-inline-start: 12px; }
 .u-carousel-next { inset-inline-end: 12px; }
+.u-carousel.vertical-delimiters .u-carousel-next { inset-inline-end: 52px; }
+.u-carousel.vertical-delimiters:has(.u-carousel-controls.are-left) .u-carousel-next { inset-inline-end: 12px; }
+.u-carousel.vertical-delimiters:has(.u-carousel-controls.are-left) .u-carousel-prev { inset-inline-start: 52px; }
+.u-carousel.is-vertical > .u-carousel-prev { top: 12px; inset-inline: 50% auto; transform: translateX(-50%) rotate(90deg); }
+.u-carousel.is-vertical > .u-carousel-next { top: auto; bottom: 12px; inset-inline: 50% auto; transform: translateX(-50%) rotate(90deg); }
 .u-carousel-controls { position: absolute; bottom: 10px; inset-inline: 40px; display: flex; justify-content: center; gap: 4px; }
+.u-carousel-controls { border-radius: 20px; background: color-mix(in srgb, var(--surface) 85%, transparent); width: max-content; max-width: calc(100% - 80px); margin-inline: auto; padding: 2px 6px; }
+.u-carousel-controls.is-background-hidden { background: transparent; }
+.u-carousel-controls.is-vertical { inset-block: 40px; inset-inline: auto 10px; flex-direction: column; max-width: none; max-height: calc(100% - 80px); margin-block: auto; height: max-content; width: auto; padding: 6px 2px; }
+.u-carousel-controls.is-vertical.are-left { inset-inline: 10px auto; }
 .u-carousel-controls button { display: grid; place-items: center; width: 24px; height: 24px; border: 0; background: transparent; cursor: pointer; }
 .u-carousel-controls button { border-radius: 50%; }
 .u-carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
@@ -43,6 +63,8 @@
 .u-progress-linear .u-progress-buffer, .u-progress-linear .u-progress-value { position: absolute; inset-block: 0; inset-inline-start: 0; transition: width 180ms; }
 .u-progress-linear .u-progress-buffer { background: var(--accent-soft); }
 .u-progress-linear .u-progress-value { background: currentColor; }
+.u-progress-linear.is-reverse .u-progress-buffer, .u-progress-linear.is-reverse .u-progress-value { inset-inline-start: auto; inset-inline-end: 0; }
+.u-progress-linear.is-reverse.is-indeterminate .u-progress-value { animation-direction: reverse; }
 .u-progress-linear.is-indeterminate .u-progress-value { animation: u-progress-indeterminate 1.4s ease-in-out infinite; }
 .u-progress-linear.is-stream { background-image: radial-gradient(var(--muted) 1px, transparent 1px); background-size: 5px 5px; }
 @keyframes u-progress-rotate { to { transform: rotate(270deg); } }
@@ -81,6 +103,9 @@
 .u-pull-to-refresh { position: relative; min-width: 0; overflow: auto; overscroll-behavior-y: contain; }
 .u-pull-indicator { position: absolute; inset: 0 0 auto; padding: 12px; text-align: center; color: var(--muted); font-size: 14px; }
 .u-sparkline { display: block; width: 100%; max-width: 100%; height: 40px; overflow: visible; color: var(--accent); }
+.u-sparkline-container { position: relative; min-width: 0; }
+.u-sparkline-tooltip { position: absolute; pointer-events: none; transform: translateX(-50%); padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); box-shadow: var(--shadow); white-space: nowrap; font-size: 12px; z-index: 2; }
+.u-sparkline:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .u-timeline { display: flex; flex-direction: column; min-width: 0; }
 .u-timeline.is-reverse { flex-direction: column-reverse; }
 .u-timeline-item { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); gap: 16px; padding-block: 0 24px; }
@@ -93,11 +118,26 @@
 .u-timeline-item[data-side="end"] .u-timeline-content { grid-column: 3; }
 .u-timeline-item[data-side="start"] .u-timeline-opposite { grid-column: 3; grid-row: 1; }
 .u-timeline-item[data-side="end"] .u-timeline-opposite { grid-column: 1; grid-row: 1; text-align: end; }
+.u-timeline-marker.has-icon { display: grid; place-items: center; width: 24px; height: 24px; margin-top: 0; color: white; }
+.u-timeline[data-align='start'] .u-timeline-marker { align-self: start; }
+.u-timeline[data-justify='center'] { justify-content: center; }
+.u-timeline.is-horizontal { flex-direction: row; overflow-x: auto; }
+.u-timeline.is-horizontal.is-reverse { flex-direction: row-reverse; }
+.u-timeline.is-horizontal .u-timeline-item { flex: 1 0 160px; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(48px, 1fr) 24px minmax(48px, 1fr); padding: 0 12px; }
+.u-timeline.is-horizontal .u-timeline-item::before { inset: 50% 0 auto; width: 100%; height: 1px; }
+.u-timeline.is-horizontal .u-timeline-marker { grid-column: 1; grid-row: 2; margin: auto; }
+.u-timeline.is-horizontal .u-timeline-content, .u-timeline.is-horizontal .u-timeline-opposite { grid-column: 1; text-align: center; }
+.u-timeline.is-horizontal .u-timeline-item[data-side='start'] .u-timeline-content, .u-timeline.is-horizontal .u-timeline-item[data-side='end'] .u-timeline-opposite { grid-row: 1; }
+.u-timeline.is-horizontal .u-timeline-item[data-side='end'] .u-timeline-content, .u-timeline.is-horizontal .u-timeline-item[data-side='start'] .u-timeline-opposite { grid-row: 3; }
 .u-speed-dial { position: relative; display: inline-flex; }
 .u-speed-dial-icon { transition: transform var(--motion-normal) var(--ease); }
 .u-speed-dial-icon.is-open { transform: rotate(45deg); }
 .u-speed-dial-actions { position: absolute; z-index: 10; inset-block-end: calc(100% + 8px); inset-inline-end: 0; display: flex; flex-direction: column; gap: 6px; align-items: end; }
 .ui-button.u-fab { width: 44px; height: 44px; padding: 0; border-radius: 50%; box-shadow: var(--shadow); font-size: 22px; }
+.u-fab-wrapper { display: inline-flex; }
+.u-fab-wrapper.is-positioned { z-index: 30; }
+.u-fab-wrapper.is-offset { translate: 0 50%; }
+.ui-button.u-fab.is-extended { width: auto; padding-inline: 16px; border-radius: 999px; font-size: var(--ui-font-body); }
 .u-picker { display: flex; flex-direction: column; max-height: 280px; padding: 5px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
 .u-picker-item { padding: 8px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; text-align: start; cursor: pointer; }
 .u-picker-item:hover:not(:disabled):not(.is-selected) { background: var(--hover); }
@@ -111,22 +151,47 @@
 .u-calendar[data-view="day"] .u-calendar-grid { grid-template-columns: minmax(0, 1fr); }
 .u-calendar-cell { min-width: 0; min-height: 80px; padding: 6px; border-block-start: 1px solid var(--line); border-inline-end: 1px solid var(--line); font-size: 14px; }
 .u-calendar-cell.is-muted { color: var(--faint); background: var(--soft); }
+.u-calendar-weekday { padding: 8px 6px; color: var(--muted); font-size: 12px; text-align: center; }
+.u-calendar-category { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.u-calendar-week { position: relative; }
+.u-calendar-week-number { padding: 10px 3px; border-block-start: 1px solid var(--line); color: var(--muted); font-size: var(--ui-font-body-small); text-align: center; }
+.u-calendar-event.is-all-day { position: absolute; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0; }
+.u-calendar-event.is-continuing-start { border-start-start-radius: 0; border-end-start-radius: 0; }
+.u-calendar-event.is-continuing-end { border-start-end-radius: 0; border-end-end-radius: 0; }
+.u-calendar-cell.is-today .u-calendar-day-label { color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent); }
 .u-calendar-event { margin-top: 4px; padding: 3px 5px; overflow: hidden; border-inline-start: 2px solid var(--u-event-color); border-radius: 3px; background: color-mix(in srgb, var(--u-event-color) 12%, var(--surface)); color: var(--text); text-overflow: ellipsis; white-space: nowrap; font-size: var(--ui-font-body-small); }
 .u-date-picker { width: 100%; min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
 .u-date-picker-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .u-date-picker-header strong { font-size: var(--ui-font-body-large); font-weight: 500; }
+.u-date-picker-selection { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--muted); font-size: var(--ui-font-body-small); }
+.u-date-picker-selection:empty { display: none; }
+.u-date-picker-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.u-date-picker-options.is-years { max-height: 280px; overflow: auto; }
+.u-date-picker-options button { min-height: 36px; padding: 6px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; cursor: pointer; }
+.u-date-picker-options button:hover:not(:disabled) { background: var(--hover); }
+.u-date-picker-options button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.u-date-picker-options button:disabled { opacity: .5; cursor: not-allowed; }
 .u-date-picker-header button, .u-date-picker-grid button { min-height: 32px; padding: 4px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; cursor: pointer; }
 .u-date-picker-header button { display: grid; place-items: center; width: 30px; }
+.u-date-picker-header button[aria-live] { width: auto; min-width: 0; white-space: nowrap; }
 .u-date-picker-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
 .u-date-weekday { padding-block: 6px; color: var(--muted); font-size: var(--ui-font-body-small); text-align: center; }
 .u-date-picker-grid .is-outside { color: var(--faint); }
 .u-date-picker-grid button:hover:not(:disabled):not(.is-selected) { background: var(--hover); }
 .u-date-picker-grid button.is-selected { background: var(--accent); color: var(--on-primary-surface, #fff); }
+.u-date-picker-grid button.is-preview:not(.is-selected) { background: var(--accent-soft); color: var(--accent-text); }
+.u-date-picker-grid button { position: relative; }
+.u-date-events { position: absolute; inset-inline: 0; bottom: 2px; display: flex; justify-content: center; gap: 2px; }
+.u-date-events i { width: 4px; height: 4px; border-radius: 50%; }
+.u-date-picker-grid button.is-selected .u-date-events i { box-shadow: 0 0 0 1px currentColor; }
 .u-date-picker-grid button.is-today:not(.is-selected) { box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent-text); }
 .u-date-picker-grid button:focus-visible:not([data-ui-pointer-focus]), .u-date-picker-header button:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 1px; }
 .u-date-picker-grid button:disabled { opacity: .4; cursor: not-allowed; }
 .u-date-input { position: relative; }
-.u-date-input > .u-date-picker { position: absolute; z-index: 20; top: calc(100% + 4px); width: min(320px, calc(100vw - 24px)); min-width: min(100%, 320px); box-shadow: var(--shadow); }
+.u-date-input > .u-date-picker, .u-date-input-menu { position: absolute; z-index: 20; top: calc(100% + 4px); width: min(320px, calc(100vw - 24px)); min-width: min(100%, 320px); box-shadow: var(--shadow); }
+.u-date-input-menu { background: var(--surface); border-radius: 10px; }
+.ui-menu-surface.is-panel.u-date-input-menu { max-width: min(calc(100vw - 24px), calc(100% - 24px)); max-height: min(640px, calc(100dvh - 24px), calc(100% - 24px)); min-width: 0; padding: 0; border: 0; border-radius: 10px; overflow: auto; }
+.u-date-input-menu > .u-confirm-actions { padding: 8px 12px 12px; }
 .u-time-picker-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .u-time-picker-controls select { min-width: 0; flex: 1; }
 @media (max-width: 599px) {
@@ -204,3 +269,33 @@
 .u-data-table-mobile-controls > .ui-select { width: auto; min-width: 140px; }
 @keyframes ui-table-progress { 0%, 100% { transform: scaleX(.25); opacity: .55; } 50% { transform: scaleX(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .u-data-table-progress { animation: none; } }
+.u-time-picker-header, .u-time-picker-heading, .u-time-picker-period { display: flex; align-items: center; gap: 4px; }
+.u-time-picker-header { flex-wrap: wrap; justify-content: space-between; }
+.u-time-picker-heading [aria-pressed='true'], .u-time-picker-period [aria-pressed='true'] { color: var(--accent); background: var(--accent-soft); }
+.u-time-picker-dial { position: relative; width: min(100%, 280px); aspect-ratio: 1; border-radius: 50%; background: var(--soft); margin: 12px auto; }
+.u-time-picker-dial button { position: absolute; transform: translate(-50%, -50%); padding: 0; width: 30px; height: 30px; border: 0; border-radius: 50%; background: transparent; color: var(--text); font: inherit; font-size: 12px; cursor: pointer; }
+.u-time-picker-dial button[aria-pressed='true'] { background: var(--accent); color: var(--accent-contrast, white); }
+.u-time-picker-dial button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.u-time-picker-dial button:disabled { opacity: .35; cursor: default; }
+.u-time-picker-dial button.is-tick { width: 10px; height: 10px; font-size: 10px; }
+.ui-skeleton-bone { min-width: 0; }
+.ui-skeleton-bone:not(.ui-skeleton-line) { display: grid; gap: 10px; }
+.ui-skeleton-line.ui-skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+.ui-skeleton-line.ui-skeleton-image { height: 140px; }
+.ui-skeleton-line.ui-skeleton-button { width: 80px; height: 32px; }
+.ui-skeleton-line.ui-skeleton-heading { width: 65%; height: 24px; }
+.ui-skeleton-line.ui-skeleton-divider { height: 1px; border-radius: 0; }
+.ui-skeleton-line.ui-skeleton-chip { width: 60px; height: 24px; border-radius: 999px; }
+.ui-skeleton-bone.ui-skeleton-table-row, .ui-skeleton-bone.ui-skeleton-table-thead, .ui-skeleton-bone.ui-skeleton-table-tfoot, .ui-skeleton-bone.ui-skeleton-actions, .ui-skeleton-bone.ui-skeleton-chip-group { display: flex; gap: 12px; }
+.ui-skeleton-table-row > *, .ui-skeleton-table-thead > * { flex: 1; }
+.ui-skeleton-loader.is-boilerplate .ui-skeleton-line::after { animation: none; }
+.u-calendar-day-label, .u-calendar-more { padding: 2px 4px; border: 0; border-radius: 4px; color: var(--text); background: transparent; font: inherit; cursor: pointer; }
+.u-calendar-day-label:hover, .u-calendar-more:hover { background: var(--hover); }
+.u-calendar-day-label:focus-visible, .u-calendar-more:focus-visible { outline: 2px solid var(--accent); }
+.u-calendar-time-scroll { overflow: auto; max-height: 560px; }
+.u-calendar-time-grid { display: grid; min-width: max-content; }
+.u-calendar-time-heading { padding: 8px; border-inline-start: 1px solid var(--border); min-width: 0; }
+.u-calendar-time-axis { color: var(--muted); font-size: 12px; text-align: end; padding-inline-end: 8px; }
+.u-calendar-time-day { position: relative; border-inline-start: 1px solid var(--border); min-width: 0; }
+.u-calendar-interval { box-sizing: border-box; border-top: 1px solid var(--line); }
+.u-calendar-event.is-timed { position: absolute; box-sizing: border-box; margin: 0; overflow: hidden; border: 1px solid var(--surface); border-radius: 4px; padding: 4px; }

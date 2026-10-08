@@ -14,6 +14,7 @@ import { createItemGroupState } from './item-group-state';
 defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<ItemGroupProps>(), { direction: 'row', tag: 'div', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UItemGroup');
+defineEmits<{ 'update:focused': [value: boolean] }>();
 const theme = provideUiTheme(() => props.theme);
 const instance = getCurrentInstance();
 const attrs = useAttrs();
@@ -74,7 +75,7 @@ defineSlots<{
 </script>
 
 <template>
-    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :error="control.errors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value"
+    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :error="control.displayErrors.value.join('\n')" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value"
         @vue:updated="syncOrder">
         <component :is="props.tag" ref="element" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" class="u-item-group" :class="[$attrs.class, `is-${props.direction}`]" :style="[theme.styles.value, $attrs.style as any]" :data-ui-theme="theme.name.value" :data-theme="theme.current.value.dark ? 'dark' : 'light'" role="group" :aria-label="props.label ?? attrs['aria-label'] as string" :aria-disabled="control.disabled.value || undefined" :aria-invalid="control.state.value === false || undefined"
             @focusout="!($event.currentTarget as HTMLElement).contains($event.relatedTarget as Node) && control.blur()">

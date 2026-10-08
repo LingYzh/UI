@@ -1,6 +1,19 @@
 import { typography } from '../src/ui/typography.js';
-import { readFile, writeFile } from 'node:fs/promises';
+import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { formatDemoSource } from './demo-source-format.mjs';
+const geometrySource = await formatDemoSource(await readFile(new URL('../src/ui/docs/DialogGeometryDemo.vue', import.meta.url), 'utf8'));
+const layoutSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/LayoutBasicsDemo.vue', import.meta.url), 'utf8'));
+const textareaSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/TextareaProtocolDemo.vue', import.meta.url), 'utf8'));
+const switchSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/SwitchProtocolsDemo.vue', import.meta.url), 'utf8'));
+const selectionMenuSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/SelectionMenuDemo.vue', import.meta.url), 'utf8'));
+const tabsSelectionSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/TabsSelectionDemo.vue', import.meta.url), 'utf8'));
+const menuBranchSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/MenuBranchDemo.vue', import.meta.url), 'utf8'));
+await writeFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), 'export const dialogGeometryExample = ' + JSON.stringify({ id: 'dialog-geometry', title: '尺寸与全屏', description: '显式宽高、全屏覆盖和正文独立滚动，关闭动作来自真实作用域。', fullSource: true, code: geometrySource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n\nexport const layoutBasicsExample = ' + JSON.stringify({ id: 'basic-layout-contracts', title: '标签、尺寸和独立滚动', description: 'Container/Main 的尺寸与 tag、ThemeProvider 的语义标签、Row 的响应式对齐使用真实组件。', fullSource: true, code: layoutSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const textareaProtocolExample = ' + JSON.stringify({ id: 'textarea-protocols', title: '清空、计数与验证', description: '自动增高、空值清除、加载状态和自定义计数使用真实 Textarea。', fullSource: true, code: textareaSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const switchProtocolExample = ' + JSON.stringify({ id: 'switch-protocols', title: '滑块、轨道与校验', description: '自定义滑块、轨道文字和加载状态保留原生键盘及分组模型行为。', fullSource: true, code: switchSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const selectionMenuExample = ' + JSON.stringify({ id: 'selection-menu-protocols', title: '菜单位置、滚动与草稿', description: '选择与日期输入复用共享 Menu；可配置定位、滚动策略和内容保留。', fullSource: true, code: selectionMenuSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const tabsSelectionExample = ' + JSON.stringify({ id: 'tabs-selection-protocols', title: '对象值、空值与多选', description: '标签与内容使用稳定注册 ID；对象副本、null 标签和最多两项多选使用真实组件。', fullSource: true, code: tabsSelectionSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const menuBranchExample = ' + JSON.stringify({ id: 'menu-branch-protocols', title: '嵌套菜单与缓存实例', description: '菜单分支的外部关闭、KeepAlive 停用和独立对话框边界使用真实组件。', fullSource: true, code: menuBranchSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
 const families = [
     ['内容组件', 'alignment-code', '', '行内代码', ['UCode']],
     ['导航组件', 'alignment-slide', '', '通用滑动选择', ['USlideGroup', 'USlideGroupItem']],
@@ -52,7 +65,7 @@ const focusNotes = {
     UField: 'UField现为输入装饰表面：七种variant、内侧图标、clear/loader/label插槽、focused模型和标准default scope。输入值由使用者管理。旧布局组件更名UFormField，UiField仍指向旧实现；description/error/layout/controlAttrs保留为扩展。',
     UPicker: 'UPicker现为标题/header/body/actions容器，支持横向布局、分隔线和尺寸。原items/model选项列表能力保留，独立旧实现更名UOptionPicker。',
     UOptionPicker: '原UPicker选项列表实现更名保留；本轮没有安排弃用日期。新UPicker承载Vuetify容器职责，并可选择开启items扩展。',
-    UHotkey: '按platform和displayMode展示组合键，支持keyMap、前后文字与组合/或/顺序分隔；listen控制本库trigger监听功能，纯展示可显式关闭。旧监听组件更名UHotkeyListener，未安排弃用日期。',
+    UHotkey: '按platform和displayMode展示组合键，支持keyMap、前后文字与组合/或/顺序分隔；$vuetify文案token、分隔词、title与无障碍名称跟随最近ULocaleProvider。listen仅保留本库原trigger监听，不据展示语法声称序列监听。旧监听组件更名UHotkeyListener，未安排弃用日期。',
     UHotkeyListener: '原UHotkey监听实现更名保留；keys/preventDefault/allowInput/disabled和trigger事件仍使用原协议。',
     URadioGroup: '可直接组合URadio，组统一管理模型、name、对象比较、禁用和只读；子Radio仍可独立使用v-model。',
     UWindow: 'disabled动态变化后，公开next/prev、键盘和触摸均读取最新禁用状态；初始空模型的强制组选择首项。',
@@ -66,15 +79,25 @@ const focusNotes = {
     UMessages: '保留active=true和旧default整体替换；新增active控制、color、transition与每条message插槽。',
     UItemGroup: 'selected插槽统一为标准内部ID数组，isSelected/select接收该ID，next/prev跳过禁用项；selectedValues提供公开值。旧按值判断使用isValueSelected，toggle按值切换继续保留。mandatory=true只阻止取消最后一项，force还初始选择首个可用项。保留表单校验、按钮组与标签组扩展。',
     UItem: '默认保留本库按钮，tag=false可只输出标准作用域插槽；提供isSelected/selectedClass/value/disabled/select/toggle和扩展id，旧selected布尔仍保留。value省略按当前组索引，group:selected携带{value:boolean}。',
-    ULocaleProvider: '子语言容器继承祖先自定义文案、fallback和RTL；支持旧fallback及新fallbackLocale（旧属性显式值优先）。messages可使用原扁平键或嵌套字符串字典，扁平同名键优先，支持$vuetify命名空间路径。',
+    ULocaleProvider: '子语言容器继承祖先自定义文案、fallback和RTL；支持旧fallback及新fallbackLocale（旧属性显式值优先）。messages可使用原扁平键或嵌套字符串字典，扁平同名键优先，支持$vuetify命名空间路径。分页内置名称与快捷键文案已实际消费最近作用域，语言切换不改变全局其它控件。',
+    UConfirmEdit: '编辑内容始终可见；model为深克隆草稿Ref，保存前不修改原模型，取消重置草稿。isPristine表示草稿未变；未设disabled时禁用未变更操作，disabled可按save/cancel分别指定。hideActions或消费actions渲染函数可自定义操作区。readonly、异步validate及begin重置草稿作为本库扩展保留，begin不再控制展开。',
+    UHover: 'modelValue初始null，鼠标和本库焦点扩展按openDelay/closeDelay同步模型。disabled时保留公开模型并继续记录内部指针状态，恢复后同步最新内部状态；延迟接受数字和数字字符串，卸载清理待执行回调。',
+    UDefaultsProvider: '按祖先配置链深合并，显式控件属性优先。reset=true回溯一个父配置层，reset数字/字符串指定回溯层数；root=true回溯根配置，root字符串叠加命名根配置。scoped独立配置优先于reset/root，disabled直接透传父配置。本轮按用户选择统一标准规则，不再以reset清空继承。',
+    UChipGroup: '默认插槽透传选择项组的八项作用域，selected为内部ID，selectedValues为公开值；公共ref同步暴露selected/selectedValues/isSelected/select/next/prev，并保留原表单方法。真实示例同时使用作用域和ref导航。',
+    UBtnToggle: '默认插槽透传选择项组的八项作用域，selected为内部ID，selectedValues为公开值；公共ref同步暴露selected/selectedValues/isSelected/select/next/prev，并保留原表单方法。值模型、多选、mandatory、max、禁用和只读继续遵循组契约。',
     UPullToRefresh: '补标准load事件、pullDownThreshold与pullDownPanel(canRefresh/goingUp/refreshing)，旧refresh/threshold=72/indicator仍保留。鼠标与单指触摸均可操作，默认阻尼0.5，resistance可显式设1。reset失效旧done，只检查最近实际滚动视口是否到顶。',
     UListItem: 'appendIcon沿用Vuetify列表项的右侧图标入口；appendText是本库额外的辅助文本能力，空间不足时优先省略并保留完整title提示。append插槽优先替换两者。nav列表内href保持原生链接和aria-current，方向键/Home/End移动焦点，Enter/Space激活。',
     UToolbar: '标题和操作区内置：title属性或title插槽配置标题，actions插槽直接放按钮（也支持append），无需额外标题/操作组件。extension显示扩展内容；四种密度采用64/56/48/128px。保留本库字体、间距、圆角和按钮尺寸，不注册应用布局占位。',
     UToolbarTitle: '此组件保留用于兼容自定义组合；常用标题直接使用UToolbar的title属性或title插槽。text属性、text插槽与默认插槽均支持，长文本省略，不挤掉操作。',
     UToolbarItems: '此组件保留用于兼容自定义组合；常用操作直接放入UToolbar的actions插槽。color/variant统一下发给按钮，显式属性优先；按钮使用本库圆角、尺寸和间距。',
-    USlider: '鼠标点击或拖动不显示焦点外框；Tab 进入后显示焦点提示，方向键调整数值。',
-    URangeSlider: '鼠标拖动不显示焦点外框；Tab 分别进入两个手柄时显示焦点提示，方向键调整范围。',
-    UColorPicker: '颜色通道滑块仅在键盘操作时显示焦点外框；十六进制文本输入保留编辑提示。',
+    USlider: '默认 step=0 允许连续小数；显式正 step 才限制步长。鼠标拖动不显示焦点外框，Tab 和方向键保留键盘提示。',
+    URangeSlider: '默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。手柄不可互相越过，Tab 分别进入两个手柄。',
+    UOtpInput: '默认允许字母和数字，未设置模型为 undefined；numeric 显式限制数字。聚焦外框平滑淡入淡出，减少动效设置关闭过渡。',
+    USkeletonLoader: '有默认内容插槽时默认显示内容，loading=true 才显示骨架；无默认内容插槽时始终显示骨架。',
+    UColorPicker: '保留默认黑色、HSV 滑块与 hex 输入。显式 hideCanvas=false 开启饱和度/明度二维面板，mode 切换 hex/hexa/rgb/rgba/hsl/hsla；对象模型保留颜色通道类型与透明度。',
+    UNumberInput: '保留默认小数精度与左右分置按钮；controlVariant=end 显式末端排列，stacked/hidden/inset 支持不同控制配置。只有显式 locale 才本地化显示，模型仍为数字，空模型为 null。',
+    UMain: '继承应用栏布局偏移，tag 与六项尺寸实际消费；scrollable 开启独立正文滚动，不改变外层布局。',
+    UOverlay: '默认非模态，captureFocus/retainFocus=false，scrollStrategy=none；retainFocus=true 显式限制焦点。内容懒挂载，关闭动画完成后卸载，eager=true 保留；default/activator 的 isActive 为 Ref。',
     UFileInput: '鼠标选择文件不显示键盘焦点框；Tab 进入时显示焦点提示。',
     UFileUpload: '上传区域仅在键盘焦点或拖放文件时高亮；鼠标点击选择文件不保持焦点高亮。',
     UColorInput: '颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。'

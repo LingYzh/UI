@@ -2,19 +2,22 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useLayoutItem } from './layout-completion';
 import { useDefaults } from './defaults';
-const rawProps = withDefaults(defineProps<{ height?: number; fixed?: boolean; absolute?: boolean; order?: number }>(), { height: 24, fixed: true, absolute: false, order: 0 });
+import { dimensionLength } from './dimensions';
+const rawProps = withDefaults(defineProps<{ height?: number | string; fixed?: boolean; absolute?: boolean; order?: number | string; name?: string; tag?: string; window?: boolean }>(), { fixed: true, absolute: false, order: 0, tag: 'div' });
 const props = useDefaults(rawProps, 'USystemBar');
 const element = ref<HTMLElement>();
-const measured = ref(props.height);
+const height = computed(() => props.height ?? (props.window ? 32 : 24));
+const measured = ref(Number(height.value) || 24);
 let observer: ResizeObserver | undefined;
-const { offset } = useLayoutItem(computed(() => 'top'), measured, computed(() => props.fixed && !props.absolute), computed(() => props.order));
+const { offset } = useLayoutItem(computed(() => 'top'), measured, computed(() => props.fixed && !props.absolute), computed(() => Number(props.order) || 0), computed(() => props.name));
 onMounted(() => {
-    observer = new ResizeObserver(() => { measured.value = element.value?.offsetHeight ?? props.height; });
+    observer = new ResizeObserver(() => { measured.value = element.value?.offsetHeight ?? (Number(height.value) || 0); });
     if (element.value) observer.observe(element.value);
 });
 onBeforeUnmount(() => observer?.disconnect());
+defineExpose({ element });
 </script>
 
 <template>
-    <div ref="element" class="ui-system-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', top: offset + 'px' }"><slot /></div>
+    <component :is="props.tag" ref="element" class="ui-system-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute, 'is-window': props.window }" :style="{ minHeight: dimensionLength(height), top: offset + 'px' }"><slot /></component>
 </template>

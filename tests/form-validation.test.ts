@@ -104,8 +104,8 @@ test('native validity counts toward maxErrors and stops later rules', async () =
 
     let zeroLimitRuleRan = false;
     const zeroLimit = createHarness({ nativeError: 'Required', maxErrors: 0, rules: [() => { zeroLimitRuleRan = true; return false; }] });
-    assert.deepEqual((await zeroLimit.runner.validate()).errorMessages, ['Required']);
-    assert.equal(zeroLimitRuleRan, false, 'the effective minimum is one error');
+    assert.deepEqual((await zeroLimit.runner.validate()).errorMessages, []);
+    assert.equal(zeroLimitRuleRan, false, 'a zero limit suppresses native and rule errors');
 });
 
 test('external errors are deduplicated in the result while commit receives rule and native errors only', async () => {

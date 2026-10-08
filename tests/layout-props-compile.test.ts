@@ -29,10 +29,10 @@ test('layout and display components compile real props and scoped defaults', () 
         const filename = join(process.cwd(), 'src', 'ui', `${name}.vue`);
         const descriptor = parse(readFileSync(filename, 'utf8'), { filename }).descriptor;
         const compiled = compileScript(descriptor, { id: name, fs: { fileExists: existsSync, readFile: (path) => readFileSync(path, 'utf8') } }).content;
-        assert.match(compiled, new RegExp(`\\b${prop}:\\s*\\{`), `${name} must expose ${prop} at runtime`);
+        assert.match(compiled, new RegExp(`['"]?${prop}['"]?:\\s*\\{`), `${name} must expose ${prop} at runtime`);
         assert.match(compiled, /const rawProps = __props/, `${name} must bind raw Vue props before defaults`);
         const defaultsName = name.replace(/^Ui(?=[A-Z])/, 'U');
-        assert.match(compiled, new RegExp(`useDefaults\\(rawProps, '${defaultsName}'\\)`), `${name} must read scoped defaults`);
+        assert.match(compiled, new RegExp(`useDefaults\\(rawProps, ['"]${defaultsName}['"]\\)`), `${name} must read scoped defaults`);
         for (const model of optionalBooleanModels[name] ?? []) {
             assert.match(compiled, new RegExp(`\\b${model}:\\s*\\{[^}]*default: undefined`), `${name}.${model} must preserve omitted vs false`);
         }

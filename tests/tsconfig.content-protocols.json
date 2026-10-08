@@ -1,0 +1,5 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": ["../src/ui/UAppBar.vue", "../src/ui/UAppBarTitle.vue", "../src/ui/UChipGroup.vue", "../src/ui/markdown-plugins.d.ts", "../src/ui/USkeletonLoader.vue", "../src/ui/UiTable.vue", "../src/ui/USnackbarQueue.vue", "../src/ui/UTimeline.vue", "../src/ui/UTimelineItem.vue", "../src/ui/UiCard.vue", "../src/ui/UProgressLinear.vue", "../src/ui/UDivider.vue", "../src/ui/UFab.vue", "../src/ui/USparkline.vue", "../src/ui/UiAlert.vue", "../src/ui/UAvatar.vue", "../src/ui/UBanner.vue", "../src/ui/UEmptyState.vue", "../src/ui/UBtnGroup.vue", "../src/ui/UVirtualScroll.vue"]
+}

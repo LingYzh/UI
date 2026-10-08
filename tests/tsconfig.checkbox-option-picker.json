@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/UCheckboxGroup.vue",
+        "../src/ui/UiCheckbox.vue",
+        "../src/ui/UOptionPicker.vue"
+    ]
+}

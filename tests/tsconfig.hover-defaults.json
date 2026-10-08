@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/defaults.ts",
+        "../src/ui/UHover.vue",
+        "../src/ui/UDefaultsProvider.vue",
+        "./defaults-state.test.ts"
+    ]
+}

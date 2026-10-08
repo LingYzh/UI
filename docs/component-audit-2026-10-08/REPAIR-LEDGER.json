@@ -4,8 +4,8 @@
     "scope": "All original 153 canonical components; added preserved names are listed separately.",
     "verificationBoundary": "Targeted behavior tests and source browser evidence only. Partial verification is never full component alignment.",
     "counts": {
-        "pending": 125,
-        "partially-verified": 28
+        "pending": 121,
+        "partially-verified": 32
     },
     "preservedNames": [
         {
@@ -612,10 +612,15 @@
                 "state": "partially-verified",
                 "features": [
                     "registered button values and index fallback",
-                    "max, disabled, selected classes and public v-model arrays"
+                    "max, disabled, selected classes and public v-model arrays",
+                    "eight-field default slot scope forwarded from UItemGroup",
+                    "live selected IDs/values and ID-based public selection/navigation methods",
+                    "real demo controlled value/index scope/ref agreement"
                 ],
                 "evidence": [
-                    "tests/desktop/item-group-protocols.mjs"
+                    "tests/desktop/item-group-protocols.mjs",
+                    "tests/desktop/group-wrapper-protocols.mjs",
+                    "tests/tsconfig.group-wrappers.json"
                 ]
             },
             "originalGaps": {
@@ -749,10 +754,15 @@
                 "state": "partially-verified",
                 "features": [
                     "inherited registered chip values, index fallback and rendered order",
-                    "max, disabled, selected classes and public v-model arrays"
+                    "max, disabled, selected classes and public v-model arrays",
+                    "eight-field default slot scope forwarded from UItemGroup",
+                    "live selected IDs/values and ID-based public selection/navigation methods",
+                    "real demo scope/ref agreement with preserved form APIs"
                 ],
                 "evidence": [
-                    "tests/desktop/item-group-protocols.mjs"
+                    "tests/desktop/item-group-protocols.mjs",
+                    "tests/desktop/group-wrapper-protocols.mjs",
+                    "tests/tsconfig.group-wrappers.json"
                 ]
             },
             "originalGaps": {
@@ -964,9 +974,17 @@
             "upstreamName": "VConfirmEdit",
             "originalClassification": "partial",
             "repair": {
-                "state": "pending",
-                "features": [],
-                "evidence": []
+                "state": "partially-verified",
+                "features": [
+                    "user-approved standard always-visible deep-cloned draft",
+                    "isPristine, per-action disabling, hideActions and custom actions renderer",
+                    "cancel/save isolation and asynchronous validation generation guards"
+                ],
+                "evidence": [
+                    "tests/confirm-edit.test.ts",
+                    "tests/desktop/confirm-edit-protocols.mjs",
+                    "tests/tsconfig.confirm-edit.json"
+                ]
             },
             "originalGaps": {
                 "props": [
@@ -1183,9 +1201,17 @@
             "upstreamName": "VDefaultsProvider",
             "originalClassification": "partial",
             "repair": {
-                "state": "pending",
-                "features": [],
-                "evidence": []
+                "state": "partially-verified",
+                "features": [
+                    "user-approved responsive standard ancestry traversal for reset/root",
+                    "scoped/disabled, named root dictionaries, deep merge and undefined inheritance",
+                    "legacy provideDefaults getter signature and actual public UButton consumption"
+                ],
+                "evidence": [
+                    "tests/defaults-state.test.ts",
+                    "tests/desktop/hover-defaults-protocols.mjs",
+                    "tests/tsconfig.hover-defaults.json"
+                ]
             },
             "originalGaps": {
                 "props": [
@@ -1466,11 +1492,14 @@
                     "ancestor custom messages, fallback and RTL inheritance",
                     "nested string dictionaries with flat and namespace priority",
                     "fallbackLocale alias with legacy fallback priority",
-                    "real public provider demo and reactive language changes"
+                    "real public provider demo and reactive language changes",
+                    "real nested provider demo with actual pagination/hotkey consumers",
+                    "independent scope and global locale isolation; native Electron narrow capture acceptance"
                 ],
                 "evidence": [
                     "tests/locale-context.test.ts",
-                    "tests/desktop/locale-provider-protocols.mjs"
+                    "tests/desktop/locale-provider-protocols.mjs",
+                    "tests/desktop/locale-consumers.mjs"
                 ]
             },
             "originalGaps": {
@@ -2343,9 +2372,15 @@
             "upstreamName": "VPagination",
             "originalClassification": "partial",
             "repair": {
-                "state": "pending",
-                "features": [],
-                "evidence": []
+                "state": "partially-verified",
+                "features": [
+                    "nearest LocaleProvider builtin labels and dynamic language changes",
+                    "ordinary explicit labels preserve priority and Vuetify custom tokens resolve in scope"
+                ],
+                "evidence": [
+                    "tests/desktop/locale-consumers.mjs",
+                    "tests/tsconfig.locale-consumers.json"
+                ]
             },
             "originalGaps": {
                 "props": [
@@ -4694,11 +4729,15 @@
                     "approved old UHotkeyListener preservation",
                     "platform, displayMode and keyMap",
                     "combination, alternative and sequence display",
-                    "preserved opt-out trigger listener"
+                    "preserved opt-out trigger listener",
+                    "nearest LocaleProvider Vuetify text tokens, display dividers, titles and accessibility labels",
+                    "optional translator preserves previous pure formatter calls; icons/symbols remain literal"
                 ],
                 "evidence": [
                     "tests/hotkey.test.ts",
-                    "tests/desktop/component-repair-protocols.mjs"
+                    "tests/desktop/component-repair-protocols.mjs",
+                    "tests/desktop/locale-consumers.mjs",
+                    "tests/tsconfig.locale-consumers.json"
                 ]
             },
             "originalGaps": {
@@ -4716,9 +4755,16 @@
             "upstreamName": "VHover",
             "originalClassification": "partial",
             "repair": {
-                "state": "pending",
-                "features": [],
-                "evidence": []
+                "state": "partially-verified",
+                "features": [
+                    "user-approved nullable controlled hover model",
+                    "disabled retains public state while tracking and restoring internal state",
+                    "numeric/string delays, focus extension, timer cancellation and cleanup"
+                ],
+                "evidence": [
+                    "tests/desktop/hover-defaults-protocols.mjs",
+                    "tests/tsconfig.hover-defaults.json"
+                ]
             },
             "originalGaps": {
                 "props": [

@@ -1,16 +1,24 @@
 <script setup>
 import { ref } from 'vue';
-import { UBottomSheet, UButton } from '../../index';
+import { UBottomSheet, UButton, USwitch } from '../../index';
 const open = ref(false);
+const inset = ref(false);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="UBottomSheet">
         <u-button @click="open = true">打开底部面板</u-button>
-        <u-bottom-sheet v-model="open">
+        <u-switch v-model="inset" label="保留面板外边距" />
+        <u-bottom-sheet
+            v-model="open"
+            :inset="inset"
+            :max-width="680"
+            :max-height="400"
+            v-slot="{ close }"
+        >
             <h3>底部操作面板</h3>
-            <p>适合移动设备上的次要操作。</p>
-            <u-button @click="open = false">完成</u-button>
+            <p>适合移动设备上的次要操作。关闭后卸载内容，eager 可保留。</p>
+            <u-button @click="close">完成</u-button>
         </u-bottom-sheet>
     </div>
 </template>

@@ -28,6 +28,29 @@ test('setLocale 切换后 uiText 返回对应语言', () => {
     assert.equal(uiText('common.close'), '关闭');
 });
 
+test('pagination and hotkey builtin messages stay localized in both supported languages', () => {
+    setLocale('zh');
+    assert.equal(uiText('pagination.label'), '分页');
+    assert.equal(uiText('pagination.previous'), '上一页');
+    assert.equal(uiText('pagination.next'), '下一页');
+    assert.equal(uiText('pagination.page', { page: 3 }), '第 3 页');
+    assert.equal(uiText('hotkey.label', { keys: 'Ctrl' }), '快捷键 Ctrl');
+    assert.equal(uiText('hotkey.separator.combination'), '，');
+    assert.equal(uiText('hotkey.separator.or'), '或');
+    assert.equal(uiText('hotkey.separator.then'), '然后');
+
+    setLocale('en');
+    assert.equal(uiText('pagination.label'), 'Pagination');
+    assert.equal(uiText('pagination.previous'), 'Previous page');
+    assert.equal(uiText('pagination.next'), 'Next page');
+    assert.equal(uiText('pagination.page', { page: 3 }), 'Page 3');
+    assert.equal(uiText('hotkey.label', { keys: 'Ctrl' }), 'Keyboard shortcut Ctrl');
+    assert.equal(uiText('hotkey.separator.combination'), ', ');
+    assert.equal(uiText('hotkey.separator.or'), 'or');
+    assert.equal(uiText('hotkey.separator.then'), 'then');
+    setLocale('zh');
+});
+
 test('参数替换，包括未提供的参数保留 {name} 原样', () => {
     setLocale('zh');
     assert.equal(uiText('pagination.page', { page: 3 }), '第 3 页');

@@ -19,7 +19,7 @@ export function createValidationRunner<T>(options: {
     nativeError: () => string;
     externalErrors: () => string[];
     enabled: () => boolean;
-    maxErrors: () => number;
+    maxErrors: () => number | string;
     fallback: () => string;
     failure: () => string;
     beforeValidate: () => Promise<unknown>;
@@ -35,10 +35,11 @@ export function createValidationRunner<T>(options: {
         await options.beforeValidate();
         if (stale()) return { valid: false, errorMessages: [], cancelled: true };
         const errors: string[] = [];
-        const maximum = Math.max(1, Math.floor(options.maxErrors()) || 1);
+        const limit = Number(options.maxErrors());
+        const maximum = Number.isNaN(limit) ? 1 : Math.max(0, Math.floor(limit));
         if (options.enabled()) {
             const nativeError = options.nativeError();
-            if (nativeError) errors.push(nativeError);
+            if (nativeError && maximum > 0) errors.push(nativeError);
             for (const rule of rules) {
                 if (errors.length >= maximum) break;
                 try {

@@ -9,6 +9,7 @@ import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
 import { buttonColorStyles } from './button-colors';
+import { useUiLink } from './router';
 defineOptions({ inheritAttrs: false });
 const element = ref<HTMLButtonElement | HTMLAnchorElement>();
 defineExpose({ element, focus: (options?: FocusOptions) => element.value?.focus(options) });
@@ -21,6 +22,8 @@ const rawProps = withDefaults(defineProps<{
     selectedClass?: string;
     href?: string;
     to?: string | Record<string, unknown>;
+    replace?: boolean;
+    exact?: boolean;
     loading?: boolean;
     disabled?: boolean;
     icon?: boolean | string;
@@ -31,6 +34,7 @@ const rawProps = withDefaults(defineProps<{
     rounded?: boolean;
 }>(), { variant: 'outlined', size: 'md', type: 'button', ripple: true, rounded: undefined, dense: undefined, ghost: undefined });
 const props = useDefaults(rawProps, 'UButton');
+const emit = defineEmits<{ 'group:selected': [value: { value: boolean }] }>();
 const form = inject(formContextKey, undefined);
 const group = inject(buttonGroupKey, undefined);
 const itemGroup = inject(itemGroupKey, undefined);
@@ -40,7 +44,9 @@ if (registration) provide(itemGroupItemIdKey, groupId);
 onBeforeUnmount(() => registration?.release());
 const groupValue = computed(() => props.value === undefined ? registration?.index.value : props.value);
 const isSelected = computed(() => !!group && group.selected(groupValue.value));
+watch(isSelected, value => emit('group:selected', { value }));
 const isDisabled = computed(() => props.disabled || form?.disabled.value || group?.disabled.value);
+const link = useUiLink(props);
 const isDense = computed(() => props.density ? props.density === 'compact' : props.dense ?? form?.dense.value ?? false);
 const isGhost = computed(() => props.ghost ?? form?.ghost.value ?? false);
 const isRounded = computed(() => props.rounded ?? form?.rounded.value ?? true);
@@ -62,16 +68,24 @@ const styles = computed(() => ({ ...buttonColorStyles(props.color), '--ui-button
 function guard(event: MouseEvent) {
     if (isDisabled.value || props.loading) { event.preventDefault(); return; }
     if (!group?.readonly.value) group?.toggle(groupValue.value);
+    link.navigate(event);
+}
+function guardDisabled(event: MouseEvent) {
+    if (!isDisabled.value && !props.loading) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
 }
 </script>
 
 <template>
     <Button.Root v-slot="{ attrs }" :disabled="isDisabled || props.loading" :loading="props.loading" renderless>
-        <component :is="props.href || props.to ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="props.href ?? (typeof props.to === 'string' ? props.to : undefined)" :type="props.href || props.to ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" @click="guard">
+        <component :is="link.isLink.value ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="isDisabled || props.loading ? undefined : link.href.value" :type="link.isLink.value ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-current="($attrs['aria-current'] ?? (link.isActive.value ? 'page' : undefined)) as any" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" :tabindex="(isDisabled || props.loading) && link.isLink.value ? -1 : $attrs.tabindex as any" @click.capture="guardDisabled" @click="guard">
             <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><span class="ui-button-loading" /></slot></span>
             <span class="ui-button-content" :class="{ 'is-loading': props.loading }">
+                <slot name="prepend" />
                 <Icon v-if="typeof props.icon === 'string'" :icon="props.icon" :size="18" />
                 <slot />
+                <slot name="append" />
             </span>
         </component>
     </Button.Root>

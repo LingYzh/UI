@@ -5,7 +5,9 @@ import UiTab from './UiTab.vue';
 import UiTabsWindow from './UiTabsWindow.vue';
 import UiTabsWindowItem from './UiTabsWindowItem.vue';
 import UiIcon from '../components/Icon.vue';
-import { normalizeTabItems, tabsKey, tabToken, type TabItem, type TabRegistration, type TabValue } from './tabs';
+import { createItemGroupState } from './item-group-state';
+import { defaultValueComparator, type ValueComparator } from './selection';
+import { normalizeTabItems, tabsKey, tabToken, type TabItem, type TabRegistration } from './tabs';
 import { vPointerBlur } from './pointer-focus';
 import { uiText } from './locale';
 import { vRipple, type RippleOptions } from './ripple';
@@ -18,6 +20,11 @@ const props = withDefaults(defineProps<{
     orientation?: 'horizontal' | 'vertical';
     activation?: 'manual' | 'automatic';
     mandatory?: boolean | 'force';
+    multiple?: boolean;
+    max?: number;
+    readonly?: boolean;
+    valueComparator?: ValueComparator;
+    selectedClass?: string;
     disabled?: boolean;
     alignTabs?: 'start' | 'center' | 'end' | 'title';
     grow?: boolean;
@@ -33,17 +40,65 @@ const props = withDefaults(defineProps<{
     ghost?: boolean;
     rounded?: boolean;
 }>(), { items: () => [], activation: 'manual', mandatory: 'force', alignTabs: 'start', indicatorSide: 'end', variant: 'underline', ripple: true, rounded: true });
-const model = defineModel<TabValue | null | undefined>();
+const model = defineModel<unknown>();
 const slots = useSlots();
 const instance = getCurrentInstance();
 const usesItems = () => instance?.vnode.props?.items !== undefined;
 const uid = `ui-tabs-${useId()}`;
 const prefix = computed(() => props.idPrefix ?? uid);
 const axis = computed(() => props.direction ?? props.orientation ?? 'horizontal');
-const legacy = computed(() => props.items.some(item => typeof item === 'object' && item.id !== undefined));
+const legacy = computed(() => props.items.some(item => item !== null && typeof item === 'object' && !Array.isArray(item) && item.id !== undefined));
 const items = computed(() => normalizeTabItems(props.items));
+const nullItemKey = Symbol('ui-tabs-null-value');
+function itemKey(item: ReturnType<typeof normalizeTabItems>[number], index: number): string | number | symbol {
+    const candidate = item.id !== undefined ? item.id : item.value;
+    if (candidate === undefined) return index;
+    if (candidate === null) return nullItemKey;
+    return typeof candidate === 'string' || typeof candidate === 'number' ? candidate : tabToken(candidate);
+}
 const entries = shallowReactive<TabRegistration[]>([]);
-provide(tabsKey, { prefix, model, entries, ripple: computed(() => props.ripple), disabled: computed(() => !!props.disabled), token: value => legacy.value ? String(value) : tabToken(value), mandatory: computed(() => props.mandatory), activation: computed(() => props.activation) });
+const multiple = computed(() => !!props.multiple);
+const readonly = computed(() => !!props.readonly);
+const disabled = computed(() => !!props.disabled);
+const selectedClass = computed(() => props.selectedClass);
+const selection = createItemGroupState(model, () => ({
+    multiple: props.multiple,
+    max: props.max,
+    mandatory: props.mandatory,
+    disabled: props.disabled,
+    readonly: props.readonly,
+    valueComparator: props.valueComparator
+}));
+function compare(left: unknown, right: unknown): boolean {
+    return (props.valueComparator ?? defaultValueComparator)(left, right);
+}
+function token(value: unknown): string {
+    if (value !== null && (typeof value === 'object' || typeof value === 'function')) {
+        const entry = entries.find(candidate => compare(candidate.value.value, value));
+        if (entry) return `r-${encodeURIComponent(entry.id)}`;
+    }
+    return legacy.value && (typeof value === 'string' || typeof value === 'number') ? String(value) : tabToken(value);
+}
+const headlessModel = computed<string | undefined>({
+    get: () => selection.selectedIds.value[0],
+    set: id => { if (id !== undefined) selection.select(id, true); }
+});
+provide(tabsKey, {
+    prefix,
+    focusedId: ref<string>(),
+    model,
+    selection,
+    multiple,
+    readonly,
+    ripple: computed(() => props.ripple),
+    disabled,
+    selectedClass,
+    compare,
+    token,
+    mandatory: computed(() => props.mandatory),
+    activation: computed(() => props.activation),
+    entries
+});
 const list = ref<HTMLElement>();
 const slider = ref<Record<string, string>>({ opacity: '0' });
 const ready = ref(false);
@@ -67,7 +122,7 @@ function measure() {
     atStart.value = position <= 1;
     atEnd.value = position >= total - size - 1;
     mobile.value = window.innerWidth < 600;
-    const active = host.querySelector<HTMLButtonElement>('button[aria-selected="true"]');
+    const active = host.querySelector<HTMLElement>('.ui-tab[aria-selected="true"]');
     const measured: Record<string, string> = !active || !host.clientWidth ? { opacity: '0' } : vertical
         ? { opacity: '1', height: `${active.offsetHeight}px`, transform: `translateY(${active.offsetTop}px)` }
         : { opacity: '1', width: `${active.offsetWidth}px`, transform: `translateX(${active.offsetLeft}px)` };
@@ -105,20 +160,26 @@ function scroll(direction: number) {
     const rtl = getComputedStyle(host).direction === 'rtl';
     host.scrollBy(vertical ? { top: direction * host.clientHeight * .8 } : { left: direction * host.clientWidth * .8 * (rtl ? -1 : 1) });
 }
-watch([model, axis, items, () => props.centerActive, () => props.grow, () => props.fixedTabs, () => props.stacked], sync, { deep: true });
-watch(() => [model.value, props.mandatory, props.disabled, ...entries.map(entry => [entry.id, entry.value.value, entry.disabled.value])], async () => {
-    await nextTick();
-    if (props.disabled) return;
-    const enabled = entries.filter(entry => !entry.disabled.value);
-    if (enabled.some(entry => entry.value.value === model.value)) return;
-    if (props.mandatory === 'force' || (props.mandatory && model.value != null)) model.value = enabled[0]?.value.value;
-    else if (model.value != null) model.value = undefined;
-    await sync();
-}, { flush: 'post' });
+watch([model, selection.selectedIds, axis, items, () => props.centerActive, () => props.grow, () => props.fixedTabs, () => props.stacked], sync, { deep: true });
+watch(() => [
+    model.value,
+    props.multiple,
+    props.max,
+    props.mandatory,
+    props.disabled,
+    props.readonly,
+    props.valueComparator,
+    ...entries.map(entry => [entry.id, entry.value.value, entry.disabled.value])
+], () => {
+    void nextTick(() => selection.ensureMandatory());
+}, { deep: true, flush: 'post', immediate: true });
 onUpdated(() => {
     const order = Array.from(list.value?.querySelectorAll<HTMLElement>('[data-ui-tab]') ?? []).map(button => button.dataset.uiTab);
     const sorted = [...entries].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
-    if (sorted.some((entry, index) => entries[index] !== entry)) entries.splice(0, entries.length, ...sorted);
+    if (sorted.some((entry, index) => entries[index] !== entry)) {
+        entries.splice(0, entries.length, ...sorted);
+        selection.reorder(order.filter((id): id is string => !!id));
+    }
     measure();
 });
 onMounted(async () => {
@@ -128,28 +189,39 @@ onMounted(async () => {
     frame = requestAnimationFrame(() => { ready.value = true; });
 });
 onBeforeUnmount(() => { observer?.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(frame); });
+function next(): void { selection.next(); }
+function prev(): void { selection.prev(); }
+defineExpose({
+    selectedIds: selection.selectedIds,
+    selectedValues: selection.selectedValues,
+    isSelected: selection.isSelected,
+    select: selection.select,
+    toggle: selection.toggle,
+    next,
+    prev
+});
 </script>
 
 <template>
-    <Tabs.Root v-model="model" :orientation="axis" :activation="activation" :mandatory="mandatory" :disabled="disabled" circular>
+    <Tabs.Root v-model="headlessModel" :orientation="axis" :activation="activation" :mandatory="false" :disabled="disabled" circular>
         <div class="ui-tabs-shell" :data-direction="axis">
             <button v-ripple="props.ripple" v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atStart" :aria-label="uiText('tabs.previous')" @click="scroll(-1)"><UiIcon name="mdi-chevron-left" :size="16" /></button>
             <Tabs.List v-slot="{ attrs }" :label="$attrs['aria-label'] as string" renderless>
-                <div ref="list" v-bind="{ ...attrs, ...$attrs }" class="ui-tabs" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded, 'is-grow': grow, 'is-fixed': fixedTabs, 'is-stacked': stacked }"
-                    :data-variant="variant" :data-ready="ready" :data-indicator-side="indicatorSide" :data-align="alignTabs" :data-overflow="overflow" :data-ui-tabs-prefix="prefix" :data-ui-tabs-legacy="legacy" @scroll="measure" @focusin="focused">
+                <div ref="list" v-bind="{ ...attrs, ...$attrs, 'aria-multiselectable': multiple || undefined, 'aria-readonly': readonly || undefined }" class="ui-tabs" :class="{ 'is-dense': dense, 'is-ghost': ghost, 'is-square': !rounded, 'is-grow': grow, 'is-fixed': fixedTabs, 'is-stacked': stacked }"
+                    :data-variant="variant" :data-ready="ready" :data-indicator-side="indicatorSide" :data-hide-slider="hideSlider || undefined" :data-align="alignTabs" :data-overflow="overflow" :data-ui-tabs-prefix="prefix" :data-ui-tabs-legacy="legacy" @scroll="measure" @focusin="focused">
                     <template v-if="usesItems()">
-                        <template v-for="item in items" :key="item.value">
+                        <template v-for="(item, index) in items" :key="itemKey(item, index)">
                             <slot name="tab" :item="item"><UiTab :value="item.value" :disabled="item.disabled" :icon="slots.default ? undefined : item.icon"><slot :item="item">{{ item.text }}</slot></UiTab></slot>
                         </template>
                     </template>
                     <slot v-else />
-                    <span v-if="variant === 'underline' && !hideSlider" class="ui-tabs-slider" :style="slider" aria-hidden="true"></span>
+                    <span v-if="variant === 'underline' && !hideSlider && !multiple" class="ui-tabs-slider" :style="slider" aria-hidden="true"></span>
                 </div>
             </Tabs.List>
             <button v-ripple="props.ripple" v-if="arrows" v-pointer-blur type="button" class="ui-tabs-arrow" tabindex="-1" :disabled="disabled || atEnd" :aria-label="uiText('tabs.next')" @click="scroll(1)"><UiIcon name="mdi-chevron-right" :size="16" /></button>
         </div>
         <UiTabsWindow v-if="slots.item || slots.window">
-            <UiTabsWindowItem v-for="item in slots.item ? items : []" :key="item.value" :value="item.value"><slot name="item" :item="item" /></UiTabsWindowItem>
+            <UiTabsWindowItem v-for="(item, index) in slots.item ? items : []" :key="itemKey(item, index)" :value="item.value"><slot name="item" :item="item" /></UiTabsWindowItem>
             <slot name="window" />
         </UiTabsWindow>
     </Tabs.Root>

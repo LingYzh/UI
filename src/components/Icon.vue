@@ -35,5 +35,5 @@ const svgPath = computed(() => props.path || resolved.value.path || iconPath(pro
         :aria-hidden="label ? undefined : true"
         :role="label ? 'img' : undefined"
         :aria-label="label || undefined"
-    ><component :is="resolved.component" v-if="resolved.component" :icon="resolved.name" /><svg v-else-if="svgPath" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="svgPath" /></svg><span v-else class="ui-icon-markup" v-html="markup"></span></span>
+    ><slot><component :is="resolved.component" v-if="resolved.component" :icon="resolved.name" /><svg v-else-if="svgPath" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="svgPath" /></svg><span v-else class="ui-icon-markup" v-html="markup"></span></slot></span>
 </template>

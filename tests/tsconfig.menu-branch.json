@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true
+    },
+    "include": [
+        "../src/ui/menu.ts",
+        "../src/ui/UiMenu.vue",
+        "../src/ui/UOverlay.vue",
+        "../src/ui/UiDialog.vue",
+        "../src/ui/UiTooltip.vue",
+        "../src/ui/UiMenuItem.vue"
+    ]
+}

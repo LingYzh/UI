@@ -1,0 +1,203 @@
+{
+    "fixture": "group-wrapper-protocols",
+    "method": "Vite source fixture imports the public src/ui/index.ts entry and renders the real UChipGroup, UBtnToggle, UChip, UButton, and UForm SFCs in headless Chromium.",
+    "sourceSha256": {
+        "src/ui/UChipGroup.vue": "521d32b27aec6fdf2199556e3b4cc63c72e52901afd6cf4d9b1583ab13b8e8ff",
+        "src/ui/UBtnToggle.vue": "507418f17aa93697c5f0e9a987b795af667259966ba870816f721cf75ae67ccd",
+        "src/ui/UItemGroup.vue": "5ef85e22a9d64832f9311bd465859efa10e87577395dadc2058bbfd69f42397a",
+        "src/ui/UItem.vue": "c1b9b1aa03cfd313508a8b8664c96fa9e01635c246923f85a1491d616147b7c7",
+        "src/ui/UChip.vue": "abc2072ac63ca96a3635baf8766faa237db0e9d4ae9c5992e7d6e0a41718da22",
+        "src/ui/UiButton.vue": "c0ead679702a40b9a91c863b6ddc4c72683875ae4d46acdf9fcafd3923a78314",
+        "src/ui/UiForm.vue": "f4fc36f601b539948d2f5caf8252f7384bbb6c3c5ea5a9285f91bfed6fe58b0a",
+        "src/ui/form.ts": "bb3878443630cc220aa51c46ab28caed992d2f8bea2a3bf43a3297c924bd0478",
+        "src/ui/item-group-state.ts": "ad5b36445dbe9b9600078d0bf7743b46fbc93b5b08793d7f4fbe1e1f74d308c3",
+        "src/ui/item-group-context.ts": "fd9c2467754aebd58d4a6430e388999e0e402a524622841b6d3767aa05426910",
+        "src/ui/selection-context.ts": "7d90513cf3f8811cdb4f32e45715c2725e15f0a75c85ca399287faca1c8ecf56",
+        "src/ui/selection.ts": "c126a3efa6e9c45dae663f4643964720ff9e21336bed9b5324f8fc8df535ebca",
+        "src/ui/button-group.ts": "269ff63964adc0b1321f06a711016e6d64e69a6d918e6b402fcf475d2ecc93b3",
+        "src/ui/group-props.ts": "c1bf87528e087f7cdc10a124ed17495266a6c92cab00bb2ad0dd67208690c071",
+        "src/ui/index.ts": "c84a7fc949ecfe20786feec042f1d51ed6a52689ed727fc6737293c739c5ecc7",
+        "src/ui/docs/component-examples/chip-group.vue": "e9210049268726534fec163520fbfd151009dca13cd63590e48a361e2e76f4b7",
+        "src/ui/docs/component-examples/btn-toggle.vue": "bec0576cadbf02669322f82355e121433e1f1ae820d3d7ec9b29ee3a73c29935"
+    },
+    "checks": [
+        {
+            "name": "UChipGroup slot scope and live refs",
+            "details": "The public default slot receives selected IDs, selected values, and both ID/value selection predicates; the ref getters match the live child state."
+        },
+        {
+            "name": "UChipGroup controlled updates and ID ref methods",
+            "details": "The wrapper ref reads current selection and forwards isSelected/select while scope select emits a controlled model update."
+        },
+        {
+            "name": "UChipGroup disabled, mandatory, multiple, max, and navigation",
+            "details": "Disabled entries and groups block changes; max and mandatory remain enforced; multiple values, slot toggle, and ID-based next/prev work through the wrapper."
+        },
+        {
+            "name": "UBtnToggle slot/ref scope and selection constraints",
+            "details": "The wrapper exposes all group slot fields and live ID/value refs; ID selection, value toggle, navigation, disabled, mandatory, multiple, and max behavior pass."
+        },
+        {
+            "name": "existing ChipGroup and BtnToggle form ref methods",
+            "details": "element, focus, validate, errors, resetValidation, and reset remain available on both wrappers after adding group selection refs."
+        },
+        {
+            "name": "shipped ChipGroup and BtnToggle examples",
+            "details": "The real docs examples update their displayed selectedValues scope and wrapper ref together when next/previous and button interactions change selection."
+        }
+    ],
+    "demoInteractions": [
+        "Real UChipGroup and UBtnToggle docs SFCs: next/prev refs stayed consistent with selectedValues scope, explicit selection updated the button ref, and the implicit-index slot scope followed the second button."
+    ],
+    "screenshots": [
+        {
+            "file": "group-wrapper-demos-wide-light.png",
+            "theme": "light",
+            "zoom": 100,
+            "viewport": {
+                "width": 1280,
+                "height": 1200,
+                "documentWidth": 1280
+            },
+            "targetBounds": {
+                "x": 200,
+                "y": 303.859375,
+                "width": 880,
+                "height": 875.640625
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "group-wrapper-demos-wide-dark.png",
+            "theme": "dark",
+            "zoom": 100,
+            "viewport": {
+                "width": 1280,
+                "height": 1200,
+                "documentWidth": 1280
+            },
+            "targetBounds": {
+                "x": 200,
+                "y": 303.859375,
+                "width": 880,
+                "height": 875.640625
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "group-wrapper-demos-390-light.png",
+            "theme": "light",
+            "zoom": 100,
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "targetBounds": {
+                "x": 20,
+                "y": 63.859375,
+                "width": 350,
+                "height": 875.640625
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "group-wrapper-demos-390-dark.png",
+            "theme": "dark",
+            "zoom": 100,
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "targetBounds": {
+                "x": 20,
+                "y": -0.140625,
+                "width": 350,
+                "height": 875.640625
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "group-wrapper-demos-390-125-light.png",
+            "theme": "light",
+            "zoom": 125,
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "targetBounds": {
+                "x": 25,
+                "y": 386.84375,
+                "width": 340,
+                "height": 1191.0625
+            },
+            "backend": "chrome"
+        },
+        {
+            "file": "group-wrapper-demos-390-125-dark.png",
+            "theme": "dark",
+            "zoom": 125,
+            "viewport": {
+                "width": 390,
+                "height": 844,
+                "documentWidth": 390
+            },
+            "targetBounds": {
+                "x": 25,
+                "y": -0.15625,
+                "width": 340,
+                "height": 1191.0625
+            },
+            "backend": "chrome"
+        }
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "consoleWarnings": [],
+    "httpErrors": [],
+    "requestFailures": [],
+    "limits": [
+        "Chromium browser renderer only; no Electron renderer acceptance is claimed.",
+        "No full project build, full test suite, or visual design acceptance was run.",
+        "The fixture validates local source through the public entry; it does not validate the compiled package bundle."
+    ],
+    "previewUrl": "http://127.0.0.1:9818/__group-wrapper-protocols",
+    "serverProbe": [
+        {
+            "name": "virtual-index",
+            "status": 200,
+            "contentType": "text/html; charset=utf-8",
+            "bytes": 1261
+        },
+        {
+            "name": "fixture-module",
+            "status": 200,
+            "contentType": "text/javascript",
+            "bytes": 1238
+        }
+    ],
+    "backend": "chrome",
+    "backendLimit": "Chromium browser renderer only; no Electron renderer acceptance is claimed.",
+    "sourceSha256After": {
+        "src/ui/UChipGroup.vue": "521d32b27aec6fdf2199556e3b4cc63c72e52901afd6cf4d9b1583ab13b8e8ff",
+        "src/ui/UBtnToggle.vue": "507418f17aa93697c5f0e9a987b795af667259966ba870816f721cf75ae67ccd",
+        "src/ui/UItemGroup.vue": "5ef85e22a9d64832f9311bd465859efa10e87577395dadc2058bbfd69f42397a",
+        "src/ui/UItem.vue": "c1b9b1aa03cfd313508a8b8664c96fa9e01635c246923f85a1491d616147b7c7",
+        "src/ui/UChip.vue": "abc2072ac63ca96a3635baf8766faa237db0e9d4ae9c5992e7d6e0a41718da22",
+        "src/ui/UiButton.vue": "c0ead679702a40b9a91c863b6ddc4c72683875ae4d46acdf9fcafd3923a78314",
+        "src/ui/UiForm.vue": "f4fc36f601b539948d2f5caf8252f7384bbb6c3c5ea5a9285f91bfed6fe58b0a",
+        "src/ui/form.ts": "bb3878443630cc220aa51c46ab28caed992d2f8bea2a3bf43a3297c924bd0478",
+        "src/ui/item-group-state.ts": "ad5b36445dbe9b9600078d0bf7743b46fbc93b5b08793d7f4fbe1e1f74d308c3",
+        "src/ui/item-group-context.ts": "fd9c2467754aebd58d4a6430e388999e0e402a524622841b6d3767aa05426910",
+        "src/ui/selection-context.ts": "7d90513cf3f8811cdb4f32e45715c2725e15f0a75c85ca399287faca1c8ecf56",
+        "src/ui/selection.ts": "c126a3efa6e9c45dae663f4643964720ff9e21336bed9b5324f8fc8df535ebca",
+        "src/ui/button-group.ts": "269ff63964adc0b1321f06a711016e6d64e69a6d918e6b402fcf475d2ecc93b3",
+        "src/ui/group-props.ts": "c1bf87528e087f7cdc10a124ed17495266a6c92cab00bb2ad0dd67208690c071",
+        "src/ui/index.ts": "c84a7fc949ecfe20786feec042f1d51ed6a52689ed727fc6737293c739c5ecc7",
+        "src/ui/docs/component-examples/chip-group.vue": "e9210049268726534fec163520fbfd151009dca13cd63590e48a361e2e76f4b7",
+        "src/ui/docs/component-examples/btn-toggle.vue": "bec0576cadbf02669322f82355e121433e1f1ae820d3d7ec9b29ee3a73c29935"
+    },
+    "sourceChangedDuringRun": false
+}

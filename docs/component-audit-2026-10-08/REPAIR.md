@@ -28,9 +28,9 @@
 - Messages/Label 公开入口与真实示例专项通过，保留默认及旧插槽；新增 active/message/text、颜色和过渡配置，验证标签点击聚焦。Root 已复核窄屏 DataIterator、深色消息与标签截图。
 - Parallax/PullRefresh Vite+Electron集成、ItemGroup/Item/Chip/按钮注册Chromium集成10组、Locale状态16项与真实Provider Electron专项已通过，Root复核当前截图；分组13项状态测试及各scope类型检查通过。最终台账28项部分验证、125项待处理，用户要求换设备交接后停止，尚未完成全库修复。
 
-## 尚未取得用户决定的冲突
+## 本会话已决定的三项冲突（2026-10-08 恢复）
 
-此前已询问 UConfirmEdit 的常显深克隆草稿与旧 begin 开启编辑、UHover 的 disabled 保留/恢复状态与旧清空、UDefaultsProvider reset=true 根回溯与旧清空继承的同名协议。用户尚未答复；本轮没有修改这三项冲突行为。恢复时先取得决定，再实施相应分支。
+用户本会话明确选择三项均直接统一标准行为，不加 standardProtocol。UConfirmEdit 始终展示深克隆草稿；UHover 禁用时保留公开状态并追踪内部状态，恢复后同步；UDefaultsProvider 按上游祖先链回溯（reset=true 等效数字1，root=true 回到根配置）。具体实现、专项与边界见 RESUME-2026-10-08.md。旧交接中的待决定描述是历史快照。
 
 ## 验证规则和剩余范围
 

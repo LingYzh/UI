@@ -2,28 +2,36 @@
 import { vRipple, type RippleOptions } from './ripple';
 import { isNestedControlEvent } from './action-events';
 import { vPointerBlur } from './pointer-focus';
-import { computed, ref } from 'vue';
-import { useList, type ListValue } from './list-completion';
+import { computed, inject, onBeforeUnmount, ref, watch } from 'vue';
+import { listParentKey, useList, type ListValue } from './list-completion';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
-const rawProps = withDefaults(defineProps<{ value?: ListValue; title?: string; subtitle?: string; appendIcon?: string; appendText?: string; disabled?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean; href?: string } & { ripple?: RippleOptions }>(), { ripple: true,
+import { useUiLink, type RouterProps } from './router';
+const rawProps = withDefaults(defineProps<RouterProps & { value?: ListValue; title?: string; subtitle?: string; appendIcon?: string; appendText?: string; disabled?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean } & { ripple?: RippleOptions }>(), { ripple: true,
     active: undefined, disabled: false, selectable: true, activatable: true
 });
 const props = useDefaults(rawProps, 'UListItem');
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
 const list = useList();
+const parent = inject(listParentKey, ref(undefined));
+const disabled = computed(() => props.disabled || list?.disabled?.());
+let release: (() => void) | undefined;
+watch([() => props.value, parent], () => { release?.(); if (props.value !== undefined) release = list?.register?.(props.value, parent.value, false, () => !!disabled.value); }, { immediate: true });
+onBeforeUnmount(() => release?.());
 const element = ref<HTMLElement>();
+const link = useUiLink(props);
 const selected = computed(() => props.value !== undefined && list?.selected().includes(props.value));
-const active = computed(() => props.active ?? (props.value !== undefined && list?.activated().includes(props.value)));
+const active = computed(() => props.active ?? (link.isActive.value || (props.value !== undefined && list?.activated().includes(props.value))));
 const itemRole = computed(() => list?.nav() ? undefined : 'option');
 function choose(event: MouseEvent) {
     if (isNestedControlEvent(event, element.value)) return;
-    if (props.disabled) { event.preventDefault(); return; }
+    if (disabled.value) { event.preventDefault(); return; }
     if (props.value !== undefined) {
-        if (props.selectable) list?.select(props.value);
-        if (props.activatable) list?.activate(props.value);
+        if (props.selectable && !list?.readonly?.()) list?.select(props.value);
+        if (props.activatable && !list?.readonly?.()) list?.activate(props.value);
     }
     emit('click', event);
+    link.navigate(event);
 }
 function keydown(event: KeyboardEvent) {
     if (isNestedControlEvent(event, element.value)) return;
@@ -34,11 +42,11 @@ function keydown(event: KeyboardEvent) {
 </script>
 
 <template>
-    <component :is="props.href ? 'a' : 'div'" ref="element" class="ui-list-item"
+    <component :is="link.isLink.value ? 'a' : 'div'" ref="element" class="ui-list-item"
         :class="{ 'is-selected': selected, 'is-active': active, 'has-append-text': !$slots.append && !!props.appendText, 'has-append-icon': !$slots.append && !!props.appendIcon }"
-        :href="props.disabled ? undefined : props.href" data-ui-list-item :role="itemRole"
+        :href="disabled ? undefined : link.href.value" data-ui-list-item :role="itemRole"
         :aria-selected="itemRole === 'option' ? selected : undefined" :aria-current="!itemRole && active ? 'page' : undefined"
-        :aria-disabled="props.disabled" :tabindex="props.disabled ? -1 : 0"
+        :aria-disabled="disabled" :tabindex="disabled ? -1 : 0"
         v-ripple="props.ripple" v-pointer-blur
         @click="choose" @keydown="keydown"
     >

@@ -1,34 +1,43 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { virtualWindow } from './virtual-scroll';
+import { computed, ref, toRef, type ComponentPublicInstance } from 'vue';
 import { useDefaults } from './defaults';
-const rawProps = withDefaults(defineProps<{ items: unknown[]; itemHeight: number; height?: number | string; overscan?: number; itemKey?: string | ((item: unknown) => string | number) }>(), { height: 320, overscan: 4 });
+import { useVirtualScroll } from './use-virtual-scroll';
+const rawProps = withDefaults(defineProps<{
+    items: unknown[]; itemHeight?: number; height?: number | string; overscan?: number;
+    itemKey?: string | ((item: unknown, index: number) => string | number); renderless?: boolean; tag?: string;
+}>(), { height: 320, overscan: 4, tag: 'div' });
 const props = useDefaults(rawProps, 'UVirtualScroll');
 const element = ref<HTMLElement>();
-const scrollTop = ref(0);
-const viewportHeight = ref(typeof props.height === 'number' ? props.height : 320);
-let observer: ResizeObserver | undefined;
-const count = computed(() => props.items.length);
-const windowRange = computed(() => virtualWindow(count.value, scrollTop.value, viewportHeight.value, props.itemHeight, props.overscan));
-const start = computed(() => windowRange.value.start);
-const end = computed(() => windowRange.value.end);
-const visible = computed(() => props.items.slice(start.value, end.value));
-const key = (item: unknown, index: number) => typeof props.itemKey === 'function' ? props.itemKey(item) : props.itemKey && item && typeof item === 'object' ? (item as Record<string, unknown>)[props.itemKey] as string | number : index;
-function onScroll() { scrollTop.value = element.value?.scrollTop ?? 0; }
-function scrollToIndex(index: number) { if (element.value) element.value.scrollTop = Math.max(0, Math.min(count.value - 1, index)) * windowRange.value.rowHeight; }
-watch([count, () => props.itemHeight], () => {
-    if (element.value && element.value.scrollTop > windowRange.value.totalHeight) element.value.scrollTop = Math.max(0, windowRange.value.totalHeight - viewportHeight.value);
-    onScroll();
-});
-import { onMounted, onBeforeUnmount } from 'vue';
-onMounted(() => {
-    observer = new ResizeObserver(() => { viewportHeight.value = element.value?.clientHeight ?? 0; });
-    if (element.value) observer.observe(element.value);
-});
-onBeforeUnmount(() => observer?.disconnect());
-defineExpose({ scrollToIndex });
+const marker = ref<HTMLElement>();
+function scrollElement() {
+    if (!props.renderless) return element.value;
+    let parent = marker.value?.parentElement;
+    while (parent) {
+        if (/(auto|scroll)/.test(getComputedStyle(parent).overflowY)) return parent;
+        parent = parent.parentElement;
+    }
+    return document.scrollingElement as HTMLElement | null;
+}
+const virtual = useVirtualScroll({ items: () => props.items, itemHeight: () => props.itemHeight, itemKey: toRef(() => props.itemKey), height: () => props.height, overscan: () => props.overscan, getScrollElement: scrollElement });
+const range = virtual.window;
+const rows = virtual.visibleItems;
+const size = computed(() => typeof props.height === 'number' ? `${props.height}px` : props.height);
+function key(item: unknown, index: number) {
+    return typeof props.itemKey === 'function' ? props.itemKey(item, index) : props.itemKey && item && typeof item === 'object' ? (item as Record<string, unknown>)[props.itemKey] as string | number : index;
+}
+function itemRef(index: number, node: Element | ComponentPublicInstance | null) { virtual.itemRef(index, node instanceof HTMLElement ? node : node && '$el' in node ? node.$el : null); }
+defineExpose({ scrollToIndex: virtual.scrollToIndex });
 </script>
 
 <template>
-    <div ref="element" class="ui-virtual-scroll" :style="{ height: typeof props.height === 'number' ? props.height + 'px' : props.height }" @scroll="onScroll"><div :style="{ height: windowRange.totalHeight + 'px', position: 'relative' }"><div v-for="(item, index) in visible" :key="key(item, start + index)" class="ui-virtual-scroll-item" :style="{ position: 'absolute', insetInline: 0, top: (start + index) * windowRange.rowHeight + 'px', height: windowRange.rowHeight + 'px' }"><slot :item="item" :index="start + index" /></div></div></div>
+    <template v-if="props.renderless">
+        <div ref="marker" aria-hidden="true" :style="{ height: range.paddingTop + 'px' }" />
+        <slot v-for="(item, index) in rows" :key="key(item, range.start + index)" :item="item" :index="range.start + index" :item-ref="(node: Element | ComponentPublicInstance | null) => itemRef(range.start + index, node)" />
+        <div aria-hidden="true" :style="{ height: range.paddingBottom + 'px' }" />
+    </template>
+    <component :is="props.tag" v-else ref="element" class="ui-virtual-scroll" :style="{ height: size }">
+        <div :style="{ paddingTop: range.paddingTop + 'px', paddingBottom: range.paddingBottom + 'px' }">
+            <div v-for="(item, index) in rows" :key="key(item, range.start + index)" :ref="node => itemRef(range.start + index, node)" class="ui-virtual-scroll-item"><slot :item="item" :index="range.start + index" :item-ref="(node: Element | ComponentPublicInstance | null) => itemRef(range.start + index, node)" /></div>
+        </div>
+    </component>
 </template>

@@ -1,5 +1,46 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-09 当前批次提交前最终检查
+
+用户要求完成正在处理的批次、更新交接、提交推送后停止。全库深度对齐尚未完成；本节覆盖此次累计变更的完整门禁及最后一批专项，取代下文仍执行或尚未运行完整检查的历史状态。
+
+- 完整 `npm run typecheck` 通过；完整 `npm test` 289/289 通过；`npm run test:ui` 包含 docs/lib 构建及 Electron UI 21/21 组通过，171 个文档路由通过，pageerrors 为空。最新原始证据为 `artifacts/ui-dvZJZw/`，日志为 `artifacts/handoff-20261009/{typecheck-final.log,test-final.log,build-ui-final.log}`。
+- 首轮完整单测发现 6 项旧结构断言或生成示例不一致：更新 quote/runtime 模型解析、转发插槽字段、Tabs 任意值与 eager 继承断言，并同步实际表格示例后，局部 26 项及最终全量 289 项通过。首轮 UI 的当前页可访问名称断言沿用旧名称，更新为含“当前页”的实际名称并保留 aria-current 检查，完整 21 组通过。
+- 最后纯文档修正明确 Tabs 对象/数组/null/undefined、TabsWindowItem 离场卸载、文件计数模板和 fullHeight 语义；API/真实示例编译 5/5 及最终 docs/lib 构建通过。生成清单为 156 canonical、2620 props/models、305 events、568 slots、531 exposed members；数量不代表行为完成度。
+- Tabs 选择专项 14 项、TabsWindow 10 项、旧 navigation-wrapper 10 项，以及真实 TabsSelectionDemo 3 组交互/3 个视口通过。外部模型仍可指向禁用项；键盘入口回退到可用项，不擅自迁移模型。文件插槽/原生文件列表/FormData/语言模板/异步禁用竞态专项 21 项和原表单/数值/文件专项 11 组通过。
+- 应用布局公开基础 API 专项 6 项通过，helper 新 8 项及旧 5 项通过。修正 BottomNavigation 测量遗漏 1px 边框：实际高度 57px 与动态高度 73px 均准确预留。跨边缘 order 默认仍待用户决定，实际组件保留旧几何，公开 overlaps 未加入；这些功能结果不等于完整布局视觉验收。
+- 菜单分支专项 11 项、Overlay 12 项及 SelectionMenu 16 项回归通过，包含三层外部关闭、父内点击停止级联、persistent、Dialog 注入边界、焦点和 KeepAlive 清理。四张独立真实 MenuBranchDemo 截图在连续三帧确认 data-state=open、动画结束、opacity=1 后捕获；root 已复核浅色宽屏、深色 390px、浅色 390px/125% CSS zoom 和对话框，文字、触发器及菜单/对话框边界可读。报告为 `artifacts/component-audit-root/menu-branch-protocols/report.json`，页面错误/警告为空，源 SHA 运行期间稳定。早期淡入中截图不作为验收。
+- `git diff --check` 通过。UI 包仍为 0.3.2；此次不发布 npm，不创建版本标签，不升级 UAH。UAH 自身完整检查存在长轮测试超时和 Electron 44.7.0 二进制缺失，详见其 `docs/VALIDATION.md`，不计为 UI 门禁通过。
+
+剩余范围与用户决定见 HANDOFF 顶部和 `docs/component-audit-2026-10-08/NEXT-SESSION-2026-10-09.md`；截图/构建/完整日志是本机忽略产物，跨设备按提交中的脚本复测。
+
+## 2026-10-09 全库对齐续作专项（当前）
+
+本节为累计未提交源码的部分验收，不表示全库已完成。日常未运行完整 typecheck/test/build/test:ui；用户要求提交推送时再执行完整门禁。UAH 仍固定消费正式 npm UI 0.3.2。
+
+- TabsWindow 公开入口浏览器 10 组及旧 navigation-wrapper 10 项通过；隔离类型检查通过。覆盖显式 null、运行时增删模型属性后回到 Tabs fallback、独立 wrapper 的 slot/ref 操作、位置默认值与 keyed reorder、组禁用、反向/关闭过渡、离场后卸载。未选外层 panel 设 inert/不可 Tab 聚焦。证据：`artifacts/full-alignment/tabs-window-protocols/report.json`；root 另给外层 panel 同一 grid-area，避免离场内容占两行。
+- 日期周号 helper 4/4 通过，隔离类型检查通过。按地区 minimumDays 或显式 weekday 阈值计算，使用本地日历字段加 UTC 日运算，验证 US/GB/CN/HK 跨年、ISO 第 53 周、0/数字字符串及 New York DST；上游固定 Vuetify 4.2.4。DatePicker 和 Calendar 消费同一 helper。原 calendar 浏览器 4 组、locale-week/snackbar/textarea 5 组通过；新周号栏/间距/波纹专项正在扩展，旧报告不能替代新增能力验收。
+- 共享 Menu 专项 selection-menu-protocols 16 项通过，包含定位/scrollStrategy/back/draft、真实点击及 Auto/Combo Escape 后同一焦点点击重开；原 select-autocomplete 16 项与日期协议 6 组通过，隔离类型检查通过。四张真实 demo 弹层开启图包含 Auto wide、Combo narrow、Select CSS zoom 125%、DateInput dark narrow，均断言 top-layer 可见及视口边界。root 已查看 Auto/Select/DateInput 图，继续补完整视觉证据。
+- Calendar 新浏览器专项 6 组通过，实际事件高度 20px、间距 3px/1px、周号 gutter 28px、默认无波纹与显式波纹、locale 周号/阈值及 noMonthPicker 路径通过；零页面错误/警告，隔离 tsc 通过。NumberInput 新字段专项 5 组与旧 numeric-controls 5 组通过，但 root 看图发现内部原生边框，已修正 styles.css 选择器，当前刷新布局/透明背景断言和真实 demo 局部截图；旧截图不作为该修复验收。
+- Switch 已刷新到 25 组协议通过，覆盖修正图标及着色滑块对比，另有独立 CSS zoom=125% 与 DPR=1.25 图；无页面错误/警告，源码运行期间稳定，两种缩放不混记。
+- 文件过滤/拒绝/模型专项 form-numeric-file-protocols 11 组与隔离 tsc 通过；Electron 夹具仅有 test host CSP 警告，无产品 Vue 错误。随后 root 新增 FileInput/Upload 定制插槽/原生过滤列表/真实示例，目前 file-slots 专项正在运行，旧 11 组不能证明后续新增能力通过。file-display helper 6/6 与隔离 tsc 通过。
+- 固定版本 fixture 准备脚本 node --check、已有缓存逐文件复用、独立临时首次准备/重跑、空 npm cache 官方下载与 tarball integrity 校验均通过；根目录历史报告没有改写。版本固定 Vuetify 4.2.4 / Router 4.6.3。
+- API/示例生成已同步到当前声明：156 canonical，2576 props/models、299 events、542 slots、508 exposed members。声明数量不代表行为已验证，也不用于完成百分比。
+
+## 2026-10-08 交接分支恢复续作专项（当前）
+
+两仓分支/远端HEAD核对一致，UI784a46f、UAH25d357d。用户指定经济型子代理，Luna/max执行已明确非视觉部分，root负责契约、真实示例和视觉验收。本轮按用户新答复直接统一ConfirmEdit/Hover/DefaultsProvider标准行为，同时补齐语言消费者及两个分组wrapper。包版本仍0.3.2；未提交、推送或发布，UAH未升级依赖，原package-lock.json改动保持入场时的20项可选依赖dev标记删除。
+
+- 专项状态/继承回归52/52通过：confirm-edit、defaults-state、forms-prop-inheritance、layout-props-compile、item-group-state、hotkey、locale和locale-context；另API/真实源码编译5/5通过。没有把各子代理早期重跑重复计入此数。
+- 四项独立源码专项及对应隔离tsconfig全部通过：confirm-edit-protocols（Chromium，9组）、group-wrapper-protocols（Chrome，6组）、hover-defaults-protocols（Chrome，公开Hover/Defaults及真实示例）、locale-consumers（Electron，公开语言消费者及真实Provider示例）。最终报告source SHA逐个核对当前源码，运行期间未改动源码，无产品Vue/页面/控制台/HTTP错误。
+- ConfirmEdit实测常显/Ref草稿、嵌套对象隔离、取消/保存/保存后再编辑、外部模型与嵌套更新、按操作禁用、readonly、校验拒绝与异步父模型竞态、hideActions及actions不重复；helper覆盖嵌套Proxy/Date/Map、循环引用及二进制/数组长度/Set差异。structuredClone不支持函数等数据，不退为浅拷贝。
+- Defaults实测reset数字/字符串/true、root命名字典、scoped/disabled动态、deep merge与undefined继承，保留原provideDefaults getter签名。真实UButton初始46px，reset=true到外层30px，root=true到fixture根36px，disabled=true到父38px，开关独立复位；Hover包含字符串延迟、受控nullable模型、禁用期间进入/离开与恢复、焦点/扩展回调、旧定时器取消和卸载清理。
+- root复核ConfirmEdit浅色宽屏、深色390px及900px/125%，分组真实demo深色390px/125%，Hover浅色宽屏和Defaults浅色宽屏/深色390px/125%，以及语言Electron浅色宽屏及深色390px/125%原生捕获：文本、控件、颜色、换行与边界可读。分组作用域索引紧贴组下方是当前demo布局，不影响阅读或交互；未新增共享视觉样式。
+- Electron zoom=1.25时Playwright fullPage会以CSS宽裁剪原生像素：初图不能视觉验收。专项改用webContents.capturePage原生PNG，逐个分页按钮及demo/nav/标题内边界均通过；旧图以fullpage-diagnostic命名并标visualAcceptance=false。Chromium夹具使用独立Vite cache、已知CJS预构建项和真实组件样式，首次缺浏览器/缓存争用及未预构建失败已复跑解决，不放宽产品断言。
+- API/示例生成同步为156 canonical、1844属性模型、183事件、313插槽、365公开成员，数量只证明本地声明文档一致。台账32 partially-verified/121 pending，原153项与原始缺口保留，未宣称全库对齐。
+
+当前四项JSON报告与manifest已保存到 `docs/component-audit-2026-10-08/resume-evidence/`，完整截图留在 `artifacts/component-audit-root/{confirm-edit-protocols,group-wrapper-protocols,hover-defaults-protocols,locale-consumers}/`。盘点、决定及剩余缺口见RESUME-2026-10-08.md：UTextField局部提示/密度消费仍待后续表单阶段核查，UChip与UButton标准插槽也未由本批覆盖。仅专项、没有完整typecheck/test/build/test:ui；完整门禁留到用户要求提交推送时。
+
 ## 2026-10-08 新分支交接完整门禁（最新）
 
 用户明确改为 UI 与 UAH 分别提交推送交接分支 `codex/handoff-component-alignment-20261008`，因此运行完整门禁。UI 最终 Node 24.19.0（bundled runtime，进程 PATH 指向同一 Node）下完整 typecheck、152/152 单测、docs/lib 两次 Vite 构建与完整 Electron UI 21/21 组通过，171 文档路由无横向溢出，pageerrors=[]；git diff --check 通过。无版本变更、发布标签或 npm 发布。

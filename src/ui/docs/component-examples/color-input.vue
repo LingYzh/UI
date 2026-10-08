@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { UColorInput } from '../../index';
 const color = ref('#bd6749');
+const translucent = ref({ r: 189, g: 103, b: 73, a: 0.45 });
 </script>
 
 <template>
@@ -9,8 +10,17 @@ const color = ref('#bd6749');
         <u-color-input
             v-model="color"
             label="标记颜色"
-            hint="颜色面板和十六进制输入共用一个模型。"
+            hint="点击色块打开组件库面板，确认后提交，取消保留原颜色。"
         />
+        <u-color-input
+            v-model="translucent"
+            label="透明色对象"
+            :picker-props="{ mode: 'rgba', hideCanvas: false }"
+            open-on-focus
+        />
+        <u-color-input v-model="color" label="即时更新" hide-actions pip-location="append-inner" />
+        <u-color-input v-model="color" label="系统选择器扩展" native-picker />
+        <output>{{ translucent }}</output>
     </div>
 </template>
 

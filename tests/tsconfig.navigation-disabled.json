@@ -1,0 +1,23 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/group-state.ts",
+        "../src/ui/stepper-state.ts",
+        "../src/ui/expansion-state.ts",
+        "../src/ui/list-completion.ts",
+        "../src/ui/UStepper.vue",
+        "../src/ui/UStepperItem.vue",
+        "../src/ui/UExpansionPanels.vue",
+        "../src/ui/UExpansionPanel.vue",
+        "../src/ui/UExpansionPanelTitle.vue",
+        "../src/ui/UTreeview.vue"
+    ],
+    "exclude": []
+}

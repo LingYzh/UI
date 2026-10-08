@@ -10,6 +10,7 @@ import { controlPages } from './controlsContent.js';
 import { layoutPages } from './layoutContent.js';
 import { componentApi } from './apiReference.js';
 import { tooltipProtocolExample } from './tooltipProtocolContent.js';
+import { dialogGeometryExample, layoutBasicsExample, textareaProtocolExample, switchProtocolExample, selectionMenuExample, tabsSelectionExample, menuBranchExample } from './geometryContent.js';
 
 export const groups = [
     "开始使用",
@@ -1288,6 +1289,13 @@ export const pages = [
 pages.push(...tablePages, ...feedbackPages, ...controlPages, ...layoutPages, ...themePages);
 pages.push(typographyPage);
 pages.find(page => page.id === 'tooltip').examples.push(tooltipProtocolExample);
+pages.find(page => page.id === 'dialog').examples.push(dialogGeometryExample);
+pages.find(page => page.id === 'textarea').examples.push(textareaProtocolExample);
+pages.find(page => page.id === 'switch').examples.push(switchProtocolExample);
+pages.find(page => page.id === 'select').examples.push(selectionMenuExample);
+pages.find(page => page.id === 'tabs').examples.push(tabsSelectionExample);
+pages.find(page => page.id === 'menu').examples.push(menuBranchExample);
+pages.find(page => page.id === 'container').examples.push(layoutBasicsExample);
 for (const page of pages) {
     if (page.name?.startsWith('Ui')) page.name = page.name === 'Ui' + 'Input' ? 'UTextField' : page.name === 'Ui' + 'Badge' ? 'UChip' : 'U' + page.name.slice(2);
     if (page.name === 'UChip' && page.id === 'badge') { page.id = 'chip'; page.title = '标签'; }

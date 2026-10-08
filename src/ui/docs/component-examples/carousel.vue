@@ -6,10 +6,22 @@ const carousel = ref(1);
 
 <template>
     <div class="component-demo" data-demo-component="UCarousel">
-        <u-carousel v-model="carousel" :cycle="false" label="内容轮播">
+        <u-carousel
+            v-model="carousel"
+            :cycle="false"
+            :continuous="false"
+            hide-delimiter-background
+            label="内容轮播"
+        >
             <u-carousel-item v-for="value in [1, 2, 3]" :key="value" :value="value">
                 <div class="completion-window-card">第 {{ value }} 项</div>
             </u-carousel-item>
+            <template #prev="{ props }">
+                <button type="button" v-bind="props">‹</button>
+            </template>
+            <template #next="{ props }">
+                <button type="button" v-bind="props">›</button>
+            </template>
         </u-carousel>
     </div>
 </template>

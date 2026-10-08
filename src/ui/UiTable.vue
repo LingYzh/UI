@@ -16,7 +16,8 @@ import {
 } from './data-pipeline';
 import type { TableSurfaceProps } from './data-table-types';
 import type { TableSort } from './table';
-import { uiText } from './locale';
+import { useLocale } from './locale-context';
+const uiText = useLocale().t;
 const rawProps = withDefaults(
     defineProps<
         TableSurfaceProps & {
@@ -81,8 +82,9 @@ function sortOrder(key: string) {
         :aria-busy="props.loading || undefined"
     >
         <slot name="top" />
-        <slot name="wrapper">
+        <slot v-if="!$slots.default && $slots.wrapper" name="wrapper" />
             <UiScrollArea
+                v-else
                 :label="uiText('table.scrollArea', { label: props.label })"
                 axis="both"
                 :height="toUnit(props.height)"
@@ -90,6 +92,7 @@ function sortOrder(key: string) {
                 :rounded="props.rounded"
             >
                 <table :aria-label="props.label">
+                    <slot name="caption" />
                     <slot v-if="$slots.default" />
                     <template v-else>
                         <thead>
@@ -203,7 +206,6 @@ function sortOrder(key: string) {
                     </template>
                 </table>
             </UiScrollArea>
-        </slot>
         <slot name="bottom" />
     </component>
 </template>

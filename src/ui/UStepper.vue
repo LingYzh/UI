@@ -3,10 +3,10 @@ import { useDefaults } from './defaults';
 import { provide, reactive } from 'vue';
 import { createGroup, windowKey, type GroupValue } from './group-state';
 import { stepperContextKey, type StepperContext } from './stepper-state';
-const rawProps = defineProps<{ disabled?: boolean; mandatory?: boolean; linear?: boolean }>();
+const rawProps = withDefaults(defineProps<{ disabled?: boolean; mandatory?: boolean | 'force'; linear?: boolean }>(), { mandatory: undefined });
 const props = useDefaults(rawProps, 'UStepper');
 const model = defineModel<GroupValue | null>({ default: null });
-const group = createGroup(model, { mandatory: () => props.mandatory ?? true, disabled: () => props.disabled });
+const group = createGroup(model, { mandatory: () => props.mandatory ?? 'force', disabled: () => props.disabled });
 const blocked = reactive(new Set<GroupValue>());
 function go(value: GroupValue): void {
     if (props.disabled || blocked.has(value) || !group.values.includes(value)) return;

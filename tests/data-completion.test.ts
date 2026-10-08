@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { getPath, groupRows, itemKey, pageItems, processItems } from '../src/ui/data-pipeline';
-import { addDays, addMonths, isAllowedDate, monthDays, parseIsoDate, parseTime, selectDate, selectedDates, validTime } from '../src/ui/date-model';
+import { addDays, addMonths, isAllowedDate, isoDate, monthDays, parseIsoDate, parseTime, selectDate, selectedDates, validTime } from '../src/ui/date-model';
 import { ref } from 'vue';
 import { createGroup } from '../src/ui/group-state';
 
@@ -33,9 +33,14 @@ test('local ISO arithmetic survives month and daylight saving boundaries', () =>
 
 test('date range and allowed dates honor the full selected span', () => {
     const range = selectDate(selectDate(null, '2024-04-12', 'range'), '2024-04-10', 'range');
-    assert.deepEqual(range, ['2024-04-10', '2024-04-12']);
+    assert.ok(Array.isArray(range) && range.every(date => date instanceof Date));
+    assert.deepEqual((range as Date[]).map(isoDate), ['2024-04-10', '2024-04-12']);
+    const sameDay = selectDate(selectDate(null, '2024-04-10', 'range'), '2024-04-10', 'range');
+    assert.deepEqual((sameDay as Date[]).map(isoDate), ['2024-04-10', '2024-04-10']);
+    const clicked = selectDate(selectDate(null, '2024-04-12', 'multiple'), '2024-04-10', 'multiple');
+    assert.deepEqual((clicked as Date[]).map(isoDate), ['2024-04-12', '2024-04-10']);
     assert.deepEqual(selectedDates(range, 'range'), ['2024-04-10', '2024-04-11', '2024-04-12']);
-    assert.equal(isAllowedDate('2024-04-11', '2024-04-10', '2024-04-12', (day) => day !== '2024-04-11'), false);
+    assert.equal(isAllowedDate('2024-04-11', '2024-04-10', '2024-04-12', day => isoDate(day) !== '2024-04-11'), false);
     assert.equal(isAllowedDate('2024-04-13', '2024-04-10', '2024-04-12'), false);
     assert.equal(validTime('23:59'), true);
     assert.equal(validTime('24:00'), false);

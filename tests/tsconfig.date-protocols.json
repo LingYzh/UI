@@ -1,0 +1,5 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": ["../src/ui/markdown-plugins.d.ts", "../src/ui/date-model.ts", "../src/ui/UDatePicker.vue", "../src/ui/UDateInput.vue", "../src/ui/UTimePicker.vue", "../src/ui/UCalendar.vue"]
+}

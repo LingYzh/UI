@@ -15,7 +15,10 @@ function reopen() {
         <u-button @click="open = true">打开浮层</u-button>
         <u-overlay v-model="open" :width="360" v-slot="{ close }">
             <h3>通用浮层</h3>
-            <p>Escape 或点击外部关闭，退出动画完成后恢复焦点和滚动。</p>
+            <p>
+                默认允许焦点离开，不锁定页面滚动。Escape 或点击外部关闭；retain-focus
+                可显式限制焦点。
+            </p>
             <div class="demo-row">
                 <u-button @click="close">关闭</u-button>
                 <u-button variant="text" @click="reopen">快速重开</u-button>

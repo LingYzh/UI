@@ -4,6 +4,7 @@ import { UButton, USelect, USnackbar, USwitch, UTextField } from '../../index';
 const open = ref(false);
 const text = ref('配置已保存，可以继续编辑。');
 const permanent = ref(false);
+const persistent = ref(false);
 const contained = ref(true);
 const variant = ref('elevated');
 const location = ref('bottom center');
@@ -30,6 +31,7 @@ const locations = [
         </div>
         <div class="demo-row">
             <u-switch v-model="permanent" label="持续显示" />
+            <u-switch v-model="persistent" label="阻止 Escape 和外部点击关闭" />
             <u-switch v-model="contained" label="容器内显示" />
             <u-button @click="open = !open">{{ open ? '隐藏消息' : '显示消息' }}</u-button>
         </div>
@@ -39,6 +41,7 @@ const locations = [
                 v-model="open"
                 :text="text"
                 :timeout="permanent ? -1 : 3500"
+                :persistent="persistent"
                 :contained="contained"
                 :variant="variant"
                 :location="location"

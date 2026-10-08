@@ -1,6 +1,6 @@
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowReactive, useId, watch, type ComputedRef, type CSSProperties, type InjectionKey, type Ref } from 'vue';
+import { computed, getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowReactive, useId, watch, type ComputedRef, type CSSProperties, type InjectionKey, type Ref } from 'vue';
 import { createValidationRunner, parseValidateOn, type ValidateOn, type ValidationRule, type ValidationResult } from './validation';
-import { uiText } from './locale';
+import { useLocale } from './locale-context';
 import { useDefaults } from './defaults';
 import { useRules } from './rules';
 
@@ -16,7 +16,12 @@ export interface FormControlProps {
     rounded?: boolean;
     rules?: readonly ValidationRule[];
     errorMessages?: string | readonly string[];
-    maxErrors?: number;
+    maxErrors?: number | string;
+    name?: string;
+    error?: boolean;
+    validationValue?: unknown;
+    focused?: boolean;
+    messages?: string | readonly string[];
     validateOn?: ValidateOn;
     density?: 'default' | 'comfortable' | 'compact';
     variant?: 'outlined' | 'filled' | 'underlined' | 'plain';
@@ -39,8 +44,8 @@ export interface RegisteredControl {
     enabled: ComputedRef<boolean>;
     revision: () => number;
     validate: () => Promise<ValidationResult>;
-    reset: () => void;
-    resetValidation: () => void;
+    reset: () => void | Promise<void>;
+    resetValidation: () => void | Promise<void>;
 }
 export interface FormContext {
     disabled: ComputedRef<boolean>;
@@ -75,6 +80,8 @@ export function mergeControlAttrs(attrs: Record<string, unknown>, fieldAttrs: Re
 
 export function useFormControl<T>(props: FormControlProps, model: Ref<T>, element: Ref<HTMLElement | undefined>, attrs: Record<string, unknown> = {}) {
     props = useDefaults(props);
+    const instance = getCurrentInstance();
+    const locale = useLocale();
     const form = inject(formContextKey, undefined);
     const field = inject(fieldContextKey, undefined);
     const uid = useId();
@@ -95,18 +102,35 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     const validationMode = computed(() => parseValidateOn(validateOn.value));
     const aliases = useRules();
     const ownErrors = ref<string[]>([]);
-    const ownValid = ref<boolean | null>(null);
+    const isPristine = ref(true);
+    const isValidating = ref(false);
+    const localFocused = ref(props.focused ?? false);
+    const focused = computed(() => {
+        const incoming = instance?.vnode.props;
+        return incoming && Object.hasOwn(incoming, 'focused') && incoming['onUpdate:focused'] ? props.focused ?? false : localFocused.value;
+    });
+    const validationModel = computed(() => props.validationValue === undefined ? model.value : props.validationValue);
+    const isDirty = computed(() => [model.value, validationModel.value].some(value => value !== '' && value != null && (!Array.isArray(value) || value.length > 0)));
     const externalErrors = computed(() => [...new Set([
         ...(field?.error.value ? [field.error.value] : []),
         ...(typeof props.errorMessages === 'string' ? [props.errorMessages] : props.errorMessages ?? [])
     ].filter(Boolean))]);
     const enabled = computed(() => !disabled.value);
-    const errors = computed(() => enabled.value ? [...new Set([...externalErrors.value, ...ownErrors.value])] : []);
-    const state = computed(() => !enabled.value ? true : errors.value.length ? false : ownValid.value);
+    const errors = computed(() => {
+        const messages = [...new Set([...externalErrors.value, ...ownErrors.value])];
+        return externalErrors.value.length ? messages.slice(0, Math.max(0, Number(props.maxErrors ?? 1))) : messages;
+    });
+    const state = computed(() => {
+        if (props.error || externalErrors.value.length) return false;
+        if (!props.rules?.length && !ownErrors.value.length) return true;
+        if (isPristine.value) return ownErrors.value.length || validationMode.value.lazy ? null : true;
+        return !ownErrors.value.length;
+    });
+    const displayErrors = computed(() => state.value === false ? errors.value : []);
     let initialValue = model.value;
     let disposed = false;
     const runner = createValidationRunner({
-        value: () => model.value,
+        value: () => validationModel.value,
         rules: () => (props.rules ?? []).map(rule => typeof rule === 'string' && aliases[rule.replace(/^\$/, '')] ? aliases[rule.replace(/^\$/, '')]() : rule),
         nativeError: () => {
             const control = element.value as HTMLInputElement | undefined;
@@ -115,35 +139,58 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
         externalErrors: () => externalErrors.value,
         enabled: () => enabled.value && !element.value?.matches(':disabled'),
         maxErrors: () => props.maxErrors ?? 1,
-        fallback: () => uiText('form.invalid'),
-        failure: () => uiText('form.validationFailed'),
+        fallback: () => locale.t('form.invalid'),
+        failure: () => locale.t('form.validationFailed'),
         beforeValidate: () => nextTick(),
-        commit: (messages) => { if (!disposed) { ownErrors.value = messages; ownValid.value = messages.length === 0; } }
+        commit: (messages) => { if (!disposed) ownErrors.value = messages; }
     });
-    function resetValidation() {
+    let validationGeneration = 0;
+    let resetting = false;
+    async function validateResult(silent = false): Promise<ValidationResult> {
+        const current = ++validationGeneration;
+        isValidating.value = true;
+        try {
+            const result = await runner.validate();
+            if (current !== validationGeneration || disposed) return { valid: false, errorMessages: [], cancelled: true };
+            if (!result.cancelled) isPristine.value = silent;
+            return { ...result, valid: !result.cancelled && state.value !== false, errorMessages: errors.value };
+        } finally { if (current === validationGeneration) isValidating.value = false; }
+    }
+    async function validate(silent = false): Promise<string[]> {
+        return (await validateResult(silent)).errorMessages;
+    }
+    async function resetValidation() {
+        validationGeneration++;
         runner.invalidate();
+        isValidating.value = false;
         // Inline rules arrays are recreated when a Form slot renders. Replacing
         // an already empty error array would invalidate that same slot again.
         if (ownErrors.value.length) ownErrors.value = [];
-        ownValid.value = null;
+        isPristine.value = true;
+        if (!validationMode.value.lazy && !disposed) await validateResult(!validationMode.value.eager);
     }
-    function reset() {
-        model.value = (form?.resetMode?.value === 'empty' ? Array.isArray(initialValue) ? [] : typeof initialValue === 'boolean' ? false : typeof initialValue === 'string' ? '' : null : initialValue) as T;
-        resetValidation();
+    async function reset() {
+        resetting = true;
+        model.value = (form?.resetMode?.value === 'initial' ? initialValue : null) as T;
+        await nextTick();
+        resetting = false;
+        await resetValidation();
     }
     const control: RegisteredControl = {
-        id: () => String(attrs.id ?? uid),
+        id: () => String(props.name ?? attrs.id ?? uid),
         element: () => element.value,
         state, errors, enabled,
         revision: runner.revision,
-        validate: runner.validate, reset, resetValidation
+        validate: validateResult, reset, resetValidation
     };
     form?.register(control);
     field?.register(control);
-    watch(model, () => {
+    watch(validationModel, () => {
         const invalid = state.value === false;
-        resetValidation();
-        if (!form?.resetting.value && (validationMode.value.trigger === 'input' || (validationMode.value.trigger === 'invalid-input' && invalid))) void runner.validate();
+        validationGeneration++;
+        runner.invalidate();
+        isValidating.value = false;
+        if (!resetting && !form?.resetting.value && (validationMode.value.trigger === 'input' || (validationMode.value.trigger === 'invalid-input' && invalid))) void validateResult();
     }, { flush: 'sync' });
     let previousRules = [...props.rules ?? []];
     let previousRulesArray = props.rules;
@@ -166,17 +213,24 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
         previousDisabled = disabled.value;
         previousReadonly = readonly.value;
         if (!changed) return;
-        resetValidation();
+        void resetValidation();
     }, { deep: true, flush: 'sync' });
-    onMounted(() => { void nextTick(() => { initialValue = model.value; if (validationMode.value.eager) void runner.validate(); }); });
-    onBeforeUnmount(() => { disposed = true; runner.invalidate(); form?.unregister(control); field?.unregister(control); });
-    function blur() { if (['blur', 'input', 'invalid-input'].includes(validationMode.value.trigger) && !form?.resetting.value) void runner.validate(); }
+    onMounted(() => { void nextTick(() => { initialValue = model.value; if (!validationMode.value.lazy) void validateResult(!validationMode.value.eager); }); });
+    onBeforeUnmount(() => { disposed = true; validationGeneration++; runner.invalidate(); form?.unregister(control); field?.unregister(control); });
+    function focus() { localFocused.value = true; instance?.emit('update:focused', true); }
+    function blur() {
+        localFocused.value = false;
+        instance?.emit('update:focused', false);
+        if (['blur', 'input', 'invalid-input'].includes(validationMode.value.trigger) && !form?.resetting.value) void validateResult();
+    }
+    watch(() => props.focused, (value, previous) => { if (value === false && previous === true) blur(); });
+    const validationClasses = computed(() => ({ 'is-invalid': state.value === false, 'is-dirty': isDirty.value, 'is-disabled': disabled.value, 'is-readonly': readonly.value }));
     function guard(event: Event) { if (readonly.value || disabled.value) event.preventDefault(); }
     function guardKeys(event: KeyboardEvent) {
         if (readonly.value && event.key !== 'Tab' && event.key !== 'Escape' && !event.ctrlKey && !event.metaKey) event.preventDefault();
     }
     const editable = computed({ get: () => model.value, set: (value: T) => { if (!readonly.value && !disabled.value) model.value = value; } });
-    return { ...control, framed, disabled, readonly, dense, ghost, rounded, density, variant, color, classes, styles, labelPosition, labelWidth, editable, blur, guard, guardKeys };
+    return { ...control, props, validate, displayErrors, isDirty, isPristine, isValidating, focused, validationClasses, framed, disabled, readonly, dense, ghost, rounded, density, variant, color, classes, styles, labelPosition, labelWidth, editable, focus, blur, guard, guardKeys };
 }
 
 export function createControlRegistry() { return shallowReactive(new Set<RegisteredControl>()); }

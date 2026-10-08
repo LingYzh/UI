@@ -9,9 +9,10 @@ import { mergeControlAttrs, useFormControl, type FormControlProps } from './form
 import { isCascaderPathValid, resolveCascaderPath, type CascaderItem, type CascaderValue } from './cascader';
 import { uiText } from './locale';
 import { vPointerBlur } from './pointer-focus';
+import { useDefaults } from './defaults';
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<ControlSizing & FormControlProps & {
+const rawProps = withDefaults(defineProps<ControlSizing & FormControlProps & {
     items: readonly CascaderItem[];
     placeholder?: string;
     clearable?: boolean;
@@ -20,7 +21,9 @@ const props = withDefaults(defineProps<ControlSizing & FormControlProps & {
     separator?: string;
     invalid?: boolean;
 } & { ripple?: RippleOptions }>(), { ripple: true, showAllLevels: true, separator: ' / ', dense: undefined, ghost: undefined, rounded: undefined });
-const model = defineModel<CascaderValue[]>({ default: () => [] });
+const props = useDefaults(rawProps, 'UCascader');
+defineEmits<{ 'update:focused': [value: boolean] }>();
+const model = defineModel<CascaderValue[] | null>({ default: () => [] });
 const attrs = useAttrs();
 const element = ref<HTMLButtonElement>();
 const surface = ref<HTMLElement>();
@@ -37,14 +40,15 @@ const rules = computed(() => {
     const items = props.items;
     const changeOnSelect = props.changeOnSelect;
     return [
-        (value: CascaderValue[]) => !required.value || value.length > 0 || uiText('cascader.required'),
-        (value: CascaderValue[]) => isCascaderPathValid(items, value, changeOnSelect) || uiText('cascader.invalid'),
+        (value: CascaderValue[] | null) => !required.value || (value?.length ?? 0) > 0 || uiText('cascader.required'),
+        (value: CascaderValue[] | null) => isCascaderPathValid(items, value ?? [], changeOnSelect) || uiText('cascader.invalid'),
         ...props.rules ?? []
     ];
 });
 const control = useFormControl(reactive({ ...toRefs(props), rules }), model, element, attrs);
-const selected = computed(() => resolveCascaderPath(props.items, model.value));
-const display = computed(() => selected.value.length === model.value.length
+const modelPath = computed(() => Array.isArray(model.value) ? model.value : []);
+const selected = computed(() => resolveCascaderPath(props.items, modelPath.value));
+const display = computed(() => selected.value.length === modelPath.value.length
     ? (props.showAllLevels ? selected.value : selected.value.slice(-1)).map(item => item.label).join(props.separator) : '');
 const columns = computed(() => {
     const levels: (readonly CascaderItem[])[] = [props.items];
@@ -143,17 +147,17 @@ defineExpose({ element, focus: () => element.value?.focus(), close, validate: co
 </script>
 
 <template>
-    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.errors.value.join('\n')" :required="required" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
-        <div class="ui-cascader" :class="[$attrs.class, { 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': inline }]" :style="[control.framed.value ? undefined : controlSizeStyles(props), $attrs.style as CSSProperties]" @focusout="fieldBlur">
+    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.displayErrors.value.join('\n')" :required="required" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
+        <div class="ui-cascader" :class="[$attrs.class, { 'is-dense': control.dense.value, 'is-ghost': control.ghost.value, 'is-square': !control.rounded.value, 'is-inline': props.inline }]" :style="[control.framed.value ? undefined : controlSizeStyles(props), $attrs.style as CSSProperties]" @focusin="!($event.currentTarget as HTMLElement).contains($event.relatedTarget as Node | null) && control.focus()" @focusout="fieldBlur">
             <button v-focus-modality v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" ref="element" v-bind="mergeControlAttrs(triggerAttrs(), controlAttrs, control.id())" type="button" class="ui-cascader-trigger" role="combobox"
                 :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-required="required || undefined" :aria-invalid="invalid || undefined"
                 aria-haspopup="dialog" :aria-expanded="open" :aria-controls="popupId" :popovertarget="popupId" :style="{ anchorName: anchor }"
                 @pointerdown="keyboardInteraction = false" @keydown="triggerKey" @click="control.guard">
-                <span class="ui-cascader-value" :class="{ 'is-placeholder': !display }" :title="display || undefined">{{ display || placeholder || uiText('cascader.placeholder') }}</span>
+                <span class="ui-cascader-value" :class="{ 'is-placeholder': !display }" :title="display || undefined">{{ display || props.placeholder || uiText('cascader.placeholder') }}</span>
                 <UiIcon name="mdi-chevron-down" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': open }" />
             </button>
-            <button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-if="clearable && model.length && !control.readonly.value" v-pointer-blur type="button" class="ui-cascader-clear" :disabled="control.disabled.value" :aria-label="uiText('cascader.clear')" @click="clear"><UiIcon name="mdi-close" :size="14" /></button>
-            <div :id="popupId" ref="surface" popover="auto" class="ui-menu-surface ui-cascader-panel" data-placement="bottom-start" role="dialog" :aria-label="`${label || uiText('cascader.placeholder')} ${uiText('common.options')}`" tabindex="-1" :style="{ positionAnchor: anchor }"
+            <button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-if="props.clearable && modelPath.length && !control.readonly.value" v-pointer-blur type="button" class="ui-cascader-clear" :disabled="control.disabled.value" :aria-label="uiText('cascader.clear')" @click="clear"><UiIcon name="mdi-close" :size="14" /></button>
+            <div :id="popupId" ref="surface" popover="auto" class="ui-menu-surface ui-cascader-panel" data-placement="bottom-start" role="dialog" :aria-label="`${props.label || uiText('cascader.placeholder')} ${uiText('common.options')}`" tabindex="-1" :style="{ positionAnchor: anchor }"
                 @toggle="toggled" @pointerdown.capture="keyboardInteraction = false" @keydown="popupKey">
                 <div class="ui-cascader-columns">
                     <div v-for="(items, level) in columns" :key="level" class="ui-cascader-column" role="listbox" :aria-label="uiText('cascader.level', { level: level + 1 })" :data-level="level">

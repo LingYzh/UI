@@ -1,0 +1,132 @@
+{
+    "method": "Vite source fixture + public src/ui/index.ts + real Hover/DefaultsProvider demos + Chromium browser",
+    "evidence": "D:\\UI\\artifacts\\component-audit-root\\hover-defaults-protocols",
+    "sourceSha256": {
+        "src/ui/defaults.ts": "9740334c5d77429304a627733a31ee39465794ce1fb807e3ce5012d61b723dcf",
+        "src/ui/UHover.vue": "342f6ea88a57e65a0832d8bcd4eee63f9ac87b279f3b0b849c1b852ef1e1e4ad",
+        "src/ui/UDefaultsProvider.vue": "2145cf83468a8af296235b38ec3d968a69ee029ad5d06f47660a97eceb00ede9",
+        "src/ui/docs/component-examples/hover.vue": "d5c296feba0e53fb4de7ccf9fc5fcb5440c511bc073279c84e5d1bcc9a2bbaf5",
+        "src/ui/docs/component-examples/defaults-provider.vue": "59780cf678c7cb512a7459daae8467206fde379538a67895eec945661e60161f"
+    },
+    "backend": "chrome",
+    "registry": {
+        "publicHover": true,
+        "publicDefaultsProvider": true,
+        "registeredHover": true,
+        "registeredDefaultsProvider": true
+    },
+    "hover": {
+        "nullableDefault": "null",
+        "focusEnterAndLeave": true,
+        "controlledModelUpdates": [
+            false,
+            true,
+            false
+        ],
+        "openAndCloseDelayStringValues": true,
+        "newEnterAndLeaveCancelOlderTimers": true,
+        "disabledEntryAndLeaveTrackUntilReenabled": true,
+        "onEnterAndOnLeaveExtensions": true,
+        "unmountClearsPendingTimer": true
+    },
+    "defaults": {
+        "inheritedSize": "44px",
+        "explicitSize": "52px",
+        "undefinedInheritedSize": "44px",
+        "namedRootSize": "52px",
+        "realDemo": {
+            "initialInnerSize": "46px",
+            "resetTrueOuterSize": "30px",
+            "rootTrueFixtureSize": "36px",
+            "rootTrueRenderedHeight": "36px",
+            "disabledTrueParentSize": "38px",
+            "controlsRestoredBeforeScreenshots": true
+        }
+    },
+    "screenshots": [
+        {
+            "file": "hover-defaults-hover-wide-light.png",
+            "component": "hover",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "zoom": "100%"
+        },
+        {
+            "file": "hover-defaults-defaults-wide-light.png",
+            "component": "defaults",
+            "theme": "light",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "zoom": "100%"
+        },
+        {
+            "file": "hover-defaults-hover-wide-dark.png",
+            "component": "hover",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "zoom": "100%"
+        },
+        {
+            "file": "hover-defaults-defaults-wide-dark.png",
+            "component": "defaults",
+            "theme": "dark",
+            "viewport": {
+                "width": 1280,
+                "height": 1000
+            },
+            "zoom": "100%"
+        },
+        {
+            "file": "hover-defaults-hover-narrow-light-125.png",
+            "component": "hover",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "zoom": "125%"
+        },
+        {
+            "file": "hover-defaults-defaults-narrow-light-125.png",
+            "component": "defaults",
+            "theme": "light",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "zoom": "125%"
+        },
+        {
+            "file": "hover-defaults-hover-narrow-dark-125.png",
+            "component": "hover",
+            "theme": "dark",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "zoom": "125%"
+        },
+        {
+            "file": "hover-defaults-defaults-narrow-dark-125.png",
+            "component": "defaults",
+            "theme": "dark",
+            "viewport": {
+                "width": 390,
+                "height": 1000
+            },
+            "zoom": "125%"
+        }
+    ],
+    "errors": [],
+    "warnings": [],
+    "httpErrors": [],
+    "requestFailures": []
+}

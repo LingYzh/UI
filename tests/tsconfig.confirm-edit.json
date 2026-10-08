@@ -1,0 +1,10 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UConfirmEdit.vue",
+        "../src/ui/confirm-edit.ts",
+        "../src/ui/docs/component-examples/confirm-edit.vue"
+    ]
+}

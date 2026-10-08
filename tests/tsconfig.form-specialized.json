@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UNumberInput.vue",
+        "../src/ui/USlider.vue",
+        "../src/ui/URangeSlider.vue",
+        "../src/ui/URating.vue",
+        "../src/ui/UOtpInput.vue",
+        "../src/ui/UFileInput.vue",
+        "../src/ui/UFileUpload.vue",
+        "../src/ui/file-drop.ts",
+        "../src/ui/specialized-inputs.ts"
+    ]
+}

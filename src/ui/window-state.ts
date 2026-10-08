@@ -1,7 +1,7 @@
 import { ref, type InjectionKey } from 'vue';
 import type { GroupContext } from './group-state';
 
-export interface WindowContext extends GroupContext { direction: ReturnType<typeof ref<'forward' | 'backward'>>; visited: Set<string | number> }
+export interface WindowContext extends GroupContext { direction: ReturnType<typeof ref<'forward' | 'backward'>>; visited: Set<string | number>; eager?: Readonly<ReturnType<typeof ref<boolean>>>; orientation?: Readonly<ReturnType<typeof ref<'horizontal' | 'vertical'>>> }
 export const windowContextKey: InjectionKey<WindowContext> = Symbol('u-window-context');
 
 export function attachWindowMotion(context: GroupContext, onChange: (direction: 'forward' | 'backward') => void) {

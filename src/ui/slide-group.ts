@@ -1,5 +1,6 @@
 import type { ComputedRef, InjectionKey } from 'vue';
 import type { ValueComparator } from './selection';
+import type { DisplayBreakpoint } from './display';
 
 export interface SlideGroupProps {
     disabled?: boolean;
@@ -15,6 +16,11 @@ export interface SlideGroupProps {
     scrollSnap?: 'start' | 'center' | 'end';
     showArrows?: boolean | 'always' | 'desktop' | 'mobile' | 'never';
     contentClass?: string;
+    tag?: string;
+    prevIcon?: string;
+    nextIcon?: string;
+    mobile?: boolean | null;
+    mobileBreakpoint?: number | DisplayBreakpoint;
 }
 export interface SlideItem {
     id: string;

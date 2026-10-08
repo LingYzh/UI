@@ -88,11 +88,12 @@ defineExpose({ clear });
 <template>
     <Teleport :to="props.attach || 'body'" :disabled="props.contained || props.attach === false">
         <div class="u-notice-stack" :class="{ 'is-contained': props.contained, 'is-collapsed': props.collapsed && !hovered }" :data-position="location" :style="[theme.styles.value, { gap: spacing }]" :data-ui-theme="theme.name.value" :data-theme="theme.current.value.dark ? 'dark' : 'light'" @pointerenter="hovered = true" @pointerleave="hovered = false">
-            <USnackbar v-for="entry in entries" :key="entry.id" :ref="instance => track(entry.id, instance)" v-bind="{ ...props, ...attrs, ...entry.props }" :model-value="entry.active" :contained="true" :attach="false" :queue-index="entries.indexOf(entry)" @update:model-value="dismiss(entry, 'auto')" @after-leave="afterLeave(entry)">
+            <template v-for="entry in entries" :key="entry.id"><slot name="item" :item="entry.source" :props="{ ...props, ...attrs, ...entry.props, modelValue: entry.active, contained: true, attach: false, queueIndex: entries.indexOf(entry), ref: (instance: unknown) => track(entry.id, instance), 'onUpdate:modelValue': () => dismiss(entry, 'auto'), onAfterLeave: () => afterLeave(entry) }">
+            <USnackbar :ref="instance => track(entry.id, instance)" v-bind="{ ...props, ...attrs, ...entry.props }" :model-value="entry.active" :contained="true" :attach="false" :queue-index="entries.indexOf(entry)" @update:model-value="dismiss(entry, 'auto')" @after-leave="afterLeave(entry)">
                 <template v-if="$slots.header" #header><slot name="header" :item="entry.source" /></template>
                 <template v-if="$slots.text" #text><slot name="text" :item="entry.source" /></template>
                 <template v-if="(entry.props.closable ?? props.closable) || $slots.actions" #actions><slot name="actions" :item="entry.source" :props="{ onClick: () => dismiss(entry, 'dismissed') }"><UiButton variant="text" size="sm" @click="dismiss(entry, 'dismissed')">{{ entry.props.closeText ?? props.closeText }}</UiButton></slot></template>
-            </USnackbar>
+            </USnackbar></slot></template>
         </div>
     </Teleport>
 </template>

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { UBtnToggle, UButton, USwitch } from '../../index';
 const selected = ref('a');
 const implicit = ref(0);
+const group = ref();
 const multiple = ref(false);
 const disabled = ref(false);
 const mandatory = ref(true);
@@ -21,6 +22,7 @@ function changeMultiple(value) {
             <u-switch v-model="readonly" label="只读" />
         </div>
         <u-btn-toggle
+            ref="group"
             v-model="selected"
             :multiple="multiple"
             :mandatory="mandatory"
@@ -34,11 +36,17 @@ function changeMultiple(value) {
             <u-button value="c" color="primary">设置</u-button>
         </u-btn-toggle>
         <output>当前：{{ JSON.stringify(selected) }}</output>
+        <div class="demo-row">
+            <u-button variant="text" @click="group.prev()">前一项</u-button>
+            <u-button variant="text" @click="group.next()">后一项</u-button>
+        </div>
+        <output>公开 ref 已选值：{{ JSON.stringify(group?.selectedValues) }}</output>
         <p>省略 value 时使用组内索引：</p>
-        <u-btn-toggle v-model="implicit" aria-label="索引选择">
+        <u-btn-toggle v-model="implicit" aria-label="索引选择" v-slot="{ selectedValues }">
             <u-button>索引一</u-button>
             <u-button>索引二</u-button>
             <u-button>索引三</u-button>
+            <output>作用域索引：{{ selectedValues.join('、') }}</output>
         </u-btn-toggle>
         <output>索引：{{ implicit }}</output>
     </div>

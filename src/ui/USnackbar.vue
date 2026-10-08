@@ -6,11 +6,12 @@ import { buttonColorStyles } from './button-colors';
 import { useDefaults } from './defaults';
 import { useUiTheme } from './theme';
 import { snackbarLocation, type SnackbarProps } from './snackbar-props';
+import { vClickOutside } from './directives';
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<SnackbarProps>(), { timeout: 5000, location: 'bottom center', variant: 'elevated', closeText: '关闭', rounded: true });
+const rawProps = withDefaults(defineProps<SnackbarProps>(), { timeout: 5000, location: 'bottom center', variant: 'elevated', closeText: '关闭', rounded: true, persistent: false });
 const props = useDefaults(rawProps, 'USnackbar');
 const model = defineModel<boolean>({ default: false });
-const emit = defineEmits<{ 'after-leave': []; 'after-enter': []; timeout: [] }>();
+const emit = defineEmits<{ 'after-leave': []; 'after-enter': []; timeout: []; 'click:outside': [event: Event] }>();
 const attrs = useAttrs();
 const theme = useUiTheme();
 const surface = ref<HTMLElement>();
@@ -26,6 +27,8 @@ const location = computed(() => snackbarLocation(props.location));
 const colors = computed(() => buttonColorStyles(props.color));
 function stop() { clearTimeout(timer); clearInterval(progress); timer = undefined; progress = undefined; }
 function close() { model.value = false; }
+function outside(event: Event) { emit('click:outside', event); if (!props.persistent && !event.defaultPrevented) close(); }
+function escape(event: KeyboardEvent) { if (props.persistent || event.defaultPrevented) return; event.stopPropagation(); close(); }
 function updateProgress() { ratio.value = duration.value > 0 ? Math.max(0, (remaining.value - (Date.now() - started)) / duration.value) : 1; }
 function schedule() {
     stop();
@@ -57,7 +60,7 @@ defineExpose({ close, pause, resume, surface });
     <Teleport :to="props.attach || 'body'" :disabled="props.contained || props.attach === false">
         <Transition name="ui-snackbar" @after-leave="emit('after-leave')" @after-enter="emit('after-enter')">
             <div v-if="model" class="u-notice-placement" :class="{ 'is-contained': props.contained }" :data-position="location" :style="[theme.styles.value, { '--u-queue-index': props.queueIndex }]" :data-ui-theme="theme.name.value" :data-theme="theme.current.value.dark ? 'dark' : 'light'">
-                <div ref="surface" v-bind="attrs" class="u-notice" :class="[{ 'is-vertical': props.vertical, 'is-square': props.rounded === false }, attrs.class]" :style="[colors, attrs.style as any]" :data-variant="props.variant" role="status" aria-live="polite" aria-atomic="true" @pointerenter="pause('pointer')" @pointerleave="resume('pointer')" @focusin="pause('focus')" @focusout="focusout" @keydown.esc.stop="close">
+                <div ref="surface" v-click-outside="outside" v-bind="attrs" class="u-notice" :class="[{ 'is-vertical': props.vertical, 'is-square': props.rounded === false }, attrs.class]" :style="[colors, attrs.style as any]" :data-variant="props.variant" role="status" aria-live="polite" aria-atomic="true" @pointerenter="pause('pointer')" @pointerleave="resume('pointer')" @focusin="pause('focus')" @focusout="focusout" @keydown.esc="escape">
                     <UiSpinner v-if="props.loading" :size="18" label="正在处理" />
                     <slot name="prepend" />
                     <div class="u-notice-content">

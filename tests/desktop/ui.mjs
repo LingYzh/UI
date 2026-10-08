@@ -348,13 +348,13 @@ try {
     const pagination = paginationDemo.getByRole('navigation', { name: '示例分页', exact: true });
     assert.equal(await pagination.getByRole('button', { name: '上一页', exact: true }).isDisabled(), true);
     await paginationDemo.getByRole('button', { name: '跳到中段', exact: true }).click();
-    assert.equal(await pagination.getByRole('button', { name: '第 12 页', exact: true }).getAttribute('aria-current'), 'page');
+    assert.equal(await pagination.getByRole('button', { name: '第 12 页，当前页', exact: true }).getAttribute('aria-current'), 'page');
     assert.equal(await pagination.locator('.ui-pagination-ellipsis').count(), 2);
     await pagination.getByRole('button', { name: '下一页', exact: true }).focus();
     await page.keyboard.press('Enter');
-    assert.equal(await pagination.getByRole('button', { name: '第 13 页', exact: true }).getAttribute('aria-current'), 'page');
+    assert.equal(await pagination.getByRole('button', { name: '第 13 页，当前页', exact: true }).getAttribute('aria-current'), 'page');
     await paginationDemo.getByRole('button', { name: '缩减为 2 页', exact: true }).click();
-    assert.equal(await pagination.getByRole('button', { name: '第 2 页', exact: true }).getAttribute('aria-current'), 'page');
+    assert.equal(await pagination.getByRole('button', { name: '第 2 页，当前页', exact: true }).getAttribute('aria-current'), 'page');
     assert.equal(await pagination.getByRole('button', { name: '下一页', exact: true }).isDisabled(), true);
     await capture(app, '19-pagination.png');
     passed.push('pagination handles ellipses, keyboard activation, boundaries and shrinking page counts');

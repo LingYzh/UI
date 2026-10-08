@@ -1,0 +1,5 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": ["../src/ui/markdown-plugins.d.ts", "../src/ui/UList.vue", "../src/ui/UListGroup.vue", "../src/ui/UListItem.vue", "../src/ui/UBreadcrumbs.vue", "../src/ui/list-completion.ts"]
+}

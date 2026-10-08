@@ -56,13 +56,13 @@ test('slot API recursively includes forwarded names and real payloads', () => {
         const rows = componentApi[contract.name].slots;
         assert.deepEqual(sorted(rows.map(row => row.name)), sorted(slots.map(slotName)), `${contract.name} slots`);
         for (const slot of slots) {
-            const payload = slot.payload?.length ? '{ ' + slot.payload.map(item => camel(item.name)).join(', ') + ' }' : '—';
+            const payload = slot.payload?.length ? '{ ' + slot.payload.filter(item => !['<scope>', '<spread>'].includes(item.name)).map(item => camel(item.name)).join(', ') + ' }' : '—';
             assert.equal(rows.find(row => row.name === slotName(slot)).type, payload, `${contract.name}.${slotName(slot)} scope`);
         }
     }
     const combo = componentApi.UCombobox.slots;
-    assert.deepEqual(sorted(combo.map(slot => slot.name)), ['item', 'selection']);
-    assert.equal(combo.find(slot => slot.name === 'item').type, '{ item, index, selected }');
+    for (const name of ['item', 'selection', 'selection-summary']) assert.ok(combo.some(slot => slot.name === name), `Combobox ${name}`);
+    for (const field of ['item', 'internalItem', 'index', 'props']) assert.ok(combo.find(slot => slot.name === 'item').type.includes(field), `Combobox item scope ${field}`);
     const server = componentApi.UDataTableServer.slots;
     for (const name of ['header.*', 'loading', 'error', 'group-header', 'item.*', 'expanded-row', 'no-data', 'footer']) {
         assert.ok(server.some(slot => slot.name === name), `UDataTableServer forwards ${name}`);

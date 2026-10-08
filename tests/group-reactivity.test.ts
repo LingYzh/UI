@@ -83,6 +83,66 @@ test('group options continue to accept plain boolean values', () => {
     assert.deepEqual(selected.value, ['a']);
 });
 
+test('group item disabled state is read dynamically for mandatory selection and navigation', () => {
+    const selected = ref<string | number | Array<string | number> | null>(null);
+    const disabled = ref(true);
+    const group = createGroup(selected, { mandatory: true });
+    group.register('disabled-first', () => disabled.value);
+    group.register('second');
+    group.register('third');
+
+    assert.equal(selected.value, 'second', 'mandatory initialization skips a disabled first item');
+    group.next();
+    assert.equal(selected.value, 'third');
+    group.next();
+    assert.equal(selected.value, 'second', 'navigation wraps and skips the disabled item');
+    group.prev();
+    assert.equal(selected.value, 'third', 'backward navigation also skips the disabled item');
+
+    disabled.value = false;
+    group.prev();
+    assert.equal(selected.value, 'second');
+    group.prev();
+    assert.equal(selected.value, 'disabled-first', 'the live disabled getter makes the item navigable');
+    disabled.value = true;
+    assert.equal(selected.value, 'disabled-first', 'changing disabled does not rewrite an already selected controlled value');
+    group.next();
+    assert.equal(selected.value, 'second', 'navigation away from a newly disabled selection finds an enabled item');
+});
+
+test('group item disabled state leaves empty selection when no mandatory candidate is enabled', () => {
+    const selected = ref<string | number | Array<string | number> | null>(null);
+    const firstDisabled = ref(true);
+    const secondDisabled = ref(true);
+    const group = createGroup(selected, { mandatory: true });
+    group.register('first', () => firstDisabled.value);
+    group.register('second', () => secondDisabled.value);
+
+    assert.equal(selected.value, null);
+    group.next();
+    group.prev();
+    assert.equal(selected.value, null, 'navigation does not fabricate selection when all registered items are disabled');
+
+    secondDisabled.value = false;
+    group.next();
+    assert.equal(selected.value, 'second', 'the next action observes a later enabled state');
+    group.register('third');
+    firstDisabled.value = false;
+    assert.equal(selected.value, 'second', 'a later enabled item does not rewrite an existing selection');
+});
+
+test('mandatory removal fallback selects the first enabled item', () => {
+    const selected = ref<string | number | Array<string | number> | null>('active');
+    const disabled = ref(true);
+    const group = createGroup(selected, { mandatory: true });
+    group.register('disabled', () => disabled.value);
+    const unregisterActive = group.register('active');
+    group.register('enabled-later');
+
+    unregisterActive();
+    assert.equal(selected.value, 'enabled-later', 'unregistration does not choose a disabled fallback');
+});
+
 test('controlled mandatory initialization emits only the first synchronous registration', async () => {
     const model = delayedModel();
     const group = createGroup(model.selected, { mandatory: true });

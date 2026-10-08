@@ -25,6 +25,6 @@ test('data completion components retain runtime props after defaults wrapping', 
         assert.match(compiled, new RegExp(`\\b${key}:\\s*\\{`), `${name} must declare runtime prop ${key}`);
         assert.match(compiled, /const rawProps = __props/, `${name} must bind the compiled props before defaults`);
         const defaultsName = name === 'UiDataTableServer' ? 'UDataTableServer' : name;
-        assert.match(compiled, new RegExp(`useDefaults\\(rawProps, '${defaultsName}'\\)`), `${name} must read scoped defaults`);
+        assert.match(compiled, new RegExp(`useDefaults\\(rawProps, ['"]${defaultsName}['"]\\)`), `${name} must read scoped defaults`);
     }
 });

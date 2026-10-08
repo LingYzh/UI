@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/locale.ts",
+        "../src/ui/locale-context.ts",
+        "../src/ui/hotkey.ts",
+        "../src/ui/UHotkey.vue",
+        "../src/ui/UiPagination.vue"
+    ]
+}

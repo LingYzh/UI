@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { UList, UListItem } from '../../index';
-const selected = ref('overview');
+const selected = ref(['overview']);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="UList">
-        <u-list v-model="selected">
+        <u-list v-model="selected" selectable>
             <u-list-item value="overview" title="概览" subtitle="项目运行状况" />
             <u-list-item value="settings" title="设置" />
             <u-list-item value="disabled" title="归档" disabled />

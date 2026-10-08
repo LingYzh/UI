@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "types": ["node", "vite/client"]
+    },
+    "include": [
+        "../src/ui/UWindow.vue",
+        "../src/ui/UWindowItem.vue",
+        "../src/ui/UCarousel.vue",
+        "../src/ui/UCarouselItem.vue",
+        "../src/ui/group-state.ts",
+        "../src/ui/window-state.ts",
+        "../src/ui/motion.ts",
+        "../src/ui/UTransition.vue"
+    ],
+    "exclude": []
+}

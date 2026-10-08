@@ -39,7 +39,9 @@
 .ui-card--elevated { border-color: transparent; box-shadow: var(--shadow); }
 .ui-card--tonal { border-color: transparent; background: var(--soft); }
 .ui-card--flat { border-color: transparent; box-shadow: none; }
-.ui-card-header { padding: var(--card-padding); }
+.ui-card-header { display: flex; align-items: center; gap: 12px; padding: var(--card-padding); }
+.ui-card-heading { flex: 1; min-width: 0; }
+.ui-card-prepend, .ui-card-append { display: flex; align-items: center; flex: none; }
 .ui-card-title { margin: 0; font: 600 16px/1.5 var(--font); }
 .ui-card-subtitle { margin: 6px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .ui-card-content { min-width: 0; padding: var(--card-padding); }

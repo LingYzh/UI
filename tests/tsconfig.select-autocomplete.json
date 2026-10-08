@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/UAutocomplete.vue",
+        "../src/ui/UCombobox.vue",
+        "../src/ui/UiSelect.vue",
+        "../src/ui/autocomplete-props.ts",
+        "../src/ui/selection-filter.ts",
+        "selection-filter.test.ts"
+    ]
+}

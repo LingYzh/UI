@@ -1,0 +1,26 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/UAutocomplete.vue",
+        "../src/ui/UCombobox.vue",
+        "../src/ui/UiSelect.vue",
+        "../src/ui/UiSelectNative.vue",
+        "../src/ui/UDateInput.vue",
+        "../src/ui/UDatePicker.vue",
+        "../src/ui/UiMenu.vue",
+        "../src/ui/UVirtualScroll.vue",
+        "../src/ui/autocomplete-props.ts",
+        "../src/ui/selection.ts",
+        "../src/ui/selection-filter.ts",
+        "../src/ui/use-virtual-scroll.ts",
+        "../src/ui/date-model.ts",
+        "../src/ui/date-input-format.ts",
+        "../src/ui/overlay-position.ts",
+        "../src/ui/overlay-back.ts",
+        "../src/ui/overlay-lifecycle.ts",
+        "../src/ui/dimensions.ts"
+    ]
+}

@@ -23,7 +23,7 @@ const style = computed(() => (props.color ? { '--badge-color': props.color } : u
         <span v-if="$slots.icon" class="ui-badge-icon"><slot name="icon" /></span>
         <span :id="labelId" class="ui-badge-label"><slot /></span>
         <!-- 关闭按钮名称固定为“移除”，通过 aria-describedby 关联标签文字，读屏可区分列表中的多个标签。 -->
-        <button v-ripple="props.ripple" v-pointer-blur
+        <slot v-if="closable" name="close" :props="{ onClick: (event: MouseEvent) => emit('close', event), 'aria-label': closeLabel ?? uiText('badge.remove'), 'aria-describedby': labelId }"><button v-ripple="props.ripple" v-pointer-blur
             v-if="closable"
             type="button"
             class="ui-badge-close"
@@ -33,5 +33,6 @@ const style = computed(() => (props.color ? { '--badge-color': props.color } : u
         >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
         </button>
+        </slot>
     </span>
 </template>

@@ -80,7 +80,7 @@ const scrollItems = Array.from({ length: 10 }, (_, index) => ({
                 <template v-if="example === 'tabs-window'" #window>
                     <u-tabs-window-item value="overview" :eager="eager">
                         <MountProbe name="overview" />
-                        <u-text-field v-model="draft" label="面板草稿" hint="切换后仍保留内容。" />
+                        <u-text-field v-model="draft" label="面板草稿" hint="默认离场后卸载；开启保留内容后持续挂载。" />
                     </u-tabs-window-item>
                     <u-tabs-window-item value="unavailable">尚未启用。</u-tabs-window-item>
                     <u-tabs-window-item value="details" :eager="eager">
@@ -95,7 +95,7 @@ const scrollItems = Array.from({ length: 10 }, (_, index) => ({
                     <u-text-field
                         v-model="draft"
                         label="面板草稿"
-                        hint="首次访问才挂载，切换后保留内容。"
+                        hint="首次访问才挂载；eager 开启时切换后保留内容。"
                     />
                 </u-tabs-window-item>
                 <u-tabs-window-item value="unavailable">尚未启用。</u-tabs-window-item>
@@ -123,7 +123,7 @@ const scrollItems = Array.from({ length: 10 }, (_, index) => ({
         <template v-else-if="example === 'tabs-values'">
             <div class="tabs-demo-toolbar">
                 <u-checkbox v-model="optional">允许空选择</u-checkbox>
-                <u-button @click="selected = null">清空模型</u-button>
+                <u-button @click="selected = undefined">清空模型</u-button>
             </div>
             <u-tabs
                 v-model="selected"

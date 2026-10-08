@@ -18,7 +18,10 @@ function next() {
             v-model="windowValue"
             :disabled="disabled"
             continuous
+            show-arrows="hover"
             label="内容窗口"
+            tabindex="0"
+            role="region"
         >
             <u-window-item value="a">
                 <div class="completion-window-card">概览面板</div>
@@ -27,6 +30,7 @@ function next() {
                 <div class="completion-window-card">详情面板</div>
             </u-window-item>
         </u-window>
+        <output>鼠标悬停或键盘聚焦时显示箭头；箭头遵守禁用状态。</output>
         <output>当前面板：{{ windowValue }}；禁用后下一项、方向键与触摸均保持当前项。</output>
     </div>
 </template>

@@ -9,8 +9,10 @@ import { UApp, UAppBar, UAppBarTitle, UMain } from '../../index';
                 <u-app-bar :height="48">
                     <u-app-bar-title>应用顶栏</u-app-bar-title>
                 </u-app-bar>
-                <u-main>
-                    <p class="pa-4">主要内容自动避开已注册的栏。</p>
+                <u-main tag="section" scrollable :height="260" :min-height="0">
+                    <p v-for="index in 12" :key="index" class="pa-4">
+                        第 {{ index }} 行：主要内容自动避开已注册的栏，正文独立滚动。
+                    </p>
                 </u-main>
             </u-app>
         </div>

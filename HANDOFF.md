@@ -1,5 +1,45 @@
 # UI 项目交接
 
+## 2026-10-09：按用户要求完成当前批次后提交推送并停止
+
+用户最新要求为“手里的这个做完就停下来，更新 handoff 后提交推送”。本次收尾限于已开始的 Tabs 复杂选择与键盘入口、文件插槽/文案、布局公开查询与基础属性，以及嵌套菜单分支/缓存生命周期；不继续启动 Stepper、列表/树或弹层容器新阶段。完整门禁、最终结果和已知限制见 VALIDATION 最新入口，下一会话待办见 [NEXT-SESSION-2026-10-09.md](docs/component-audit-2026-10-08/NEXT-SESSION-2026-10-09.md)。全库深度对齐尚未完成。
+
+Tabs 使用 null 有效值、undefined 空选择；专项 14 项、TabsWindow 10 项和真实 demo 3 组交互及 3 个视口通过。多选各选中项有独立标记，hideSlider 生效，链接与按钮外观一致，键盘只保留一个可用入口。文件新专项 21 项通过，增加作用域语言、counterString/counterSizeString 的索引/命名模板及 placeholder；保留完整名称和 Upload 大小/移除按钮默认。
+
+菜单分支外部关闭、三层懒卸载级联、父内点击、persistent、Dialog 注入边界及 KeepAlive 停用清理专项 11 项通过；root 完成四种动画结束后的真实 demo 截图复核。应用布局公开基础 API 专项 6 项通过，底部导航修正边框高度预留；完整布局几何与视觉验收仍待后续。完整类型检查、289/289 单测、docs/lib 构建及 Electron UI 21/21 组（171 路由）通过；UAH 的长轮超时和缺失 Electron 二进制已如实记录到其 VALIDATION。
+
+Tooltip 已决定保留上方、8px、滚动关闭，显式属性可切换。应用布局的跨边缘 order 默认仍未答复，实际组件保留旧几何；命名/查询、tag/fullHeight/尺寸和 helper 累计/overlaps 已有实现，公开 overlaps 仍未加入。独立组件视觉复核见 [VISUAL-CONTROLS-2026-10-09.md](docs/component-audit-2026-10-08/VISUAL-CONTROLS-2026-10-09.md)，不得将其中有限范围当全库验收。
+
+本次仅提交推送当前 `codex/handoff-component-alignment-20261008`；不打版本标签、不发布 npm、不升级 UAH。UAH 继续消费正式 `@lingyzh/ui@0.3.2`。提交 SHA 以实际 `git log -1` 为准；本节取代下文“仍继续执行”的历史会话状态。
+
+## 2026-10-09：全库深度对齐仍在进行（最新入口）
+
+最新续作：Snackbar 已明确默认允许 Escape，`persistent=true` 阻止。日期周起点及周号统一按语言地区，`firstDayOfYear` 是 0–6 的星期阈值；Calendar 保留无事件波纹及 3px 全天事件间距，显式 `eventRipple/eventMarginBottom` 调整。文件控件已获批准：`accept` 仅系统筛选，`filterByType` 实际过滤；`rejected` 为 File 数组，新 `rejected-details` 保留原因；Upload 单文件输出 File/null，多文件输出数组。
+
+Switch 滑块/轨道/加载和表单插槽专项 25 组通过；TabsWindow 共享 Window 懒挂载与动态显式模型专项 10 组通过；输入共享 Menu 专项 16 组通过，包含真实点击、Escape 后保持焦点再点击重开及四种顶层弹出物截图。Calendar 周号/间距/波纹专项 6 组通过。NumberInput 新内容容器的原生输入透明样式已修正，字段专项 7 项及原有数值专项 5 组通过。共享 Menu / Overlay / 后退关闭又复跑 16 / 12 / 8 项通过。相关最新命令及边界见 VALIDATION 顶部、RESUME 文末。
+
+文件过滤/拒绝/模型原有专项 11 组及新插槽/原生文件选择器专项 18 项均通过，涵盖 selection/browse/input/item/single/loader/表单插槽、真实 FormData 名称和异步禁用竞态。用户确认 Upload 默认显示大小和移除按钮，显式 false 关闭；FileInput 默认完整名称，显式 truncateLength 截短。Tabs 正在复用共享选择状态补齐对象/数组值、多选/max/比较器；用户确认 null 是有效标签值，空选择为 undefined。应用布局 helper 新专项 8 项及原有 5 项通过，补齐稳定命名、查询、四边累计及 overlaps；实际组件几何仍在继续。剩余仍包含完整 Tabs/Stepper、列表/树、应用布局及 Overlay 通用 API，未完成全库验收。
+
+新设备可先运行 `node scripts/prepare-upstream-router-fixtures.mjs`，校验并准备固定 Vuetify 4.2.4 / Vue Router 4.6.3 测试源码。它复用匹配缓存或下载官方 tarball，不安装运行时依赖，不覆盖不匹配的既有包和历史报告。
+
+本次目标是继续完成全部组件的深度对齐。两仓仍在 `codex/handoff-component-alignment-20261008`；UI HEAD `784a46f`、UAH HEAD `25d357d`，存在大量尚未提交的 UI 改动。不能使用下文历史“工作已停止”“三项等待回复”或旧 153 项台账作为当前结论。执行偏好继续为经济型 Luna/max 非视觉子代理，root 负责契约、架构、共享样式、真实 demo 和最终验收。
+
+用户最新决定：Window/Carousel 默认离场动画结束后卸载非当前内容，`eager=true` 保留；Menu 未指定 `openOnClick` 时按 `!(openOnHover || openOnFocus)` 推断；Carousel 保留随内容变化的默认高度。此前已批准的协议变化和保留差异继续有效，不能再次按统一默认原则替用户决定。近期补齐日期、选择、校验、输入、颜色弹层、路由、展开面板、底部导航及步骤内容等协议；具体逐批证据见 RESUME 与专项报告，尚不能宣称全库完成。
+
+后续用户又确认：Calendar/DatePicker 未指定 firstDayOfWeek 时按语言地区推断，显式属性仍优先；Snackbar 保留 `persistent=false` 默认允许 Escape，显式 `persistent=true` 阻止 Escape 和外部关闭。两项已实施，最近语言作用域动态切换、Home/End 周边界和 Snackbar 原生交互专项 4 组通过；没有将“常驻超时”和 persistent 合并。
+
+最新真实 demo 视觉复核范围和边界见 [VISUAL-NAVIGATION-2026-10-09.md](docs/component-audit-2026-10-08/VISUAL-NAVIGATION-2026-10-09.md)。完整审计需结合 REMAINING-CONTRACTS-1/2/3 与实际源码 SHA；原审计的缺失字段数包含已实现项及 Material 外观差异，不能直接当任务数。仍在处理定位边界、完整弹层容器契约、标签页、布局注册及其他残留语义缺口。
+
+本轮仅运行相关专项和隔离类型检查；完整检查留到提交推送前。没有提交、推送、发包或升级消费端。UAH 仍固定消费正式 npm `@lingyzh/ui@0.3.2`，其原有 package-lock 可选依赖标记改动保留；未发布源码不会自动进入 UAH。
+
+## 2026-10-08：交接分支恢复继续（当前入口）
+
+两仓当前交接分支与远端HEAD已核对：UI 784a46f、UAH 25d357d；UI入场干净，UAH已有package-lock.json可选依赖标记改动保留。Node24.19.0/.NET10.0.400就绪。本会话用户指定经济型子代理，采用GPT-6 Luna/max承担明确非视觉工作，root亲自负责契约、真实示例和视觉验收。
+
+用户已明确三项冲突均直接统一标准行为：ConfirmEdit常显/深克隆草稿，Hover禁用保留并恢复最新内部状态，Defaults按祖先链回溯。reset=true等效数字1回溯父层；root=true回到根配置。没有新增standardProtocol。下文旧“等待用户选择”“停止新增修复”已由本会话续作与答复替代。
+
+本批补齐这三项、UHotkey/UiPagination最近语言作用域和UChipGroup/UBtnToggle插槽/ref转发，真实示例/API/复制源码同步。新增边界、专项与剩余缺口见 [RESUME-2026-10-08.md](docs/component-audit-2026-10-08/RESUME-2026-10-08.md) 和最新VALIDATION。仍只声明部分专项验证，未完成全库对齐；UAH继续消费正式npm UI0.3.2，没有接入本分支未发布修改。本轮没有提交、推送或发布。
+
 ## 2026-10-08 Git 分支交接（最新入口）
 
 用户改为要求 UI 与相邻 UAH 分别提交并推送到新分支：两仓均使用 `codex/handoff-component-alignment-20261008`。UI 基于 `e63b618`，UAH 基于 `97c43a9`；提交推送前完整检查结果见 VALIDATION 最新记录。此次仅交接分支，不创建版本标签或发布 npm；UI 包版本仍为 0.3.2，UAH 仍消费已发布的 npm 0.3.2，尚未包含 UI 此分支的新功能。

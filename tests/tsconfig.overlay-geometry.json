@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "types": ["node", "vite/client"]
+    },
+    "include": [
+        "../src/ui/UOverlay.vue",
+        "../src/ui/UiMenu.vue",
+        "../src/ui/UiDialog.vue",
+        "../src/ui/overlay-position.ts",
+        "../src/ui/overlay-props.ts",
+        "../src/ui/dimensions.ts",
+        "overlay-position.test.ts"
+    ],
+    "exclude": []
+}

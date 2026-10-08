@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { vRipple, type RippleOptions } from './ripple';
-import { computed, ref, useId } from 'vue';
+import { computed, inject, onBeforeUnmount, provide, ref, useId, watch } from 'vue';
 import Icon from '../components/Icon.vue';
 import UiCollapse from './UiCollapse.vue';
-import { useList, type ListValue } from './list-completion';
+import { listParentKey, useList, type ListValue } from './list-completion';
 import { useDefaults } from './defaults';
 import { vPointerBlur } from './pointer-focus';
 const rawProps = withDefaults(defineProps<{ value: ListValue; title?: string; disabled?: boolean; modelValue?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, modelValue: undefined, disabled: false });
 const props = useDefaults(rawProps, 'UListGroup');
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
 const list = useList();
+const parent = inject(listParentKey, ref(undefined));
+provide(listParentKey, computed(() => props.value));
+let release: (() => void) | undefined;
+watch([() => props.value, parent], () => { release?.(); release = list?.register?.(props.value, parent.value, true, () => props.disabled); }, { immediate: true });
+onBeforeUnmount(() => release?.());
 const local = ref(false);
 const id = useId();
 const expanded = computed(() => props.modelValue ?? (list ? list.opened().includes(props.value) : local.value));

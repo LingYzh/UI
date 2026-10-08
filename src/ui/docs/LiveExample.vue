@@ -22,6 +22,13 @@ import ButtonLoadingDemo from './ButtonLoadingDemo.vue';
 import ButtonAppearanceDemo from './ButtonAppearanceDemo.vue';
 import CodeBlockHeightDemo from './CodeBlockHeightDemo.vue';
 import TypographyDemo from './TypographyDemo.vue';
+import DialogGeometryDemo from './DialogGeometryDemo.vue';
+import LayoutBasicsDemo from './LayoutBasicsDemo.vue';
+import TextareaProtocolDemo from './TextareaProtocolDemo.vue';
+import SwitchProtocolsDemo from './SwitchProtocolsDemo.vue';
+import SelectionMenuDemo from './SelectionMenuDemo.vue';
+import TabsSelectionDemo from './TabsSelectionDemo.vue';
+import MenuBranchDemo from './MenuBranchDemo.vue';
 const componentDemos = import.meta.glob('./component-examples/*.vue', { eager: true, import: 'default' });
 const tableDemos = import.meta.glob('./table-examples/*.vue', { eager: true, import: 'default' });
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
@@ -104,6 +111,13 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
     <div class="live-example">
         <component v-if="example.startsWith('component-')" :is="componentDemos[`./component-examples/${example.slice('component-'.length)}.vue`]" />
         <component v-else-if="example.startsWith('table-align-')" :is="tableDemos[`./table-examples/${example.slice('table-align-'.length)}.vue`]" />
+        <DialogGeometryDemo v-else-if="example === 'dialog-geometry'" />
+        <TextareaProtocolDemo v-else-if="example === 'textarea-protocols'" />
+        <SwitchProtocolsDemo v-else-if="example === 'switch-protocols'" />
+        <SelectionMenuDemo v-else-if="example === 'selection-menu-protocols'" />
+        <TabsSelectionDemo v-else-if="example === 'tabs-selection-protocols'" />
+        <MenuBranchDemo v-else-if="example === 'menu-branch-protocols'" />
+        <LayoutBasicsDemo v-else-if="example === 'basic-layout-contracts'" />
         <ButtonLoadingDemo v-else-if="example === 'button-loading-size'" />
         <ButtonAppearanceDemo v-else-if="example === 'button-variant-color'" />
         <CascaderDemo v-else-if="example === 'cascader-form'" />

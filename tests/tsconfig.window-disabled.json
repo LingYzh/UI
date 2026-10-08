@@ -1,0 +1,21 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UWindow.vue",
+        "../src/ui/UWindowItem.vue",
+        "../src/ui/UCarousel.vue",
+        "../src/ui/UCarouselItem.vue",
+        "../src/ui/group-state.ts",
+        "../src/ui/window-state.ts",
+        "../src/ui/defaults.ts",
+        "../src/ui/index.ts"
+    ],
+    "exclude": []
+}

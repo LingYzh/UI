@@ -3,10 +3,6 @@ import { ref } from 'vue';
 import { UTreeview } from '../../index';
 const tree = ref([]);
 const opened = ref(['components']);
-const items = Array.from({ length: 5000 }, (_, index) => ({
-    id: index,
-    title: `项目 ${index + 1}`,
-}));
 const nodes = [
     {
         title: '组件库',
@@ -35,7 +31,8 @@ const nodes = [
 
 <template>
     <div class="component-demo" data-demo-component="UTreeview">
-        <u-treeview v-model="tree" v-model:opened="opened" :items="nodes" />
+        <u-treeview v-model="tree" v-model:opened="opened" :items="nodes" selectable />
+        <output>选中的叶节点：{{ tree }}</output>
     </div>
 </template>
 

@@ -2,19 +2,22 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useLayoutItem } from './layout-completion';
 import { useDefaults } from './defaults';
-const rawProps = withDefaults(defineProps<{ height?: number; fixed?: boolean; absolute?: boolean; order?: number }>(), { height: 48, fixed: false, absolute: false, order: 10 });
+import { dimensionLength } from './dimensions';
+const rawProps = withDefaults(defineProps<{ height?: number | string; fixed?: boolean; absolute?: boolean; order?: number | string; name?: string; tag?: string; app?: boolean }>(), { height: 48, fixed: false, absolute: false, order: 10, tag: 'footer', app: undefined });
 const props = useDefaults(rawProps, 'UFooter');
 const element = ref<HTMLElement>();
-const measured = ref(props.height);
+const measured = ref(Number(props.height) || 48);
 let observer: ResizeObserver | undefined;
-const { offset } = useLayoutItem(computed(() => 'bottom'), measured, computed(() => props.fixed && !props.absolute), computed(() => props.order));
+const attached = computed(() => props.app ?? props.fixed);
+const { offset } = useLayoutItem(computed(() => 'bottom'), measured, computed(() => props.app ?? (props.fixed && !props.absolute)), computed(() => Number(props.order) || 0), computed(() => props.name));
 onMounted(() => {
-    observer = new ResizeObserver(() => { measured.value = element.value?.offsetHeight ?? props.height; });
+    observer = new ResizeObserver(() => { measured.value = element.value?.offsetHeight ?? (Number(props.height) || 0); });
     if (element.value) observer.observe(element.value);
 });
 onBeforeUnmount(() => observer?.disconnect());
+defineExpose({ element });
 </script>
 
 <template>
-    <footer ref="element" class="ui-footer" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: props.height + 'px', bottom: offset + 'px' }"><slot /></footer>
+    <component :is="props.tag" ref="element" class="ui-footer" :class="{ 'is-fixed': attached && !props.absolute, 'is-absolute': props.absolute }" :style="{ minHeight: dimensionLength(props.height), bottom: offset + 'px' }"><slot /></component>
 </template>

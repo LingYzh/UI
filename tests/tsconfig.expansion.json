@@ -1,0 +1,20 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/UExpansionPanels.vue",
+        "../src/ui/UExpansionPanel.vue",
+        "../src/ui/UExpansionPanelTitle.vue",
+        "../src/ui/UExpansionPanelText.vue",
+        "../src/ui/expansion-state.ts",
+        "../src/ui/item-group-state.ts",
+        "../src/ui/item-group-context.ts",
+        "../src/ui/selection.ts"
+    ],
+    "exclude": []
+}

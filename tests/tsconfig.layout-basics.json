@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": { "types": ["vite/client", "node"] },
+    "include": [
+        "../src/ui/UiContainer.vue",
+        "../src/ui/UMain.vue",
+        "../src/ui/UiRow.vue",
+        "../src/ui/UiThemeProvider.vue",
+        "../src/ui/dimensions.ts",
+        "../src/ui/markdown-plugins.d.ts"
+    ]
+}
