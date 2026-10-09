@@ -1,5 +1,13 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-09 UI 0.4.1 最终发布门禁与跨平台修复
+
+0.4.0标签已经推送，但GitHub Actions run37892020013在Linux测试306/307失败，Publish未执行。失败为生成API表达式的CRLF/LF不一致，证据见checkpoint-evidence/2026-10-09-release-0.4.0-ci-failure.json。旧tag未改写，正式候选为0.4.1。
+
+契约提取统一源码换行并增加真实SFC的LF/CRLF等价回归；git switch触发的两处Windows示例原文比较也只规范化换行后逐字校验。局部API7项、示例/表格22项通过。最终完整测试308/308（fail/skip均0），完整typecheck/build、Electron UI21组/173旧URL/27图、feedback7组/17图、controls6组/14图均通过。首次0.4.1单测306/308失败原样留档；最终复跑才是通过结果。
+
+npm pack白名单541文件、全部exports包含，packed771767B/unpacked4480852B。当前0.4.1完整UI截图的Tabs视觉复核通过；Menu/Drawer产品源码未变，沿用已验收视觉并在新构建再跑原行为断言。版本化完整证据见checkpoint-evidence/2026-10-09-release-0.4.1.json，原始日志artifacts/release-0.4.1。实际发布状态以publishing记忆最新记录为准，UAH在发布前仍为0.3.2。
+
 ## 2026-10-09 UI 0.4.0 发布前完整门禁
 
 用户授权先合并 UI main 并正式发0.4.0，再从官方 npm 适配 UAH；本节覆盖最新发布源码。Node24.19.0，完整 typecheck、307/307测试（fail/skip均0）、docs/lib构建通过；Electron UI 21组遍历173原URL、27截图、errors=[]。feedback 7组/17截图、controls 6组/14截图通过。打包白名单541文件，公开exports全部包含。Vite仅保留大chunk提示。

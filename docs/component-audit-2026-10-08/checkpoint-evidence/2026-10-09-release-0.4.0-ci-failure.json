@@ -1,0 +1,16 @@
+{
+    "version": "0.4.0",
+    "releaseCommit": "1720374b3462e51b26820b1fb6ebc5ac1e830669",
+    "tag": "v0.4.0",
+    "workflowRun": "https://github.com/LingYzh/UI/actions/runs/37892020013",
+    "jobId": 113694842685,
+    "conclusion": "failure",
+    "passedSteps": ["Checkout", "Setup Node.js", "Install dependencies", "Verify tag matches package version", "Type check"],
+    "failedStep": "Test",
+    "testResult": { "tests": 307, "pass": 306, "fail": 1, "skipped": 0 },
+    "failure": "tests/api-reference.test.ts:53 compares UCalendar.getTimestampAtEvent expose expression. Generated JSON string contains CRLF, Linux source extraction contains LF.",
+    "skippedSteps": ["Build", "Inspect package contents", "Publish"],
+    "published": false,
+    "registryVerifiedAfterFailure": { "latest": "0.3.2", "versionsInclude0_4_0": false, "versionsInclude0_4_1": false },
+    "resolution": "Keep the pushed tag unchanged. Normalize contract source line endings, add LF/CRLF regression, release 0.4.1 with fresh gates."
+}

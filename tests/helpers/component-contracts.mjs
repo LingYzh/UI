@@ -4,7 +4,8 @@ import { parse as parseTemplate } from '@vue/compiler-dom';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
-const read = (filename) => readFileSync(filename, 'utf8');
+// Generated contracts must not depend on the checkout's Windows or Unix line endings.
+const read = (filename) => readFileSync(filename, 'utf8').replace(/\r\n?/g, '\n');
 const relative = (root, filename) => path.relative(root, filename).replaceAll('\\', '/');
 
 function createTypeResolver(root) {

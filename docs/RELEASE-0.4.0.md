@@ -1,5 +1,7 @@
 # UI 0.4.0
 
+此标签首次CI因API文档源码表达式的CRLF/LF差异失败，Publish未执行；正式发布改为0.4.1，包含下列同批迁移及生成器换行修复。v0.4.0保留为失败尝试记录，不作为已发布npm版本。
+
 本版本包含 `codex/handoff-component-alignment-20261008` 累计组件协议修复、真实示例与文档整理。用户已授权先合并 UI 主分支并发版，再从正式 npm 包适配 UAH。发布结果以 `.Codex/memory/publishing.md` 的最新记录和官方 registry 为准。
 
 ## 升级时检查

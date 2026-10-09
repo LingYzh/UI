@@ -120,8 +120,8 @@ test('each manifest component example matches its real Vue file and page metadat
         const examples = page.examples.filter((example) => example.id === entry.example);
         assert.equal(examples.length, 1, `${entry.name} should reference ${entry.example} exactly once`);
         assert.equal(
-            examples[0].code,
-            source.replaceAll("from '../../index'", "from '@lingyzh/ui'"),
+            examples[0].code.replace(/\r\n?/g, '\n'),
+            source.replaceAll("from '../../index'", "from '@lingyzh/ui'").replace(/\r\n?/g, '\n'),
             `${entry.name}.${entry.example} should stay in sync with ${entry.file}`
         );
     }

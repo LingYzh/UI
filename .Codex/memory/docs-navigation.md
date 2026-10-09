@@ -2,6 +2,8 @@
 
 ## 2026-10-09 发布门禁与家族路由
 
+正式CI发现文档多行expose表达式JSON中嵌入CRLF，Linux原文提取LF导致精确契约检查失败；component-contracts读取时统一LF并加入同一SFC两种换行的等价回归。manifest/table示例原文比较也仅规范化两边换行后继续逐字校验，避免git switch重新检出CRLF后的Windows假失败；不能用trim、宽松包含或跳过契约代替。
+
 发布消费盘点发现 TabsWindowItem 是多根组件，原生 class/style/属性/监听器必须显式透传到语义 panel 根；隐藏注册标记不能接收这些属性。tabs-window-protocols 增加真实消费属性与事件检查，Chrome 源码夹具11组通过。
 
 完整 feedback 暴露 UButton 触发器重渲染后 Escape 不归还焦点：组件 ref 被原生 HTMLElement 判断清空。Menu/Dialog/Overlay 共用 overlayActivatorElement，先解析暴露的 element（支持 ref），再回退到 $el；不能把多根 UButton 的 $el 注释节点当成触发器。焦点断言仍等待离场完成，禁止用延时或删除断言掩盖引用丢失。

@@ -15217,7 +15217,7 @@ export const componentApi = {
                 "name": "getTimestampAtEvent",
                 "type": "function",
                 "kind": "method",
-                "expression": "(event: MouseEvent, day: CalendarTimestamp) => {\r\n    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();\r\n    return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes))));\r\n}",
+                "expression": "(event: MouseEvent, day: CalendarTimestamp) => {\n    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();\n    return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes))));\n}",
                 "description": "调用 getTimestampAtEvent，访问 (event: MouseEvent, day: CalendarTimestamp) => { const rect = (event.currentTarget as HTMLElement).getBoundingClientRect(); return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes)))); } 对应的 UCalendar 成员"
             }
         ],
@@ -38150,7 +38150,7 @@ export const componentApi = {
                 "name": "toggleOpen",
                 "type": "function",
                 "kind": "method",
-                "expression": "(value: unknown) => {\r\n        const id = resolveNodeId(value);\r\n        const node = id === undefined ? undefined : nodeById.value.get(id);\r\n        if (node) toggleOpen(node);\r\n    }",
+                "expression": "(value: unknown) => {\n        const id = resolveNodeId(value);\n        const node = id === undefined ? undefined : nodeById.value.get(id);\n        if (node) toggleOpen(node);\n    }",
                 "description": "调用 toggleOpen，访问 (value: unknown) => { const id = resolveNodeId(value); const node = id === undefined ? undefined : nodeById.value.get(id); if (node) toggleOpen(node); } 对应的 UTreeview 成员"
             }
         ],

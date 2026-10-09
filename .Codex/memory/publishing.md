@@ -1,5 +1,13 @@
 # npm 发布记忆
 
+## 2026-10-09：0.4.0 标签 CI 换行失败，修复后使用0.4.1
+
+UI累计分支已fast-forward main，1720374b3462e51b26820b1fb6ebc5ac1e830669与v0.4.0已原子推送。Actions run37892020013的job113694842685在Linux测试阶段306/307：api-reference UCalendar.getTimestampAtEvent表达式保存CRLF，Linux提取得到LF；类型检查通过，Build/Publish跳过。0.4.0没有发布，不能将本地307/307解释为CI通过。
+
+不改写已推标签；后续正式候选0.4.1。component-contracts读取源码统一LF，同步API不改变158组件/2704属性模型/324事件/604插槽/541暴露成员；新增LF和CRLF源码契约相同的实际回归，专项7/7。Git checkout换行并不改变JSON字符串内的\\r\\n，生成器必须在读取时规范化，而不能仅改.gitattributes或跳过API精确比较。最终0.4.1门禁/Actions/registry状态见后续记录。
+
+0.4.1最终本地typecheck、308/308测试、docs/lib构建、Electron UI21组/173URL、feedback7组、controls6组及pack541文件全部通过；第一次本地单测两处示例换行假失败保留，修正两边换行后完整复跑通过。发布前证据见checkpoint-evidence/2026-10-09-release-0.4.1.json，迁移说明RELEASE-0.4.1.md。
+
 ## 2026-10-09：0.4.0 已获合并和发版授权
 
 用户明确要求先合并UI分支后发版，再适配UAH。package.json与lock根版本已同步0.4.0；发布前registry查询latest仍0.3.2。最终源码Node24.19.0完整typecheck、307/307单测、docs/lib构建、Electron21组/173路由、feedback7组、controls6组均通过；pack白名单541文件和全部exports通过。历史失败及两项真实焦点修复已保存，发布门禁证据见checkpoint-evidence/2026-10-09-release-0.4.0.json。

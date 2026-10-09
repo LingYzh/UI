@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { mkdtempSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { parse, compileTemplate } from '@vue/compiler-sfc';
 import { parse as parseTemplate } from '@vue/compiler-dom';
 import { pages } from '../src/ui/docs/content.js';
-import { extractPublicComponentContracts } from './helpers/component-contracts.mjs';
+import { extractComponentContract, extractPublicComponentContracts } from './helpers/component-contracts.mjs';
 
 const contracts = extractPublicComponentContracts(path.resolve('.'));
 const apiPath = path.resolve(process.env.UI_API_REFERENCE_PATH || 'src/ui/docs/apiReference.js');
@@ -13,6 +15,26 @@ const { componentApi } = await import(pathToFileURL(apiPath).href);
 const sorted = (names: string[]) => [...names].sort();
 const camel = (name: string) => name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 const slotName = (slot: any) => slot.name === '<dynamic>' ? slot.pattern : slot.name;
+
+test('public contract extraction is identical for LF and CRLF source', (context) => {
+    const directory = mkdtempSync(path.join(tmpdir(), 'ui-contract-newlines-'));
+    const filename = path.join(directory, 'Probe.vue');
+    context.after(() => { unlinkSync(filename); rmdirSync(directory); });
+    const source = `<script setup lang="ts">
+const props = withDefaults(defineProps<{ label?: string }>(), { label: 'example' });
+defineExpose({ describe: (value: number) => {
+    return props.label + value;
+} });
+</script>
+<template><div>{{ props.label }}</div></template>
+`;
+    writeFileSync(filename, source, 'utf8');
+    const unix = extractComponentContract(directory, 'UProbe', 'Probe.vue');
+    writeFileSync(filename, source.replace(/\n/g, '\r\n'), 'utf8');
+    const windows = extractComponentContract(directory, 'UProbe', 'Probe.vue');
+    assert.deepEqual(windows, unix);
+    assert.ok(unix.expose.find(member => member.name === 'describe').expression.includes('\n'));
+});
 
 test('renamed compatibility slots do not expose the consumed child slot names', () => {
     assert.deepEqual(sorted(componentApi.UMenuItem.slots.map(slot => slot.name)), ['default', 'icon', 'trailing']);

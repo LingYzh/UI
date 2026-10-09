@@ -170,7 +170,7 @@ test('eight table examples are registered and compile from their real SFC source
     for (const example of examples) {
         const name = example.id.replace('table-align-', '');
         const source = readFileSync(`src/ui/docs/table-examples/${name}.vue`, 'utf8');
-        assert.equal(example.code, source.replaceAll("from '../../index'", "from '@lingyzh/ui'"));
+        assert.equal(example.code.replace(/\r\n?/g, '\n'), source.replaceAll("from '../../index'", "from '@lingyzh/ui'").replace(/\r\n?/g, '\n'));
         assert.ok(pages.some(page => page.examples?.some(entry => entry.id === example.id)));
         const descriptor = parse(source, { filename: `${name}.vue` }).descriptor;
         assert.deepEqual(compileTemplate({ source: descriptor.template!.content, filename: `${name}.vue`, id: name }).errors, []);
