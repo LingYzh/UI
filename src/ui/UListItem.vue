@@ -7,8 +7,9 @@ import { listParentKey, useList, type ListValue } from './list-completion';
 import { menuContextKey } from './menu';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { useUiLink, type RouterProps } from './router';
-const rawProps = withDefaults(defineProps<RouterProps & { id?: string; value?: ListValue; title?: string; subtitle?: string; appendIcon?: string; appendText?: string; disabled?: boolean; readonly?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean; tabindex?: number; role?: string } & { ripple?: RippleOptions }>(), { ripple: true,
+const rawProps = withDefaults(defineProps<RouterProps & { id?: string; value?: ListValue; title?: string; subtitle?: string; appendIcon?: IconValue; appendText?: string; disabled?: boolean; readonly?: boolean; selectable?: boolean; activatable?: boolean; active?: boolean; tabindex?: number; role?: string } & { ripple?: RippleOptions }>(), { ripple: true,
     id: undefined, active: undefined, disabled: false, readonly: false, selectable: true, activatable: true, tabindex: undefined, role: undefined
 });
 const props = useDefaults(rawProps, 'UListItem');
@@ -128,7 +129,7 @@ function keydown(event: KeyboardEvent) {
                 >
                     {{ props.appendText }}
                 </span>
-                <Icon :name="props.appendIcon"
+                <Icon :icon="props.appendIcon"
                     v-if="props.appendIcon"
                 />
             </slot>

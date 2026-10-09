@@ -170,7 +170,8 @@ try {
     delete env.ELECTRON_RUN_AS_NODE;
     delete env.UAH_DEV_URL;
     env.UAH_UI_PREVIEW_URL = `${server.resolvedUrls.local[0]}index.html#/copy-button`;
-    app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
+    // Match CSS pixel assertions to Electron content size under Windows display scaling.
+    app = await electron.launch({ args: ['--force-device-scale-factor=1', 'tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
     page = await app.firstWindow();
     page.setDefaultTimeout(10000);
     page.on('pageerror', error => pageErrors.push(error.message));

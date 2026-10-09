@@ -20,6 +20,8 @@
 
 ## 构建与发布约定
 
+- 图标入口统一使用 `src/ui/icon-config.ts` 的 `IconValue`；组件不得限制为 string 或插值输出。内部默认图标使用 `$alias`，业务 MDI 从 `@mdi/js` 具名导入路径直接传值；旧本地名称兼容与默认语义别名分开处理，详见 `.Codex/memory/icons.md`。
+
 - `src/ui/index.ts` 是公开组件入口；`src/ui/styles.css` 汇总 tokens、工具类和扩展样式；`src/ui/docs/` 与 `UiPreview.vue` 是真实组件文档。UAH 仍可通过 `file:../UI` 使用源码导出。
 - 开发环境按 README 使用 Node.js 24+；`npm run dev` 在 5174 端口查看文档。
 - 日常改动只运行与变更相关的专项测试及必要的视觉验收，不默认运行完整测试、完整构建或`npm run test:ui`。专项优先使用开发服务或隔离源码fixture，避免为了测试重新完整构建。

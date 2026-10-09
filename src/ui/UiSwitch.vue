@@ -4,13 +4,14 @@ import { computed, inject, nextTick, onMounted, ref, useAttrs, useModel, watch, 
 import { vPointerBlur } from './pointer-focus';
 import UiControlFrame from './UiControlFrame.vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { buttonColorStyles } from './button-colors';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
 import { useDefaults } from './defaults';
 import { selectionGroupKey } from './selection-context';
 import { checkboxChecked, defaultValueComparator, toggleCheckbox, type ValueComparator } from './selection';
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { value?: unknown; trueValue?: unknown; falseValue?: unknown; valueComparator?: ValueComparator; indeterminate?: boolean; trueIcon?: string; falseIcon?: string; thumbColor?: string; flat?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, indeterminate: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { value?: unknown; trueValue?: unknown; falseValue?: unknown; valueComparator?: ValueComparator; indeterminate?: boolean; trueIcon?: IconValue; falseIcon?: IconValue; thumbColor?: string; flat?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, indeterminate: false, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'USwitch');
 defineEmits<{ 'update:focused': [value: boolean]; 'update:indeterminate': [value: boolean] }>();
 const attrs = useAttrs();

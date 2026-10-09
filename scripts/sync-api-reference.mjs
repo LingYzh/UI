@@ -230,7 +230,7 @@ const commonProps = {
     theme: '选择当前组件使用的主题名称。',
     variant: '选择组件的语义样式变体；可用值见联合类型。',
     size: '设置组件尺寸；数字或字符串的含义由类型列说明。',
-    icon: '指定使用的图标名称。',
+    icon: '图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。',
     image: '指定图片资源地址。',
     alt: '提供图片或图标的替代文本。',
     href: '设置启用时导航到的链接地址。',
@@ -378,6 +378,9 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (prop.name === 'icon' || /Icon$/.test(prop.name)) return commonProps.icon + (contract.name === 'UButton' && prop.name === 'icon' ? ' Boolean true 只启用图标按钮外观，默认插槽优先。' : '');
+    if (['UIcon', 'UiIcon'].includes(contract.name) && prop.name === 'name') return '兼容旧版图标名称，与 icon 使用相同解析；icon 显式值优先。';
+    if (['UIcon', 'UiIcon'].includes(contract.name) && prop.name === 'path') return '兼容显式 SVG 路径，优先于 icon/name，并使用 SVG 渲染器。';
     if (['UApp', 'ULayout'].includes(contract.name) && prop.name === 'layoutMode') return 'legacy默认保留现有布局几何；ordered按order逐项分配四边空间并消费overlaps。';
     if (contract.name === 'UTreeview' && prop.name === 'itemsRegistration') return '默认render仅注册当前渲染节点供选择和激活策略使用；props显式注册完整items树，含关闭分支。';
     if (['UList', 'UTreeview'].includes(contract.name) && prop.name === 'activeStrategy') return '默认single-independent仅激活一项，重复激活可取消；显式策略可启用多项或叶节点约束。';

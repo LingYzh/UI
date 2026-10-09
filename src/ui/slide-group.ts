@@ -1,6 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue';
 import type { ValueComparator } from './selection';
 import type { DisplayBreakpoint } from './display';
+import type { IconValue } from './icon-config';
 
 export interface SlideGroupProps {
     disabled?: boolean;
@@ -17,8 +18,8 @@ export interface SlideGroupProps {
     showArrows?: boolean | 'always' | 'desktop' | 'mobile' | 'never';
     contentClass?: string;
     tag?: string;
-    prevIcon?: string;
-    nextIcon?: string;
+    prevIcon?: IconValue;
+    nextIcon?: IconValue;
     mobile?: boolean | null;
     mobileBreakpoint?: number | DisplayBreakpoint;
 }

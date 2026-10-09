@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch, type PropType } from 'vue';
 import UiButton from './UiButton.vue';
 import Icon from '../components/Icon.vue';
+import { IconValue } from './icon-config';
 import { useDefaults } from './defaults';
 import { useDisplay, type DisplayBreakpoint } from './display';
 import { useReducedMotion } from './motion';
@@ -23,8 +24,8 @@ const rawProps = defineProps({
     showArrows: { type: [Boolean, String] as PropType<SlideGroupProps['showArrows'] | undefined>, default: undefined },
     contentClass: null as unknown as PropType<string | undefined>,
     tag: { type: String, default: 'div' },
-    prevIcon: String,
-    nextIcon: String,
+    prevIcon: { type: IconValue as PropType<IconValue>, default: undefined },
+    nextIcon: { type: IconValue as PropType<IconValue>, default: undefined },
     mobile: { type: Boolean as PropType<boolean | null>, default: null },
     mobileBreakpoint: { type: [Number, String] as PropType<number | DisplayBreakpoint | undefined>, default: undefined }
 });
@@ -207,10 +208,10 @@ defineExpose({ viewport, isOverflowing: overflow, isSelected, select, next: () =
 
 <template>
     <component :is="props.tag" class="u-slide-group" role="group" :class="{ 'is-vertical': vertical, 'is-disabled': props.disabled }" :aria-disabled="props.disabled || undefined">
-        <UiButton v-if="arrows" class="u-slide-group-prev" variant="text" icon :disabled="props.disabled || atStart" aria-label="向前滚动" @click="scrollTo('prev')"><slot name="prev" v-bind="slotScope"><Icon :name="props.prevIcon ?? (vertical ? 'mdi-chevron-down' : 'mdi-chevron-left')" :class="{ 'is-up': vertical }" :size="18" /></slot></UiButton>
+        <UiButton v-if="arrows" class="u-slide-group-prev" variant="text" icon :disabled="props.disabled || atStart" aria-label="向前滚动" @click="scrollTo('prev')"><slot name="prev" v-bind="slotScope"><Icon :icon="props.prevIcon ?? (vertical ? '$expand' : '$prev')" :class="{ 'is-up': vertical }" :size="18" /></slot></UiButton>
         <div ref="viewport" class="u-slide-group-viewport" :style="{ scrollSnapType: props.scrollSnap ? `${vertical ? 'y' : 'x'} proximity` : undefined, '--u-slide-snap': props.scrollSnap }" @scroll="onScroll" @keydown="keyboard">
             <div ref="content" class="u-slide-group-content" :class="props.contentClass"><slot v-bind="slotScope" /></div>
         </div>
-        <UiButton v-if="arrows" class="u-slide-group-next" variant="text" icon :disabled="props.disabled || atEnd" aria-label="向后滚动" @click="scrollTo('next')"><slot name="next" v-bind="slotScope"><Icon :name="props.nextIcon ?? (vertical ? 'mdi-chevron-down' : 'mdi-chevron-right')" :size="18" /></slot></UiButton>
+        <UiButton v-if="arrows" class="u-slide-group-next" variant="text" icon :disabled="props.disabled || atEnd" aria-label="向后滚动" @click="scrollTo('next')"><slot name="next" v-bind="slotScope"><Icon :icon="props.nextIcon ?? (vertical ? '$expand' : '$next')" :size="18" /></slot></UiButton>
     </component>
 </template>

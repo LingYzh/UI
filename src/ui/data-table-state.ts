@@ -1,6 +1,7 @@
 import { computed, ref, watch, type Ref } from 'vue';
 import { createGroups, extractItems, filterItems, flattenGroups, internalItems, normalizeHeaders, pageItems, sortItems, type DataGroupNode, type DataRow, type InternalDataItem } from './data-pipeline';
 import type { DataTableProps, SelectionStrategy, TableModels, TablePaginationProps } from './data-table-types';
+import type { IconValue } from './icon-config';
 import { positiveInteger, type TableSort } from './table';
 
 type Models = { [K in keyof TableModels]: Ref<TableModels[K]> };
@@ -172,7 +173,7 @@ export function useDataTableState(props: DataTableProps & TablePaginationProps &
         items: currentItems.value.map(item => item.raw), internalItems: currentItems.value,
         groupedItems: rows.value, columns: layout.value.columns, headers: layout.value.headers,
         isSorted: (column: { key?: string }) => models.sortBy.value.some(sort => sort.key === column.key),
-        getSortIcon: (column: { key?: string }) => models.sortBy.value.find(sort => sort.key === column.key)?.order === 'desc' ? props.sortDescIcon ?? 'mdi-arrow-down' : props.sortAscIcon ?? 'mdi-arrow-up'
+        getSortIcon: (column: { key?: string }): IconValue => models.sortBy.value.find(sort => sort.key === column.key)?.order === 'desc' ? props.sortDescIcon ?? '$sortDesc' : props.sortAscIcon ?? '$sortAsc'
     }));
     return { layout, allItems, processed, filtered, groups, rows, paginatedEntries, currentItems, page, size, total, pageCount, busy, blocked, strategy, slotProps, isSelected, isSomeSelected, select, selectAll, toggleSelect, isExpanded, expand, toggleExpand, isGroupOpen, toggleGroup, toggleSort, setPage, setItemsPerPage };
 }

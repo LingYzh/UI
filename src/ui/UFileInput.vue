@@ -4,6 +4,7 @@ import { vRipple, type RippleOptions } from './ripple';
 import UiControlFrame from './UiControlFrame.vue';
 import UChip from './UChip.vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
 import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs, useId, useSlots, watch, type CSSProperties } from 'vue';
@@ -15,7 +16,7 @@ import { formatFileSize, truncateFileName } from './file-display';
 import { useLocale } from './locale-context';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; showSize?: boolean | number | string; chips?: boolean; hideInput?: boolean; truncateLength?: number | string; placeholder?: string; persistentPlaceholder?: boolean; clearIcon?: string; counterString?: string; counterSizeString?: string } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, counter: undefined, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; showSize?: boolean | number | string; chips?: boolean; hideInput?: boolean; truncateLength?: number | string; placeholder?: string; persistentPlaceholder?: boolean; clearIcon?: IconValue; counterString?: string; counterSizeString?: string } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, counter: undefined, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UFileInput');
 const locale = useLocale();
 const emit = defineEmits<{ 'update:focused': [value: boolean]; rejected: [files: File[]]; 'rejected-details': [result: FileValidationResult['rejected']]; change: [files: File[]]; 'click:clear': [event: MouseEvent]; 'click:control': [event: MouseEvent]; 'mousedown:control': [event: MouseEvent] }>();
@@ -159,7 +160,7 @@ defineExpose({ element, files, control, receive, change, clear, focus: () => ele
                     </slot>
                 </div>
                 <slot v-if="props.loading" name="loader" :is-active="true" :color="props.color"><span class="u-input-loading" role="status" aria-label="加载中" /></slot>
-                <slot v-if="props.clearable && files.length" name="clear" :props="{ onClick: clear, disabled: control.disabled.value || control.readonly.value }"><button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur type="button" class="ui-control-clear" aria-label="清除文件" :disabled="control.disabled.value || control.readonly.value" @pointerdown.prevent @click.stop="clear"><Icon v-if="props.clearIcon" :name="props.clearIcon" :size="16" /><template v-else>×</template></button></slot>
+                <slot v-if="props.clearable && files.length" name="clear" :props="{ onClick: clear, disabled: control.disabled.value || control.readonly.value }"><button v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur type="button" class="ui-control-clear" aria-label="清除文件" :disabled="control.disabled.value || control.readonly.value" @pointerdown.prevent @click.stop="clear"><Icon v-if="props.clearIcon" :icon="props.clearIcon" :size="16" /><template v-else>×</template></button></slot>
                 <slot name="append-inner" v-bind="slotScope" />
             </div>
             <slot name="append" v-bind="slotScope" />

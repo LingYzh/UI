@@ -2,6 +2,7 @@
 import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { vPointerBlur } from './pointer-focus';
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, toValue, watch, type MaybeRefOrGetter } from 'vue';
 import { createGroup, windowKey, type GroupValue } from './group-state';
@@ -19,10 +20,10 @@ interface CarouselTouchHandlers {
 const rawProps = withDefaults(defineProps<{
     interval?: number | string; cycle?: boolean; continuous?: boolean; disabled?: boolean; label?: string;
     touch?: boolean | CarouselTouchHandlers; keyboard?: boolean; hideDelimiters?: boolean;
-    hideDelimiterBackground?: boolean; delimiterIcon?: string; verticalDelimiters?: boolean | 'left' | 'right';
+    hideDelimiterBackground?: boolean; delimiterIcon?: IconValue; verticalDelimiters?: boolean | 'left' | 'right';
     showArrows?: boolean | 'hover'; height?: number | string; ripple?: RippleOptions; eager?: boolean;
     tag?: string; direction?: 'horizontal' | 'vertical'; mandatory?: boolean | 'force';
-}>(), { ripple: true, interval: 6000, cycle: true, continuous: true, touch: true, keyboard: true, showArrows: true, height: 'auto', delimiterIcon: 'mdi-record', tag: 'section', direction: 'horizontal', mandatory: 'force' });
+}>(), { ripple: true, interval: 6000, cycle: true, continuous: true, touch: true, keyboard: true, showArrows: true, height: 'auto', delimiterIcon: '$delimiter', tag: 'section', direction: 'horizontal', mandatory: 'force' });
 const props = useDefaults(rawProps, 'UCarousel');
 const model = defineModel<GroupValue | null>({ default: null });
 const group = createGroup(model, { mandatory: () => props.mandatory, disabled: () => props.disabled, forceOnlyInitial: true });
@@ -174,16 +175,16 @@ function onTouchCancel(): void { touchStart = undefined; motion.onTouchCancel();
         <div class="u-carousel-content"><slot :next="next" :prev="prev" :model-value="model" /></div>
         <template v-if="arrowsVisible">
             <slot name="prev" :props="{ onClick: prev, disabled: prevDisabled, 'aria-label': '上一项', class: 'u-carousel-prev' }">
-                <button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-prev" aria-label="上一项" :disabled="prevDisabled" @click="prev"><Icon name="mdi-chevron-left" :size="20" /></button>
+                <button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-prev" aria-label="上一项" :disabled="prevDisabled" @click="prev"><Icon icon="$prev" :size="20" /></button>
             </slot>
             <slot name="next" :props="{ onClick: next, disabled: nextDisabled, 'aria-label': '下一项', class: 'u-carousel-next' }">
-                <button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-next" aria-label="下一项" :disabled="nextDisabled" @click="next"><Icon name="mdi-chevron-right" :size="20" /></button>
+                <button v-ripple="props.ripple" v-pointer-blur type="button" class="u-carousel-next" aria-label="下一项" :disabled="nextDisabled" @click="next"><Icon icon="$next" :size="20" /></button>
             </slot>
         </template>
         <div v-if="!props.hideDelimiters" class="u-carousel-controls" :class="{ 'is-vertical': props.verticalDelimiters, 'are-left': props.verticalDelimiters === 'left', 'is-background-hidden': props.hideDelimiterBackground }">
             <template v-for="(value, index) in context.values" :key="value">
                 <slot name="item" :item="delimiterItem(value)" :index="index" :props="delimiterProps(value, index)">
-                    <button v-ripple.center.circle="props.ripple" v-pointer-blur type="button" v-bind="delimiterProps(value, index)"><Icon :name="props.delimiterIcon" class="u-carousel-dot" aria-hidden="true" /></button>
+                    <button v-ripple.center.circle="props.ripple" v-pointer-blur type="button" v-bind="delimiterProps(value, index)"><Icon :icon="props.delimiterIcon" class="u-carousel-dot" aria-hidden="true" /></button>
                 </slot>
             </template>
         </div>

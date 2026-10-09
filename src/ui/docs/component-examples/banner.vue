@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import { mdiInformationOutline } from '@mdi/js';
 import { UBanner, UButton } from '../../index';
 const banner = ref(true);
 </script>
 
 <template>
     <div class="component-demo" data-demo-component="UBanner">
-        <u-banner v-model="banner" text="配置已同步。" icon="mdi-information-outline">
+        <u-banner v-model="banner" text="配置已同步。" :icon="mdiInformationOutline">
             <template #actions>
                 <u-button size="sm" variant="text" @click="banner = false">知道了</u-button>
             </template>

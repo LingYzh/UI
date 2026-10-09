@@ -126,11 +126,31 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "boolean | string",
+                "type": "boolean | IconValue",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "纯图标方形按钮",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。 Boolean true 只启用图标按钮外观，默认插槽优先。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "prependIcon",
+                "type": "IconValue",
+                "fallback": "—",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "appendIcon",
+                "type": "IconValue",
+                "fallback": "—",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -208,7 +228,7 @@ export const componentApi = {
             {
                 "name": "prepend",
                 "type": "—",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "在主要内容前追加图标或节点"
             },
             {
@@ -220,7 +240,7 @@ export const componentApi = {
             {
                 "name": "append",
                 "type": "—",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "在主要内容后追加图标或节点"
             }
         ],
@@ -613,9 +633,9 @@ export const componentApi = {
             },
             {
                 "name": "clearIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 clear Icon，供 UTextField 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -1266,9 +1286,9 @@ export const componentApi = {
             },
             {
                 "name": "clearIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 clear Icon，供 UTextarea 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -2374,9 +2394,9 @@ export const componentApi = {
             },
             {
                 "name": "trueIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 true Icon，供 USwitch 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -2384,9 +2404,9 @@ export const componentApi = {
             },
             {
                 "name": "falseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 false Icon，供 USwitch 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -3265,12 +3285,12 @@ export const componentApi = {
             },
             {
                 "name": "clearIcon",
-                "type": "string",
-                "fallback": "'mdi-close'",
-                "description": "设置 clear Icon，供 UField 执行对应行为；公开类型为 string",
+                "type": "IconValue",
+                "fallback": "'$clear'",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "explicit",
-                    "source": "'mdi-close'"
+                    "source": "'$clear'"
                 },
                 "required": false
             },
@@ -3286,9 +3306,9 @@ export const componentApi = {
             },
             {
                 "name": "prependInnerIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 prepend Inner Icon，供 UField 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -3296,9 +3316,9 @@ export const componentApi = {
             },
             {
                 "name": "appendInnerIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 append Inner Icon，供 UField 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -4961,9 +4981,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "可选图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -6098,9 +6118,9 @@ export const componentApi = {
             },
             {
                 "name": "prependIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 prepend Icon，供 UCard 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -6108,9 +6128,9 @@ export const componentApi = {
             },
             {
                 "name": "appendIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "在右侧显示图标；append插槽存在时由插槽替换",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7544,9 +7564,9 @@ export const componentApi = {
             },
             {
                 "name": "sortIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7554,9 +7574,9 @@ export const componentApi = {
             },
             {
                 "name": "sortAscIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖升序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7564,9 +7584,9 @@ export const componentApi = {
             },
             {
                 "name": "sortDescIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖降序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7574,9 +7594,9 @@ export const componentApi = {
             },
             {
                 "name": "expandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7584,9 +7604,9 @@ export const componentApi = {
             },
             {
                 "name": "collapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行展开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7594,9 +7614,9 @@ export const componentApi = {
             },
             {
                 "name": "groupExpandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7604,9 +7624,9 @@ export const componentApi = {
             },
             {
                 "name": "groupCollapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组打开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7707,9 +7727,9 @@ export const componentApi = {
             },
             {
                 "name": "firstIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "首页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7717,9 +7737,9 @@ export const componentApi = {
             },
             {
                 "name": "lastIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "末页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7727,9 +7747,9 @@ export const componentApi = {
             },
             {
                 "name": "prevIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "上一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -7737,9 +7757,9 @@ export const componentApi = {
             },
             {
                 "name": "nextIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "下一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8296,9 +8316,9 @@ export const componentApi = {
             },
             {
                 "name": "prevIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "上一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8306,9 +8326,9 @@ export const componentApi = {
             },
             {
                 "name": "nextIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "下一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8316,9 +8336,9 @@ export const componentApi = {
             },
             {
                 "name": "firstIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "首页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8326,9 +8346,9 @@ export const componentApi = {
             },
             {
                 "name": "lastIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "末页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -8552,7 +8572,7 @@ export const componentApi = {
                 "name": "name",
                 "type": "String",
                 "fallback": "''",
-                "description": "原型SVG名，或内置MDI名。额外名称可通过registerIcons注册",
+                "description": "兼容旧版图标名称，与 icon 使用相同解析；icon 显式值优先。",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "''"
@@ -8561,9 +8581,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "String",
+                "type": "IconValue",
                 "fallback": "''",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "''"
@@ -8585,7 +8605,7 @@ export const componentApi = {
                 "name": "path",
                 "type": "String",
                 "fallback": "''",
-                "description": "SVG path d，优先于 name；从 @mdi/js 按需导入路径",
+                "description": "兼容显式 SVG 路径，优先于 icon/name，并使用 SVG 渲染器。",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "''"
@@ -8683,9 +8703,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "inline 前置图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -13253,9 +13273,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -13475,9 +13495,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -15324,12 +15344,12 @@ export const componentApi = {
             },
             {
                 "name": "delimiterIcon",
-                "type": "string",
-                "fallback": "'mdi-record'",
-                "description": "设置 delimiter Icon，供 UCarousel 执行对应行为；公开类型为 string",
+                "type": "IconValue",
+                "fallback": "'$delimiter'",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "explicit",
-                    "source": "'mdi-record'"
+                    "source": "'$delimiter'"
                 },
                 "required": false
             },
@@ -16184,9 +16204,9 @@ export const componentApi = {
             },
             {
                 "name": "prevIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "上一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -16194,9 +16214,9 @@ export const componentApi = {
             },
             {
                 "name": "nextIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "下一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19718,9 +19738,9 @@ export const componentApi = {
             },
             {
                 "name": "sortIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19728,9 +19748,9 @@ export const componentApi = {
             },
             {
                 "name": "sortAscIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖升序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19738,9 +19758,9 @@ export const componentApi = {
             },
             {
                 "name": "sortDescIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖降序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19748,9 +19768,9 @@ export const componentApi = {
             },
             {
                 "name": "expandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19758,9 +19778,9 @@ export const componentApi = {
             },
             {
                 "name": "collapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行展开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19768,9 +19788,9 @@ export const componentApi = {
             },
             {
                 "name": "groupExpandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19778,9 +19798,9 @@ export const componentApi = {
             },
             {
                 "name": "groupCollapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组打开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19881,9 +19901,9 @@ export const componentApi = {
             },
             {
                 "name": "firstIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "首页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19891,9 +19911,9 @@ export const componentApi = {
             },
             {
                 "name": "lastIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "末页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19901,9 +19921,9 @@ export const componentApi = {
             },
             {
                 "name": "prevIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "上一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -19911,9 +19931,9 @@ export const componentApi = {
             },
             {
                 "name": "nextIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "下一页按钮的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -20961,9 +20981,9 @@ export const componentApi = {
             },
             {
                 "name": "sortIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖排序图标；未设置时使用已有双向排序箭头",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -20971,9 +20991,9 @@ export const componentApi = {
             },
             {
                 "name": "sortAscIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖升序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -20981,9 +21001,9 @@ export const componentApi = {
             },
             {
                 "name": "sortDescIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "覆盖降序图标的本库名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -20991,9 +21011,9 @@ export const componentApi = {
             },
             {
                 "name": "expandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -21001,9 +21021,9 @@ export const componentApi = {
             },
             {
                 "name": "collapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行展开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -21011,9 +21031,9 @@ export const componentApi = {
             },
             {
                 "name": "groupExpandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -21021,9 +21041,9 @@ export const componentApi = {
             },
             {
                 "name": "groupCollapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "分组打开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -22726,9 +22746,9 @@ export const componentApi = {
         "props": [
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -23249,9 +23269,9 @@ export const componentApi = {
             },
             {
                 "name": "expandIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行关闭时的展开图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -23259,9 +23279,9 @@ export const componentApi = {
             },
             {
                 "name": "collapseIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "数据行展开时的收起图标",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -23690,19 +23710,19 @@ export const componentApi = {
             {
                 "name": "prepend",
                 "type": "—",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "在主要内容前追加图标或节点"
             },
             {
                 "name": "default",
                 "type": "—",
-                "fallback": "有默认内容",
+                "fallback": "—",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点"
             },
             {
                 "name": "append",
                 "type": "—",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "在主要内容后追加图标或节点"
             },
             {
@@ -24106,9 +24126,9 @@ export const componentApi = {
             },
             {
                 "name": "clearIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 clear Icon，供 UFileInput 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -24721,12 +24741,12 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
-                "fallback": "'mdi-upload'",
-                "description": "指定使用的图标名称",
+                "type": "IconValue",
+                "fallback": "'$upload'",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "explicit",
-                    "source": "'mdi-upload'"
+                    "source": "'$upload'"
                 },
                 "required": false
             },
@@ -28022,9 +28042,9 @@ export const componentApi = {
             },
             {
                 "name": "appendIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "在右侧显示图标；append插槽存在时由插槽替换",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -32302,9 +32322,9 @@ export const componentApi = {
             },
             {
                 "name": "emptyIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 empty Icon，供 URating 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -32312,9 +32332,9 @@ export const componentApi = {
             },
             {
                 "name": "fullIcon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "设置 full Icon，供 URating 执行对应行为；公开类型为 string",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -33197,21 +33217,23 @@ export const componentApi = {
             },
             {
                 "name": "prevIcon",
-                "type": "string",
-                "fallback": "—",
-                "description": "上一页按钮的图标名称",
+                "type": "IconValue as PropType<IconValue>",
+                "fallback": "undefined",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
-                    "kind": "undefined"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             },
             {
                 "name": "nextIcon",
-                "type": "string",
-                "fallback": "—",
-                "description": "下一页按钮的图标名称",
+                "type": "IconValue as PropType<IconValue>",
+                "fallback": "undefined",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
-                    "kind": "undefined"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             },
@@ -35412,9 +35434,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -35890,9 +35912,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -37160,9 +37182,9 @@ export const componentApi = {
             },
             {
                 "name": "icon",
-                "type": "string",
+                "type": "IconValue",
                 "fallback": "—",
-                "description": "指定使用的图标名称",
+                "description": "图标值：SVG 路径、含透明度的多路径数组、Vue 组件或 $alias；兼容已有本地名称。",
                 "declaredDefault": {
                     "kind": "undefined"
                 },

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { mdiAccountOutline } from '@mdi/js';
 import { UField, USelect, USwitch } from '../../index';
 const value = ref('');
 const focused = ref(false);
@@ -31,7 +32,7 @@ function clear() {
             label="自定义原生输入"
             description="字段提供装饰、标签、焦点和 ARIA；输入值由页面管理。"
             clearable
-            prepend-inner-icon="mdi-account-outline"
+            :prepend-inner-icon="mdiAccountOutline"
             @click:clear="clear"
         >
             <template #default="{ props: inputProps }">

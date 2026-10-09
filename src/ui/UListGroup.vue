@@ -117,7 +117,7 @@ const activatorProps = computed(() => ({
                 v-pointer-blur
             >
                 {{ props.title }}
-                <Icon name="mdi-chevron-down" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': expanded }" />
+                <Icon name="$expand" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': expanded }" />
             </button>
         </slot>
         <UiCollapse :id="`${groupId}-items`" :open="expanded" role="group" :aria-labelledby="`${groupId}-activator`"><div class="ui-list-group-items"><slot /></div></UiCollapse>

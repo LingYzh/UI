@@ -229,21 +229,21 @@ export const layoutPages = [
         "id": "icons",
         "title": "图标",
         "name": "UiIcon",
-        "description": "原型图标、常用MDI名称和按需SVG路径，支持可访问名称。",
+        "description": "统一 IconValue：按需 SVG 路径、多路径、Vue 组件和语义别名，兼容旧名称。",
         "group": "内容组件",
         "kind": "component",
         "examples": [
             {
                 "id": "layout-icons",
                 "title": "MDI与原型图标",
-                "description": "实际SVG图标；常用名称开箱可用，其他MDI从@mdi/js按需导入并传path。",
+                "description": "从 @mdi/js 具名导入后直接传给 icon 类属性；同一协议用于按钮、输入框和卡片。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UIcon, UButton } from '@lingyzh/ui';\n</script>\n\n<template>\n    <u-icon name=\"mdi-account\" :size=\"24\" />\n    <u-icon name=\"folder\" label=\"文件夹\" />\n    <u-button>\n        <u-icon name=\"mdi-plus\" />\n        新增配置\n    </u-button>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { mdiAccount, mdiClose } from '@mdi/js';\nimport { UIcon, UButton, UTextField } from '@lingyzh/ui';\nconst query = ref('账户');\n</script>\n\n<template>\n    <UIcon :icon=\"mdiAccount\" label=\"账户\" :size=\"24\" />\n    <UButton :icon=\"mdiAccount\" aria-label=\"账户操作\" />\n    <UButton :prepend-icon=\"mdiAccount\">账户</UButton>\n    <UTextField v-model=\"query\" :clear-icon=\"mdiClose\" clearable label=\"账户名称\" />\n</template>"
             }
         ],
         "notes": [
-            "新增应用图标优先path按需导入；registerIcons({ name: path })可集中注册，未知name保持原file回退。",
-            "不加载CDN、网络字体或整套MDI；图标按钮用UButton提供行为及名称。"
+            "新增业务图标具名导入路径并传 icon；createUI 的 icons 配置支持 $alias 与自定义图标集，name/path/registerIcons 保留兼容。未知值在开发环境警告并留空。",
+            "mdi-svg 不自动转换任意 mdi-* 名称；仅保留有限名称兼容表。本地 67 个 SVG 仍为 eager 字典，字体集须由应用配置。图标按钮用 UButton 提供行为与可访问名称。"
         ]
     },
     {

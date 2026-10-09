@@ -6,8 +6,8 @@ import {
     mdiArrowUp, mdiArrowDown, mdiChevronUp, mdiPageFirst, mdiPageLast
 } from '@mdi/js';
 
-/** Small built-in MDI set. Applications import additional paths individually. */
-const paths = shallowReactive<Record<string, string>>({
+/** Small compatibility map for the MDI names supported by the library before icon sets were introduced. */
+export const iconPaths = shallowReactive<Record<string, string>>({
     'mdi-account': mdiAccount, 'mdi-alert-circle-outline': mdiAlertCircleOutline,
     'mdi-arrow-left': mdiArrowLeft, 'mdi-arrow-right': mdiArrowRight, 'mdi-check': mdiCheck,
     'mdi-arrow-up': mdiArrowUp, 'mdi-arrow-down': mdiArrowDown, 'mdi-chevron-up': mdiChevronUp,
@@ -23,8 +23,10 @@ const paths = shallowReactive<Record<string, string>>({
 
 export function registerIcons(icons: Record<string, string>): void {
     for (const [name, path] of Object.entries(icons)) {
-        if (name && typeof path === 'string' && path.trim()) paths[name] = path;
+        if (name && typeof path === 'string' && path.trim()) iconPaths[name] = path;
     }
 }
 
-export function iconPath(name: string): string | undefined { return paths[name]; }
+export function iconPath(name: string): string | undefined {
+    return iconPaths[name];
+}

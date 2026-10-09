@@ -9,9 +9,10 @@ import { useDefaults } from './defaults';
 import { normalizeRating } from './specialized-inputs';
 import { useLocale } from './locale-context';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { length?: number; precision?: number; clearable?: boolean; halfIncrements?: boolean; hover?: boolean; emptyIcon?: string; fullIcon?: string; itemLabels?: readonly string[]; itemLabelPosition?: 'top' | 'bottom'; itemAriaLabel?: string; activeColor?: string } & { ripple?: RippleOptions }>(), { ripple: true, length: 5, precision: 1, itemLabelPosition: 'top', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { length?: number; precision?: number; clearable?: boolean; halfIncrements?: boolean; hover?: boolean; emptyIcon?: IconValue; fullIcon?: IconValue; itemLabels?: readonly string[]; itemLabelPosition?: 'top' | 'bottom'; itemAriaLabel?: string; activeColor?: string } & { ripple?: RippleOptions }>(), { ripple: true, length: 5, precision: 1, itemLabelPosition: 'top', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'URating');
 defineEmits<{ 'update:focused': [value: boolean] }>();
 const model = defineModel<number | null>({ default: 0 });

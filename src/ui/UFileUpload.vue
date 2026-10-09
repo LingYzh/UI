@@ -2,6 +2,7 @@
 import { vFocusModality } from './focus-modality';
 import { vRipple, type RippleOptions } from './ripple';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
@@ -13,7 +14,7 @@ import { validateFiles, type FileValidationResult } from './specialized-inputs';
 import { formatFileSize } from './file-display';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; title?: string; subtitle?: string; browseText?: string; dividerText?: string; icon?: string; hideBrowse?: boolean; insetFileList?: boolean; showSize?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, showSize: true, title: '拖放文件到这里', browseText: '选择本地文件', icon: 'mdi-upload', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; title?: string; subtitle?: string; browseText?: string; dividerText?: string; icon?: IconValue; hideBrowse?: boolean; insetFileList?: boolean; showSize?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, showSize: true, title: '拖放文件到这里', browseText: '选择本地文件', icon: '$upload', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UFileUpload');
 const emit = defineEmits<{ 'update:focused': [value: boolean]; rejected: [files: File[]]; 'rejected-details': [result: FileValidationResult['rejected']]; change: [files: File[]]; 'click:browse': [event?: MouseEvent]; 'click:remove': [index: number] }>();
 const model = defineModel<File | File[] | null>({ default: null });
@@ -178,14 +179,14 @@ defineExpose({ element, input, files, dragging, control, receive, drop, change, 
                 <slot v-if="$slots.default" v-bind="slotScope" />
                 <template v-else>
                     <div class="ui-upload-target" :class="{ 'is-custom-input': customInput }" :role="props.hideBrowse ? 'button' : undefined" :tabindex="props.hideBrowse ? interactive ? 0 : -1 : undefined" :aria-disabled="props.hideBrowse && !interactive || undefined" @click="onTargetClick" @keydown="onTargetKeydown">
-                        <span v-if="props.icon || $slots.icon" class="ui-upload-symbol" aria-hidden="true"><slot name="icon"><Icon :name="props.icon" :size="20" /></slot></span>
+                        <span v-if="props.icon || $slots.icon" class="ui-upload-symbol" aria-hidden="true"><slot name="icon"><Icon :icon="props.icon" :size="20" /></slot></span>
                         <strong v-if="props.title || $slots.title"><slot name="title">{{ props.title }}</slot></strong>
                         <span v-if="props.subtitle" class="ui-upload-hint">{{ props.subtitle }}</span>
                         <span v-if="props.dividerText || $slots.divider" class="ui-upload-hint"><slot name="divider">{{ props.dividerText }}</slot></span>
                         <template v-if="!props.hideBrowse"><slot v-if="$slots.browse || props.insetFileList && files.length > 0" name="browse" :props="browseProps"><button v-ripple="interactive ? props.ripple : false" v-pointer-blur v-bind="browseProps" class="ui-upload-browse">{{ props.browseText }}</button></slot><span v-else class="ui-upload-hint">或{{ props.browseText }}</span></template>
                         <slot name="input" :input-node="nativeInputNode"><component :is="nativeInputNode" v-focus-modality :aria-describedby="controlAttrs['aria-describedby']" /></slot>
                     </div>
-                    <ul v-if="files.length" class="ui-upload-files"><li v-for="(file, index) in files" :key="index"><slot :name="!props.multiple && files.length === 1 && $slots.single ? 'single' : 'item'" :file="file" :index="index" :props="removeProps(index)"><span :title="file.name">{{ file.name }}</span><small v-if="props.showSize">{{ formatFileSize(file.size) }}</small><button v-if="props.clearable" v-ripple="interactive ? props.ripple : false" v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="!interactive" @click="remove(index)"><Icon name="mdi-close" :size="16" /></button></slot></li></ul>
+                    <ul v-if="files.length" class="ui-upload-files"><li v-for="(file, index) in files" :key="index"><slot :name="!props.multiple && files.length === 1 && $slots.single ? 'single' : 'item'" :file="file" :index="index" :props="removeProps(index)"><span :title="file.name">{{ file.name }}</span><small v-if="props.showSize">{{ formatFileSize(file.size) }}</small><button v-if="props.clearable" v-ripple="interactive ? props.ripple : false" v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="!interactive" @click="remove(index)"><Icon icon="$close" :size="16" /></button></slot></li></ul>
                 </template>
                 <component :is="nativeInputNode" v-if="$slots.default" v-focus-modality :aria-describedby="controlAttrs['aria-describedby']" />
                 <slot v-if="props.loading" name="loader" :is-active="true" :color="props.color"><span class="u-input-loading" role="status" aria-label="加载中" /></slot>

@@ -1,5 +1,20 @@
 # UI 项目交接
 
+## 2026-10-09：0.5.0 发布前完整验收完成
+
+用户确定 0.5.0 并授权发布，再评估 UAH。完整 typecheck、327/327 单测、docs/lib build、Electron 21 组/173 路由、copy-icons 6 组、feedback 7 组、controls 6 组及 545 文件 pack/10 exports/9 项 tarball 消费检查通过，单一 Vue 与普通安装目录已核对。Root 复核复制按钮明暗/390px 截图。copy-icons 首次 Windows DPI 尺寸超时保留，测试统一 scale=1 后完整复跑通过；生产源码与已验收图标专项一致。证据：docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-release-0.5.0.json；迁移说明 docs/RELEASE-0.5.0.md。
+
+包与 lock 根版本已改为 0.5.0，下一步合并 main、推送 v0.5.0 并等待 OIDC/official registry 确认。UAH 仍固定 0.4.2，本轮仅只读评估。下方未提交/0.4.2 状态为图标专项完成时的历史。
+
+
+## 2026-10-09：图标协议同步专项验收完成
+
+用户要求 icon 与 @mdi/js 同步 Vuetify 4.2.4，并允许本批全部执行子代理使用 CCS Luna。分支 codex/icon-protocol-alignment-20261009 已统一 IconValue、语义别名/图标集及各消费者入口，保留 name/path 和本地名称兼容；修复默认图标与 Stepper 文字输出，并同步真实 demo/API。
+
+相关单测/SSR/API/表格/Stepper/Tabs/Hotkey 62/62；图标专项 Vue 类型检查通过；Chrome 源码夹具 52 项通过，源码哈希稳定，无非预期警告/页面错误，Root 已复核浅色、深色和 390px 截图。单 Icon + mdiAccount 入口 gzip 46,668→51,180 bytes；67 个本地 SVG eager 字典仍保留。首次失败、修正与范围限制记录在 docs/ICON-PROTOCOL-ALIGNMENT-2026-10-09.json；约定见 .Codex/memory/icons.md。
+
+当前未提交/推送/发版，包版本仍为 0.4.2，UAH 尚未消费本批图标修改。按用户约定，本轮仅专项检查；提交前仍须执行完整门禁。下方旧发版与 UAH 已合并记录继续作为历史，不充当本次门禁。
+
 ## 2026-10-09：UAH 已合并 main
 
 用户明确要求直接合并。PR #1 已从 draft 转为 ready 并成功合并，merge commit c02fb3be04f96acda515b8867d41676a375078fa，https://github.com/LingYzh/UAH-desktop/pull/1。合并后文件树与已验收适配提交 196d397 完全一致（tree d51f06740a4f5f9396da1791e360b094678fd38e），原 11 项门禁证据继续适用；本地 main 已同步。后续仅补记合并状态，未修改产品、依赖或测试，未制作安装包。下方待审阅/未合并状态为合并前历史。

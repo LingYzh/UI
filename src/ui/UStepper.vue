@@ -8,6 +8,8 @@ import UStepperActions from './UStepperActions.vue';
 import UStepperItem from './UStepperItem.vue';
 import UStepperWindow from './UStepperWindow.vue';
 import UStepperWindowItem from './UStepperWindowItem.vue';
+import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 
 const rawProps = withDefaults(defineProps<{
     disabled?: boolean;
@@ -126,6 +128,10 @@ const actionScope = computed(() => ({
     go
 }));
 
+function isIconValue(value: unknown): value is IconValue {
+    return typeof value === 'string' || Array.isArray(value) || typeof value === 'function' || value !== null && typeof value === 'object';
+}
+
 function itemScope(item: StepperItemRecord) {
     return { raw: item.raw, title: item.title, value: item.value, props: item.props };
 }
@@ -155,8 +161,10 @@ defineExpose({ next: context.next, prev: context.prev, go });
                 <template #default="itemState">
                     <slot :name="`header-item.${item.value}`" v-bind="headerSlotScope(item, itemState)">
                         <slot name="header" v-bind="headerSlotScope(item, itemState)">
-                            <span v-if="item.props.icon !== undefined || $slots.icon" class="u-stepper-icon">
-                                <slot name="icon" :icon="item.props.icon" v-bind="headerSlotScope(item, itemState)">{{ item.props.icon }}</slot>
+                            <span v-if="isIconValue(item.props.icon) || $slots.icon" class="u-stepper-icon">
+                                <slot name="icon" :icon="item.props.icon" v-bind="headerSlotScope(item, itemState)">
+                                    <Icon v-if="isIconValue(item.props.icon)" :icon="item.props.icon" />
+                                </slot>
                             </span>
                             <span v-if="item.title || $slots.title" class="u-stepper-title">
                                 <slot name="title" v-bind="headerSlotScope(item, itemState)">{{ item.title }}</slot>

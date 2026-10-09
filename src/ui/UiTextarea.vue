@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useId, useSlots, watch, type CSSProperties } from 'vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { controlSizeStyles, type ControlSizing } from './control-sizing';
 import UiControlFrame from './UiControlFrame.vue';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
@@ -21,7 +22,7 @@ type TextareaProps = ControlSizing & Omit<FormControlProps, 'counter'> & {
     counterValue?: number | ((value: string) => number);
     persistentCounter?: boolean;
     persistentClear?: boolean;
-    clearIcon?: string;
+    clearIcon?: IconValue;
     ripple?: RippleOptions;
 };
 

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import FormDemo from './FormDemo.vue';
+import IconProtocolsDemo from './IconProtocolsDemo.vue';
 import { mdiDatabaseOutline } from '@mdi/js';
 import {
     UContainer,
@@ -527,6 +528,8 @@ async function confirm() {
             </u-form-actions>
         </template>
         <template v-else-if="example === 'layout-icons'">
+            <IconProtocolsDemo />
+            <p class="mt-4">以下有限名称表属于旧版兼容入口；新增业务图标请具名导入路径。</p>
             <div class="layout-demo-icons">
                 <div v-for="icon in mdiNames" :key="icon">
                     <u-icon :name="icon" :size="24" />

@@ -1,9 +1,11 @@
+import type { IconValue } from './icon-config';
+
 export type HotkeyDisplayMode = 'icon' | 'symbol' | 'text';
 export type HotkeyPlatform = 'auto' | 'mac' | 'pc';
 
 export interface HotkeyKeyConfig {
     text: string;
-    icon?: string;
+    icon?: IconValue;
     symbol?: string;
 }
 
@@ -14,13 +16,21 @@ export interface HotkeyPlatformKeyConfig {
 
 export type HotkeyMap = Record<string, HotkeyPlatformKeyConfig>;
 
-export type HotkeyDisplayKey = {
-    kind: 'key';
-    key: string;
-    mode: HotkeyDisplayMode;
-    content: string;
-    text: string;
-};
+export type HotkeyDisplayKey =
+    | {
+        kind: 'key';
+        key: string;
+        mode: 'icon';
+        content: IconValue;
+        text: string;
+    }
+    | {
+        kind: 'key';
+        key: string;
+        mode: 'symbol' | 'text';
+        content: string;
+        text: string;
+    };
 
 export type HotkeyDisplayDivider = {
     kind: 'divider';
@@ -94,49 +104,49 @@ const aliases = new Map<string, string>([
 
 export const defaultHotkeyMap: HotkeyMap = {
     ctrl: {
-        default: { text: 'Ctrl', icon: 'mdi-apple-keyboard-control' },
-        mac: { text: 'Control', symbol: '⌃', icon: 'mdi-apple-keyboard-control' }
+        default: { text: 'Ctrl', icon: '$ctrl' },
+        mac: { text: 'Control', symbol: '⌃', icon: '$ctrl' }
     },
     meta: {
-        default: { text: 'Ctrl', icon: 'mdi-apple-keyboard-control' },
-        mac: { text: 'Command', symbol: '⌘', icon: 'mdi-apple-keyboard-command' }
+        default: { text: 'Ctrl', icon: '$ctrl' },
+        mac: { text: 'Command', symbol: '⌘', icon: '$command' }
     },
     cmd: {
-        default: { text: 'Ctrl', icon: 'mdi-apple-keyboard-control' },
-        mac: { text: 'Command', symbol: '⌘', icon: 'mdi-apple-keyboard-command' }
+        default: { text: 'Ctrl', icon: '$ctrl' },
+        mac: { text: 'Command', symbol: '⌘', icon: '$command' }
     },
     shift: {
-        default: { text: 'Shift', symbol: '⇧', icon: 'mdi-apple-keyboard-shift' },
-        mac: { text: 'Shift', symbol: '⇧', icon: 'mdi-apple-keyboard-shift' }
+        default: { text: 'Shift', symbol: '⇧', icon: '$shift' },
+        mac: { text: 'Shift', symbol: '⇧', icon: '$shift' }
     },
     alt: {
-        default: { text: 'Alt', icon: 'mdi-apple-keyboard-option' },
-        mac: { text: 'Option', symbol: '⌥', icon: 'mdi-apple-keyboard-option' }
+        default: { text: 'Alt', icon: '$alt' },
+        mac: { text: 'Option', symbol: '⌥', icon: '$alt' }
     },
     enter: {
-        default: { text: 'Enter', symbol: '↵', icon: 'mdi-keyboard-return' }
+        default: { text: 'Enter', symbol: '↵', icon: '$enter' }
     },
     arrowup: {
-        default: { text: 'Up Arrow', symbol: '↑', icon: 'mdi-arrow-up' }
+        default: { text: 'Up Arrow', symbol: '↑', icon: '$arrowup' }
     },
     arrowdown: {
-        default: { text: 'Down Arrow', symbol: '↓', icon: 'mdi-arrow-down' }
+        default: { text: 'Down Arrow', symbol: '↓', icon: '$arrowdown' }
     },
     arrowleft: {
-        default: { text: 'Left Arrow', symbol: '←', icon: 'mdi-arrow-left' }
+        default: { text: 'Left Arrow', symbol: '←', icon: '$arrowleft' }
     },
     arrowright: {
-        default: { text: 'Right Arrow', symbol: '→', icon: 'mdi-arrow-right' }
+        default: { text: 'Right Arrow', symbol: '→', icon: '$arrowright' }
     },
     backspace: {
-        default: { text: 'Backspace', symbol: '⌫', icon: 'mdi-backspace-outline' }
+        default: { text: 'Backspace', symbol: '⌫', icon: '$backspace' }
     },
     escape: {
-        default: { text: 'Escape', icon: 'mdi-keyboard-esc' }
+        default: { text: 'Escape', icon: '$escape' }
     },
     ' ': {
-        default: { text: 'Space', icon: 'mdi-keyboard-space' },
-        mac: { text: 'Space', symbol: '␣', icon: 'mdi-keyboard-space' }
+        default: { text: 'Space', icon: '$space' },
+        mac: { text: 'Space', symbol: '␣', icon: '$space' }
     },
     '-': {
         default: { text: '-' }
@@ -408,16 +418,19 @@ function formatKey(
 
     const platformConfig = isMac && config.mac ? config.mac : config.default;
     const text = displayText(platformConfig.text, translate);
-    const requestedContent = mode === 'text' ? text : platformConfig[mode];
-    const resolvedMode = mode !== 'text' && !requestedContent ? 'text' : mode;
-    const content = resolvedMode === 'text' ? text : platformConfig[resolvedMode] ?? text;
-    return {
-        kind: 'key',
-        key,
-        mode: resolvedMode,
-        content,
-        text
-    };
+    if (mode === 'icon') {
+        const icon = platformConfig.icon;
+        return icon
+            ? { kind: 'key', key, mode: 'icon', content: icon, text }
+            : { kind: 'key', key, mode: 'text', content: text, text };
+    }
+    if (mode === 'symbol') {
+        const symbol = platformConfig.symbol;
+        return symbol
+            ? { kind: 'key', key, mode: 'symbol', content: symbol, text }
+            : { kind: 'key', key, mode: 'text', content: text, text };
+    }
+    return { kind: 'key', key, mode: 'text', content: text, text };
 }
 
 function divider(type: 'sequence' | 'alternate' | 'combo', translate?: (key: string) => string): HotkeyDisplayDivider {

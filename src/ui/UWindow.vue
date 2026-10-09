@@ -179,8 +179,8 @@ function onTouchEnd(event: TouchEvent): void {
 function onTouchCancel(): void { touchStart = undefined; motion.onTouchCancel(); }
 
 const arrowsVisible = computed(() => props.showArrows === true || props.showArrows === 'hover');
-const prevProps = computed(() => ({ icon: 'mdi-chevron-left', class: 'u-window-prev', onClick: prev, disabled: !canMove(-1), 'aria-label': '上一项' }));
-const nextProps = computed(() => ({ icon: 'mdi-chevron-right', class: 'u-window-next', onClick: next, disabled: !canMove(1), 'aria-label': '下一项' }));
+const prevProps = computed(() => ({ icon: '$prev', class: 'u-window-prev', onClick: prev, disabled: !canMove(-1), 'aria-label': '上一项' }));
+const nextProps = computed(() => ({ icon: '$next', class: 'u-window-next', onClick: next, disabled: !canMove(1), 'aria-label': '下一项' }));
 defineExpose({ next, prev });
 </script>
 
@@ -204,10 +204,10 @@ defineExpose({ next, prev });
         <slot name="additional" :next="next" :prev="prev" :model-value="model" :group="context" />
         <div v-if="arrowsVisible" class="u-window-controls" :class="{ 'is-hover': props.showArrows === 'hover' }">
             <slot name="prev" :props="prevProps">
-                <button type="button" v-bind="prevProps"><Icon :name="prevProps.icon" :size="20" /></button>
+                <button type="button" v-bind="prevProps"><Icon :icon="prevProps.icon" :size="20" /></button>
             </slot>
             <slot name="next" :props="nextProps">
-                <button type="button" v-bind="nextProps"><Icon :name="nextProps.icon" :size="20" /></button>
+                <button type="button" v-bind="nextProps"><Icon :icon="nextProps.icon" :size="20" /></button>
             </slot>
         </div>
     </component>

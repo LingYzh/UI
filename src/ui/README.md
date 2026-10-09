@@ -182,7 +182,41 @@ Textarea 与 Input 使用相同边框、圆角、字号及状态。新增 readon
 
 ## 图标与操作焦点
 
-UiIcon 保留原型名称，支持常用 mdi-* 名称、按需 path 与 registerIcons。额外图标从 `@mdi/js` 导入单个路径；不会加载网络字体或整套字体。默认为装饰性图标，label 提供 role=img 与可访问名称。预览 `/#/icons`。
+UIcon / UiIcon 和各组件的 icon、prependIcon、clearIcon 等属性共用 `IconValue`：SVG 路径、含 `[path, opacity]` 的多路径数组、Vue 组件或 `$alias`。从 `@mdi/js` 具名导入后直接传入，无需逐个注册；可通过 `createUI({ icons: { defaultSet, aliases, sets } })` 配置应用独立的图标集合，SVG 集合配置导出在 `@lingyzh/ui/iconsets/mdi-svg`。内置控件使用语义别名。
+
+兼容旧版 `name`、`path`、有限 `mdi-*` 名称和 `registerIcons`；优先级为 `path > icon > name`，旧裸别名也可解析，新增配置统一使用 `$alias`。未知名称、别名或图标集在开发环境警告并留空，不再显示无关的文件图标。`mdi-svg` 不会自动把任意 `mdi-*` 字符串变成路径；字体图标需要自行配置 class/ligature 图标集并加载对应字体。默认图标是装饰性，`label` 提供 role=img 和可访问名称。预览 `/#/icons`。
+
+```vue
+<script setup>
+import { mdiAccount } from '@mdi/js';
+import { UIcon, UButton } from '@lingyzh/ui';
+</script>
+
+<template>
+    <UIcon :icon="mdiAccount" label="账户" />
+    <UButton :icon="mdiAccount" aria-label="账户操作" />
+    <UButton :prepend-icon="mdiAccount">
+        账户
+    </UButton>
+</template>
+```
+
+```js
+import { createUI } from '@lingyzh/ui';
+import { mdi } from '@lingyzh/ui/iconsets/mdi-svg';
+import { mdiAccount } from '@mdi/js';
+
+app.use(createUI({
+    icons: {
+        defaultSet: 'mdi',
+        aliases: { account: mdiAccount },
+        sets: { mdi }
+    }
+}));
+// 模板使用 icon="$account"；内置 $close 等别名可在此统一覆盖。
+```
+
+本地原型 SVG 名称查表仍通过 eager raw 字典提供旧版兼容，因此这一分支包含 67 个本地 SVG，不能宣称逐图裁剪。业务 MDI 采用具名导入，不建立完整名称字典；包体审计与图标功能验证单独记录。
 
 鼠标或触摸完成离散操作后释放该控件焦点；键盘操作保留焦点与焦点标记，文本输入保留编辑焦点。统一应用于 Switch、Checkbox、Radio、ColorSwatches、Button、TabTrigger、MenuItem、Activity、Badge 关闭、Table 排序、文件／差异／用量入口，以及复用 Button 的分页、复制和消息操作。菜单与弹窗关闭时按操作方式恢复触发器焦点；动作移动到输入或弹窗的新焦点不会被清除。Select 保留 blurOnSelect=true 的指针选择策略。预览 `/#/focus`。
 

@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, useModel, watch } from 'vue';
 import UiButton from './UiButton.vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { positiveInteger } from './table';
 import { useLocale } from './locale-context';
 import type { RippleOptions } from './ripple';
@@ -17,7 +18,7 @@ type PageEntry = {
 
 type ControlName = 'first' | 'prev' | 'next' | 'last';
 type ControlSlotProps = {
-    icon: string;
+    icon: IconValue;
     disabled: boolean;
     'aria-label': string;
     'aria-disabled': boolean;
@@ -34,10 +35,10 @@ const props = withDefaults(defineProps<{
     ghost?: boolean;
     rounded?: boolean;
     label?: string;
-    prevIcon?: string;
-    nextIcon?: string;
-    firstIcon?: string;
-    lastIcon?: string;
+    prevIcon?: IconValue;
+    nextIcon?: IconValue;
+    firstIcon?: IconValue;
+    lastIcon?: IconValue;
     prevLabel?: string;
     nextLabel?: string;
     ariaLabel?: string;
@@ -170,10 +171,10 @@ function createControl(name: ControlName): ControlSlotProps {
     const disabled = props.disabled || (name === 'first' || name === 'prev'
         ? current.value <= startPage.value
         : current.value >= endPage.value);
-    const icon = name === 'first' ? (rtl ? props.lastIcon ?? 'mdi-chevron-double-right' : props.firstIcon ?? 'mdi-chevron-double-left')
-        : name === 'prev' ? (rtl ? props.nextIcon ?? 'mdi-chevron-right' : props.prevIcon ?? 'mdi-chevron-left')
-            : name === 'next' ? (rtl ? props.prevIcon ?? 'mdi-chevron-left' : props.nextIcon ?? 'mdi-chevron-right')
-                : (rtl ? props.firstIcon ?? 'mdi-chevron-double-left' : props.lastIcon ?? 'mdi-chevron-double-right');
+    const icon = name === 'first' ? (rtl ? props.lastIcon ?? '$last' : props.firstIcon ?? '$first')
+        : name === 'prev' ? (rtl ? props.nextIcon ?? '$next' : props.prevIcon ?? '$prev')
+            : name === 'next' ? (rtl ? props.prevIcon ?? '$prev' : props.nextIcon ?? '$next')
+                : (rtl ? props.firstIcon ?? '$first' : props.lastIcon ?? '$last');
     const ariaLabel = name === 'first' ? labelText(props.firstAriaLabel, 'pagination.first')
         : name === 'prev' ? previousLabel.value
             : name === 'next' ? nextLabel.value
@@ -242,7 +243,7 @@ function onKeydown(event: KeyboardEvent) {
                     :aria-disabled="firstControl['aria-disabled']"
                     @click="firstControl.onClick"
                 >
-                    <Icon :name="firstControl.icon" :size="16" />
+                    <Icon :icon="firstControl.icon" :size="16" />
                 </UiButton>
             </slot>
         </template>
@@ -258,7 +259,7 @@ function onKeydown(event: KeyboardEvent) {
                 :aria-disabled="prevControl['aria-disabled']"
                 @click="prevControl.onClick"
             >
-                <Icon :name="prevControl.icon" :size="16" />
+                <Icon :icon="prevControl.icon" :size="16" />
             </UiButton>
         </slot>
         <template v-for="item in pageItems" :key="item.key">
@@ -294,7 +295,7 @@ function onKeydown(event: KeyboardEvent) {
                 :aria-disabled="nextControl['aria-disabled']"
                 @click="nextControl.onClick"
             >
-                <Icon :name="nextControl.icon" :size="16" />
+                <Icon :icon="nextControl.icon" :size="16" />
             </UiButton>
         </slot>
         <template v-if="lastControl">
@@ -310,7 +311,7 @@ function onKeydown(event: KeyboardEvent) {
                     :aria-disabled="lastControl['aria-disabled']"
                     @click="lastControl.onClick"
                 >
-                    <Icon :name="lastControl.icon" :size="16" />
+                    <Icon :icon="lastControl.icon" :size="16" />
                 </UiButton>
             </slot>
         </template>

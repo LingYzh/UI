@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { defineComponent } from 'vue';
+import type { IconValue } from '../src/ui/icon-config';
 import {
     defaultHotkeyMap,
     formatHotkeys,
@@ -56,7 +58,7 @@ test('falls back to readable text when an icon or symbol is unavailable', () => 
     const [symbolTokens] = formatHotkeys('escape', 'symbol', defaultHotkeyMap, false);
 
     assert.deepEqual(iconTokens.map((token) => token.kind === 'key' ? [token.mode, token.content, token.text] : token.content), [
-        ['icon', 'mdi-apple-keyboard-control', 'Ctrl'],
+        ['icon', '$ctrl', 'Ctrl'],
         '+',
         ['text', 'UNKNOWN', 'UNKNOWN']
     ]);
@@ -67,6 +69,31 @@ test('falls back to readable text when an icon or symbol is unavailable', () => 
         content: 'Escape',
         text: 'Escape'
     });
+});
+
+test('passes path arrays and components through icon mode while text and symbol modes stay textual', () => {
+    const pathIcon: IconValue = ['M0 0h1v1z', ['M1 0h1v1z', 0.5]];
+    const componentIcon = defineComponent({ render: () => null });
+    const map: HotkeyMap = {
+        path: { default: { text: 'Path', icon: pathIcon, symbol: 'P' } },
+        component: { default: { text: 'Component', icon: componentIcon, symbol: 'C' } }
+    };
+
+    const [pathTokens] = formatHotkeys('path', 'icon', map, false);
+    const [componentTokens] = formatHotkeys('component', 'icon', map, false);
+    const pathToken = pathTokens[0];
+    const componentToken = componentTokens[0];
+    assert.ok(pathToken?.kind === 'key');
+    assert.ok(componentToken?.kind === 'key');
+    assert.equal(pathToken.mode, 'icon');
+    assert.strictEqual(pathToken.content, pathIcon);
+    assert.equal(componentToken.mode, 'icon');
+    assert.strictEqual(componentToken.content, componentIcon);
+
+    const [textTokens] = formatHotkeys('path', 'text', map, false);
+    const [symbolTokens] = formatHotkeys('path', 'symbol', map, false);
+    assert.deepEqual(textTokens[0], { kind: 'key', key: 'path', mode: 'text', content: 'Path', text: 'Path' });
+    assert.deepEqual(symbolTokens[0], { kind: 'key', key: 'path', mode: 'symbol', content: 'P', text: 'Path' });
 });
 
 test('uses a Mac override as the selected config without merging the default config', () => {

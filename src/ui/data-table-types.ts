@@ -2,6 +2,7 @@ import type { CSSProperties } from 'vue';
 import type { RippleOptions } from './ripple';
 import type { DataHeader, DataItem, DataGroup, DataOptions, ItemProperty, FilterFunction, InternalDataItem, DataGroupNode, DataRow, NormalizedHeader } from './data-pipeline';
 import type { TableSort } from './table';
+import type { IconValue } from './icon-config';
 
 export interface TableSurfaceProps {
     label?: string;
@@ -100,13 +101,13 @@ export type DataTableProps = TableSurfaceProps & {
     mobile?: boolean | null;
     mobileBreakpoint?: number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     color?: string;
-    sortIcon?: string;
-    sortAscIcon?: string;
-    sortDescIcon?: string;
-    expandIcon?: string;
-    collapseIcon?: string;
-    groupExpandIcon?: string;
-    groupCollapseIcon?: string;
+    sortIcon?: IconValue;
+    sortAscIcon?: IconValue;
+    sortDescIcon?: IconValue;
+    expandIcon?: IconValue;
+    collapseIcon?: IconValue;
+    groupExpandIcon?: IconValue;
+    groupCollapseIcon?: IconValue;
     selectAllLabel?: string;
     /** 选择行控件的无障碍名称，{0} 替换为行标题。 */
     selectRowLabel?: string;
@@ -124,10 +125,10 @@ export interface TablePaginationProps {
     showCurrentPage?: boolean;
     /** 在页脚显示首尾页操作。 */
     showFirstLastPage?: boolean;
-    firstIcon?: string;
-    lastIcon?: string;
-    prevIcon?: string;
-    nextIcon?: string;
+    firstIcon?: IconValue;
+    lastIcon?: IconValue;
+    prevIcon?: IconValue;
+    nextIcon?: IconValue;
     firstPageLabel?: string;
     lastPageLabel?: string;
     prevPageLabel?: string;
@@ -178,7 +179,7 @@ export interface TableSlotScope {
     headers: NormalizedHeader[][];
     toggleSort: (column: string | { key?: string }, event?: MouseEvent, mandatory?: boolean) => void;
     isSorted: (column: { key?: string }) => boolean;
-    getSortIcon: (column: { key?: string }) => string;
+    getSortIcon: (column: { key?: string }) => IconValue;
     setPage: (page: number) => void;
     setItemsPerPage: (size: number) => void;
     prevPage: () => void;

@@ -2,6 +2,7 @@
 import { vRipple, type RippleOptions } from './ripple';
 import { computed, ref, useAttrs, useId, useSlots, type CSSProperties } from 'vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { controlSizeStyles, type ControlSizing } from './control-sizing';
 import UiControlFrame from './UiControlFrame.vue';
 import { useFormControl, mergeControlAttrs, type FormControlProps } from './form';
@@ -11,7 +12,7 @@ defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<ControlSizing & Omit<FormControlProps, 'counter'> & {
     invalid?: boolean; ripple?: RippleOptions; counter?: boolean | number | string;
     counterValue?: number | ((value: string) => number); persistentCounter?: boolean;
-    clearIcon?: string; persistentClear?: boolean;
+    clearIcon?: IconValue; persistentClear?: boolean;
 }>(), { ripple: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined, persistentCounter: false });
 const props = useDefaults(rawProps, 'UTextField');
 const emit = defineEmits<{ 'update:focused': [value: boolean]; 'click:clear': [event: MouseEvent] }>();

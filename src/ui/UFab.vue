@@ -39,7 +39,7 @@ function activate(event: MouseEvent) { if (!props.disabled && !props.loading) em
 <template>
     <div ref="element" class="u-fab-wrapper" :class="{ 'is-positioned': positioned, 'is-offset': props.offset }" :style="positionStyle">
         <UTransition :variant="props.transition === false || props.transition === true ? 'scale' : props.transition" :disabled="props.transition === false" :appear="props.appear">
-            <span v-show="props.active" class="u-fab-container"><UiButton v-bind="attrs" class="u-fab" :class="{ 'is-extended': props.extended }" :disabled="props.disabled" :loading="props.loading" :aria-label="props.label" @click="activate"><template v-if="$slots.prepend" #prepend><slot name="prepend" /></template><slot>{{ attrs.icon ? '' : '+' }}</slot><template v-if="$slots.append" #append><slot name="append" /></template><template v-if="$slots.loader" #loader><slot name="loader" /></template></UiButton></span>
+            <span v-show="props.active" class="u-fab-container"><UiButton v-bind="attrs" class="u-fab" :class="{ 'is-extended': props.extended }" :disabled="props.disabled" :loading="props.loading" :aria-label="props.label" @click="activate"><template v-if="$slots.prepend" #prepend><slot name="prepend" /></template><template v-if="$slots.default || !attrs.icon" #default><slot v-if="$slots.default" /><template v-else>+</template></template><template v-if="$slots.append" #append><slot name="append" /></template><template v-if="$slots.loader" #loader><slot name="loader" /></template></UiButton></span>
         </UTransition>
     </div>
 </template>

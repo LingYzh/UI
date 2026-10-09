@@ -6,6 +6,8 @@ import { stepperContextKey } from './stepper-state';
 import type { GroupValue } from './group-state';
 import { allocateStepperValue } from './stepper-selection';
 import { vPointerBlur } from './pointer-focus';
+import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 
 type StepperRule = () => boolean | string;
 
@@ -13,7 +15,7 @@ const rawProps = withDefaults(defineProps<{
     value?: GroupValue;
     title?: string;
     subtitle?: string;
-    icon?: string;
+    icon?: IconValue;
     complete?: boolean;
     error?: boolean;
     editable?: boolean;
@@ -90,7 +92,7 @@ watch(active, selected => emit('group:selected', { value: selected }));
         <span class="u-stepper-number" aria-hidden="true">{{ hasError ? '!' : hasCompleted ? '✓' : displayNumber }}</span>
         <span class="u-stepper-copy">
             <slot v-bind="slotScope">
-                <span v-if="props.icon" class="u-stepper-icon"><slot name="icon" :icon="props.icon">{{ props.icon }}</slot></span>
+                <span v-if="props.icon" class="u-stepper-icon"><slot name="icon" :icon="props.icon"><Icon :icon="props.icon" /></slot></span>
                 <span v-if="props.title" class="u-stepper-title"><slot name="title" :title="props.title">{{ props.title }}</slot></span>
                 <span v-if="props.subtitle" class="u-stepper-subtitle"><slot name="subtitle" :subtitle="props.subtitle">{{ props.subtitle }}</slot></span>
             </slot>

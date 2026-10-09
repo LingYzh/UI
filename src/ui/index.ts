@@ -39,6 +39,9 @@ export type { DataHeader, DataItem, DataGroup, DataOptions, DataRow, InternalDat
 export type { DataTableProps, TableSurfaceProps, TablePaginationProps, TableVirtualProps, SelectionStrategy, RowContext, GroupContext, CellContext, DataTableSlots, TableSlotScope, TableItemSlot, TableHeaderSlot, TableCellSlot, TableGroupSlot } from './data-table-types';
 
 export { default as UiIcon } from '../components/Icon.vue';
+export { createIcons, IconValue, iconKey, resolveIcon, useIcons } from './icon-config';
+export type { IconAliases, IconOptions, IconSet, ResolvedIcon, ResolvedIconOptions } from './icon-config';
+export { ClassIcon, ComponentIcon, LigatureIcon, SvgIcon } from './icon-renderers';
 export { registerIcons } from './icons';
 
 export { default as UiActivity } from './UiActivity.vue';

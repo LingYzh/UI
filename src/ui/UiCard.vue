@@ -6,6 +6,7 @@ import { useDefaults } from './defaults';
 import UImg from './UImg.vue';
 import UiSpinner from './UiSpinner.vue';
 import UiIcon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue';
 import { useNestedLinkGuard, useUiLink, type RouterProps } from './router';
 import { dimensionStyles, type DimensionProps } from './dimensions';
@@ -18,8 +19,8 @@ const rawProps = withDefaults(defineProps<{
     text?: string;
     image?: string;
     loading?: boolean;
-    prependIcon?: string;
-    appendIcon?: string;
+    prependIcon?: IconValue;
+    appendIcon?: IconValue;
     variant?: 'outlined' | 'elevated' | 'tonal' | 'flat';
     density?: 'comfortable' | 'compact';
     flush?: boolean;

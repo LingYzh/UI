@@ -1,0 +1,797 @@
+{
+    "date": "2026-10-09",
+    "base": "0da01860797d016f1e709a6265713ab2d22965e7",
+    "branch": "codex/icon-protocol-alignment-20261009",
+    "packageVersion": "0.4.2",
+    "publication": "No new commit, push, tag, publish or UAH upgrade in this task.",
+    "reference": "Vuetify 4.2.4 IconValue, icon sets and mdi-svg semantic aliases",
+    "referenceUrls": [
+        "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.4/packages/vuetify/src/composables/icons.tsx",
+        "https://raw.githubusercontent.com/vuetifyjs/vuetify/v4.2.4/packages/vuetify/src/iconsets/mdi-svg.ts"
+    ],
+    "gates": {
+        "relatedTests": {
+            "total": 62,
+            "passed": 62,
+            "failed": 0,
+            "skipped": 0,
+            "log": "artifacts/icon-protocols/unit.log"
+        },
+        "scopedTypes": {
+            "config": "tests/tsconfig.icons.json",
+            "exitCode": 0
+        },
+        "browser": {
+            "checks": 52,
+            "status": "passed",
+            "unexpectedWarnings": 0,
+            "pageErrors": 0,
+            "expectedDevelopmentWarnings": [
+                "[UI icons] Unknown icon alias \"$missingIcon\".",
+                "[UI icons] Unknown legacy icon name \"u-protocol-unknown-name\".",
+                "[UI icons] Circular icon alias \"cycleA\"."
+            ],
+            "stableHashes": true
+        },
+        "visual": {
+            "acceptedBy": "Root",
+            "screenshots": [
+                "artifacts/icon-protocols/light-wide.png",
+                "artifacts/icon-protocols/dark-wide.png",
+                "artifacts/icon-protocols/light-narrow.png"
+            ],
+            "viewports": [
+                "1280 wide light",
+                "1280 wide dark",
+                "390 narrow light"
+            ],
+            "note": "Actual IconProtocolsDemo source mounted; icon geometry, inherited color, slots, theme and overflow reviewed."
+        },
+        "apiGeneration": {
+            "components": 158,
+            "propsModels": 2706,
+            "events": 324,
+            "slots": 604,
+            "exposed": 541
+        },
+        "whitespace": "git -c core.whitespace=cr-at-eol diff --check passed"
+    },
+    "bundle": {
+        "entry": "Single Icon component + named mdiAccount path (not a full docs/library build)",
+        "baseline": {
+            "bytes": 159810,
+            "gzipBytes": 46668
+        },
+        "current": {
+            "bytes": 172367,
+            "gzipBytes": 51180
+        },
+        "gzipDeltaBytes": 4512,
+        "localAssets": 67,
+        "rawSvgOccurrences": 68,
+        "unusedMdiSentinelsAbsent": true,
+        "limits": "Two unused MDI path sentinels are absent from this entry; no complete-MDI bundle claim or full package size claim. The local 67 SVG eager dictionary remains."
+    },
+    "resolvedFailures": [
+        "Existing API test expected boolean|string; updated to boolean|IconValue and reran.",
+        "Actual SFC runtime constructors lost Object/Function for imported Component type; fixed IconValue macro hints without broadening beyond Vue Component, then real SSR accepted all four value kinds.",
+        "Fixture falsely expected pagination props on UDataTableVirtual; removed those assertions, preserving the existing virtual API.",
+        "Browser fixture duplicate Vue runtime, old opacity/tag assumptions, comment-node emptiness, incorrect Field/Switch selectors and reactive component storage were corrected. Failure reports retained in artifacts/icon-protocols.",
+        "Concurrent document theme transitions produced AbortError in the initial fixture. Final icon fixture explicitly disables theme animation and does not claim theme-transition coverage."
+    ],
+    "limitations": [
+        "Focused checks only; complete pre-commit gates not run.",
+        "No Electron or UAH renderer acceptance in this task.",
+        "No complete VIcon API parity claim; this work aligns values, aliases, sets and consumer icon entry points."
+    ],
+    "sourceSha256": {
+        "package.json": "56a9064813b3403b4a5533695d04c5f5f52df18a6fa39899fed863b13c464798",
+        "scripts/sync-api-reference.mjs": "a28ccd641085c19cafd7242e81c43525e5034d54afd8487ec5f48d83c59b7672",
+        "src/components/Icon.vue": "6c9e56c006f45743a23ea8e4634c5ff6304284e22dc5bee00afe7a318b888633",
+        "src/ui/DataTableCore.vue": "967bfb7866cdd17b6259a3225b1ba914c6398333a63247db5dfc13420291b9a8",
+        "src/ui/README.md": "793f8b6fd8a69b5360b2ad50729b52c69de6038f1bf72a62787ea992d3a8625e",
+        "src/ui/UAutocomplete.vue": "2932954f5bd2ec9d131f1fa9f49631f5323aca259337db39f68deb0735a2e748",
+        "src/ui/UAvatar.vue": "4b46b17a7f15dff4f0a92d2027e6e4ad529aa0473d3bb3f0b7fc0ea839bfbbfe",
+        "src/ui/UBanner.vue": "a55d098526a451e677f5f0c89a6299823552275933b8522ecbd8040a49429ee2",
+        "src/ui/UCarousel.vue": "5070212051caf88bb86bac91e565f2a46973cfcd1cf957f098357bc76dfef62e",
+        "src/ui/UEmptyState.vue": "b9a255a4b85016bd23b8a641c7f25110fcd28782d03e8af4f2b29b8aacbd5b89",
+        "src/ui/UExpansionPanelTitle.vue": "d1a4b2b09f125f3075925ad8826862261275bcc98535a201702113fab4965007",
+        "src/ui/UFab.vue": "94eff5f57551cb1af59f8b3018226564bb46044a075b1f23894dd291b2d413df",
+        "src/ui/UField.vue": "d38d6019ec6c99d4c29c5e34f7b9776313f20f7ffae076072cd1862ae57e9b74",
+        "src/ui/UFileInput.vue": "e48141e11ab974af0a853ac2aca18b8345722e02844d34a59d2155c1cedb05eb",
+        "src/ui/UFileUpload.vue": "a15ce49f9bcec3e93388c125dd3ac89646c685916994ff6849cecf77cf72affc",
+        "src/ui/UListGroup.vue": "9e431da19d0547c89684618101377e30df48e816567ebfa12eb07682063d093c",
+        "src/ui/UListItem.vue": "386d08ee76e021a6fa75cf132c938c8e06ac18507eb20f38ec2716346cbd3d00",
+        "src/ui/URating.vue": "7797de5be38a9dc01aee50ce24c1741776c2c33504eac53c5969d9306c2e1985",
+        "src/ui/USlideGroup.vue": "64ad5857ca2e28fbdfc9fd9210cc123f71e916bf7d3a2c62e2c915789bcbfda1",
+        "src/ui/UStepper.vue": "cf07d56cc2d2d0341d2e36796b89a6144783308727696547a007e040b54f864f",
+        "src/ui/UStepperItem.vue": "0ec56b5f59862d32b4c3eec169c31055212082bd1c701c41046e76ca9feedc5a",
+        "src/ui/UStepperVertical.vue": "8d974d1e6e4d434bedef54d7b172e75801ec5b044eeed70516563fafff409829",
+        "src/ui/UStepperVerticalItem.vue": "62bb25ff42f2132c9e056f698c1c05f2fb40dc475cf9a705ef867cec0ab17e2e",
+        "src/ui/UTimelineItem.vue": "5ef353c02994cdbac163b872292c26f4eae1eb60cb7fd31b84ac135d079af0bf",
+        "src/ui/UWindow.vue": "0e00989dcde361d1ccc545a0a57f848ca6f3beb479a534647f815125d0994548",
+        "src/ui/UiActivity.vue": "dcd1752b224baadcc1837658ee2a53360014324f7502928dd69ff7821cb14117",
+        "src/ui/UiButton.vue": "39477fe90cc3d04fb3778c5b4cb07f88fcd292b266aeb5ae850528de25c55119",
+        "src/ui/UiCard.vue": "a0f8dc0664e506d15172de4ea7539380171d5e355dfe26977358852da55a5e90",
+        "src/ui/UiCascader.vue": "5b9159a1e29a681e832daa3cf392b8215012448c925153ee4e0925530629e18a",
+        "src/ui/UiCopyButton.vue": "d7002be07ab92459ef62daab45523eaddabe45004022a8edcd656771340d6085",
+        "src/ui/UiInput.vue": "a8cbdf5ad21a15dc11d88577a0e670b656441b482613abcd2e686c569b7224f6",
+        "src/ui/UiMessageActions.vue": "5c6be9ead015b067364b59a08398387803a6bf2125620f35f0e9e9053d9db10b",
+        "src/ui/UiPagination.vue": "7ec7e0c008c7de8365b68bd83cd8beac6a85408302cbd3525f2a577b815366a0",
+        "src/ui/UiSwitch.vue": "cd2d3f57f7a9cc2c36975a55aedfee3d0b081549d08a113c022ccab577370583",
+        "src/ui/UiTab.vue": "f8f6f3a2f6ab943c7abd55d745b2268636f8fe99d51e1f3ae9d266f3952a980f",
+        "src/ui/UiTextarea.vue": "6685949a535d83aeca09a8c4b2cce809eb5d12baf2675057a7f9648bbfafc24d",
+        "src/ui/data-table-state.ts": "be179af678425642753e401531a091166c969b82a40dc9606b8aa9eee7f919d8",
+        "src/ui/data-table-types.ts": "667f38594a217cd4b5811883c69e41eb799373636682bb996cbce3e1a191f91e",
+        "src/ui/docs/IconProtocolsDemo.vue": "5affe3e75e73f06a3f6850efb420a9ad852c3d1d0536e7fff2745ea337c4771b",
+        "src/ui/docs/LayoutCompletionDemo.vue": "39f406a3b9ac466d1ba0054bd737f12496fa7ad55494f2e7649e87fb85ce015a",
+        "src/ui/docs/LayoutDemo.vue": "4e65e44ea56ac8b977a3598bb102b573932357972e55efaf57f3834651be92ce",
+        "src/ui/docs/apiReference.js": "8b9e0239d2ea40b1ed700f6d0a5c121b9b56a179cf3d77eab0aa983014f7f7d6",
+        "src/ui/docs/completionContent.js": "64feec60e433cb09dac7ba3ac7a6bb8f8de848b64b3620c81b6dd0a0dbf41ba9",
+        "src/ui/docs/component-examples/avatar.vue": "c6ae288db21c9b2da5284b70d9e044f43dd0fe01ff3a69077097991c65752def",
+        "src/ui/docs/component-examples/banner.vue": "aa2cbb1eb5be170b3767a3b3b78c0295eda390066f3ee8fc2e08eeef4397aaac",
+        "src/ui/docs/component-examples/field.vue": "1e9a8d3fdac6f73ea1ab0ddfd8633cdada235e4bf8dbf711f17acf9baefc26fd",
+        "src/ui/docs/layoutContent.js": "af117502d9100e774b90f382545bb193ec4341c32692e57abadd4a377ed130e9",
+        "src/ui/hotkey.ts": "b1ddf9edba9f0f7a773f6448f9fd4767bd3c3a3d92f56f4948cb0d82f538c324",
+        "src/ui/icon-config.ts": "598284bb2497ca0a7656dfada894d8a9ed26195c1f896af92df43982af82f531",
+        "src/ui/icon-renderers.ts": "6de01022536e592f6b8b3b8a9c212df9845a07932375e9d5b49bff4b2b71765b",
+        "src/ui/icons.ts": "443c216d047aad35e8fb96282a57ac7028f4292cd986e5c21b2cc524e731b7b5",
+        "src/ui/iconsets/mdi-svg.ts": "11d6cfdba7553f6bdeda28fa1759160513627ae411684580b97356879645ffac",
+        "src/ui/index.ts": "12bb58726dad9a0f772f079f2e85fcc0bad3862d27c4bbcfbbd80925fa91bcd0",
+        "src/ui/local-icon-names.ts": "996d788f1bbdb827bc3cabe43ffb2c098797b0957c8cc0821e5f4fdd01deb092",
+        "src/ui/plugin.ts": "a180648e83a02fff5f54cd09ac6a22dba20409630d97ae0e4be198d838fb1e4b",
+        "src/ui/slide-group.ts": "4e6565f38d28ce1f4c7277e2f423a16ab80362d5cf499f31d81f7e91bee6fc99",
+        "src/ui/tabs.ts": "f479ca2ed8a4d0644992c64eab2f1c7af82a89482254b5452a7e5bbc92d9d9d9",
+        "tests/api-reference.test.ts": "cd3a28d29b1a18309c47177584a1f77f7ac6eaf89fe9cd8037faf13419614005",
+        "tests/desktop/icon-protocols.mjs": "7f112cb934456217357de59624b2e5981811653f57e6c40c6392adadc21b634f",
+        "tests/hotkey.test.ts": "b7ee197a632cb0aa6f1b7eb4005ab5bdaf48562c9149b70375169ed5282df883",
+        "tests/icon-consumers.test.ts": "4fd1d25e6361644bfcb7cac247fd9117655603080289de8cdd554538416f93d0",
+        "tests/icon-resolution.test.ts": "5bfe6e9a99c24580a1818c230121b28dcc26b01fdac1a47cdf53df1fa96600d4",
+        "tests/icon-types.fixture.vue": "e557a345d8af12a4c7546ad0754d002e3fa19dd79d8821bcf9774daee3dc1748",
+        "tests/tsconfig.icons.json": "ac051a782cd1939701bf54be11536e9e65c03727b2fa93a78d5fbb4d73da47ab"
+    },
+    "browserEvidence": {
+        "status": "passed",
+        "fixture": "icon-protocols",
+        "method": "Isolated Vite source fixture with direct SFC imports and headless Chrome; no project build.",
+        "startedAt": "2026-10-09T08:59:17.375Z",
+        "sourceFiles": [
+            "src/components/Icon.vue",
+            "src/ui/icon-config.ts",
+            "src/ui/icon-renderers.ts",
+            "src/ui/local-icon-names.ts",
+            "src/ui/plugin.ts",
+            "src/ui/icons.ts",
+            "src/ui/iconsets/mdi-svg.ts",
+            "src/ui/index.ts",
+            "src/ui/docs/IconProtocolsDemo.vue",
+            "src/ui/docs/LayoutDemo.vue",
+            "src/ui/docs/layoutContent.js",
+            "src/ui/UiButton.vue",
+            "src/ui/UiInput.vue",
+            "src/ui/UiCard.vue",
+            "src/ui/UiPagination.vue",
+            "src/ui/UCarousel.vue",
+            "src/ui/UCarouselItem.vue",
+            "src/ui/UStepper.vue",
+            "src/ui/UStepperItem.vue",
+            "src/ui/UStepperVertical.vue",
+            "src/ui/UStepperVerticalItem.vue",
+            "src/ui/UField.vue",
+            "src/ui/UiSwitch.vue",
+            "src/ui/UHotkey.vue",
+            "src/ui/hotkey.ts",
+            "src/ui/data-table-types.ts",
+            "src/ui/UDataTable.vue",
+            "src/ui/UDataTableVirtual.vue",
+            "src/ui/UiDataTableServer.vue",
+            "src/ui/styles.css",
+            "src/ui/layout-components.css",
+            "src/assets/icons/copy.svg",
+            "src/assets/icons/file.svg",
+            "tests/icon-consumers.test.ts",
+            "tests/icon-types.fixture.vue",
+            "tests/tsconfig.icons.json",
+            "tests/desktop/icon-protocols.mjs"
+        ],
+        "targetSourceSha256Before": {
+            "src/components/Icon.vue": "6c9e56c006f45743a23ea8e4634c5ff6304284e22dc5bee00afe7a318b888633",
+            "src/ui/icon-config.ts": "598284bb2497ca0a7656dfada894d8a9ed26195c1f896af92df43982af82f531",
+            "src/ui/icon-renderers.ts": "6de01022536e592f6b8b3b8a9c212df9845a07932375e9d5b49bff4b2b71765b",
+            "src/ui/local-icon-names.ts": "996d788f1bbdb827bc3cabe43ffb2c098797b0957c8cc0821e5f4fdd01deb092",
+            "src/ui/plugin.ts": "a180648e83a02fff5f54cd09ac6a22dba20409630d97ae0e4be198d838fb1e4b",
+            "src/ui/icons.ts": "443c216d047aad35e8fb96282a57ac7028f4292cd986e5c21b2cc524e731b7b5",
+            "src/ui/iconsets/mdi-svg.ts": "11d6cfdba7553f6bdeda28fa1759160513627ae411684580b97356879645ffac",
+            "src/ui/index.ts": "12bb58726dad9a0f772f079f2e85fcc0bad3862d27c4bbcfbbd80925fa91bcd0",
+            "src/ui/docs/IconProtocolsDemo.vue": "5affe3e75e73f06a3f6850efb420a9ad852c3d1d0536e7fff2745ea337c4771b",
+            "src/ui/docs/LayoutDemo.vue": "4e65e44ea56ac8b977a3598bb102b573932357972e55efaf57f3834651be92ce",
+            "src/ui/docs/layoutContent.js": "af117502d9100e774b90f382545bb193ec4341c32692e57abadd4a377ed130e9",
+            "src/ui/UiButton.vue": "39477fe90cc3d04fb3778c5b4cb07f88fcd292b266aeb5ae850528de25c55119",
+            "src/ui/UiInput.vue": "a8cbdf5ad21a15dc11d88577a0e670b656441b482613abcd2e686c569b7224f6",
+            "src/ui/UiCard.vue": "a0f8dc0664e506d15172de4ea7539380171d5e355dfe26977358852da55a5e90",
+            "src/ui/UiPagination.vue": "7ec7e0c008c7de8365b68bd83cd8beac6a85408302cbd3525f2a577b815366a0",
+            "src/ui/UCarousel.vue": "5070212051caf88bb86bac91e565f2a46973cfcd1cf957f098357bc76dfef62e",
+            "src/ui/UCarouselItem.vue": "ec3a87868bad3543d8bc080e62bc4b4980082a02e8d16a39900e2cb83db3fb4b",
+            "src/ui/UStepper.vue": "cf07d56cc2d2d0341d2e36796b89a6144783308727696547a007e040b54f864f",
+            "src/ui/UStepperItem.vue": "0ec56b5f59862d32b4c3eec169c31055212082bd1c701c41046e76ca9feedc5a",
+            "src/ui/UStepperVertical.vue": "8d974d1e6e4d434bedef54d7b172e75801ec5b044eeed70516563fafff409829",
+            "src/ui/UStepperVerticalItem.vue": "62bb25ff42f2132c9e056f698c1c05f2fb40dc475cf9a705ef867cec0ab17e2e",
+            "src/ui/UField.vue": "d38d6019ec6c99d4c29c5e34f7b9776313f20f7ffae076072cd1862ae57e9b74",
+            "src/ui/UiSwitch.vue": "cd2d3f57f7a9cc2c36975a55aedfee3d0b081549d08a113c022ccab577370583",
+            "src/ui/UHotkey.vue": "94388f275427b460ce51d6928953cff1c350ed5437194b6d288250f9d6a86851",
+            "src/ui/hotkey.ts": "b1ddf9edba9f0f7a773f6448f9fd4767bd3c3a3d92f56f4948cb0d82f538c324",
+            "src/ui/data-table-types.ts": "667f38594a217cd4b5811883c69e41eb799373636682bb996cbce3e1a191f91e",
+            "src/ui/UDataTable.vue": "d2916ee1c0aeb1c8c9b2c22efdef599eccf3bd7f17a093333625aa716ac93789",
+            "src/ui/UDataTableVirtual.vue": "2e8b0c2158c3a41ad5b8dffda8ae25d5ef83651f77e0ca207c12dbd9f2f78283",
+            "src/ui/UiDataTableServer.vue": "a1ff3ecd6b7b183a715f7c6b276c851fdc146f4a451b1f3a9524f2e0e1f0007a",
+            "src/ui/styles.css": "577e07639c8413ddfb9f3cfdfb2867e76a8572b11411a204167184df40b236ca",
+            "src/ui/layout-components.css": "3c9d3c031c769d12ac61208d73ab2beed56a8955219f479f191a582c27ee130c",
+            "src/assets/icons/copy.svg": "5d5a4308c1525a052aaa2ae49468158cf8a699286744e15025fdcb194ca5ce48",
+            "src/assets/icons/file.svg": "e71d125e8edaa1f3ca3a53781b14d67e42ef47d69b58183aea049aa836185753",
+            "tests/icon-consumers.test.ts": "4fd1d25e6361644bfcb7cac247fd9117655603080289de8cdd554538416f93d0",
+            "tests/icon-types.fixture.vue": "e557a345d8af12a4c7546ad0754d002e3fa19dd79d8821bcf9774daee3dc1748",
+            "tests/tsconfig.icons.json": "ac051a782cd1939701bf54be11536e9e65c03727b2fa93a78d5fbb4d73da47ab",
+            "tests/desktop/icon-protocols.mjs": "7f112cb934456217357de59624b2e5981811653f57e6c40c6392adadc21b634f"
+        },
+        "targetSourceSha256After": {
+            "src/components/Icon.vue": "6c9e56c006f45743a23ea8e4634c5ff6304284e22dc5bee00afe7a318b888633",
+            "src/ui/icon-config.ts": "598284bb2497ca0a7656dfada894d8a9ed26195c1f896af92df43982af82f531",
+            "src/ui/icon-renderers.ts": "6de01022536e592f6b8b3b8a9c212df9845a07932375e9d5b49bff4b2b71765b",
+            "src/ui/local-icon-names.ts": "996d788f1bbdb827bc3cabe43ffb2c098797b0957c8cc0821e5f4fdd01deb092",
+            "src/ui/plugin.ts": "a180648e83a02fff5f54cd09ac6a22dba20409630d97ae0e4be198d838fb1e4b",
+            "src/ui/icons.ts": "443c216d047aad35e8fb96282a57ac7028f4292cd986e5c21b2cc524e731b7b5",
+            "src/ui/iconsets/mdi-svg.ts": "11d6cfdba7553f6bdeda28fa1759160513627ae411684580b97356879645ffac",
+            "src/ui/index.ts": "12bb58726dad9a0f772f079f2e85fcc0bad3862d27c4bbcfbbd80925fa91bcd0",
+            "src/ui/docs/IconProtocolsDemo.vue": "5affe3e75e73f06a3f6850efb420a9ad852c3d1d0536e7fff2745ea337c4771b",
+            "src/ui/docs/LayoutDemo.vue": "4e65e44ea56ac8b977a3598bb102b573932357972e55efaf57f3834651be92ce",
+            "src/ui/docs/layoutContent.js": "af117502d9100e774b90f382545bb193ec4341c32692e57abadd4a377ed130e9",
+            "src/ui/UiButton.vue": "39477fe90cc3d04fb3778c5b4cb07f88fcd292b266aeb5ae850528de25c55119",
+            "src/ui/UiInput.vue": "a8cbdf5ad21a15dc11d88577a0e670b656441b482613abcd2e686c569b7224f6",
+            "src/ui/UiCard.vue": "a0f8dc0664e506d15172de4ea7539380171d5e355dfe26977358852da55a5e90",
+            "src/ui/UiPagination.vue": "7ec7e0c008c7de8365b68bd83cd8beac6a85408302cbd3525f2a577b815366a0",
+            "src/ui/UCarousel.vue": "5070212051caf88bb86bac91e565f2a46973cfcd1cf957f098357bc76dfef62e",
+            "src/ui/UCarouselItem.vue": "ec3a87868bad3543d8bc080e62bc4b4980082a02e8d16a39900e2cb83db3fb4b",
+            "src/ui/UStepper.vue": "cf07d56cc2d2d0341d2e36796b89a6144783308727696547a007e040b54f864f",
+            "src/ui/UStepperItem.vue": "0ec56b5f59862d32b4c3eec169c31055212082bd1c701c41046e76ca9feedc5a",
+            "src/ui/UStepperVertical.vue": "8d974d1e6e4d434bedef54d7b172e75801ec5b044eeed70516563fafff409829",
+            "src/ui/UStepperVerticalItem.vue": "62bb25ff42f2132c9e056f698c1c05f2fb40dc475cf9a705ef867cec0ab17e2e",
+            "src/ui/UField.vue": "d38d6019ec6c99d4c29c5e34f7b9776313f20f7ffae076072cd1862ae57e9b74",
+            "src/ui/UiSwitch.vue": "cd2d3f57f7a9cc2c36975a55aedfee3d0b081549d08a113c022ccab577370583",
+            "src/ui/UHotkey.vue": "94388f275427b460ce51d6928953cff1c350ed5437194b6d288250f9d6a86851",
+            "src/ui/hotkey.ts": "b1ddf9edba9f0f7a773f6448f9fd4767bd3c3a3d92f56f4948cb0d82f538c324",
+            "src/ui/data-table-types.ts": "667f38594a217cd4b5811883c69e41eb799373636682bb996cbce3e1a191f91e",
+            "src/ui/UDataTable.vue": "d2916ee1c0aeb1c8c9b2c22efdef599eccf3bd7f17a093333625aa716ac93789",
+            "src/ui/UDataTableVirtual.vue": "2e8b0c2158c3a41ad5b8dffda8ae25d5ef83651f77e0ca207c12dbd9f2f78283",
+            "src/ui/UiDataTableServer.vue": "a1ff3ecd6b7b183a715f7c6b276c851fdc146f4a451b1f3a9524f2e0e1f0007a",
+            "src/ui/styles.css": "577e07639c8413ddfb9f3cfdfb2867e76a8572b11411a204167184df40b236ca",
+            "src/ui/layout-components.css": "3c9d3c031c769d12ac61208d73ab2beed56a8955219f479f191a582c27ee130c",
+            "src/assets/icons/copy.svg": "5d5a4308c1525a052aaa2ae49468158cf8a699286744e15025fdcb194ca5ce48",
+            "src/assets/icons/file.svg": "e71d125e8edaa1f3ca3a53781b14d67e42ef47d69b58183aea049aa836185753",
+            "tests/icon-consumers.test.ts": "4fd1d25e6361644bfcb7cac247fd9117655603080289de8cdd554538416f93d0",
+            "tests/icon-types.fixture.vue": "e557a345d8af12a4c7546ad0754d002e3fa19dd79d8821bcf9774daee3dc1748",
+            "tests/tsconfig.icons.json": "ac051a782cd1939701bf54be11536e9e65c03727b2fa93a78d5fbb4d73da47ab",
+            "tests/desktop/icon-protocols.mjs": "7f112cb934456217357de59624b2e5981811653f57e6c40c6392adadc21b634f"
+        },
+        "sourceHashesStable": true,
+        "screenshots": [
+            "artifacts/icon-protocols/light-wide.png",
+            "artifacts/icon-protocols/dark-wide.png",
+            "artifacts/icon-protocols/light-narrow.png"
+        ],
+        "checks": [
+            {
+                "name": "real-docs-icon-protocol-demo",
+                "details": {
+                    "mounted": true,
+                    "svgCount": 12,
+                    "vueWarnings": []
+                }
+            },
+            {
+                "name": "docs-demo-narrow-overflow",
+                "details": {
+                    "viewportWidth": 390,
+                    "documentWidth": 390,
+                    "shellClientWidth": 364,
+                    "shellScrollWidth": 364,
+                    "shellRight": 378,
+                    "demoClientWidth": 336,
+                    "demoScrollWidth": 336,
+                    "demoRight": 363
+                }
+            },
+            {
+                "name": "visual-review-screenshots",
+                "details": [
+                    "artifacts/icon-protocols/light-wide.png",
+                    "artifacts/icon-protocols/dark-wide.png",
+                    "artifacts/icon-protocols/light-narrow.png"
+                ]
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-shared-icon",
+                    "paths": [
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#right-shared-icon",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "same-alias-is-app-scoped",
+                "details": {
+                    "alias": "$shared",
+                    "left": "M2 2h20v20H2z",
+                    "right": "M4 4h16v16H4z"
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-layered-icon",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-layered-alias",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "path-array-opacity",
+                "details": {
+                    "opacity": "0.35",
+                    "directAndAlias": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-icon-over-name",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-path-over-icon",
+                    "paths": [
+                        "M6 6h12v12H6z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-forced-svg",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "legacy-path-icon-name-precedence",
+                "details": {
+                    "precedence": [
+                        "path",
+                        "icon",
+                        "name"
+                    ],
+                    "svgPrefix": true
+                }
+            },
+            {
+                "name": "component-and-custom-renderers",
+                "details": {
+                    "componentAlias": true,
+                    "customRendererReceivesIcon": "M7 7h10v10H7z",
+                    "tag": "span"
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-copy-direct",
+                    "paths": [
+                        "M16 8V3H3v13h5"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-copy-alias",
+                    "paths": [
+                        "M16 8V3H3v13h5"
+                    ]
+                }
+            },
+            {
+                "name": "local-copy-alias-equivalence",
+                "details": {
+                    "pathCount": 1,
+                    "fallsBackToFile": false
+                }
+            },
+            {
+                "name": "expected-development-icon-warnings",
+                "details": [
+                    "[UI icons] Unknown icon alias \"$missingIcon\".",
+                    "[UI icons] Unknown legacy icon name \"u-protocol-unknown-name\".",
+                    "[UI icons] Circular icon alias \"cycleA\"."
+                ]
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-boolean-slot",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-slot-priority",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-icon",
+                    "paths": [
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-direct-path",
+                    "paths": [
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-prepend-icon",
+                    "paths": [
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-append-icon",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "button-icon-protocol",
+                "details": {
+                    "booleanStyle": true,
+                    "defaultSlotPriority": true,
+                    "prependAppendSlots": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-input-host .u-input-clear",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "input-clear-icon-click",
+                "details": {
+                    "cleared": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-card .ui-card-prepend",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-field",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M2 2h20v20H2z",
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-switch .ui-switch-thumb",
+                    "paths": [
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-switch .ui-switch-thumb",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "card-field-switch-icons",
+                "details": {
+                    "cardPathArray": true,
+                    "fieldIconCount": 3,
+                    "switchUpdatesBetweenIcons": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-carousel .u-carousel-dot",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#right-carousel .u-carousel-dot",
+                    "paths": [
+                        "M4 4h16v16H4z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-carousel-default .u-carousel-dot",
+                    "paths": [
+                        "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z",
+                        "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#right-carousel-default .u-carousel-dot",
+                    "paths": [
+                        "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z",
+                        "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+                    ]
+                }
+            },
+            {
+                "name": "pagination-rtl-and-carousel-alias",
+                "details": {
+                    "defaultFirst": "M18.41,16.59L13.82,12L18.41,7.41L17,6L11,12L17,18L18.41,16.59M6,6H8V18H6V6Z",
+                    "defaultLast": "M5.59,7.41L10.18,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M16,6H18V18H16V6Z",
+                    "rtlFirst": "M4 4h16v16H4z",
+                    "rtlLast": "M2 2h20v20H2z",
+                    "defaultDelimiter": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z",
+                    "appScopedDelimiter": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-stepper-standalone",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-stepper-horizontal",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z",
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-stepper-vertical",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z",
+                        "M2 2h20v20H2z"
+                    ]
+                }
+            },
+            {
+                "name": "stepper-icon-rendering",
+                "details": {
+                    "standalone": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ],
+                    "horizontalItems": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z",
+                        "M2 2h20v20H2z"
+                    ],
+                    "verticalItems": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z",
+                        "M2 2h20v20H2z"
+                    ],
+                    "pathText": false
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-hotkey-array .u-hotkey-key",
+                    "paths": [
+                        "M2 2h20v20H2z",
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "hotkey-custom-icon-values",
+                "details": {
+                    "component": true,
+                    "pathArray": true
+                }
+            },
+            {
+                "name": "icon-visible-bounds",
+                "details": {
+                    "selector": "#left-size18 svg",
+                    "expectedSize": 18,
+                    "bounds": {
+                        "width": 18,
+                        "height": 18,
+                        "display": "block",
+                        "visibility": "visible"
+                    }
+                }
+            },
+            {
+                "name": "icon-visible-bounds",
+                "details": {
+                    "selector": "#left-size24 svg",
+                    "expectedSize": 24,
+                    "bounds": {
+                        "width": 24,
+                        "height": 24,
+                        "display": "block",
+                        "visibility": "visible"
+                    }
+                }
+            },
+            {
+                "name": "icon-color-and-accessibility",
+                "details": {
+                    "inheritedColor": "rgb(13, 74, 100)",
+                    "labeledRole": "img",
+                    "decorativeHidden": true
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-dynamic-icon",
+                    "paths": [
+                        "M8 8h8v8H8z",
+                        "M10 10h4v4h-4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#left-button-icon",
+                    "paths": [
+                        "M8 8h8v8H8z",
+                        "M10 10h4v4h-4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#right-dynamic-icon",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "svg-paths",
+                "details": {
+                    "selector": "#right-button-icon",
+                    "paths": [
+                        "M4 4h16v16H4z"
+                    ]
+                }
+            },
+            {
+                "name": "dynamic-icon-prop-updates",
+                "details": {
+                    "pathArray": true,
+                    "component": true,
+                    "rightAppAliasUnaffected": "M4 4h16v16H4z"
+                }
+            },
+            {
+                "name": "source-hash-stability",
+                "details": {
+                    "files": 37,
+                    "stable": true
+                }
+            }
+        ],
+        "expectedIconWarnings": [
+            "[UI icons] Unknown icon alias \"$missingIcon\".",
+            "[UI icons] Unknown legacy icon name \"u-protocol-unknown-name\".",
+            "[UI icons] Circular icon alias \"cycleA\"."
+        ],
+        "vueWarnings": [],
+        "consoleWarnings": [],
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestFailures": [],
+        "failure": null,
+        "limits": [
+            "Browser renderer only; no Electron renderer acceptance is claimed.",
+            "Screenshots are evidence for Root visual review, not an independent CSS redesign.",
+            "No full project build, full test suite, publish, or package operation is run."
+        ],
+        "finishedAt": "2026-10-09T08:59:20.998Z"
+    }
+}

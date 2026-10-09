@@ -2,13 +2,14 @@
 import { Tabs } from '@vuetify/v0';
 import { computed, inject, mergeProps, onBeforeUnmount, ref, useAttrs, useId, watch } from 'vue';
 import UiIcon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { tabsKey } from './tabs';
 import { vPointerBlur } from './pointer-focus';
 import { vRipple, type RippleOptions } from './ripple';
 import { useUiLink, type RouterProps } from './router';
 import { useDefaults } from './defaults';
 
-const rawProps = withDefaults(defineProps<RouterProps & { value?: unknown; text?: string; icon?: string; ripple?: RippleOptions }>(), { ripple: undefined });
+const rawProps = withDefaults(defineProps<RouterProps & { value?: unknown; text?: string; icon?: IconValue; ripple?: RippleOptions }>(), { ripple: undefined });
 const props = useDefaults(rawProps, 'UTab');
 const link = useUiLink(props);
 defineOptions({ inheritAttrs: false });
@@ -121,7 +122,7 @@ defineExpose({ element, value, isSelected, selected: isSelected, selectedClass, 
 <template>
     <Tabs.Item :key="ticketId" v-slot="{ attrs }" :id="ticketId" :value="ticketId" :disabled="disabled" :el="element" renderless>
         <component :is="link.isLink.value ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="props.ripple ?? context.ripple.value" v-bind="nativeAttrs(attrs)" :href="link.href.value" :aria-current="link.isActive.value ? 'page' : undefined" :data-ui-tab="ticketId" :type="link.isLink.value ? undefined : 'button'" class="ui-tab" :class="isSelected ? selectedClass : undefined">
-            <UiIcon v-if="props.icon" :name="props.icon" :size="15" /><span class="ui-tab-label"><slot v-bind="slotScope">{{ props.text }}</slot></span>
+            <UiIcon v-if="props.icon" :icon="props.icon" :size="15" /><span class="ui-tab-label"><slot v-bind="slotScope">{{ props.text }}</slot></span>
         </component>
     </Tabs.Item>
 </template>

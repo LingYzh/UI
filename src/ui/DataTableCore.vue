@@ -260,8 +260,8 @@ function groupScope(
               }
             : {
                   icon: isGroupOpen(row as DataGroupNode)
-                      ? (props.groupCollapseIcon ?? 'mdi-chevron-down')
-                      : (props.groupExpandIcon ?? 'mdi-chevron-right'),
+                      ? (props.groupCollapseIcon ?? '$expand')
+                      : (props.groupExpandIcon ?? '$next'),
                   disabled: blocked.value,
                   onClick: () => toggleGroup(row as DataGroupNode),
               };
@@ -306,8 +306,8 @@ function cellScope(item: InternalDataItem, index: number, column: NormalizedHead
             : column.key === 'data-table-expand'
               ? {
                     icon: isExpanded(item)
-                        ? (props.collapseIcon ?? 'mdi-chevron-up')
-                        : (props.expandIcon ?? 'mdi-chevron-down'),
+                        ? (props.collapseIcon ?? '$collapse')
+                        : (props.expandIcon ?? '$expand'),
                     disabled: blocked.value,
                     size: 'small',
                     variant: 'text',
@@ -614,7 +614,7 @@ defineExpose({
                                                         props.sortAscIcon ||
                                                         props.sortDescIcon
                                                     "
-                                                    :name="
+                                                    :icon="
                                                         props.sortIcon ??
                                                         slotProps.getSortIcon(column)
                                                     "
@@ -706,11 +706,11 @@ defineExpose({
                                                 @click="toggleSort(sortBy[0].key)"
                                             >
                                                 <Icon
-                                                    :name="
+                                                    :icon="
                                                         sortBy[0].order === 'desc'
                                                             ? (props.sortDescIcon ??
-                                                              'mdi-arrow-down')
-                                                            : (props.sortAscIcon ?? 'mdi-arrow-up')
+                                                              '$sortDesc')
+                                                            : (props.sortAscIcon ?? '$sortAsc')
                                                     "
                                                     :size="16"
                                                 />
@@ -884,12 +884,12 @@ defineExpose({
                                                                     @click="toggleGroup(row)"
                                                                 >
                                                                     <Icon
-                                                                        :name="
+                                                                        :icon="
                                                                             isGroupOpen(row)
                                                                                 ? (props.groupCollapseIcon ??
-                                                                                  'mdi-chevron-down')
+                                                                                  '$expand')
                                                                                 : (props.groupExpandIcon ??
-                                                                                  'mdi-chevron-right')
+                                                                                  '$next')
                                                                         "
                                                                         :size="18"
                                                                     />
@@ -1084,12 +1084,12 @@ defineExpose({
                                                             @click.stop="toggleExpand(row)"
                                                         >
                                                             <Icon
-                                                                :name="
+                                                                :icon="
                                                                     isExpanded(row)
                                                                         ? (props.collapseIcon ??
-                                                                          'mdi-chevron-up')
+                                                                          '$collapse')
                                                                         : (props.expandIcon ??
-                                                                          'mdi-chevron-down')
+                                                                          '$expand')
                                                                 "
                                                                 :size="18"
                                                             />
@@ -1214,7 +1214,7 @@ defineExpose({
                             :aria-label="text(props.firstPageLabel, 'table.firstPage')"
                             @click="state.setPage(1)"
                         >
-                            <Icon :name="props.firstIcon ?? 'mdi-page-first'" :size="16" />
+                            <Icon :icon="props.firstIcon ?? '$first'" :size="16" />
                         </UiButton>
                         <UiPagination
                             :ripple="props.ripple"
@@ -1251,7 +1251,7 @@ defineExpose({
                             :aria-label="text(props.lastPageLabel, 'table.lastPage')"
                             @click="state.setPage(state.pageCount.value)"
                         >
-                            <Icon :name="props.lastIcon ?? 'mdi-page-last'" :size="16" />
+                            <Icon :icon="props.lastIcon ?? '$last'" :size="16" />
                         </UiButton>
                     </nav>
                 </footer>

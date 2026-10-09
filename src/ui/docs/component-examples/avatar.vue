@@ -1,4 +1,5 @@
 <script setup>
+import { mdiAccountOutline } from '@mdi/js';
 import { UAvatar } from '../../index';
 </script>
 
@@ -6,7 +7,7 @@ import { UAvatar } from '../../index';
     <div class="component-demo" data-demo-component="UAvatar">
         <div class="demo-row">
             <u-avatar text="AY" />
-            <u-avatar icon="mdi-account-outline" :size="32" />
+            <u-avatar :icon="mdiAccountOutline" :size="32" />
             <u-avatar text="UI" :rounded="false" :size="32" />
         </div>
     </div>

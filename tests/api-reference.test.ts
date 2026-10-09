@@ -109,7 +109,7 @@ test('explicit undefined inherits shared control defaults while omitted Boolean 
     const button = contracts.find(component => component.name === 'UButton');
     const icon = button?.props.find(prop => prop.name === 'icon');
     assert.ok(icon, 'UButton declares icon');
-    assert.equal(icon.type, 'boolean | string');
+    assert.equal(icon.type, 'boolean | IconValue');
     assert.deepEqual(icon.default, { kind: 'vue-boolean-false' });
 
     const select = contracts.find(component => component.name === 'USelect');

@@ -3,10 +3,11 @@ import type { RippleOptions } from './ripple';
 import UiButton from './UiButton.vue';
 import UiTooltip from './UiTooltip.vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 
 export interface MessageActionItem {
     id: string;
-    icon: string;
+    icon: IconValue;
     label: string;
     disabled?: boolean;
 }
@@ -16,7 +17,7 @@ const emit = defineEmits<{ action: [id: string] }>();
 
 <template>
     <div class="ui-message-actions">
-        <UiTooltip v-for="item in actions" :key="item.id" :text="item.label" :focusable="false"><UiButton variant="text" size="sm" icon :aria-label="item.label" :disabled="item.disabled" :ripple="ripple" @click="emit('action', item.id)"><Icon :name="item.icon" :size="16" /></UiButton></UiTooltip>
+        <UiTooltip v-for="item in actions" :key="item.id" :text="item.label" :focusable="false"><UiButton variant="text" size="sm" icon :aria-label="item.label" :disabled="item.disabled" :ripple="ripple" @click="emit('action', item.id)"><Icon :icon="item.icon" :size="16" /></UiButton></UiTooltip>
         <span class="ui-message-actions-label">{{ label }}</span>
     </div>
 </template>

@@ -5,7 +5,7 @@ import { createDisplay, displayKey, type DisplayOptions } from './display';
 import { createUiTheme, type UiThemeOptions } from './theme';
 import { createLocale, type LocaleOptions } from './locale-context';
 import { localeKey, setLocale, uiLocale } from './locale';
-import { iconKey, type IconOptions } from './icon-config';
+import { createIcons, iconKey, type IconOptions } from './icon-config';
 import { createRules, rulesKey, type RuleAliases } from './rules';
 import { responsiveStyles } from './responsive';
 import { vRipple } from './ripple';
@@ -39,7 +39,7 @@ export function createUI(options: UIOptions = {}) {
             if (options.components !== false) for (const [name, component] of Object.entries(legacyComponents)) if (component) app.component(name, component);
             for (const [name, component] of Object.entries(options.aliases ?? {})) app.component(name, component);
             app.provide(defaultsKey, computed(() => options.defaults ?? {}));
-            app.provide(displayKey, display); app.provide(localeKey, locale); app.provide(iconKey, options.icons ?? {}); app.provide(rulesKey, rules);
+            app.provide(displayKey, display); app.provide(localeKey, locale); app.provide(iconKey, createIcons(options.icons)); app.provide(rulesKey, rules);
             app.use(theme);
             if (options.locale?.locale === 'zh' || options.locale?.locale === 'en') setLocale(options.locale.locale);
             for (const [name, directive] of Object.entries({ ripple: vRipple, 'click-outside': vClickOutside, intersect: vIntersect, mutate: vMutate, resize: vResize, scroll: vScroll, touch: vTouch, tooltip: vTooltip })) app.directive(name, directive as Directive);

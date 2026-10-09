@@ -431,14 +431,14 @@ defineExpose({
                 <span v-if="props.chips && selections.length" class="u-autocomplete-chips">
                     <span v-for="(selection, index) in selections" :key="index" class="u-autocomplete-chip">
                         <slot name="chip" :item="selection.internalItem.raw" :internal-item="selection.internalItem" :index="index" :props="{ disabled: control.disabled.value || control.readonly.value }">{{ selection.title }}</slot>
-                        <button v-if="props.closableChips && !control.readonly.value && !control.disabled.value" v-ripple="props.ripple" type="button" :aria-label="`${locale.t('badge.remove')} ${selection.title}`" @pointerdown.stop.prevent @click.stop="remove(index)"><Icon name="mdi-close" :size="14" /></button>
+                        <button v-if="props.closableChips && !control.readonly.value && !control.disabled.value" v-ripple="props.ripple" type="button" :aria-label="`${locale.t('badge.remove')} ${selection.title}`" @pointerdown.stop.prevent @click.stop="remove(index)"><Icon name="$close" :size="14" /></button>
                     </span>
                 </span>
                 <input ref="input" :value="display" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" role="combobox" :aria-controls="listId" :aria-expanded="menuVisible" :aria-activedescendant="menuVisible && visible[active] ? `${listId}-${active}` : undefined" :aria-autocomplete="props.selectOnly ? 'none' : 'list'" :placeholder="props.placeholder" :disabled="control.disabled.value" :readonly="control.readonly.value || props.selectOnly" :aria-invalid="control.state.value === false || undefined" @input="onInput" @focus="openMenu(); control.focus()" @click="openMenu()" @keydown="keydown" />
                 <slot name="append-inner" :disabled="control.disabled.value" :readonly="control.readonly.value" />
-                <button v-if="props.clearable && (selections.length || search) && !control.disabled.value && !control.readonly.value" v-ripple="props.ripple" type="button" class="u-autocomplete-clear" :aria-label="locale.t('cascader.clear')" @pointerdown.prevent @click.stop="clear"><slot name="clear"><Icon name="mdi-close" :size="16" /></slot></button>
+                <button v-if="props.clearable && (selections.length || search) && !control.disabled.value && !control.readonly.value" v-ripple="props.ripple" type="button" class="u-autocomplete-clear" :aria-label="locale.t('cascader.clear')" @pointerdown.prevent @click.stop="clear"><slot name="clear"><Icon name="$close" :size="16" /></slot></button>
                 <span v-if="props.loading" class="u-autocomplete-loader"><slot name="loader" /></span>
-                <Icon name="mdi-chevron-down" :size="18" class="u-autocomplete-arrow ui-disclosure-icon is-down" :class="{ 'is-open': menuVisible }" />
+                <Icon name="$expand" :size="18" class="u-autocomplete-arrow ui-disclosure-icon is-down" :class="{ 'is-open': menuVisible }" />
                 <slot name="append" :disabled="control.disabled.value" :readonly="control.readonly.value" />
             </div>
             <span v-if="$slots.selection" class="u-autocomplete-selection">

@@ -1,5 +1,12 @@
 # npm 发布记忆
 
+## 2026-10-09：0.5.0 发布前完整验收完成
+
+用户确定 0.5.0 并授权发布，再评估 UAH。完整 typecheck、327/327 单测、docs/lib build、Electron 21 组/173 路由、copy-icons 6 组、feedback 7 组、controls 6 组及 545 文件 pack/10 exports/9 项 tarball 消费检查通过，单一 Vue 与普通安装目录已核对。Root 复核复制按钮明暗/390px 截图。copy-icons 首次 Windows DPI 尺寸超时保留，测试统一 scale=1 后完整复跑通过；生产源码与已验收图标专项一致。证据：docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-release-0.5.0.json；迁移说明 docs/RELEASE-0.5.0.md。
+
+包与 lock 根版本已改为 0.5.0，下一步合并 main、推送 v0.5.0 并等待 OIDC/official registry 确认。UAH 仍固定 0.4.2，本轮仅只读评估。下方未提交/0.4.2 状态为图标专项完成时的历史。
+
+
 ## 2026-10-09：UAH 已合并 main
 
 用户明确要求直接合并。PR #1 已从 draft 转为 ready 并成功合并，merge commit c02fb3be04f96acda515b8867d41676a375078fa，https://github.com/LingYzh/UAH-desktop/pull/1。合并后文件树与已验收适配提交 196d397 完全一致（tree d51f06740a4f5f9396da1791e360b094678fd38e），原 11 项门禁证据继续适用；本地 main 已同步。后续仅补记合并状态，未修改产品、依赖或测试，未制作安装包。下方待审阅/未合并状态为合并前历史。

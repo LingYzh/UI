@@ -5,6 +5,8 @@ import UStepper from './UStepper.vue';
 import UStepperVerticalItem from './UStepperVerticalItem.vue';
 import type { GroupValue } from './group-state';
 import { normalizeStepperItems, type StepperItemRecord } from './stepper-selection';
+import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 
 const rawProps = withDefaults(defineProps<{
     disabled?: boolean;
@@ -53,6 +55,10 @@ const stepperProps = computed(() => ({
     color: props.color
 }));
 
+function isIconValue(value: unknown): value is IconValue {
+    return typeof value === 'string' || Array.isArray(value) || typeof value === 'function' || value !== null && typeof value === 'object';
+}
+
 function itemScope(item: StepperItemRecord) {
     return { raw: item.raw, title: item.title, value: item.value, props: item.props };
 }
@@ -84,8 +90,10 @@ function forwardFinish(): void { emit('click:finish'); }
                 <template #header="verticalScope">
                     <slot :name="`header-item.${item.value}`" v-bind="{ ...itemScope(item), ...verticalScope }">
                         <slot name="header" v-bind="{ ...itemScope(item), ...verticalScope }">
-                            <span v-if="typeof item.props.icon === 'string'" class="u-stepper-icon">
-                                <slot name="icon" :icon="item.props.icon" v-bind="itemScope(item)">{{ item.props.icon }}</slot>
+                            <span v-if="isIconValue(item.props.icon)" class="u-stepper-icon">
+                                <slot name="icon" :icon="item.props.icon" v-bind="itemScope(item)">
+                                    <Icon :icon="item.props.icon" />
+                                </slot>
                             </span>
                             <span v-if="item.title" class="u-stepper-title">
                                 <slot name="title" v-bind="itemScope(item)">{{ item.title }}</slot>

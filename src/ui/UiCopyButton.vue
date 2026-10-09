@@ -43,7 +43,7 @@ onBeforeUnmount(() => clearTimeout(timer));
 <template>
     <UiTooltip :text="copied ? doneName : name" :focusable="false">
         <UiButton v-bind="$attrs" class="ui-copy-button" :class="{ 'is-copied': copied }" icon variant="text" :dense="dense" :disabled="disabled" :aria-label="name" @click="copy">
-            <Icon :key="copied ? 'copied' : 'copy'" class="ui-copy-button-icon" :icon="copied ? 'mdi-check' : 'mdi-content-copy'" :size="15" />
+            <Icon :key="copied ? 'copied' : 'copy'" class="ui-copy-button-icon" :icon="copied ? '$complete' : '$copy'" :size="15" />
         </UiButton>
         <!-- 屏幕阅读器播报复制结果；按钮名称保持“复制”不变，避免焦点下名称跳变。 -->
         <span class="ui-visually-hidden" role="status">{{ announcement }}</span>

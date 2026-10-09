@@ -1,11 +1,10 @@
 <script setup>
 import { computed } from 'vue';
-import { iconPath } from '../ui/icons';
-import { resolveIcon, useIcons } from '../ui/icon-config';
+import { IconValue, resolveIcon, useIcons } from '../ui/icon-config';
 
 const props = defineProps({
     name: { type: String, default: '' },
-    icon: { type: String, default: '' },
+    icon: { type: IconValue, default: '' },
     color: { type: String, default: '' },
     path: { type: String, default: '' },
     label: { type: String, default: '' },
@@ -22,10 +21,17 @@ const icons = Object.fromEntries(Object.entries(iconFiles).map(([path, source]) 
     path.split('/').at(-1).replace(/\.svg$/, ''),
     source
 ]));
-const markup = computed(() => icons[props.name] || icons.file);
 const iconOptions = useIcons();
-const resolved = computed(() => resolveIcon(props.icon || props.name, iconOptions));
-const svgPath = computed(() => props.path || resolved.value.path || iconPath(props.name));
+
+const resolved = computed(() => {
+    const value = props.icon || props.name;
+    return props.path
+        ? resolveIcon(props.path, iconOptions, true)
+        : resolveIcon(value, iconOptions);
+});
+const markup = computed(() => resolved.value.kind === 'local' && resolved.value.name
+    ? icons[resolved.value.name]
+    : undefined);
 </script>
 
 <template>
@@ -35,5 +41,15 @@ const svgPath = computed(() => props.path || resolved.value.path || iconPath(pro
         :aria-hidden="label ? undefined : true"
         :role="label ? 'img' : undefined"
         :aria-label="label || undefined"
-    ><slot><component :is="resolved.component" v-if="resolved.component" :icon="resolved.name" /><svg v-else-if="svgPath" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="svgPath" /></svg><span v-else class="ui-icon-markup" v-html="markup"></span></slot></span>
+    >
+        <slot>
+            <component
+                v-if="resolved.component"
+                :is="resolved.component"
+                tag="span"
+                :icon="resolved.icon"
+            />
+            <span v-else-if="markup" class="ui-icon-markup" v-html="markup"></span>
+        </slot>
+    </span>
 </template>

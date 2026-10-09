@@ -2,6 +2,7 @@ import type { ComputedRef, InjectionKey, Ref } from 'vue';
 import type { RippleOptions } from './ripple';
 import type { ItemGroupState } from './item-group-state';
 import type { ValueComparator } from './selection';
+import type { IconValue } from './icon-config';
 
 export type TabValue = unknown;
 export type TabItem = string | number | boolean | null | {
@@ -10,13 +11,13 @@ export type TabItem = string | number | boolean | null | {
     id?: string | number;
     label?: string;
     disabled?: boolean;
-    icon?: string;
+    icon?: IconValue;
 };
 export interface NormalizedTabItem {
     value: unknown;
     text: string;
     disabled?: boolean;
-    icon?: string;
+    icon?: IconValue;
     id?: string | number;
     label: string;
 }

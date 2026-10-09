@@ -8,6 +8,7 @@ import { formContextKey } from './form';
 import { vRipple, type RippleOptions } from './ripple';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import { buttonColorStyles } from './button-colors';
 import { useUiLink } from './router';
 defineOptions({ inheritAttrs: false });
@@ -26,7 +27,7 @@ const rawProps = withDefaults(defineProps<{
     exact?: boolean;
     loading?: boolean;
     disabled?: boolean;
-    icon?: boolean | string;
+    icon?: boolean | IconValue; prependIcon?: IconValue; appendIcon?: IconValue;
     type?: 'button' | 'submit' | 'reset';
     ripple?: RippleOptions;
     dense?: boolean;
@@ -82,10 +83,10 @@ function guardDisabled(event: MouseEvent) {
         <component :is="link.isLink.value ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="isDisabled || props.loading ? undefined : link.href.value" :type="link.isLink.value ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-current="($attrs['aria-current'] ?? (link.isActive.value ? 'page' : undefined)) as any" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" :tabindex="(isDisabled || props.loading) && link.isLink.value ? -1 : $attrs.tabindex as any" @click.capture="guardDisabled" @click="guard">
             <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><span class="ui-button-loading" /></slot></span>
             <span class="ui-button-content" :class="{ 'is-loading': props.loading }">
-                <slot name="prepend" />
-                <Icon v-if="typeof props.icon === 'string'" :icon="props.icon" :size="18" />
+                <slot name="prepend"><Icon v-if="props.prependIcon" :icon="props.prependIcon" :size="18" /></slot>
+                <Icon v-if="typeof props.icon !== 'boolean' && props.icon !== undefined && !$slots.default" :icon="props.icon" :size="18" />
                 <slot />
-                <slot name="append" />
+                <slot name="append"><Icon v-if="props.appendIcon" :icon="props.appendIcon" :size="18" /></slot>
             </span>
         </component>
     </Button.Root>

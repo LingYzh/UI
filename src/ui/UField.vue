@@ -4,6 +4,7 @@ import { useDefaults } from './defaults';
 import UiField from './UiField.vue';
 import UiThemeProvider from './UiThemeProvider.vue';
 import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import type { FieldLayout } from './layout';
 import { roundedStyles } from './appearance';
 
@@ -36,10 +37,10 @@ const rawProps = withDefaults(defineProps<{
     error?: boolean | string;
     variant?: 'underlined' | 'outlined' | 'filled' | 'solo' | 'solo-inverted' | 'solo-filled' | 'plain';
     clearable?: boolean;
-    clearIcon?: string;
+    clearIcon?: IconValue;
     persistentClear?: boolean;
-    prependInnerIcon?: string;
-    appendInnerIcon?: string;
+    prependInnerIcon?: IconValue;
+    appendInnerIcon?: IconValue;
     centerAffix?: boolean;
     reverse?: boolean;
     singleLine?: boolean;
@@ -58,7 +59,7 @@ const rawProps = withDefaults(defineProps<{
     layout?: FieldLayout;
     required?: boolean;
     hideDetails?: boolean | 'auto';
-}>(), { variant: 'outlined', clearIcon: 'mdi-close', rounded: true, centerAffix: undefined });
+}>(), { variant: 'outlined', clearIcon: '$clear', rounded: true, centerAffix: undefined });
 const props = useDefaults(rawProps, 'UField');
 const focused = defineModel<boolean>('focused', { default: false });
 const emit = defineEmits<{

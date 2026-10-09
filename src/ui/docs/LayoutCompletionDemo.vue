@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { mdiAccountOutline, mdiInformationOutline, mdiViewDashboardOutline } from '@mdi/js';
 import {
     UApp,
     ULayout,
@@ -132,7 +133,7 @@ const nodes = [
                         <UListSubheader>工作区</UListSubheader>
                         <UListItem value="overview">
                             <template #prepend>
-                                <UIcon icon="mdi-view-dashboard-outline" />
+                                <UIcon :icon="mdiViewDashboardOutline" />
                             </template>
                             <UListItemTitle>概览</UListItemTitle>
                             <UListItemSubtitle>项目运行状况</UListItemSubtitle>
@@ -165,13 +166,13 @@ const nodes = [
                     <UButton variant="text">消息</UButton>
                 </UBadge>
                 <UDivider vertical />
-                <UAvatar icon="mdi-account-outline" :size="32" />
+                <UAvatar :icon="mdiAccountOutline" :size="32" />
                 <UAvatar text="UI" :rounded="false" :size="32" />
             </div>
             <UBanner
                 v-model="banner"
                 text="文档和交互示例始终使用同一个组件实现。"
-                icon="mdi-information-outline"
+                :icon="mdiInformationOutline"
             >
                 <template #actions>
                     <UButton size="sm" variant="text" @click="banner = false">知道了</UButton>

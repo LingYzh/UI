@@ -6,6 +6,8 @@ import { stepperContextKey, type StepperContext } from './stepper-state';
 import { allocateStepperValue } from './stepper-selection';
 import UiCollapse from './UiCollapse.vue';
 import UStepperItem from './UStepperItem.vue';
+import Icon from '../components/Icon.vue';
+import type { IconValue } from './icon-config';
 import UStepperVerticalActions from './UStepperVerticalActions.vue';
 import type { RippleOptions } from './ripple';
 
@@ -17,7 +19,7 @@ const rawProps = withDefaults(defineProps<{
     value?: GroupValue;
     title?: string;
     subtitle?: string;
-    icon?: string;
+    icon?: IconValue;
     complete?: boolean;
     error?: boolean;
     editable?: boolean;
@@ -111,7 +113,7 @@ const slotScope = computed(() => ({
         >
             <template #default="scope">
                 <slot name="header" v-bind="{ ...slotScope, ...scope }">
-                    <span v-if="props.icon" class="u-stepper-icon"><slot name="icon" :icon="props.icon">{{ props.icon }}</slot></span>
+                    <span v-if="props.icon" class="u-stepper-icon"><slot name="icon" :icon="props.icon"><Icon :icon="props.icon" /></slot></span>
                     <span v-if="props.title" class="u-stepper-title"><slot name="title" :title="props.title">{{ props.title }}</slot></span>
                     <span v-if="props.subtitle" class="u-stepper-subtitle"><slot name="subtitle" :subtitle="props.subtitle">{{ props.subtitle }}</slot></span>
                 </slot>
