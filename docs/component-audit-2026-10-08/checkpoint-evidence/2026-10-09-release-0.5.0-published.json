@@ -1,0 +1,214 @@
+{
+    "generatedAt": "2026-10-09T09:35:40.558Z",
+    "version": "0.5.0",
+    "status": "published-and-official-consumer-verified",
+    "releaseCommit": "ee8fa4eb88196fa95d9c38b079c6fff215059e54",
+    "tag": "v0.5.0",
+    "mainPushed": true,
+    "actions": {
+        "id": 37911472623,
+        "job": 113757392405,
+        "url": "https://github.com/LingYzh/UI/actions/runs/37911472623",
+        "conclusion": "success",
+        "linuxTests": {
+            "tests": 327,
+            "passed": 327,
+            "failed": 0,
+            "skipped": 0
+        },
+        "steps": [
+            {
+                "name": "Set up job",
+                "conclusion": "success"
+            },
+            {
+                "name": "Checkout",
+                "conclusion": "success"
+            },
+            {
+                "name": "Setup Node.js",
+                "conclusion": "success"
+            },
+            {
+                "name": "Install dependencies",
+                "conclusion": "success"
+            },
+            {
+                "name": "Verify tag matches package version",
+                "conclusion": "success"
+            },
+            {
+                "name": "Type check",
+                "conclusion": "success"
+            },
+            {
+                "name": "Test",
+                "conclusion": "success"
+            },
+            {
+                "name": "Build",
+                "conclusion": "success"
+            },
+            {
+                "name": "Inspect package contents",
+                "conclusion": "success"
+            },
+            {
+                "name": "Publish",
+                "conclusion": "success"
+            },
+            {
+                "name": "Post Setup Node.js",
+                "conclusion": "success"
+            },
+            {
+                "name": "Post Checkout",
+                "conclusion": "success"
+            },
+            {
+                "name": "Complete job",
+                "conclusion": "success"
+            }
+        ]
+    },
+    "registry": {
+        "version": "0.5.0",
+        "latest": "0.5.0",
+        "dist": {
+            "shasum": "e536b4092c8a5a529c09af305ca8808971349fc2",
+            "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.5.0.tgz",
+            "fileCount": 545,
+            "integrity": "sha512-gsuKUvq26X7hB+O1bbise3XbOkVpNNXITD4AFjfi18GiPJRE/qF+EoxtMVEdhYeiRtRvpUYsIBAcGaYCUwaJPQ==",
+            "signatures": [
+                {
+                    "sig": "MEYCIQCUGaIxrFdzUx6mGQkZzwb+m3G0s74lwKC1dup//WGhswIhAKQh2wnf8Pq1d7xm6MysmFgTOo4wns+hQfQh4sjtZX0P",
+                    "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+                },
+                {
+                    "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+                    "sig": "MEUCIEigDxUIj7Gf+B+kHCtkNRE2UvNVWuTcD4IhwcfN18B9AiEAsZhbkhU77VA7Yv3sJsQ2CZ+ZhNV2BR8irVwFdj3CVqA="
+                }
+            ],
+            "attestations": {
+                "url": "https://registry.npmjs.org/-/npm/v1/attestations/@lingyzh%2fui@0.5.0",
+                "provenance": {
+                    "predicateType": "https://slsa.dev/provenance/v1"
+                }
+            },
+            "unpackedSize": 4458611
+        }
+    },
+    "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1",
+        "sourceCommit": "ee8fa4eb88196fa95d9c38b079c6fff215059e54",
+        "workflow": {
+            "ref": "refs/tags/v0.5.0",
+            "repository": "https://github.com/LingYzh/UI",
+            "path": ".github/workflows/publish.yml"
+        },
+        "tarballDigestMatches": true,
+        "invocation": "https://github.com/LingYzh/UI/actions/runs/37911472623/attempts/1",
+        "note": "Official attestation payload source/digest matched; not an independent Sigstore certificate verification."
+    },
+    "consumer": {
+        "version": "0.5.0",
+        "installedDirectory": "E:\\WebstormProjects\\UI\\artifacts\\release-0.5.0\\consumer\\node_modules\\@lingyzh\\ui",
+        "physicalDirectory": true,
+        "singleVue": true,
+        "exports": [
+            ".",
+            "./styles.css",
+            "./tokens.css",
+            "./preview",
+            "./docs.css",
+            "./docs-base.css",
+            "./docs-content",
+            "./snackbar",
+            "./diff",
+            "./iconsets/mdi-svg"
+        ],
+        "packedFiles": 545,
+        "whitelistPassed": true,
+        "checks": [
+            "raw mdi path",
+            "layer opacity",
+            "Vue component",
+            "configured alias",
+            "local name",
+            "button path",
+            "button slot priority",
+            "input prepend",
+            "card prepend"
+        ],
+        "warnings": [],
+        "status": "passed",
+        "resolved": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.5.0.tgz",
+        "integrity": "sha512-gsuKUvq26X7hB+O1bbise3XbOkVpNNXITD4AFjfi18GiPJRE/qF+EoxtMVEdhYeiRtRvpUYsIBAcGaYCUwaJPQ==",
+        "source": "normal npm install @lingyzh/ui@0.5.0 from official registry",
+        "log": {
+            "path": "artifacts/release-0.5.0/consumer-official-check.log",
+            "sha256": "80f3acae365bc10be3292f5b1334aad0a38c718b2960ccd1ccaa5d66fab100c1"
+        }
+    },
+    "uahToolchain": {
+        "status": "passed",
+        "versions": {
+            "vite": "8.3.3",
+            "pluginVue": "6.0.9",
+            "typescript": "7.0.2",
+            "vue": "3.5.43"
+        },
+        "fixture": "artifacts/release-0.5.0/consumer/Consumer.vue",
+        "package": "@lingyzh/ui@0.5.0",
+        "source": "official registry package",
+        "productionUAHModified": false,
+        "boundary": "Consumer SFC compile/build only; does not run UAH production application or full UAH typecheck/tests.",
+        "log": {
+            "path": "artifacts/release-0.5.0/uah-toolchain-official.log",
+            "sha256": "6c6ec2519196940ff106ffa437faf8a6b6097b4227c6e2d12e1b651bbae38212"
+        }
+    },
+    "uahAssessment": {
+        "dependencyUnchanged": "0.4.2",
+        "workingTreeClean": true,
+        "localCalls": 34,
+        "buttonCalls": 142,
+        "booleanIconButtonCalls": 2,
+        "conflictingStringIconCalls": 0,
+        "identicalLocalSvgFiles": 67,
+        "recommended": [
+            "fixed registry dependency upgrade",
+            "thin wrapper over shared UiIcon retaining name/size calls",
+            "targeted and full UAH consumer gates"
+        ],
+        "productionRuntimeAcceptance": false
+    },
+    "propagation": {
+        "initialNpmView": "E404 after successful Publish; waited for official metadata and normal npm install, no second publication and no direct tarball workaround",
+        "firstFailureLogSha256": "bdafc0e0043cb41d43b20b19a42e0ac7bdf7c79a4e06cc2a540670ed6e2e4e3b"
+    },
+    "logs": {
+        "actions-job": {
+            "path": "artifacts/release-0.5.0/actions-job.log",
+            "sha256": "9bcd1336db6d0037f282ac2541e21b433edbed8eed0d0cf3b41977d1e03212a4"
+        },
+        "consumer-official-install": {
+            "path": "artifacts/release-0.5.0/consumer-official-install.log",
+            "sha256": "32ccfa6c5e4c687b61a0216c4363ec1e23302d92860218a4068aa47d559ca48d"
+        },
+        "consumer-official-check": {
+            "path": "artifacts/release-0.5.0/consumer-official-check.log",
+            "sha256": "80f3acae365bc10be3292f5b1334aad0a38c718b2960ccd1ccaa5d66fab100c1"
+        },
+        "uah-toolchain-official": {
+            "path": "artifacts/release-0.5.0/uah-toolchain-official.log",
+            "sha256": "6c6ec2519196940ff106ffa437faf8a6b6097b4227c6e2d12e1b651bbae38212"
+        }
+    },
+    "preflight": "2026-10-09-release-0.5.0.json",
+    "migration": "docs/RELEASE-0.5.0.md",
+    "boundaries": [
+        "UAH production source/dependency/lock unchanged; toolchain fixture is not full application acceptance.",
+        "The released tag stays on the tested release commit; subsequent commits record evidence only."
+    ]
+}

@@ -1,5 +1,12 @@
 # 图标协议与 MDI 消费
 
+## 2026-10-09：0.5.0 已正式发布，UAH 只读评估完成
+
+main ee8fa4eb88196fa95d9c38b079c6fff215059e54 / v0.5.0 已推送。Actions 37911472623 / job 113757392405 的 Linux 327/327、typecheck、build、Publish 全部成功；签名 provenance 已生成，官方 metadata version/latest=0.5.0、545 文件及 tarball/integrity 已确认，attestation 源提交与 tarball 摘要一致。正式 integrity=sha512-gsuKUvq26X7hB+O1bbise3XbOkVpNNXITD4AFjfi18GiPJRE/qF+EoxtMVEdhYeiRtRvpUYsIBAcGaYCUwaJPQ==。发布后正常 npm 安装正式包，9 项消费检查和 UAH Vite8/TS7 代表性 SFC 构建通过；短暂 E404 传播保留，无重复发布。
+
+UAH main 保持 0.4.2 且干净：34 处自有 Icon、142 处 UiButton，没有字符串 icon/默认插槽冲突；双方 67 个 SVG 内容一致。建议下一批固定升级 UI 并将自有 Icon 收敛成共享 UiIcon 薄包装，保留 name/size 调用，再跑完整消费门禁。没有进行 UAH 生产升级或运行时验收。详见 docs/UAH-ICON-ASSESSMENT-0.5.0.md 和 checkpoint-evidence/2026-10-09-release-0.5.0-published.json。本次补记不移动 v0.5.0 标签；下方待发布状态保留为历史。
+
+
 ## 2026-10-09：0.5.0 发布前完整验收完成
 
 用户确定 0.5.0 并授权发布，再评估 UAH。完整 typecheck、327/327 单测、docs/lib build、Electron 21 组/173 路由、copy-icons 6 组、feedback 7 组、controls 6 组及 545 文件 pack/10 exports/9 项 tarball 消费检查通过，单一 Vue 与普通安装目录已核对。Root 复核复制按钮明暗/390px 截图。copy-icons 首次 Windows DPI 尺寸超时保留，测试统一 scale=1 后完整复跑通过；生产源码与已验收图标专项一致。证据：docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-release-0.5.0.json；迁移说明 docs/RELEASE-0.5.0.md。
