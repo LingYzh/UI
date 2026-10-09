@@ -180,6 +180,8 @@ try {
     }
     await alertDialog.getByRole('button', { name: '删除' }).click();
     await alertDialog.waitFor({ state: 'hidden' });
+    // Closing marks the dialog aria-hidden before the animation and service Promise finish.
+    await confirmCard.locator('output').filter({ hasText: '已确认删除' }).waitFor();
     assert.equal(await confirmCard.locator('output').textContent(), '已确认删除');
     await confirmCard.getByRole('button', { name: '连续两次确认' }).click();
     await page.getByRole('alertdialog').getByText('第一条确认').waitFor();
@@ -202,7 +204,20 @@ try {
     await theme(page, 'light');
     await open(page, 'dialog');
     const sizes = await region(page, '宽度与侧边抽屉');
-    await sizes.getByRole('button', { name: 'md', exact: true }).click();
+    // Exercise omitted transition on the real compiled SFC, including its Boolean prop casting.
+    await sizes.getByRole('button', { name: 'md', exact: true }).evaluate(async (button) => {
+        button.click();
+        for (let frame = 0; frame < 20; frame++) {
+            await new Promise(requestAnimationFrame);
+            const dialog = document.querySelector('.ui-dialog[open]');
+            if (dialog?.dataset.state === 'opening' && dialog.getAnimations().length) {
+                window.__defaultDialogAnimation = dialog.getAnimations()[0].effect.getKeyframes().map(frame => frame.opacity);
+                return;
+            }
+        }
+        throw new Error('Omitted transition must animate the dialog entrance');
+    });
+    assert.deepEqual(await page.evaluate(() => window.__defaultDialogAnimation), ['0', '1']);
     const sized = page.getByRole('dialog', { name: /宽度/ });
     await sized.waitFor();
     await settle(page);

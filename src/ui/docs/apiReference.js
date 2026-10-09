@@ -5851,10 +5851,11 @@ export const componentApi = {
             {
                 "name": "transition",
                 "type": "UiTransition",
-                "fallback": "—",
+                "fallback": "undefined",
                 "description": "选择内容进入或离开时使用的过渡效果",
                 "declaredDefault": {
-                    "kind": "undefined"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             }
@@ -9986,10 +9987,11 @@ export const componentApi = {
             {
                 "name": "transition",
                 "type": "UiTransition",
-                "fallback": "—",
+                "fallback": "undefined",
                 "description": "选择内容进入或离开时使用的过渡效果",
                 "declaredDefault": {
-                    "kind": "undefined"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             }

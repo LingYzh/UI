@@ -38,7 +38,8 @@ const rawProps = withDefaults(defineProps<Props>(), {
     scrollStrategy: 'none',
     captureFocus: false,
     retainFocus: false,
-    scrim: true
+    scrim: true,
+    transition: undefined
 });
 const props = useDefaults(rawProps, 'UOverlay');
 provide(menuContextKey, null);

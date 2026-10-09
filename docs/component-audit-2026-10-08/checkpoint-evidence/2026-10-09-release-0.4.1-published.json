@@ -1,0 +1,24 @@
+{
+    "status": "published-and-registry-verified",
+    "version": "0.4.1",
+    "releaseCommit": "e891c7610c7abd7506ff9ab4eebd80cf622732a9",
+    "tag": "v0.4.1",
+    "workflowRun": "https://github.com/LingYzh/UI/actions/runs/37893864781",
+    "jobId": 113700635631,
+    "conclusion": "success",
+    "publishStep": "success",
+    "linuxTests": { "tests": 308, "pass": 308, "fail": 0, "skipped": 0 },
+    "officialRegistry": {
+        "version": "0.4.1",
+        "latest": "0.4.1",
+        "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.4.1.tgz",
+        "integrity": "sha512-OHzaalIPPOZSEPFKxC396EAp4w8Fhz84J1KcKMqdoIEOPsJpTrTt+MKBbJJ1u3cXhiJIxd9gcvTydGx3eXWVeg==",
+        "shasum": "7a8f8851fba20bec55a1f89f14294d21da385d3a",
+        "fileCount": 541,
+        "unpackedSize": 4429533,
+        "attestations": "https://registry.npmjs.org/-/npm/v1/attestations/@lingyzh%2fui@0.4.1",
+        "provenance": "https://slsa.dev/provenance/v1"
+    },
+    "priorAttempt": "v0.4.0 was not published because CI failed; the pushed tag was preserved.",
+    "consumer": "UAH fixed official-registry dependency upgraded to 0.4.1; consumer validation recorded separately in UAH docs/VALIDATION.md."
+}

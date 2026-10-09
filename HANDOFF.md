@@ -1,5 +1,21 @@
 # UI 项目交接
 
+## 2026-10-09：正式消费者动画修复，0.4.2待推送发布
+
+UAH正式0.4.1包验证发现省略transition的Vue Boolean转换问题。UiDialog/UiMenu/UOverlay设置显式undefined默认，恢复缺省CSS动画且保留false/named/object协议。0.4.2完整typecheck、308/308单测、build、Electron21组/173URL、feedback7组、controls6组、presentation6组、pack541全部通过。新增真实SFC省略属性动画关键帧回归；恢复退场动画后确认服务须等closed再检查结果，原失败保留。Root复核当前弹窗截图。UAH完整消费验证仍有运行时资源/滚动记忆及测试索引问题正在处理，不能称为UAH通过。下一步按既定授权发布0.4.2，再升级正式包继续适配。
+
+## 2026-10-09：main已合并，正式npm0.4.1已发布
+
+发布提交e891c76/main/v0.4.1已推送，Actions run37893864781全部成功，官方registry version/latest=0.4.1及tarball/integrity已确认。0.4.0失败标签保留且未发包；0.4.1是本批实际发布版本，迁移说明docs/RELEASE-0.4.1.md，完整本地门禁及Linux换行修复见VALIDATION和publishing记忆。
+
+UAH已从正式registry固定升级0.4.1，正在迁移五处Tabs组合并跑消费验证；没有使用file link或复制UI源码。UI全库历史审计未覆盖项继续保留，本次发版不代表全库与Vuetify完全等价。
+
+## 2026-10-09：0.4.1全门禁通过，标签推送后等待发布
+
+main的0.4.1提交e891c7610c7abd7506ff9ab4eebd80cf622732a9及注释tag v0.4.1已原子推送。308/308完整测试、typecheck/build/Electron21组、feedback7组、controls6组、pack541均通过。推送最初因Git Credential Manager账号交互阻断：实际保存LingYzh和Xzf0412两个账号，用户回复已登录后，单次命令显式credential.username=LingYzh即通过；没有修改Git全局账号/网络设置。
+
+多账号环境中的禁止交互错误不能直接断定凭据失效；先用github list盘点并显式选择实际仓库账号。后续核对Actions Publish与官方registry，再在UAH固定升级正式版本并完成适配。不得重推旧v0.4.0覆盖其失败记录。
+
 ## 2026-10-09：已合并main，0.4.0发布CI失败后准备0.4.1
 
 UI分支已快进合并至main并推送1720374/v0.4.0。GitHub Actions run37892020013在Linux测试阶段306/307，原因API文档多行表达式JSON保留Windows CRLF，与Linux LF源码不一致；Publish跳过，0.4.0未实际发布。已修复契约提取换行规范化，增加LF/CRLF等价专项并重新同步API。保留旧tag及失败记录，使用0.4.1重新发布。UAH仍0.3.2，按用户顺序等待正式registry确认后适配。

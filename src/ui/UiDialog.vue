@@ -78,7 +78,9 @@ const rawProps = withDefaults(defineProps<OverlayPositionProps & OverlayAppearan
     error: '',
     contentLabel: undefined,
     size: undefined,
-    placement: 'center'
+    placement: 'center',
+    // Preserve the CSS animation fallback; absent Boolean union props otherwise cast to false.
+    transition: undefined
 });
 const props = useDefaults(rawProps, 'UDialog');
 provide(menuContextKey, null);

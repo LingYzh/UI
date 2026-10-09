@@ -1,5 +1,19 @@
 # npm 发布记忆
 
+## 2026-10-09：正式消费者发现遗漏属性动画回归，补丁0.4.2
+
+UAH实际生产搜索弹窗未传transition，Vue把UiTransition中的Boolean联合属性缺省转换false，造成data-ui-transition=true且默认CSS动画被跳过。UiDialog、UiMenu、UOverlay显式声明transition: undefined，恢复省略时CSS分支，显式false仍禁用动画。feedback真实SFC新增省略属性的动画关键帧回归；旧presentation fixture显式传undefined，无法覆盖省略属性转换。0.4.1已经正式发布，使用新0.4.2补丁，不覆盖旧tag。门禁和最终发布结果待本轮验证。
+
+## 2026-10-09：0.4.1 正式发布成功
+
+UI累计分支已快进合并main，修复发布提交e891c7610c7abd7506ff9ab4eebd80cf622732a9与v0.4.1原子推送。Actions [37893864781](https://github.com/LingYzh/UI/actions/runs/37893864781) job113700635631全部成功，包括Linux测试、Build、白名单与Publish；Trusted Publishing/OIDC完成并带provenance。v0.4.0失败尝试保留，Publish未执行，没有覆盖该tag。
+
+官方registry确认version/latest均0.4.1，tarball=https://registry.npmjs.org/@lingyzh/ui/-/ui-0.4.1.tgz；integrity=sha512-OHzaalIPPOZSEPFKxC396EAp4w8Fhz84J1KcKMqdoIEOPsJpTrTt+MKBbJJ1u3cXhiJIxd9gcvTydGx3eXWVeg==，541文件、unpacked4429533B。Linux实际发包integrity与Windows本地dry-run不同，消费lock必须使用官方值。
+
+UAH已从正式registry固定安装0.4.1，package/lock/实际安装目录一致，lock只改UI四处版本/来源/integrity；npm自动重新添加的20个可选dev标记已按原HEAD元数据恢复，其他依赖不变。UAH业务适配与完整消费验证正在进行，最终结果以UAH docs/VALIDATION为准。
+
+Git Credential Manager本机有LingYzh/Xzf0412两个账号；禁止交互的Username错误最初被误判为需要重新认证，实际单次显式credential.username=LingYzh即可推送。没有修改全局账号或网络设置，已结束本轮设备登录等待。
+
 ## 2026-10-09：0.4.0 标签 CI 换行失败，修复后使用0.4.1
 
 UI累计分支已fast-forward main，1720374b3462e51b26820b1fb6ebc5ac1e830669与v0.4.0已原子推送。Actions run37892020013的job113694842685在Linux测试阶段306/307：api-reference UCalendar.getTimestampAtEvent表达式保存CRLF，Linux提取得到LF；类型检查通过，Build/Publish跳过。0.4.0没有发布，不能将本地307/307解释为CI通过。

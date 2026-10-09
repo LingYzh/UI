@@ -1,5 +1,11 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-09 UI 0.4.2 正式消费者动画补丁
+
+省略transition属性的实际Vue组件被Boolean转换为false，UAH生产搜索验证发现默认动画缺失。三种DOM弹层显式undefined默认恢复CSS分支，feedback增加真实SFC缺省属性入场关键帧校验。恢复退场动画后确认服务结果等待closed完成，首轮同步假设失败保留，feedback第二轮7组/17图通过。
+
+最终typecheck、308/308完整单测、build、Electron UI21组/173旧URL/27图/errors0、controls6组/14图、pack541白名单、presentation6组/3图/errors-warnings0通过。controls首轮runner把缺失errors属性算1而误记状态，原测试exit0无错误，原metadata与独立校正记录均保留；没有为记录错误重跑已成功的测试。Root复核当前dialog-md-light截图。原始证据artifacts/release-0.4.2，版本化快照checkpoint-evidence/2026-10-09-release-0.4.2.json。
+
 ## 2026-10-09 UI 0.4.1 最终发布门禁与跨平台修复
 
 0.4.0标签已经推送，但GitHub Actions run37892020013在Linux测试306/307失败，Publish未执行。失败为生成API表达式的CRLF/LF不一致，证据见checkpoint-evidence/2026-10-09-release-0.4.0-ci-failure.json。旧tag未改写，正式候选为0.4.1。
