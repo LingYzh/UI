@@ -1,5 +1,9 @@
 # UI 项目交接
 
+## 2026-10-09：UAH 已合并 main
+
+用户明确要求直接合并。PR #1 已从 draft 转为 ready 并成功合并，merge commit c02fb3be04f96acda515b8867d41676a375078fa，https://github.com/LingYzh/UAH-desktop/pull/1。合并后文件树与已验收适配提交 196d397 完全一致（tree d51f06740a4f5f9396da1791e360b094678fd38e），原 11 项门禁证据继续适用；本地 main 已同步。后续仅补记合并状态，未修改产品、依赖或测试，未制作安装包。下方待审阅/未合并状态为合并前历史。
+
 ## 2026-10-09：0.4.2 发布与 UAH 消费验收完成
 
 UAH 适配提交 196d397eedbf73bd0bdcb0f9ac0b3b81c0795bb9 已推送，审阅请求：https://github.com/LingYzh/UAH-desktop/pull/1（draft，目标 main）。

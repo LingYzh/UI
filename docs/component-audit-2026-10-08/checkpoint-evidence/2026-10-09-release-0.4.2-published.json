@@ -23,7 +23,7 @@
   "consumer": {
     "repository": "LingYzh/UAH-desktop",
     "version": "0.4.2",
-    "status": "validated-for-review",
+    "status": "merged",
     "gatesPassed": 11,
     "unit": {
       "total": 1045,
@@ -32,9 +32,10 @@
       "skip": 2
     },
     "evidence": "docs/checkpoint-evidence/2026-10-09-ui-0.4.2-consumer.json",
-    "mainMerged": false,
+    "mainMerged": true,
     "commit": "196d397eedbf73bd0bdcb0f9ac0b3b81c0795bb9",
-    "pullRequest": "https://github.com/LingYzh/UAH-desktop/pull/1"
+    "pullRequest": "https://github.com/LingYzh/UAH-desktop/pull/1",
+    "mergeCommit": "c02fb3be04f96acda515b8867d41676a375078fa"
   },
   "historicalAttempts": [
     "v0.4.0 CI failed before publishing",
