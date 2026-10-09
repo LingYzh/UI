@@ -20,5 +20,21 @@ function click(event: MouseEvent) {
 }
 </script>
 <template>
-    <div class="u-progress-linear" role="progressbar" :aria-label="props.label" :aria-valuemin="0" :aria-valuemax="safeMax" :aria-valuenow="props.indeterminate ? undefined : value" :class="{ 'is-indeterminate': props.indeterminate, 'is-stream': props.stream, 'is-disabled': props.disabled, 'is-reverse': reversed }" @click="click"><span class="u-progress-buffer" :style="{ width: bufferRatio * 100 + '%' }" /><span class="u-progress-value" :style="{ width: props.indeterminate ? '35%' : ratio * 100 + '%' }" /><span class="u-progress-content"><slot :value="value" :buffer="buffer" :ratio="ratio" /></span></div>
+    <div
+        class="u-progress-linear"
+        role="progressbar"
+        :aria-label="props.label"
+        :aria-valuemin="0"
+        :aria-valuemax="safeMax"
+        :aria-valuenow="props.indeterminate ? undefined : value"
+        :class="{ 'is-indeterminate': props.indeterminate, 'is-stream': props.stream, 'is-disabled': props.disabled, 'is-reverse': reversed }"
+        :style="{ '--u-progress-ratio': ratio }"
+        @click="click"
+    >
+        <span class="u-progress-buffer" :style="{ width: bufferRatio * 100 + '%' }" />
+        <span class="u-progress-value" :style="{ width: props.indeterminate ? '35%' : ratio * 100 + '%' }" />
+        <span class="u-progress-content">
+            <slot :value="value" :buffer="buffer" :ratio="ratio" />
+        </span>
+    </div>
 </template>

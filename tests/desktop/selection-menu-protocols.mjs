@@ -234,7 +234,7 @@ function assertWithinViewport(rect, width, height, margin = 1) {
 
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
     page.setDefaultTimeout(7000);
     page.on('pageerror', error => report.errors.push(error.stack ?? error.message));
@@ -247,7 +247,7 @@ try {
     await page.waitForFunction(() => !!window.selectionMenuProbe);
     await page.waitForSelector('[data-selection-menu-demo]');
     const demo = page.locator('[data-selection-menu-demo]');
-    const openSurface = () => page.locator('.ui-menu-surface:popover-open').last();
+    const openSurface = () => page.locator('.ui-menu-surface[data-state="open"]').last();
     const currentSurfaceRect = async () => openSurface().evaluate(element => {
         const rect = element.getBoundingClientRect();
         return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
@@ -261,7 +261,7 @@ try {
         } else {
             await input.focus();
         }
-        await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open'));
+        await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"]'));
         const surface = openSurface();
         const bounds = await currentSurfaceRect();
         assertWithinViewport(bounds, 1200, 900, 2);
@@ -288,28 +288,28 @@ try {
     const auto = await checkDemoPopup('input[data-menu-autocomplete]', 'autocomplete');
     assert.equal(await auto.surface.getAttribute('data-menu-demo'), 'autocomplete');
     await auto.input.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     assert.equal(await auto.input.evaluate(element => document.activeElement === element), true, 'Escape leaves focus on the autocomplete input');
     await auto.input.click();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open[data-menu-demo="autocomplete"]'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"][data-menu-demo="autocomplete"]'));
     passed('autocomplete reopens by clicking its already-focused input', 'Escape closes the popup without moving focus; a real click on that same focused input reopens it.');
     await auto.input.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface')).every(element => element.getAttribute('data-state') === 'closed'));
     const combo = await checkDemoPopup('input[data-menu-combobox]', 'combobox');
     await combo.input.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     assert.equal(await combo.input.evaluate(element => document.activeElement === element), true, 'Escape leaves focus on the combobox input');
     await combo.input.click();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open[aria-multiselectable="true"]'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"][aria-multiselectable="true"]'));
     passed('combobox reopens by clicking its already-focused input', 'Escape closes the popup without moving focus; a real click on that same focused input reopens it.');
     await combo.input.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface')).every(element => element.getAttribute('data-state') === 'closed'));
     const select = await checkDemoPopup('input[data-menu-select]', 'select');
     assert.equal(await select.input.getAttribute('readonly'), '');
     await select.input.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface')).every(element => element.getAttribute('data-state') === 'closed'));
     const date = await checkDemoPopup('input[data-menu-date]', 'date');
     assert.equal(await demo.locator('input[data-menu-date]').inputValue(), '2026-10-09');
@@ -317,36 +317,36 @@ try {
     await date.surface.locator('[data-date="2026-10-14"]').click();
     assert.equal(await demo.locator('input[data-menu-date]').inputValue(), '2026-10-09', 'date picker edits a draft before Save');
     await date.surface.getByRole('button', { name: '取消', exact: true }).click();
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     assert.equal(await demo.locator('input[data-menu-date]').inputValue(), '2026-10-09', 'Cancel restores the committed Date model');
     assert.match(await demo.locator('output').innerText(), /2026[\/.]10[\/.]9/);
     passed('real demo opens all four public consumers and cancels a date draft', 'Autocomplete, Combobox, menu-backed UiSelect, and UDateInput popups fit the 1200×900 viewport and use docs typography; list inputs retain focus with no default active option, and date Cancel leaves 2026-10-09 committed.');
 
     const focusDateInput = page.locator('input[data-focus-date]');
     await focusDateInput.click();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open')?.classList.contains('u-date-input-menu'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"]')?.classList.contains('u-date-input-menu'));
     assert.equal(await focusDateInput.getAttribute('aria-expanded'), null, 'DateInput relies on its activator button, not a fabricated combobox role');
     await page.locator('#outside-click').click();
-    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.ui-menu-surface:popover-open')).some(element => element.classList.contains('u-date-input-menu')));
+    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.ui-menu-surface[data-state="open"]')).some(element => element.classList.contains('u-date-input-menu')));
     await focusDateInput.click();
-    await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface:popover-open')).some(element => element.classList.contains('u-date-input-menu')));
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface[data-state="open"]')).some(element => element.classList.contains('u-date-input-menu')));
     await focusDateInput.press('Escape');
-    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.ui-menu-surface:popover-open')).some(element => element.classList.contains('u-date-input-menu')));
+    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.ui-menu-surface[data-state="open"]')).some(element => element.classList.contains('u-date-input-menu')));
     const persistentDateInput = page.locator('input[data-persistent-date]');
     await page.locator('[data-persistent-date]').locator('..').locator('button[aria-label="打开日历"]').click();
-    await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface:popover-open')).some(element => element.classList.contains('u-date-input-menu')));
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('.ui-menu-surface[data-state="open"]')).some(element => element.classList.contains('u-date-input-menu')));
     await page.locator('#outside-click').click();
-    assert.equal(await page.locator('.u-date-input-menu:popover-open').count(), 1, 'persistent DateInput remains open after outside click');
+    assert.equal(await page.locator('.u-date-input-menu[data-state="open"]').count(), 1, 'persistent DateInput remains open after outside click');
     await persistentDateInput.press('Escape');
-    assert.equal(await page.locator('.u-date-input-menu:popover-open').count(), 1, 'persistent DateInput remains open after Escape');
+    assert.equal(await page.locator('.u-date-input-menu[data-state="open"]').count(), 1, 'persistent DateInput remains open after Escape');
     await page.evaluate(() => window.selectionMenuProbe.closePersistentDate());
-    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.u-date-input-menu:popover-open')).length);
+    await page.waitForFunction(() => !Array.from(document.querySelectorAll('.u-date-input-menu[data-state="open"]')).length);
     passed('DateInput focus opening, custom outside/Escape closing, and persistent guard', 'A pointer click that focuses the input keeps its openOnFocus menu; outside click and Escape close a normal menu, while persistent=true rejects both close requests.');
 
     const advanced = page.locator('input[data-advanced-autocomplete]');
     await advanced.focus();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open[data-list-probe="advanced"]'));
-    const advancedSurface = page.locator('.ui-menu-surface:popover-open[data-list-probe="advanced"]');
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"][data-list-probe="advanced"]'));
+    const advancedSurface = page.locator('.ui-menu-surface[data-state="open"][data-list-probe="advanced"]');
     const advancedList = advancedSurface;
     assert.equal(await advancedList.getAttribute('role'), 'listbox');
     assert.equal(await advancedList.getAttribute('aria-label'), 'Advanced option list');
@@ -357,7 +357,7 @@ try {
     assert.equal(await advancedSurface.getAttribute('id'), advancedControls, 'aria-controls resolves to the actual generated listbox id');
     assert.equal(await advancedSurface.getAttribute('role'), 'listbox');
     await page.waitForFunction(() => {
-        const surface = document.querySelector('.ui-menu-surface:popover-open');
+        const surface = document.querySelector('.ui-menu-surface[data-state="open"]');
         return surface?.scrollTop > 0 && surface.querySelector('[data-index="90"]');
     });
     assert.equal(await advanced.getAttribute('aria-activedescendant'), null, 'selected-item auto-scroll does not mark it active');
@@ -407,7 +407,7 @@ try {
     await page.waitForFunction(() => window.selectionMenuProbe.read().route.endsWith('/two'));
     await page.evaluate(() => history.back());
     await page.waitForFunction(() => window.selectionMenuProbe.read().route.endsWith('/one'));
-    assert.equal(await page.locator('.ui-menu-surface:popover-open').count(), 1, 'closeOnBack=false keeps the menu open while browser history navigates');
+    assert.equal(await page.locator('.ui-menu-surface[data-state="open"]').count(), 1, 'closeOnBack=false keeps the menu open while browser history navigates');
     passed('menu closeOnBack=false leaves navigation in control', 'Vue Router 4.6.3 returned to the previous route while the menu stayed open.');
 
     await page.evaluate(() => {
@@ -436,7 +436,7 @@ try {
     passed('connected placement flips and clamps after resize', `Near-bottom target flipped above itself; after resizing to 390×700, the menu stayed within ${JSON.stringify(narrowRect)}.`);
 
     await advanced.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForTimeout(350);
     assert.equal(await advancedSurface.locator('[role="option"]').count(), 0, 'lazy menu unmounts option slot content after leave');
     passed('lazy content is removed after the leave transition', 'The menu surface remains available for the activator protocol while its option slot content is unmounted after 350 ms.');
@@ -444,12 +444,12 @@ try {
     await page.evaluate(() => window.selectionMenuProbe.setNoAutoScroll(true));
     await advanced.evaluate(element => element.blur());
     await advanced.focus();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open [data-index="0"]'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"] [data-index="0"]'));
     await page.waitForTimeout(80);
     assert.equal(await advancedSurface.evaluate(element => element.scrollTop), 0, 'noAutoScroll leaves the virtual list at its initial position');
     assert.equal(await advancedSurface.locator('[data-index="90"]').count(), 0, 'noAutoScroll does not jump to the selected distant item');
     await advanced.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForTimeout(350);
     await page.evaluate(() => window.selectionMenuProbe.setNoAutoScroll(false));
     passed('noAutoScroll suppresses selected-item virtual scrolling', 'With value v-90 selected, enabling noAutoScroll keeps scrollTop at zero and leaves that distant row outside the rendered window.');
@@ -458,10 +458,10 @@ try {
     const eagerSurface = () => page.locator('.ui-menu-surface').filter({ has: page.getByText('Eager option', { exact: true }) }).first();
     assert.equal(await page.getByText('Eager option', { exact: true }).count(), 1, 'eager content is rendered before opening');
     await eager.focus();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open [role="option"]'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"] [role="option"]'));
     assert.equal(await page.evaluate(() => document.body.style.overflow), 'hidden', 'block scroll strategy locks body scrolling while open');
     await eager.press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.waitForTimeout(350);
     assert.equal(await page.getByText('Eager option', { exact: true }).count(), 1, 'eager menu retains slot content after leave');
     assert.equal(await page.evaluate(() => document.body.style.overflow), '', 'block scroll strategy restores body overflow after leave');
@@ -470,17 +470,17 @@ try {
 
     const closeOnScroll = page.locator('input[data-close-autocomplete]');
     await closeOnScroll.focus();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open [data-index="0"]'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"] [data-index="0"]'));
     await page.evaluate(() => window.scrollBy(0, 120));
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     passed('scrollStrategy=close responds to page scroll', 'An open menu with close strategy closes when the document scrolls.');
 
     await demo.locator('input[data-menu-autocomplete]').focus();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"]'));
     const dpr1 = await page.evaluate(() => window.devicePixelRatio);
     assert.equal(dpr1, 1, 'CSS zoom coverage uses normal DPR so it does not conflate pixel density with CSS zoom');
     await demo.locator('input[data-menu-autocomplete]').press('Escape');
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.setViewportSize({ width: 1200, height: 900 });
     await page.evaluate(() => window.selectionMenuProbe.theme('light'));
@@ -540,9 +540,9 @@ try {
         } else {
             await activator.click();
         }
-        await page.waitForFunction(() => !!document.querySelector('.ui-menu-surface:popover-open'));
+        await page.waitForFunction(() => !!document.querySelector('.ui-menu-surface[data-state="open"]'));
         const surface = openSurface();
-        await page.waitForFunction(() => document.querySelector('.ui-menu-surface:popover-open')?.getAttribute('data-state') === 'open');
+        await page.waitForFunction(() => document.querySelector('.ui-menu-surface[data-state="open"]')?.getAttribute('data-state') === 'open');
         await page.waitForTimeout(250);
         const visibleContentCount = date
             ? await surface.locator('[data-date]').count()
@@ -582,7 +582,7 @@ try {
             popupBounds: { left: evidence.left, top: evidence.top, right: evidence.right, bottom: evidence.bottom }
         });
         await page.keyboard.press('Escape');
-        await page.waitForFunction(() => !document.querySelector('.ui-menu-surface:popover-open'));
+        await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="open"]'));
         await page.waitForTimeout(350);
         return evidence;
     };
@@ -619,7 +619,7 @@ try {
         try {
             report.failureState = await page.evaluate(() => ({
                 route: window.selectionMenuProbe?.read().route,
-                openMenus: Array.from(document.querySelectorAll('.ui-menu-surface:popover-open')).map(element => ({
+                openMenus: Array.from(document.querySelectorAll('.ui-menu-surface[data-state="open"]')).map(element => ({
                     id: element.id, role: element.getAttribute('role'), className: element.className,
                     rect: (() => { const rect = element.getBoundingClientRect(); return { x: rect.x, y: rect.y, width: rect.width, height: rect.height }; })()
                 })),
@@ -630,7 +630,7 @@ try {
                 })),
                 menuSurfaces: Array.from(document.querySelectorAll('.ui-menu-surface')).map(element => ({
                     id: element.id, role: element.getAttribute('role'), className: element.className,
-                    open: element.matches(':popover-open'), text: element.innerText.slice(0, 180), children: element.children.length
+                    open: element.matches('[data-state="open"]'), text: element.innerText.slice(0, 180), children: element.children.length
                 })),
                 activeElement: document.activeElement?.outerHTML,
                 state: window.selectionMenuProbe?.read()

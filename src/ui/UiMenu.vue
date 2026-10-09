@@ -2,15 +2,21 @@
 import { computed, inject, mergeProps, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, provide, ref, useId, watch } from 'vue';
 import { acquireScrollLock, bindElementProps, popOverlay, pushOverlay, releaseScrollLock } from './overlay-lifecycle';
 import { useOverlayBack } from './overlay-back';
+import { claimOverlayDismiss } from './overlay-lifecycle';
 import { menuContextKey, type MenuContext, type MenuPlacement } from './menu';
 import { useDefaults } from './defaults';
 import { dimensionStyles, type DimensionProps } from './dimensions';
-import { overlayPositionStyles, resolveOverlayTarget, type OverlayPositionProps } from './overlay-position';
+import { overlayActivatorElement, overlayPositionStyles, resolveOverlayTarget, type OverlayPositionProps } from './overlay-position';
 import { isTopOverlay } from './overlay-lifecycle';
+import UiMaybeTransition, { type UiTransition } from './UiMaybeTransition.vue';
+import { useOverlayTransition } from './overlay-transition';
+import UiOverlayHost from './UiOverlayHost.vue';
+import type { OverlayContainerProps } from './overlay-container';
+import { overlayFocusable } from './overlay-lifecycle';
 
 type Activator = string | HTMLElement | null;
 type ScrollStrategy = 'none' | 'locked' | 'block' | 'close' | 'reposition';
-const rawProps = withDefaults(defineProps<DimensionProps & OverlayPositionProps & {
+const rawProps = withDefaults(defineProps<DimensionProps & OverlayPositionProps & OverlayContainerProps & {
     placement?: MenuPlacement;
     modelValue?: boolean;
     open?: boolean;
@@ -38,6 +44,7 @@ const rawProps = withDefaults(defineProps<DimensionProps & OverlayPositionProps 
     panel?: boolean;
     /** 显式可访问名称；不传时由触发器文字命名。 */
     label?: string;
+    transition?: UiTransition;
 }>(), {
     placement: 'bottom-start',
     modelValue: undefined,
@@ -60,6 +67,8 @@ const rawProps = withDefaults(defineProps<DimensionProps & OverlayPositionProps 
     scrollStrategy: 'reposition'
 });
 const props = useDefaults(rawProps, 'UMenu');
+const transition = useOverlayTransition(() => props.transition);
+let transitionClosing = false;
 const emit = defineEmits<{
     'update:open': [value: boolean];
     'update:modelValue': [value: boolean];
@@ -87,12 +96,13 @@ const menuPlacement = computed(() => props.location ?? props.placement);
 const closeOnContentClick = computed(() => props.closeOnContentClick ?? !props.panel);
 const openOnClick = computed(() => props.openOnClick ?? !(props.openOnHover || props.openOnFocus));
 
-// CSS identifiers stay local to each popover while preserving the existing native anchor positioning.
+// Keep activator/content IDs stable across lazy mounting and attached DOM containers.
 const uid = useId().replace(/[^\w-]/g, '-');
 const surfaceId = computed(() => String(props.contentProps.id ?? `ui-menu-${uid}`));
 const activatorId = `ui-menu-trigger-${uid}`;
 const anchorName = `--ui-menu-${uid}`;
 const surface = ref<HTMLElement>();
+const presented = ref(false);
 const activatorEl = ref<HTMLElement>();
 const positionStyle = ref<ReturnType<typeof overlayPositionStyles>>({});
 let positionObserver: ResizeObserver | undefined;
@@ -101,20 +111,20 @@ const triggerId = computed(() => props.activator ? activatorEl.value?.id || acti
 const contentMounted = ref(false);
 const parentMenu = inject(menuContextKey, null);
 const childKey = {};
-const childMenus = new Map<object, { close: () => void; deactivate: () => void }>();
+const childMenus = new Map<object, { close: () => void; deactivate: () => void; containsFocus: () => boolean }>();
+let branchOwnedFocus = false;
 let keyboardInteraction = false;
 let showTimer: ReturnType<typeof setTimeout> | undefined;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let closeParentsTimer: ReturnType<typeof setTimeout> | undefined;
 let generation = 0;
-let deliberateClose = false;
 let restoreFocusAfterClose = true;
 let externalActivatorCleanup: (() => void) | undefined;
 const lockToken = Symbol('ui-menu-scroll-lock');
 const FOCUSABLE = 'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
 
 function setActivatorElement(value: unknown) {
-    activatorEl.value = value instanceof HTMLElement ? value : undefined;
+    activatorEl.value = overlayActivatorElement(value);
 }
 function resolveActivator(value: Activator | undefined): HTMLElement | undefined {
     if (typeof document === 'undefined' || value == null) return undefined;
@@ -126,14 +136,12 @@ function enabledItems() {
     return Array.from(surface.value?.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemcheckbox"]') ?? [])
         .filter((element) => !element.matches(':disabled, [aria-disabled="true"], [hidden], [inert]'));
 }
-function isShown() { return Boolean(surface.value?.matches(':popover-open')); }
+function isShown() { return presented.value; }
 function updateLocation() {
     const element = surface.value;
     if (!element) return;
     element.style.setProperty('position-anchor', props.locationStrategy === 'static' ? 'none' : anchorName);
-    const knownPlacement = ['bottom-start', 'bottom-end', 'top-start', 'top-end'].includes(menuPlacement.value);
-    const connected = props.locationStrategy !== undefined || props.target != null || props.offset != null || props.origin != null || !knownPlacement;
-    const next = connected ? overlayPositionStyles({ ...props, location: menuPlacement.value, locationStrategy: props.locationStrategy ?? 'connected', offset: props.offset ?? 5 }, element, activatorEl.value, cursor) : {};
+    const next = overlayPositionStyles({ ...props, location: menuPlacement.value, locationStrategy: props.locationStrategy ?? 'connected', offset: props.offset ?? 5 }, element, activatorEl.value, cursor);
     if (JSON.stringify(next) !== JSON.stringify(positionStyle.value)) positionStyle.value = next;
 }
 function lock() {
@@ -142,14 +150,22 @@ function lock() {
 }
 function unlock() { releaseScrollLock(lockToken); }
 function show() {
-    if (props.disabled || !surface.value || isShown()) return;
+    if (props.disabled || !surface.value) return;
+    if (isShown()) {
+        if (transitionClosing) { transitionClosing = false; state.value = 'opening'; void finishEnter(); }
+        return;
+    }
     contentMounted.value = true;
     void nextTick(() => {
         const element = surface.value;
         if (!element || !open.value || isShown()) return;
-        (element.showPopover as (options?: { source?: HTMLElement }) => void)({ source: activatorEl.value });
+        transitionClosing = false;
+        presented.value = true;
+        pushOverlay(element);
+        state.value = 'opening';
         updateLocation();
         lock();
+        void finishEnter();
     });
 }
 function clearTimers() {
@@ -174,9 +190,10 @@ function scheduleHide() {
 function cancelHide() { clearTimeout(hideTimer); hideTimer = undefined; }
 function pointerInteraction() { keyboardInteraction = false; }
 function keyboardUsed(event: KeyboardEvent) {
+    if (event.key === 'Escape' && event.defaultPrevented) return;
     keyboardInteraction = true;
     const element = surface.value;
-    if (props.nativeDismiss !== false || event.key !== 'Escape' || !open.value || !element || !isTopOverlay(element)) return;
+    if (event.key !== 'Escape' || !open.value || !element || !isTopOverlay(element)) return;
     event.preventDefault();
     event.stopPropagation();
     closeSelf();
@@ -197,22 +214,28 @@ function restoreFocus() {
     if (!restoreFocusAfterClose) { restoreFocusAfterClose = true; return; }
     if (!trigger?.isConnected || (parentMenu && !parentMenu.canRestoreFocus())) return;
     if (keyboardInteraction) {
-        if (!active || active === document.body || surface.value?.contains(active)) trigger.focus({ preventScroll: true });
+        if (!active || active === document.body || surface.value?.contains(active) || branchOwnedFocus) trigger.focus({ preventScroll: true });
     } else if (active === trigger) trigger?.blur();
+    branchOwnedFocus = false;
 }
 
 function closeSelf(force = false, restore = true): boolean {
     if (!force && props.persistent) return false;
     clearTimers();
     restoreFocusAfterClose = restore;
+    branchOwnedFocus ||= [...childMenus.values()].some(child => child.containsFocus());
     for (const child of [...childMenus.values()]) child.close();
-    deliberateClose = true;
     const wasOpen = open.value;
     if (wasOpen) open.value = false;
     if (force) forcedCloseLatch.value = true;
-    if (isShown()) surface.value?.hidePopover();
+    if (isShown()) {
+        if (!transitionClosing) {
+            transitionClosing = true;
+            state.value = 'closing';
+            void finishLeave();
+        }
+    }
     else {
-        deliberateClose = false;
         unlock();
         if (!props.eager) contentMounted.value = false;
     }
@@ -262,25 +285,26 @@ function forceCloseBranch(deactivate = false) {
     if (open.value) open.value = false;
     forcedCloseLatch.value = true;
     if (deactivate) deactivated.value = true;
-    deliberateClose = true;
     generation++;
-    if (isShown()) surface.value?.hidePopover();
+    transition.finish();
+    transitionClosing = false;
+    presented.value = false;
     if (surface.value) popOverlay(surface.value);
     unlock();
     state.value = 'closed';
     if (!props.eager) contentMounted.value = false;
     parentMenu?.unregisterChild(childKey);
-    deliberateClose = false;
 }
-function openChild(key: object, closeChild: () => void, deactivateChild: () => void = closeChild) {
+function openChild(key: object, closeChild: () => void, deactivateChild: () => void = closeChild, containsFocus: () => boolean = () => false) {
     clearCloseParentsTimer();
     parentMenu?.cancelCloseParents();
     for (const [otherKey, otherChild] of childMenus) if (otherKey !== key) otherChild.close();
-    childMenus.set(key, { close: closeChild, deactivate: deactivateChild });
+    childMenus.set(key, { close: closeChild, deactivate: deactivateChild, containsFocus });
 }
 function unregisterChild(key: object) { childMenus.delete(key); }
 
 const context: MenuContext = {
+    ownsNavigation: () => !props.panel,
     close: closeFromContent,
     closeSelf: () => { closeSelf(); },
     closeParents,
@@ -295,6 +319,10 @@ function onActivatorClick(event: MouseEvent) {
     cursor = [event.clientX, event.clientY];
     setActivatorElement(event.currentTarget);
     keyboardInteraction = event.detail === 0;
+    if (openOnClick.value) {
+        event.preventDefault();
+        open.value = !open.value;
+    }
 }
 function onActivatorKeydown(event: KeyboardEvent) {
     keyboardInteraction = true;
@@ -315,10 +343,10 @@ function onContentMouseenter() { pointerInteraction(); cancelHide(); }
 const activatorAttrs = computed(() => mergeProps({
     ref: setActivatorElement,
     id: triggerId.value,
-    popovertarget: !props.disabled && openOnClick.value ? surfaceId.value : undefined,
     'aria-haspopup': props.panel ? 'dialog' : 'menu',
     'aria-expanded': open.value,
     'aria-controls': surfaceId.value,
+    'data-ui-menu-activator': true,
     style: `anchor-name: ${anchorName}`,
     onClick: props.disabled ? undefined : onActivatorClick,
     onPointerdown: pointerInteraction,
@@ -335,8 +363,12 @@ async function finishLeave() {
     await nextTick();
     const element = surface.value;
     if (!element) return;
-    await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
-    if (current !== generation || open.value || isShown()) return;
+    if (props.transition !== undefined) await transition.run(false);
+    else await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    if (current !== generation || open.value) return;
+    transitionClosing = false;
+    presented.value = false;
+    popOverlay(element);
     unlock();
     state.value = 'closed';
     if (!props.eager) contentMounted.value = false;
@@ -348,51 +380,31 @@ async function finishEnter() {
     await nextTick();
     const element = surface.value;
     if (!element) return;
+    const entering = props.transition === undefined ? undefined : transition.run(true);
+    await nextTick();
+    updateLocation();
     if (keyboardInteraction) focusInitial();
-    await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    if (entering) await entering;
+    else await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
     if (current !== generation || !open.value || !isShown()) return;
     state.value = 'open';
     emit('afterEnter');
 }
 const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
-function toggled(event: Event) {
-    const shown = (event as ToggleEvent).newState === 'open';
-    if (deactivated.value) {
-        if (shown) surface.value?.hidePopover();
-        if (surface.value) popOverlay(surface.value);
-        unlock();
-        return;
-    }
-    if (shown) {
-        if (surface.value) pushOverlay(surface.value);
-        generation++;
-        contentMounted.value = true;
-        state.value = 'opening';
-        lock();
-        if (!open.value) open.value = true;
-        if (parentMenu) parentMenu.openChild(childKey, () => { closeSelf(true, false); }, () => { forceCloseBranch(true); });
-        void finishEnter();
-        return;
-    }
-    if (props.persistent && !deliberateClose && open.value) { void nextTick(show); return; }
-    if (surface.value) popOverlay(surface.value);
-    const wasDeliberate = deliberateClose;
-    deliberateClose = false;
-    state.value = 'closing';
-    if (open.value) open.value = false;
-    if (!open.value) {
-        parentMenu?.unregisterChild(childKey);
-        void finishLeave();
-    } else if (wasDeliberate) {
-        void nextTick(show);
-    }
-}
 function keydown(event: KeyboardEvent) {
     keyboardInteraction = true;
     emit('keydown', event);
+    if (event.defaultPrevented) return;
     if (props.panel) return;
     if (event.key === 'Tab') {
-        closeSelf(false, false);
+        // Include the currently focused roving item to preserve its DOM position,
+        // then choose the next tabbable target (Vuetify's negative-tabindex traversal).
+        const nodes = surface.value ? overlayFocusable(surface.value, true) : [];
+        const index = nodes.indexOf(document.activeElement as HTMLElement);
+        const candidates = event.shiftKey ? nodes.slice(0, index < 0 ? nodes.length : index).reverse() : nodes.slice(index + 1);
+        const next = candidates.find(node => node.tabIndex >= 0);
+        if (next) { event.preventDefault(); next.focus(); }
+        else closeSelf(false, false);
         return;
     }
     const list = enabledItems();
@@ -416,13 +428,19 @@ function onScroll(event: Event) {
 function onDocumentClick(event: MouseEvent) {
     const element = surface.value;
     if (!open.value || !element || !isTopOverlay(element) || element.contains(event.target as Node) || activatorEl.value?.contains(event.target as Node)) return;
+    // A composite field can open on input focus while its button is the activator.
+    // Its positioning target is the whole field; that same click belongs to the opener.
+    const target = resolveOverlayTarget(props.target, activatorEl.value, element, cursor);
+    if (target instanceof HTMLElement && target.contains(event.target as Node)) return;
+    if (!claimOverlayDismiss(event)) return;
     emit('click:outside', event);
     closeSelf();
     parentMenu?.closeParents(event);
 }
 function onContentClick(event: MouseEvent) {
     if (event.defaultPrevented || !closeOnContentClick.value) return;
-    if (event.target instanceof Element && event.target.closest('[popovertarget]')) return;
+    if (event.target instanceof Element && event.target.closest('[data-ui-menu-keep-open], [aria-disabled="true"], :disabled')) return;
+    if (event.target instanceof Element && event.target.closest('[data-ui-menu-activator]')) return;
     closeFromContent();
 }
 
@@ -431,7 +449,7 @@ watch(open, (value) => {
     if (value) {
         contentMounted.value = true;
         show();
-        parentMenu?.openChild(childKey, () => { closeSelf(true, false); }, () => { forceCloseBranch(true); });
+        parentMenu?.openChild(childKey, () => { closeSelf(true, false); }, () => { forceCloseBranch(true); }, () => !!surface.value?.contains(document.activeElement) || [...childMenus.values()].some(child => child.containsFocus()));
     } else {
         closeSelf(true);
         parentMenu?.unregisterChild(childKey);
@@ -488,6 +506,7 @@ onActivated(() => { deactivated.value = false; });
 onBeforeUnmount(() => {
     positionObserver?.disconnect();
     generation++;
+    transition.finish();
     clearTimers();
     clearCloseParentsTimer();
     externalActivatorCleanup?.();
@@ -516,17 +535,18 @@ defineExpose({
 
 const contentAttrs = computed(() => mergeProps(props.contentProps, {
     id: surfaceId.value,
-    popover: props.nativeDismiss === false ? 'manual' : 'auto',
     class: ['ui-menu-surface', props.contentClass, { 'is-panel': props.panel }],
     'data-placement': menuPlacement.value,
     'data-state': state.value,
+    inert: state.value === 'closing' || undefined,
+    'aria-hidden': state.value === 'closing' || undefined,
+    'data-ui-transition': props.transition !== undefined || undefined,
     'data-scroll-strategy': props.scrollStrategy,
     role: props.contentProps.role ?? (props.panel ? 'dialog' : 'menu'),
     'aria-label': props.label ?? props.contentProps['aria-label'],
     'aria-labelledby': props.label || props.contentProps['aria-label'] ? undefined : triggerId.value,
     tabindex: '-1',
     style: { positionAnchor: anchorName, ...positionStyle.value, ...dimensionStyles(props) },
-    onToggle: toggled,
     onPointerdownCapture: pointerInteraction,
     onKeydown: keydown,
     onClick: onContentClick,
@@ -538,8 +558,14 @@ const contentAttrs = computed(() => mergeProps(props.contentProps, {
 <template>
     <div class="ui-menu">
         <slot v-if="!props.activator" name="activator" v-bind="activatorSlot" />
-        <div ref="surface" v-bind="contentAttrs">
-            <slot v-if="contentMounted || props.eager" v-bind="contentSlot" />
-        </div>
+        <UiOverlayHost :active="presented" :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :z-index="props.zIndex" :scrim="false" floating>
+        <UiMaybeTransition :transition="props.transition ?? false"
+            @after-enter="transition.finish" @after-leave="transition.finish" @enter-cancelled="transition.finish" @leave-cancelled="transition.finish">
+            <div ref="surface" v-bind="contentAttrs"
+                v-show="props.transition === undefined || transition.visible.value">
+                <slot v-if="contentMounted || props.eager" v-bind="contentSlot" />
+            </div>
+        </UiMaybeTransition>
+        </UiOverlayHost>
     </div>
 </template>

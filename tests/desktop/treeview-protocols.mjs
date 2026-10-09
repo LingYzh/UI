@@ -153,7 +153,7 @@ window.treeProbe = { state, refs };
             />
         </section>
         <section id="legacy-fixture">
-            <UTreeview :items="treeItems" selectable multiple :selected="state.legacySelected" @update:selected="state.legacySelected = $event" />
+            <UTreeview :items="treeItems" items-registration="props" selectable multiple :selected="state.legacySelected" @update:selected="state.legacySelected = $event" />
         </section>
         <section id="open-false-fixture">
             <UTreeview :items="treeItems" selectable :open-on-click="false" />
@@ -295,7 +295,7 @@ async function settle(page) {
 
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage();
     page.on('pageerror', (error) => browserErrors.push(error.message));
     page.on('console', (message) => {
@@ -335,7 +335,7 @@ try {
     await legacy.locator('.ui-treeview-item').filter({ hasText: 'Branch' }).locator('input[type="checkbox"]').check();
     await page.waitForFunction(() => window.treeProbe.state.legacySelected.length === 3);
     assert.deepEqual((await page.evaluate(() => window.treeProbe.state.legacySelected)).sort(), ['branch', 'leaf-a', 'leaf-b']);
-    passed('legacy multiple cascade compatibility', 'multiple=true without an explicit strategy retains the legacy all-selected-id array output.');
+    passed('complete-tree multiple cascade compatibility', 'itemsRegistration=props keeps complete-tree cascade output; default render registration is covered by tree-registration-protocols.');
 
     const branch = page.locator('#branch-fixture .ui-treeview');
     await branch.locator('.ui-treeview-item').filter({ hasText: 'Branch' }).click();
@@ -364,9 +364,9 @@ try {
     await page.locator('#activation-default-fixture .ui-treeview-item').filter({ hasText: 'Activation leaf' }).click();
     assert.deepEqual(await page.evaluate(() => window.treeProbe.state.defaultActivationUpdates), []);
     await page.locator('#activation-fixture .ui-treeview-item').filter({ hasText: 'Activation leaf' }).click();
-    assert.deepEqual(await page.evaluate(() => window.treeProbe.state.activationUpdates.at(-1)), ['activation-leaf']);
+    assert.deepEqual(await page.evaluate(() => window.treeProbe.state.activationUpdates.at(-1)), [], 'single-independent toggles an already active item off');
     assert.equal(await page.locator('#activation-fixture .ui-treeview-item').evaluate((row) => row.classList.contains('is-active')), true, 'legacy scalar activated input remains readable');
-    passed('activated is opt-in and emits arrays', 'activatable defaults false with no activation event; enabling it emits a one-item array.');
+    passed('activated is opt-in and emits arrays', 'activatable defaults false; single-independent emits an empty array to cancel an already active controlled scalar value.');
 
     const readonlyTree = page.locator('#readonly-fixture .ui-treeview');
     assert.equal(await readonlyTree.locator('input').isDisabled(), true);

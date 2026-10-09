@@ -1,10 +1,10 @@
-import { computed, inject, onBeforeUnmount, provide, reactive, ref, useId, watch, type ComputedRef, type InjectionKey, type Ref } from 'vue';
+import { computed, getCurrentInstance, inject, onActivated, onBeforeUnmount, onDeactivated, onMounted, onUpdated, provide, reactive, ref, useId, watch, type ComputedRef, type CSSProperties, type InjectionKey, type Ref, type VNode } from 'vue';
 
 export type LayoutEdge = 'top' | 'right' | 'bottom' | 'left';
 export type LayoutRect = Record<LayoutEdge, number>;
 export type LayoutItemInput = { id?: string; edge: LayoutEdge; size: number; active: boolean; order: number };
 export type LayoutItemGeometry = LayoutRect & { id: string; position: LayoutEdge; size: number };
-export type AppLayoutOptions = { overlaps?: readonly string[] };
+export type AppLayoutOptions = { overlaps?: readonly string[]; layoutMode?: 'legacy' | 'ordered' };
 
 type RegisteredItem = { id: string; edge: LayoutEdge; size: number; active: boolean; order: number };
 type LayoutRecord = { key: symbol; item: RegisteredItem; rect: LayoutRect };
@@ -16,8 +16,10 @@ const normalizedSize = (size: number) => Number.isFinite(size) && size >= 0 ? si
 
 export type AppLayout = ReturnType<typeof createAppLayout>;
 export const appLayoutKey: InjectionKey<AppLayout> = Symbol('ui-app-layout');
+const layoutItemKey: InjectionKey<symbol> = Symbol('ui-layout-item');
 
-export function createAppLayout(getOptions?: () => AppLayoutOptions) {
+export function createAppLayout(getOptions?: () => AppLayoutOptions, nested = false) {
+    const ordered = computed(() => getOptions?.()?.layoutMode === 'ordered');
     const registeredItems = reactive(new Map<symbol, RegisteredItem>());
     const registrationOrder = ref<symbol[]>([]);
     const fallbackIds = new Map<symbol, string>();
@@ -122,7 +124,7 @@ export function createAppLayout(getOptions?: () => AppLayoutOptions) {
         for (const key of registrationOrder.value) {
             if (registeredItems.has(key) && !seen.has(key)) next.push(key);
         }
-        registrationOrder.value = next;
+        if (next.length !== registrationOrder.value.length || next.some((key, index) => key !== registrationOrder.value[index])) registrationOrder.value = next;
     }
 
     function before(key: symbol) {
@@ -168,12 +170,29 @@ export function createAppLayout(getOptions?: () => AppLayoutOptions) {
         };
     }
 
-    return { offsets, mainRect, items, register, unregister, before, reorder, getLayoutItem, itemRect };
+    return { offsets, mainRect, items, ordered, nested, register, unregister, before, reorder, getLayoutItem, itemRect };
 }
 
 export function provideAppLayout(getOptions?: () => AppLayoutOptions) {
-    const layout = createAppLayout(getOptions);
+    const parent = useAppLayout();
+    const layout = createAppLayout(getOptions, !!parent);
     provide(appLayoutKey, layout);
+    const instance = getCurrentInstance();
+    function syncOrder(): void {
+        const keys: symbol[] = [];
+        function visit(node: VNode): void {
+            const provided = (node.component as unknown as { provides?: Record<symbol, unknown> })?.provides;
+            // Nested layouts own their descendants' registrations.
+            if (provided && Object.hasOwn(provided, appLayoutKey) && provided[appLayoutKey] !== layout) return;
+            if (provided && Object.hasOwn(provided, layoutItemKey)) keys.push(provided[layoutItemKey] as symbol);
+            if (node.component?.subTree) visit(node.component.subTree);
+            if (Array.isArray(node.children)) for (const child of node.children) if (child && typeof child === 'object') visit(child as VNode);
+        }
+        if (instance?.subTree) visit(instance.subTree);
+        layout.reorder(keys);
+    }
+    onMounted(syncOrder);
+    onUpdated(syncOrder);
     return layout;
 }
 
@@ -188,16 +207,20 @@ export function useLayoutItem(
 ) {
     const layout = useAppLayout();
     const key = Symbol('layout-item');
+    provide(layoutItemKey, key);
+    const deactivated = ref(false);
     const fallbackId = `layout-item-${useId()}`;
     const id = computed(() => name?.value ?? fallbackId);
-    watch([edge, size, active, order, id], () => layout?.register(key, {
+    watch([edge, size, active, order, id, deactivated], () => layout?.register(key, {
         id: id.value,
         edge: edge.value,
         size: size.value,
-        active: active.value,
+        active: active.value && !deactivated.value,
         order: order.value,
     }), { immediate: true });
     onBeforeUnmount(() => layout?.unregister(key));
+    onDeactivated(() => { deactivated.value = true; });
+    onActivated(() => { deactivated.value = false; });
 
     const rect: ComputedRef<LayoutItemGeometry> = computed(() => layout?.itemRect(key) ?? ({
         id: id.value,
@@ -205,5 +228,20 @@ export function useLayoutItem(
         size: normalizedSize(size.value),
         ...zeroRect(),
     }));
-    return { layout, offset: computed(() => layout?.before(key) ?? 0), key, id, rect };
+    // Ordered geometry is opt-in. Legacy consumers continue to use their old offsets.
+    const styles = computed<CSSProperties>(() => {
+        if (!layout?.ordered.value) return {};
+        const item = rect.value;
+        const horizontal = edge.value === 'left' || edge.value === 'right';
+        return {
+            position: layout.nested ? 'absolute' : undefined,
+            top: edge.value === 'bottom' ? undefined : `${item.top}px`,
+            bottom: edge.value === 'top' ? undefined : `${item.bottom}px`,
+            left: edge.value === 'right' ? undefined : `${item.left}px`,
+            right: edge.value === 'left' ? undefined : `${item.right}px`,
+            ...(horizontal ? {} : { width: `calc(100% - ${item.left}px - ${item.right}px)` }),
+            zIndex: 20 + layout.items.value.length - layout.items.value.findIndex(entry => entry.id === id.value),
+        };
+    });
+    return { layout, offset: computed(() => layout?.before(key) ?? 0), key, id, rect, styles };
 }

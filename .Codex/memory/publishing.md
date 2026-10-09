@@ -1,5 +1,11 @@
 # npm 发布记忆
 
+## 2026-10-09：0.4.0 已获合并和发版授权
+
+用户明确要求先合并UI分支后发版，再适配UAH。package.json与lock根版本已同步0.4.0；发布前registry查询latest仍0.3.2。最终源码Node24.19.0完整typecheck、307/307单测、docs/lib构建、Electron21组/173路由、feedback7组、controls6组均通过；pack白名单541文件和全部exports通过。历史失败及两项真实焦点修复已保存，发布门禁证据见checkpoint-evidence/2026-10-09-release-0.4.0.json。
+
+按原流程提交、fast-forward main，再原子推送main与v0.4.0触发OIDC。此授权不允许改写旧tag；必须确认Publish步骤及official registry version/latest/tarball/integrity后才能声称发版完成、升级UAH。迁移与默认变化见docs/RELEASE-0.4.0.md。最终发布SHA/run与消费端结果在本节后续增量记录。
+
 ## 2026-10-01：0.2.2 自动发布已验证
 
 - 用户确认发布 Ripple 动态 class 修复并升级 KAM 后，发布提交 `cd9d3ce5d08bb5416e14a69bfecca30e9f02097b` 与注释标签 `v0.2.2` 使用 atomic push 推送到 main。

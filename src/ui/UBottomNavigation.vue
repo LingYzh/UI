@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, provide, ref, useAttrs, watch } f
 import UItemGroup from './UItemGroup.vue';
 import { buttonToggleScopeKey } from './button-group';
 import { bottomNavigationKey } from './bottom-navigation';
-import { useLayoutItem } from './layout-completion';
+import { useAppLayout, useLayoutItem } from './layout-completion';
 import { dimensionLength } from './dimensions';
 import { defaultValueComparator } from './selection';
 import { useDefaults } from './defaults';
@@ -79,8 +79,9 @@ const layoutHeight = computed(() => {
     const pixels = pixelValue(props.height);
     return pixels === undefined ? 0 : Math.max(0, pixels - densityReduction());
 });
-const layoutActive = computed(() => active.value && props.fixed && !props.absolute);
-const { offset } = useLayoutItem(computed(() => 'bottom'), layoutHeight, layoutActive, computed(() => Number(props.order) || 0), computed(() => props.name));
+const appLayout = useAppLayout();
+const layoutActive = computed(() => active.value && props.fixed && (!props.absolute || !!appLayout?.ordered.value));
+const { offset, styles: layoutStyles } = useLayoutItem(computed(() => 'bottom'), layoutHeight, layoutActive, computed(() => Number(props.order) || 0), computed(() => props.name));
 
 function select(value: unknown): void {
     if (props.disabled || props.readonly) return;
@@ -166,7 +167,7 @@ defineSlots<{
                 'is-compact': props.density === 'compact'
             }
         ]"
-        :style="[{ minHeight, bottom: `${offset}px` }, attrs.style as any]"
+        :style="[{ minHeight, bottom: `${offset}px`, ...(props.fixed || props.absolute ? layoutStyles : {}) }, attrs.style as any]"
         role="navigation"
         :aria-label="props.label ?? attrs['aria-label'] as string ?? '底部导航'"
     >

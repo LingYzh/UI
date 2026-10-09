@@ -1,0 +1,1435 @@
+{
+    "scope": "Approved Vuetify consolidation, source fixtures; no commit, push or release",
+    "archivedAt": "2026-10-09T05:14:06.448Z",
+    "uiHead": "8873720",
+    "consumerHead": "86f75d4",
+    "sourceHashes": {
+        "index.html": "6fb90233fd55bef1a8e0d3befea599d97c9a369d2d5b7bb7e29b321f1b72517e",
+        "src/main.js": "fe7c44fa01e03442902a2e94321537f42e728d32d21b4e85bcae91ab912becd2",
+        "src/ui/UiPreview.vue": "540ab1a9c1bcd95bc8c7e026739322a164709fc50951842a6adcb81e276b704f",
+        "src/ui/docs/content.js": "c0aed5d63b53c9e84a7823a1a7315c8e2acc2f762c3c2b267316753ee0479bf4",
+        "src/ui/docs/navigation.js": "030d0ac4139b12a5d6f311773048e334767c079189a4ce3201cfa4a57ea14a57",
+        "src/ui/docs/familyGuidance.js": "dadac00a962a38e8c37df5293916fdd157c040166e5b5a813e5824bcb236329e",
+        "src/ui/docs/ExampleCard.vue": "c52c3964a1d0ac50ccee5340e325dff7942ae918920bc544a7aa6b16be4e03d5",
+        "src/ui/docs/LiveExample.vue": "035041da218aec10d42427c56543448c219ded0f083874ff1a7fe8cd1aad2ac0",
+        "src/ui/docs/LayoutDemo.vue": "01119706a9529ec5ab999af7f1dbedaac34ea064fb7cdd81b8f96f0754809b0a",
+        "src/ui/docs/VariantExample.vue": "5f11c286f0313a6cbdfa63e234577e57f0d92a48e0acdd655bf62c2e49c51397",
+        "src/ui/docs/TabsDemo.vue": "508854cfd1768083956265f21d44bcb8953c849ca6fcc612c3090114557b406a",
+        "src/ui/docs/OverlayPresentationDemo.vue": "78b6144a3c44f787b57c16382640c53b4328e0bcaac5eac869df8aec32909f40",
+        "src/ui/docs/geometryContent.js": "5a37174c677bd1b24671296b0ba0e85d2ef07b2707f1f72882441c0ef1b4880e",
+        "src/ui/docs/apiReference.js": "e42da4c8b4b635b73481793a60f7806b46b6e413c7a45ca7471b1104a0d450c5",
+        "src/ui/USnackbar.vue": "bead583d52971f674c7b82ea4964fc2929d5b91bcd376b2af1c3e3813e02e0c0",
+        "src/ui/UiSnackbarHost.vue": "cdfb9703d00b2e2e415d8a7bc881024a8ebf1477a84ee635665072e7d3f2317a",
+        "src/ui/UiProgress.vue": "3dfa90d72daad2c520397cb0a5818290fb0671199b6654d90eb12ef90635be37",
+        "src/ui/UiSpinner.vue": "4bd47c8c12ef1c25f5f56659a0d3d37c01fd2eddd3dcc0f3679049422f11e87f",
+        "src/ui/UiMenuItem.vue": "6cfb085c68ad0ee9f3479480b48696527624d1ac77848f42edbd9c574d66653a",
+        "src/ui/UiMenu.vue": "e0b050881c3479b2b6b28876779e9f8ee7d97c0fc2fc25c14e6624d58fd85e80",
+        "src/ui/menu.ts": "95852c6fcec1ed660646dd817329f29c6cee3475e8e48224dca69261de430a81",
+        "src/ui/overlay-lifecycle.ts": "9762258e501c9531e1112fe7e461b193ca59c725374878f334676e6af8af9bcf",
+        "src/ui/UProgressLinear.vue": "c4b3b4708b20f2f79930ce117af647dc2b6e9491f61382583fe16a0e2468b9d9",
+        "src/ui/UProgressCircular.vue": "88bb1d4281bc35051fb49670c2791afe6e39a94fb39b29cb5e4f10e47c602fef",
+        "src/ui/styles.css": "acf590f0603696cad77d9f984aa2c26f068f8bac04e1baaa3da2ab476237a20f",
+        "src/ui/controls.css": "c19c2ef98c0c227b9c85de81d1bea6bfad721aece9f2691e231adfdc890c3af7",
+        "src/ui/feedback.css": "2e123cbc8999eb4953a65c9b7cf2399598cbcae16d03e52316d866dd3a9568b0",
+        "src/ui/alignment-components.css": "e5313d1f437ba8711a57ec7273f1f81a90adce584226bff052755e53b70ed683",
+        "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+        "src/ui/docs/docs.css": "640337fe71ae26f42a10a847ca4b63c3cf4d8ff3f6df1267ae9c32d1dfa7dbdf",
+        "src/ui/UList.vue": "841e3ab800bf937a53069beb8b0e0ae440d2d7ebed867388374b5f82a36f17f3",
+        "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+        "src/ui/UListItem.vue": "1e7e8aa410883f8c8cb661eed074f9b0767cc0c4afbbadfbb9d7d5acb002f6fb",
+        "src/ui/UiCollapse.vue": "0e3a47b708e4ea1c16b9986c7502c65fc2480ccfeae7729e9392048aca21b4a9",
+        "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c",
+        "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84",
+        "src/ui/snackbar.ts": "82f9be14762efe7738c1246575c0cb34e64f0acef6c5057c89649f6746ff5a75",
+        "src/ui/UiTabPanel.vue": "54b4874a8cd3504c3e10a334533c170041d7e3e13162ae869efc030dec346463"
+    },
+    "focusedValidation": {
+        "unitCommand": "node --import tsx --test tests/api-reference.test.ts tests/docs-navigation.test.js tests/layout.test.ts",
+        "unitPassed": 21,
+        "typeCommand": "node node_modules/vue-tsc/bin/vue-tsc.js --noEmit -p tests/tsconfig.component-consolidation.json",
+        "typeExitCode": 0,
+        "fullBuildAndElectronRun": false
+    },
+    "rootVisualAcceptance": {
+        "accepted": true,
+        "screenshots": [
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/default-groups-light-wide.png",
+                "sha256": "e1308570b76035519f66269cce5b26716232241ea1eba512bb68acbd286f3363"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/list-family-api-light-wide.png",
+                "sha256": "9677ef3f2bf69aa96f5a68974bdb69ee40d0adeb45f6134b5ee67b2cf70d27bd"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/independent-api-directory.png",
+                "sha256": "6d1d4f42acec5dd80b9de9e6fb60068c216b95f52d25524cf702afcf41d33f46"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/light-wide-1440.png",
+                "sha256": "7a4d2aacb5bb13a5ddbc0bfd7a3ddef86dda8f9daedbff6927d6bc9093c6cc79"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/dark-narrow-900.png",
+                "sha256": "cd24fa633470abde437571413701463e865478c0ada9a25b2fc0389e86728d19"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/light-mobile-390.png",
+                "sha256": "e8cb0ae2fdc2ecfa9ab9a2318f87380ca02ea8b409f77b3ac5c18bb6be344096"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/dark-page-zoom-125-312.png",
+                "sha256": "f0433e00808a18deb23ce461e6e6c11cf835f39e228bf37fec51417e46979c9b"
+            },
+            {
+                "path": "artifacts/full-alignment/docs-navigation-groups/default-groups-dark-mobile.png",
+                "sha256": "9f25fb88b5f5621bcbc7168b30d2790d29e576e2dd43f11c7aac8116a9167fc5"
+            },
+            {
+                "path": "artifacts/component-audit-root/component-consolidation/fixture.png",
+                "sha256": "188647c401edcfa1856ae1a57ef1916b821a80d2d0e6ff784ad1cb049ff6b6c3"
+            }
+        ],
+        "notes": "Root reviewed 8 docs screenshots and 1 component screenshot; latest wide navigation/API captures rechecked. 125% uses viewport/DPR simulation, not native browser zoom."
+    },
+    "docs": {
+        "path": "artifacts/full-alignment/docs-navigation-groups/report.json",
+        "sha256": "c78222acdcec1bff1293b023081d46c441529e86f7b3e1a9efcbcfcb5007ba67",
+        "report": {
+            "test": "docs-navigation-groups",
+            "startedAt": "2026-10-09T05:12:28.815Z",
+            "browser": "Chrome channel via Playwright",
+            "expected": {
+                "pageCount": 173,
+                "componentCount": 158,
+                "groupCount": 16
+            },
+            "sourceHashesBefore": {
+                "index.html": "6fb90233fd55bef1a8e0d3befea599d97c9a369d2d5b7bb7e29b321f1b72517e",
+                "src/main.js": "fe7c44fa01e03442902a2e94321537f42e728d32d21b4e85bcae91ab912becd2",
+                "src/ui/UiPreview.vue": "540ab1a9c1bcd95bc8c7e026739322a164709fc50951842a6adcb81e276b704f",
+                "src/ui/docs/content.js": "c0aed5d63b53c9e84a7823a1a7315c8e2acc2f762c3c2b267316753ee0479bf4",
+                "src/ui/docs/navigation.js": "030d0ac4139b12a5d6f311773048e334767c079189a4ce3201cfa4a57ea14a57",
+                "src/ui/docs/familyGuidance.js": "dadac00a962a38e8c37df5293916fdd157c040166e5b5a813e5824bcb236329e",
+                "src/ui/docs/ExampleCard.vue": "c52c3964a1d0ac50ccee5340e325dff7942ae918920bc544a7aa6b16be4e03d5",
+                "src/ui/docs/LiveExample.vue": "035041da218aec10d42427c56543448c219ded0f083874ff1a7fe8cd1aad2ac0",
+                "src/ui/docs/LayoutDemo.vue": "01119706a9529ec5ab999af7f1dbedaac34ea064fb7cdd81b8f96f0754809b0a",
+                "src/ui/docs/VariantExample.vue": "5f11c286f0313a6cbdfa63e234577e57f0d92a48e0acdd655bf62c2e49c51397",
+                "src/ui/docs/TabsDemo.vue": "508854cfd1768083956265f21d44bcb8953c849ca6fcc612c3090114557b406a",
+                "src/ui/docs/OverlayPresentationDemo.vue": "78b6144a3c44f787b57c16382640c53b4328e0bcaac5eac869df8aec32909f40",
+                "src/ui/docs/geometryContent.js": "5a37174c677bd1b24671296b0ba0e85d2ef07b2707f1f72882441c0ef1b4880e",
+                "src/ui/docs/apiReference.js": "e42da4c8b4b635b73481793a60f7806b46b6e413c7a45ca7471b1104a0d450c5",
+                "src/ui/USnackbar.vue": "bead583d52971f674c7b82ea4964fc2929d5b91bcd376b2af1c3e3813e02e0c0",
+                "src/ui/UiSnackbarHost.vue": "cdfb9703d00b2e2e415d8a7bc881024a8ebf1477a84ee635665072e7d3f2317a",
+                "src/ui/UiProgress.vue": "3dfa90d72daad2c520397cb0a5818290fb0671199b6654d90eb12ef90635be37",
+                "src/ui/UiSpinner.vue": "4bd47c8c12ef1c25f5f56659a0d3d37c01fd2eddd3dcc0f3679049422f11e87f",
+                "src/ui/UiMenuItem.vue": "6cfb085c68ad0ee9f3479480b48696527624d1ac77848f42edbd9c574d66653a",
+                "src/ui/UiMenu.vue": "e0b050881c3479b2b6b28876779e9f8ee7d97c0fc2fc25c14e6624d58fd85e80",
+                "src/ui/menu.ts": "95852c6fcec1ed660646dd817329f29c6cee3475e8e48224dca69261de430a81",
+                "src/ui/overlay-lifecycle.ts": "9762258e501c9531e1112fe7e461b193ca59c725374878f334676e6af8af9bcf",
+                "src/ui/UProgressLinear.vue": "c4b3b4708b20f2f79930ce117af647dc2b6e9491f61382583fe16a0e2468b9d9",
+                "src/ui/UProgressCircular.vue": "88bb1d4281bc35051fb49670c2791afe6e39a94fb39b29cb5e4f10e47c602fef",
+                "src/ui/styles.css": "acf590f0603696cad77d9f984aa2c26f068f8bac04e1baaa3da2ab476237a20f",
+                "src/ui/controls.css": "c19c2ef98c0c227b9c85de81d1bea6bfad721aece9f2691e231adfdc890c3af7",
+                "src/ui/feedback.css": "2e123cbc8999eb4953a65c9b7cf2399598cbcae16d03e52316d866dd3a9568b0",
+                "src/ui/alignment-components.css": "e5313d1f437ba8711a57ec7273f1f81a90adce584226bff052755e53b70ed683",
+                "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+                "src/ui/docs/docs.css": "640337fe71ae26f42a10a847ca4b63c3cf4d8ff3f6df1267ae9c32d1dfa7dbdf",
+                "src/ui/UList.vue": "841e3ab800bf937a53069beb8b0e0ae440d2d7ebed867388374b5f82a36f17f3",
+                "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+                "src/ui/UListItem.vue": "1e7e8aa410883f8c8cb661eed074f9b0767cc0c4afbbadfbb9d7d5acb002f6fb",
+                "src/ui/UiCollapse.vue": "0e3a47b708e4ea1c16b9986c7502c65fc2480ccfeae7729e9392048aca21b4a9",
+                "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c"
+            },
+            "sourceHashesAfter": {
+                "index.html": "6fb90233fd55bef1a8e0d3befea599d97c9a369d2d5b7bb7e29b321f1b72517e",
+                "src/main.js": "fe7c44fa01e03442902a2e94321537f42e728d32d21b4e85bcae91ab912becd2",
+                "src/ui/UiPreview.vue": "540ab1a9c1bcd95bc8c7e026739322a164709fc50951842a6adcb81e276b704f",
+                "src/ui/docs/content.js": "c0aed5d63b53c9e84a7823a1a7315c8e2acc2f762c3c2b267316753ee0479bf4",
+                "src/ui/docs/navigation.js": "030d0ac4139b12a5d6f311773048e334767c079189a4ce3201cfa4a57ea14a57",
+                "src/ui/docs/familyGuidance.js": "dadac00a962a38e8c37df5293916fdd157c040166e5b5a813e5824bcb236329e",
+                "src/ui/docs/ExampleCard.vue": "c52c3964a1d0ac50ccee5340e325dff7942ae918920bc544a7aa6b16be4e03d5",
+                "src/ui/docs/LiveExample.vue": "035041da218aec10d42427c56543448c219ded0f083874ff1a7fe8cd1aad2ac0",
+                "src/ui/docs/LayoutDemo.vue": "01119706a9529ec5ab999af7f1dbedaac34ea064fb7cdd81b8f96f0754809b0a",
+                "src/ui/docs/VariantExample.vue": "5f11c286f0313a6cbdfa63e234577e57f0d92a48e0acdd655bf62c2e49c51397",
+                "src/ui/docs/TabsDemo.vue": "508854cfd1768083956265f21d44bcb8953c849ca6fcc612c3090114557b406a",
+                "src/ui/docs/OverlayPresentationDemo.vue": "78b6144a3c44f787b57c16382640c53b4328e0bcaac5eac869df8aec32909f40",
+                "src/ui/docs/geometryContent.js": "5a37174c677bd1b24671296b0ba0e85d2ef07b2707f1f72882441c0ef1b4880e",
+                "src/ui/docs/apiReference.js": "e42da4c8b4b635b73481793a60f7806b46b6e413c7a45ca7471b1104a0d450c5",
+                "src/ui/USnackbar.vue": "bead583d52971f674c7b82ea4964fc2929d5b91bcd376b2af1c3e3813e02e0c0",
+                "src/ui/UiSnackbarHost.vue": "cdfb9703d00b2e2e415d8a7bc881024a8ebf1477a84ee635665072e7d3f2317a",
+                "src/ui/UiProgress.vue": "3dfa90d72daad2c520397cb0a5818290fb0671199b6654d90eb12ef90635be37",
+                "src/ui/UiSpinner.vue": "4bd47c8c12ef1c25f5f56659a0d3d37c01fd2eddd3dcc0f3679049422f11e87f",
+                "src/ui/UiMenuItem.vue": "6cfb085c68ad0ee9f3479480b48696527624d1ac77848f42edbd9c574d66653a",
+                "src/ui/UiMenu.vue": "e0b050881c3479b2b6b28876779e9f8ee7d97c0fc2fc25c14e6624d58fd85e80",
+                "src/ui/menu.ts": "95852c6fcec1ed660646dd817329f29c6cee3475e8e48224dca69261de430a81",
+                "src/ui/overlay-lifecycle.ts": "9762258e501c9531e1112fe7e461b193ca59c725374878f334676e6af8af9bcf",
+                "src/ui/UProgressLinear.vue": "c4b3b4708b20f2f79930ce117af647dc2b6e9491f61382583fe16a0e2468b9d9",
+                "src/ui/UProgressCircular.vue": "88bb1d4281bc35051fb49670c2791afe6e39a94fb39b29cb5e4f10e47c602fef",
+                "src/ui/styles.css": "acf590f0603696cad77d9f984aa2c26f068f8bac04e1baaa3da2ab476237a20f",
+                "src/ui/controls.css": "c19c2ef98c0c227b9c85de81d1bea6bfad721aece9f2691e231adfdc890c3af7",
+                "src/ui/feedback.css": "2e123cbc8999eb4953a65c9b7cf2399598cbcae16d03e52316d866dd3a9568b0",
+                "src/ui/alignment-components.css": "e5313d1f437ba8711a57ec7273f1f81a90adce584226bff052755e53b70ed683",
+                "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+                "src/ui/docs/docs.css": "640337fe71ae26f42a10a847ca4b63c3cf4d8ff3f6df1267ae9c32d1dfa7dbdf",
+                "src/ui/UList.vue": "841e3ab800bf937a53069beb8b0e0ae440d2d7ebed867388374b5f82a36f17f3",
+                "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+                "src/ui/UListItem.vue": "1e7e8aa410883f8c8cb661eed074f9b0767cc0c4afbbadfbb9d7d5acb002f6fb",
+                "src/ui/UiCollapse.vue": "0e3a47b708e4ea1c16b9986c7502c65fc2480ccfeae7729e9392048aca21b4a9",
+                "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c"
+            },
+            "sourceChangedDuringRun": [],
+            "zoom125Simulation": {
+                "method": "Playwright browser-context deviceScaleFactor emulation; not native browser Ctrl+ zoom",
+                "cssViewport": {
+                    "width": 312,
+                    "height": 800
+                },
+                "deviceScaleFactor": 1.25,
+                "equivalentPhysicalViewport": {
+                    "width": 390,
+                    "height": 1000
+                },
+                "actualViewport": {
+                    "innerWidth": 312,
+                    "innerHeight": 800,
+                    "devicePixelRatio": 1.25
+                },
+                "screenshotPixels": {
+                    "width": 390,
+                    "height": 1000
+                },
+                "layoutMetrics": {
+                    "viewportWidth": 312,
+                    "devicePixelRatio": 1.25,
+                    "documentWidth": 312,
+                    "bodyWidth": 312,
+                    "sidebarWidth": 279,
+                    "sidebarScrollWidth": 279,
+                    "expandedVisibleRows": 122,
+                    "rowOverflow": []
+                }
+            },
+            "screenshots": [
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\default-groups-light-wide.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\list-family-api-light-wide.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\independent-api-directory.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\light-wide-1440.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\dark-narrow-900.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\light-mobile-390.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\dark-page-zoom-125-312.png",
+                "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\default-groups-dark-mobile.png"
+            ],
+            "checks": [
+                {
+                    "name": "renders all navigation categories in contract order",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "getting-started",
+                            "foundations",
+                            "application",
+                            "containment",
+                            "navigation",
+                            "form-inputs-and-controls",
+                            "data-and-display",
+                            "grids",
+                            "selection",
+                            "feedback",
+                            "images-and-icons",
+                            "pickers",
+                            "providers",
+                            "miscellaneous",
+                            "uah-extensions",
+                            "services"
+                        ],
+                        "expected": [
+                            "getting-started",
+                            "foundations",
+                            "application",
+                            "containment",
+                            "navigation",
+                            "form-inputs-and-controls",
+                            "data-and-display",
+                            "grids",
+                            "selection",
+                            "feedback",
+                            "images-and-icons",
+                            "pickers",
+                            "providers",
+                            "miscellaneous",
+                            "uah-extensions",
+                            "services"
+                        ]
+                    }
+                },
+                {
+                    "name": "renders usage families and distinct table mode routes",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "overview",
+                            "getting-started",
+                            "focus",
+                            "tokens",
+                            "theme",
+                            "typography",
+                            "variants",
+                            "utilities",
+                            "motion",
+                            "accessibility",
+                            "locale",
+                            "ripple",
+                            "app",
+                            "bottom-sheet",
+                            "button",
+                            "card",
+                            "chip",
+                            "dialog",
+                            "divider",
+                            "expansion-panels",
+                            "list",
+                            "menu",
+                            "overlay",
+                            "sheet",
+                            "toolbar",
+                            "tooltip",
+                            "collapse",
+                            "app-bar",
+                            "bottom-navigation",
+                            "breadcrumbs",
+                            "fab",
+                            "footer",
+                            "navigation-drawer",
+                            "pagination",
+                            "speed-dial",
+                            "system-bar",
+                            "tabs",
+                            "autocomplete",
+                            "checkbox",
+                            "color-input",
+                            "combobox",
+                            "date-input",
+                            "file-input",
+                            "file-upload",
+                            "form",
+                            "input-base",
+                            "field",
+                            "label",
+                            "messages",
+                            "counter",
+                            "validation",
+                            "number-input",
+                            "otp-input",
+                            "radio",
+                            "range-slider",
+                            "select",
+                            "selection-control-group",
+                            "selection-control",
+                            "slider",
+                            "switch",
+                            "input",
+                            "textarea",
+                            "cascader",
+                            "option-picker",
+                            "calendar",
+                            "confirm-edit",
+                            "data-iterator",
+                            "data-table",
+                            "data-table-server",
+                            "data-table-virtual",
+                            "hotkey",
+                            "kbd",
+                            "sparkline",
+                            "infinite-scroll",
+                            "table",
+                            "treeview",
+                            "virtual-scroll",
+                            "grid",
+                            "btn-group",
+                            "carousel",
+                            "chip-group",
+                            "item-group",
+                            "slide-group",
+                            "stepper",
+                            "stepper-vertical",
+                            "window",
+                            "alert",
+                            "badge",
+                            "banner",
+                            "empty-state",
+                            "hover",
+                            "progress-circular",
+                            "progress-linear",
+                            "rating",
+                            "skeleton-loader",
+                            "snackbar",
+                            "snackbar-queue",
+                            "timeline",
+                            "responsive",
+                            "avatar",
+                            "icons",
+                            "img",
+                            "parallax",
+                            "picker",
+                            "color-picker",
+                            "date-picker",
+                            "time-picker",
+                            "defaults-provider",
+                            "locale-provider",
+                            "theme-provider",
+                            "lazy",
+                            "no-ssr",
+                            "pull-to-refresh",
+                            "scroll-area",
+                            "transition",
+                            "markdown",
+                            "code",
+                            "code-block",
+                            "diff",
+                            "activity",
+                            "usage-meter",
+                            "file-changes",
+                            "message-actions",
+                            "copy-button",
+                            "confirm"
+                        ],
+                        "expected": [
+                            "overview",
+                            "getting-started",
+                            "focus",
+                            "tokens",
+                            "theme",
+                            "typography",
+                            "variants",
+                            "utilities",
+                            "motion",
+                            "accessibility",
+                            "locale",
+                            "ripple",
+                            "app",
+                            "bottom-sheet",
+                            "button",
+                            "card",
+                            "chip",
+                            "dialog",
+                            "divider",
+                            "expansion-panels",
+                            "list",
+                            "menu",
+                            "overlay",
+                            "sheet",
+                            "toolbar",
+                            "tooltip",
+                            "collapse",
+                            "app-bar",
+                            "bottom-navigation",
+                            "breadcrumbs",
+                            "fab",
+                            "footer",
+                            "navigation-drawer",
+                            "pagination",
+                            "speed-dial",
+                            "system-bar",
+                            "tabs",
+                            "autocomplete",
+                            "checkbox",
+                            "color-input",
+                            "combobox",
+                            "date-input",
+                            "file-input",
+                            "file-upload",
+                            "form",
+                            "input-base",
+                            "field",
+                            "label",
+                            "messages",
+                            "counter",
+                            "validation",
+                            "number-input",
+                            "otp-input",
+                            "radio",
+                            "range-slider",
+                            "select",
+                            "selection-control-group",
+                            "selection-control",
+                            "slider",
+                            "switch",
+                            "input",
+                            "textarea",
+                            "cascader",
+                            "option-picker",
+                            "calendar",
+                            "confirm-edit",
+                            "data-iterator",
+                            "data-table",
+                            "data-table-server",
+                            "data-table-virtual",
+                            "hotkey",
+                            "kbd",
+                            "sparkline",
+                            "infinite-scroll",
+                            "table",
+                            "treeview",
+                            "virtual-scroll",
+                            "grid",
+                            "btn-group",
+                            "carousel",
+                            "chip-group",
+                            "item-group",
+                            "slide-group",
+                            "stepper",
+                            "stepper-vertical",
+                            "window",
+                            "alert",
+                            "badge",
+                            "banner",
+                            "empty-state",
+                            "hover",
+                            "progress-circular",
+                            "progress-linear",
+                            "rating",
+                            "skeleton-loader",
+                            "snackbar",
+                            "snackbar-queue",
+                            "timeline",
+                            "responsive",
+                            "avatar",
+                            "icons",
+                            "img",
+                            "parallax",
+                            "picker",
+                            "color-picker",
+                            "date-picker",
+                            "time-picker",
+                            "defaults-provider",
+                            "locale-provider",
+                            "theme-provider",
+                            "lazy",
+                            "no-ssr",
+                            "pull-to-refresh",
+                            "scroll-area",
+                            "transition",
+                            "markdown",
+                            "code",
+                            "code-block",
+                            "diff",
+                            "activity",
+                            "usage-meter",
+                            "file-changes",
+                            "message-actions",
+                            "copy-button",
+                            "confirm"
+                        ]
+                    }
+                },
+                {
+                    "name": "renders every page route once",
+                    "passed": true,
+                    "details": {
+                        "unique": 125,
+                        "rendered": 125
+                    }
+                },
+                {
+                    "name": "renders 158 component pages in navigation",
+                    "passed": true,
+                    "details": {
+                        "componentPages": 158
+                    }
+                },
+                {
+                    "name": "opens the start category by default",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "opens the current page category by default",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "keeps unrelated categories collapsed initially",
+                    "passed": true,
+                    "details": {
+                        "actual": "false",
+                        "expected": "false"
+                    }
+                },
+                {
+                    "name": "marks the current route with aria-current",
+                    "passed": true,
+                    "details": {
+                        "actual": "page",
+                        "expected": "page"
+                    }
+                },
+                {
+                    "name": "pointer expands a category",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "multiple strategy preserves other open categories",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "pointer collapses a category",
+                    "passed": true,
+                    "details": {
+                        "actual": "false",
+                        "expected": "false"
+                    }
+                },
+                {
+                    "name": "collapsed pages are inert and hidden from assistive technology",
+                    "passed": true,
+                    "details": {}
+                },
+                {
+                    "name": "collapsed pages cannot receive focus",
+                    "passed": true,
+                    "details": {
+                        "attempted": "#/bottom-sheet",
+                        "activeAfterAttempt": ""
+                    }
+                },
+                {
+                    "name": "Enter toggles a category open",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "Space toggles a category closed",
+                    "passed": true,
+                    "details": {
+                        "actual": "false",
+                        "expected": "false"
+                    }
+                },
+                {
+                    "name": "keyboard navigation has visible targets",
+                    "passed": true,
+                    "details": {
+                        "targets": 20
+                    }
+                },
+                {
+                    "name": "ArrowDown moves to the next visible navigation item",
+                    "passed": true,
+                    "details": {
+                        "actual": "href:#/overview",
+                        "expected": "href:#/overview"
+                    }
+                },
+                {
+                    "name": "ArrowUp wraps to the last visible navigation item",
+                    "passed": true,
+                    "details": {
+                        "actual": "id:docs-group-services-activator",
+                        "expected": "id:docs-group-services-activator"
+                    }
+                },
+                {
+                    "name": "Home moves to the first visible navigation item",
+                    "passed": true,
+                    "details": {
+                        "actual": "id:docs-group-getting-started-activator",
+                        "expected": "id:docs-group-getting-started-activator"
+                    }
+                },
+                {
+                    "name": "End moves to the last visible navigation item",
+                    "passed": true,
+                    "details": {
+                        "actual": "id:docs-group-services-activator",
+                        "expected": "id:docs-group-services-activator"
+                    }
+                },
+                {
+                    "name": "a manually opened category is recorded",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "API-name search shows the matching filtered pages",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "input"
+                        ],
+                        "expected": [
+                            "input"
+                        ]
+                    }
+                },
+                {
+                    "name": "search expands every category containing results",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "form-inputs-and-controls"
+                        ],
+                        "expected": [
+                            "form-inputs-and-controls"
+                        ]
+                    }
+                },
+                {
+                    "name": "zero-result search removes all page links",
+                    "passed": true,
+                    "details": {
+                        "actual": 0,
+                        "expected": 0
+                    }
+                },
+                {
+                    "name": "clearing search restores manually opened categories",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "getting-started",
+                            "grids",
+                            "providers"
+                        ],
+                        "expected": [
+                            "getting-started",
+                            "grids",
+                            "providers"
+                        ]
+                    }
+                },
+                {
+                    "name": "Enter opens the exact child API and clears search",
+                    "passed": true,
+                    "details": {
+                        "actual": "#/list-group/api",
+                        "expected": "#/list-group/api"
+                    }
+                },
+                {
+                    "name": "child search displays its own API inside the family",
+                    "passed": true,
+                    "details": {
+                        "actual": "UListGroup",
+                        "expected": "UListGroup"
+                    }
+                },
+                {
+                    "name": "search destination category expands automatically",
+                    "passed": true,
+                    "details": {
+                        "pageId": "list-group"
+                    }
+                },
+                {
+                    "name": "previous and next links follow navigation category order",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "#/color-input",
+                            "#/date-input"
+                        ],
+                        "expected": [
+                            "#/color-input",
+                            "#/date-input"
+                        ]
+                    }
+                },
+                {
+                    "name": "next-page link follows the navigation order",
+                    "passed": true,
+                    "details": {
+                        "actual": "#/date-input",
+                        "expected": "#/date-input"
+                    }
+                },
+                {
+                    "name": "browser Back restores the prior active page",
+                    "passed": true,
+                    "details": {
+                        "actual": "#/grid",
+                        "expected": "#/grid"
+                    }
+                },
+                {
+                    "name": "browser Back keeps the active category expanded",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "deep links expand the destination category",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "legacy bare child route retains exact component API",
+                    "passed": true,
+                    "details": {
+                        "actual": "UListGroup",
+                        "expected": "UListGroup"
+                    }
+                },
+                {
+                    "name": "legacy bare child route lands on API and preserves its hash",
+                    "passed": true,
+                    "details": {
+                        "actual": "#/list-group",
+                        "expected": "#/list-group"
+                    }
+                },
+                {
+                    "name": "family API selector changes the exact child route",
+                    "passed": true,
+                    "details": {
+                        "actual": "#/list-subheader/api",
+                        "expected": "#/list-subheader/api"
+                    }
+                },
+                {
+                    "name": "family API selector keeps a single List usage heading",
+                    "passed": true,
+                    "details": {
+                        "actual": "UList",
+                        "expected": "UList"
+                    }
+                },
+                {
+                    "name": "family examples have unique DOM IDs",
+                    "passed": true,
+                    "details": {
+                        "actual": [],
+                        "expected": []
+                    }
+                },
+                {
+                    "name": "legacy child examples hash has a meaningful anchor",
+                    "passed": true,
+                    "details": {}
+                },
+                {
+                    "name": "legacy child usage hash has a meaningful anchor",
+                    "passed": true,
+                    "details": {}
+                },
+                {
+                    "name": "legacy child api hash has a meaningful anchor",
+                    "passed": true,
+                    "details": {}
+                },
+                {
+                    "name": "independent API directory retains every public component",
+                    "passed": true,
+                    "details": {
+                        "actual": [
+                            "#/app/api",
+                            "#/layout/api",
+                            "#/main/api",
+                            "#/bottom-sheet/api",
+                            "#/button/api",
+                            "#/card/api",
+                            "#/chip/api",
+                            "#/dialog/api",
+                            "#/divider/api",
+                            "#/expansion-panels/api",
+                            "#/expansion-panel/api",
+                            "#/expansion-panel-title/api",
+                            "#/expansion-panel-text/api",
+                            "#/list/api",
+                            "#/list-item/api",
+                            "#/list-group/api",
+                            "#/list-subheader/api",
+                            "#/list-item-title/api",
+                            "#/list-item-subtitle/api",
+                            "#/menu/api",
+                            "#/menu-item/api",
+                            "#/overlay/api",
+                            "#/sheet/api",
+                            "#/toolbar/api",
+                            "#/toolbar-title/api",
+                            "#/toolbar-items/api",
+                            "#/tooltip/api",
+                            "#/collapse/api",
+                            "#/app-bar/api",
+                            "#/app-bar-title/api",
+                            "#/bottom-navigation/api",
+                            "#/breadcrumbs/api",
+                            "#/breadcrumbs-item/api",
+                            "#/breadcrumbs-divider/api",
+                            "#/fab/api",
+                            "#/footer/api",
+                            "#/navigation-drawer/api",
+                            "#/pagination/api",
+                            "#/speed-dial/api",
+                            "#/system-bar/api",
+                            "#/tabs/api",
+                            "#/tab/api",
+                            "#/tabs-window/api",
+                            "#/tabs-window-item/api",
+                            "#/tab-panel/api",
+                            "#/autocomplete/api",
+                            "#/checkbox/api",
+                            "#/checkbox-group/api",
+                            "#/color-input/api",
+                            "#/combobox/api",
+                            "#/date-input/api",
+                            "#/file-input/api",
+                            "#/file-upload/api",
+                            "#/form/api",
+                            "#/form-section/api",
+                            "#/form-actions/api",
+                            "#/form-field/api",
+                            "#/input-base/api",
+                            "#/field/api",
+                            "#/label/api",
+                            "#/messages/api",
+                            "#/counter/api",
+                            "#/validation/api",
+                            "#/number-input/api",
+                            "#/otp-input/api",
+                            "#/radio/api",
+                            "#/radio-group/api",
+                            "#/range-slider/api",
+                            "#/select/api",
+                            "#/selection-control-group/api",
+                            "#/selection-control/api",
+                            "#/slider/api",
+                            "#/switch/api",
+                            "#/input/api",
+                            "#/textarea/api",
+                            "#/cascader/api",
+                            "#/option-picker/api",
+                            "#/calendar/api",
+                            "#/confirm-edit/api",
+                            "#/data-iterator/api",
+                            "#/data-table/api",
+                            "#/data-table-server/api",
+                            "#/data-table-virtual/api",
+                            "#/hotkey/api",
+                            "#/hotkey-listener/api",
+                            "#/kbd/api",
+                            "#/sparkline/api",
+                            "#/infinite-scroll/api",
+                            "#/table/api",
+                            "#/treeview/api",
+                            "#/virtual-scroll/api",
+                            "#/container/api",
+                            "#/row/api",
+                            "#/col/api",
+                            "#/spacer/api",
+                            "#/btn-group/api",
+                            "#/btn-toggle/api",
+                            "#/carousel/api",
+                            "#/carousel-item/api",
+                            "#/chip-group/api",
+                            "#/item-group/api",
+                            "#/item/api",
+                            "#/slide-group/api",
+                            "#/slide-group-item/api",
+                            "#/stepper/api",
+                            "#/stepper-item/api",
+                            "#/stepper-actions/api",
+                            "#/stepper-window/api",
+                            "#/stepper-window-item/api",
+                            "#/stepper-vertical/api",
+                            "#/stepper-vertical-item/api",
+                            "#/stepper-vertical-actions/api",
+                            "#/window/api",
+                            "#/window-item/api",
+                            "#/alert/api",
+                            "#/badge/api",
+                            "#/banner/api",
+                            "#/empty-state/api",
+                            "#/hover/api",
+                            "#/progress-circular/api",
+                            "#/progress-linear/api",
+                            "#/progress/api",
+                            "#/spinner/api",
+                            "#/rating/api",
+                            "#/skeleton-loader/api",
+                            "#/snackbar/api",
+                            "#/snackbar-queue/api",
+                            "#/snackbar-host/api",
+                            "#/confirm-host/api",
+                            "#/timeline/api",
+                            "#/timeline-item/api",
+                            "#/responsive/api",
+                            "#/avatar/api",
+                            "#/icons/api",
+                            "#/img/api",
+                            "#/parallax/api",
+                            "#/picker/api",
+                            "#/color-picker/api",
+                            "#/color-swatches/api",
+                            "#/date-picker/api",
+                            "#/time-picker/api",
+                            "#/defaults-provider/api",
+                            "#/locale-provider/api",
+                            "#/theme-provider/api",
+                            "#/lazy/api",
+                            "#/no-ssr/api",
+                            "#/pull-to-refresh/api",
+                            "#/scroll-area/api",
+                            "#/transition/api",
+                            "#/markdown/api",
+                            "#/code/api",
+                            "#/code-block/api",
+                            "#/diff/api",
+                            "#/activity/api",
+                            "#/usage-meter/api",
+                            "#/file-changes/api",
+                            "#/message-actions/api",
+                            "#/copy-button/api"
+                        ],
+                        "expected": [
+                            "#/app/api",
+                            "#/layout/api",
+                            "#/main/api",
+                            "#/bottom-sheet/api",
+                            "#/button/api",
+                            "#/card/api",
+                            "#/chip/api",
+                            "#/dialog/api",
+                            "#/divider/api",
+                            "#/expansion-panels/api",
+                            "#/expansion-panel/api",
+                            "#/expansion-panel-title/api",
+                            "#/expansion-panel-text/api",
+                            "#/list/api",
+                            "#/list-item/api",
+                            "#/list-group/api",
+                            "#/list-subheader/api",
+                            "#/list-item-title/api",
+                            "#/list-item-subtitle/api",
+                            "#/menu/api",
+                            "#/menu-item/api",
+                            "#/overlay/api",
+                            "#/sheet/api",
+                            "#/toolbar/api",
+                            "#/toolbar-title/api",
+                            "#/toolbar-items/api",
+                            "#/tooltip/api",
+                            "#/collapse/api",
+                            "#/app-bar/api",
+                            "#/app-bar-title/api",
+                            "#/bottom-navigation/api",
+                            "#/breadcrumbs/api",
+                            "#/breadcrumbs-item/api",
+                            "#/breadcrumbs-divider/api",
+                            "#/fab/api",
+                            "#/footer/api",
+                            "#/navigation-drawer/api",
+                            "#/pagination/api",
+                            "#/speed-dial/api",
+                            "#/system-bar/api",
+                            "#/tabs/api",
+                            "#/tab/api",
+                            "#/tabs-window/api",
+                            "#/tabs-window-item/api",
+                            "#/tab-panel/api",
+                            "#/autocomplete/api",
+                            "#/checkbox/api",
+                            "#/checkbox-group/api",
+                            "#/color-input/api",
+                            "#/combobox/api",
+                            "#/date-input/api",
+                            "#/file-input/api",
+                            "#/file-upload/api",
+                            "#/form/api",
+                            "#/form-section/api",
+                            "#/form-actions/api",
+                            "#/form-field/api",
+                            "#/input-base/api",
+                            "#/field/api",
+                            "#/label/api",
+                            "#/messages/api",
+                            "#/counter/api",
+                            "#/validation/api",
+                            "#/number-input/api",
+                            "#/otp-input/api",
+                            "#/radio/api",
+                            "#/radio-group/api",
+                            "#/range-slider/api",
+                            "#/select/api",
+                            "#/selection-control-group/api",
+                            "#/selection-control/api",
+                            "#/slider/api",
+                            "#/switch/api",
+                            "#/input/api",
+                            "#/textarea/api",
+                            "#/cascader/api",
+                            "#/option-picker/api",
+                            "#/calendar/api",
+                            "#/confirm-edit/api",
+                            "#/data-iterator/api",
+                            "#/data-table/api",
+                            "#/data-table-server/api",
+                            "#/data-table-virtual/api",
+                            "#/hotkey/api",
+                            "#/hotkey-listener/api",
+                            "#/kbd/api",
+                            "#/sparkline/api",
+                            "#/infinite-scroll/api",
+                            "#/table/api",
+                            "#/treeview/api",
+                            "#/virtual-scroll/api",
+                            "#/container/api",
+                            "#/row/api",
+                            "#/col/api",
+                            "#/spacer/api",
+                            "#/btn-group/api",
+                            "#/btn-toggle/api",
+                            "#/carousel/api",
+                            "#/carousel-item/api",
+                            "#/chip-group/api",
+                            "#/item-group/api",
+                            "#/item/api",
+                            "#/slide-group/api",
+                            "#/slide-group-item/api",
+                            "#/stepper/api",
+                            "#/stepper-item/api",
+                            "#/stepper-actions/api",
+                            "#/stepper-window/api",
+                            "#/stepper-window-item/api",
+                            "#/stepper-vertical/api",
+                            "#/stepper-vertical-item/api",
+                            "#/stepper-vertical-actions/api",
+                            "#/window/api",
+                            "#/window-item/api",
+                            "#/alert/api",
+                            "#/badge/api",
+                            "#/banner/api",
+                            "#/empty-state/api",
+                            "#/hover/api",
+                            "#/progress-circular/api",
+                            "#/progress-linear/api",
+                            "#/progress/api",
+                            "#/spinner/api",
+                            "#/rating/api",
+                            "#/skeleton-loader/api",
+                            "#/snackbar/api",
+                            "#/snackbar-queue/api",
+                            "#/snackbar-host/api",
+                            "#/confirm-host/api",
+                            "#/timeline/api",
+                            "#/timeline-item/api",
+                            "#/responsive/api",
+                            "#/avatar/api",
+                            "#/icons/api",
+                            "#/img/api",
+                            "#/parallax/api",
+                            "#/picker/api",
+                            "#/color-picker/api",
+                            "#/color-swatches/api",
+                            "#/date-picker/api",
+                            "#/time-picker/api",
+                            "#/defaults-provider/api",
+                            "#/locale-provider/api",
+                            "#/theme-provider/api",
+                            "#/lazy/api",
+                            "#/no-ssr/api",
+                            "#/pull-to-refresh/api",
+                            "#/scroll-area/api",
+                            "#/transition/api",
+                            "#/markdown/api",
+                            "#/code/api",
+                            "#/code-block/api",
+                            "#/diff/api",
+                            "#/activity/api",
+                            "#/usage-meter/api",
+                            "#/file-changes/api",
+                            "#/message-actions/api",
+                            "#/copy-button/api"
+                        ]
+                    }
+                },
+                {
+                    "name": "API directory selects the vertical child independently",
+                    "passed": true,
+                    "details": {
+                        "actual": "UStepperVerticalItem",
+                        "expected": "UStepperVerticalItem"
+                    }
+                },
+                {
+                    "name": "table deep link opens its nested mode menu",
+                    "passed": true,
+                    "details": {
+                        "actual": "true",
+                        "expected": "true"
+                    }
+                },
+                {
+                    "name": "all categories can remain open together",
+                    "passed": true,
+                    "details": {
+                        "actual": 16,
+                        "expected": 16
+                    }
+                },
+                {
+                    "name": "no horizontal overflow at light-wide-1440",
+                    "passed": true,
+                    "details": {
+                        "viewportWidth": 1440,
+                        "devicePixelRatio": 1,
+                        "documentWidth": 1440,
+                        "bodyWidth": 1440,
+                        "sidebarWidth": 319,
+                        "sidebarScrollWidth": 319,
+                        "expandedVisibleRows": 125,
+                        "rowOverflow": []
+                    }
+                },
+                {
+                    "name": "no horizontal overflow at dark-narrow-900",
+                    "passed": true,
+                    "details": {
+                        "viewportWidth": 900,
+                        "devicePixelRatio": 1,
+                        "documentWidth": 900,
+                        "bodyWidth": 900,
+                        "sidebarWidth": 319,
+                        "sidebarScrollWidth": 319,
+                        "expandedVisibleRows": 125,
+                        "rowOverflow": []
+                    }
+                },
+                {
+                    "name": "mobile sidebar opens at 390",
+                    "passed": true,
+                    "details": {
+                        "width": 390
+                    }
+                },
+                {
+                    "name": "no horizontal overflow at light-mobile-390",
+                    "passed": true,
+                    "details": {
+                        "viewportWidth": 390,
+                        "devicePixelRatio": 1,
+                        "documentWidth": 390,
+                        "bodyWidth": 390,
+                        "sidebarWidth": 319,
+                        "sidebarScrollWidth": 319,
+                        "expandedVisibleRows": 125,
+                        "rowOverflow": []
+                    }
+                },
+                {
+                    "name": "125% browser-zoom simulation opens the mobile navigation drawer",
+                    "passed": true,
+                    "details": {
+                        "cssViewportWidth": 312,
+                        "deviceScaleFactor": 1.25
+                    }
+                },
+                {
+                    "name": "125% browser-zoom simulation uses a 390x1000 physical viewport without horizontal overflow",
+                    "passed": true,
+                    "details": {
+                        "method": "Playwright browser-context deviceScaleFactor emulation; not native browser Ctrl+ zoom",
+                        "cssViewport": {
+                            "width": 312,
+                            "height": 800
+                        },
+                        "deviceScaleFactor": 1.25,
+                        "equivalentPhysicalViewport": {
+                            "width": 390,
+                            "height": 1000
+                        },
+                        "actualViewport": {
+                            "innerWidth": 312,
+                            "innerHeight": 800,
+                            "devicePixelRatio": 1.25
+                        },
+                        "screenshotPixels": {
+                            "width": 390,
+                            "height": 1000
+                        },
+                        "layoutMetrics": {
+                            "viewportWidth": 312,
+                            "devicePixelRatio": 1.25,
+                            "documentWidth": 312,
+                            "bodyWidth": 312,
+                            "sidebarWidth": 279,
+                            "sidebarScrollWidth": 279,
+                            "expandedVisibleRows": 122,
+                            "rowOverflow": []
+                        }
+                    }
+                },
+                {
+                    "name": "Escape closes the mobile sidebar and returns focus to its trigger",
+                    "passed": true,
+                    "details": {
+                        "expanded": "false"
+                    }
+                },
+                {
+                    "name": "clicking the mobile backdrop closes the sidebar",
+                    "passed": true,
+                    "details": {}
+                },
+                {
+                    "name": "choosing a mobile route closes the sidebar and expands its category",
+                    "passed": true,
+                    "details": {
+                        "route": "#/date-picker"
+                    }
+                },
+                {
+                    "name": "no browser page errors",
+                    "passed": true,
+                    "details": {
+                        "actual": [],
+                        "expected": []
+                    }
+                },
+                {
+                    "name": "no Vue warnings",
+                    "passed": true,
+                    "details": {
+                        "actual": [],
+                        "expected": []
+                    }
+                },
+                {
+                    "name": "no browser console errors",
+                    "passed": true,
+                    "details": {
+                        "actual": [],
+                        "expected": []
+                    }
+                }
+            ],
+            "runtime": {
+                "pageErrors": [],
+                "vueWarnings": [],
+                "consoleErrors": []
+            },
+            "success": true,
+            "finishedAt": "2026-10-09T05:12:50.237Z"
+        }
+    },
+    "components": {
+        "path": "artifacts/component-audit-root/component-consolidation/result.json",
+        "sha256": "26b7732ecd39229718eaf16c70f158426ef557783ded103e4b529ba75db89984",
+        "report": {
+            "generatedAt": "2026-10-09T05:00:00.450Z",
+            "runner": {
+                "source": "vite isolated fixture",
+                "browser": "playwright chromium channel=chrome"
+            },
+            "checks": [
+                "UiProgress clamps values, falls back for invalid max, updates value/tone, renders one progressbar per instance, keeps 6/4 px heights, and scales the fill.",
+                "UiSpinner uses 16/24 px sizing, hides an unlabeled spinner, exposes one named status when labeled, and keeps the 9 px quarter arc, 2.5 px stroke, 800/1600 ms motion.",
+                "UiMenuItem adapts checked/disabled/keepOpen, icon and trailing slots; enabled selection closes, keepOpen and disabled selection stay open.",
+                "A tracked UList with a full-row UListItem slot moves focus once, skips disabled rows, honors defaultPrevented, activates once on Enter, keeps marked rows open, and lets Tab leave at the boundary.",
+                "Panel UiMenu yields Arrow/Home/End and Enter to UList track navigation while preserving root focus and skipping disabled rows.",
+                "Legacy UiTabPanel keeps scalar value selection, idPrefix ARIA links, and hidden panel state.",
+                "A single controlled USnackbar honors timeout -1 and forwards its role/aria-live attributes.",
+                "SnackbarHost renders all six positions, maps error to alert/assertive and other tones to status/polite, and supports manual dismissal of duration-zero notices.",
+                "Snackbar service applies a short explicit duration at runtime.",
+                "SnackbarHost uses the service 6000 ms default while the reusable USnackbar keeps its separate 5000 ms raw default.",
+                "Snackbar pointer and focus pause reasons are independent; resuming one leaves the other pause active.",
+                "Unmounting SnackbarHost clears service notices and their active timers."
+            ],
+            "runtimeErrors": [],
+            "vueWarnings": [],
+            "sourceSha256Before": {
+                "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84",
+                "src/ui/UiProgress.vue": "3dfa90d72daad2c520397cb0a5818290fb0671199b6654d90eb12ef90635be37",
+                "src/ui/UProgressLinear.vue": "c4b3b4708b20f2f79930ce117af647dc2b6e9491f61382583fe16a0e2468b9d9",
+                "src/ui/UiSpinner.vue": "4bd47c8c12ef1c25f5f56659a0d3d37c01fd2eddd3dcc0f3679049422f11e87f",
+                "src/ui/UProgressCircular.vue": "88bb1d4281bc35051fb49670c2791afe6e39a94fb39b29cb5e4f10e47c602fef",
+                "src/ui/controls.css": "c19c2ef98c0c227b9c85de81d1bea6bfad721aece9f2691e231adfdc890c3af7",
+                "src/ui/UiMenu.vue": "e0b050881c3479b2b6b28876779e9f8ee7d97c0fc2fc25c14e6624d58fd85e80",
+                "src/ui/UiMenuItem.vue": "6cfb085c68ad0ee9f3479480b48696527624d1ac77848f42edbd9c574d66653a",
+                "src/ui/UList.vue": "841e3ab800bf937a53069beb8b0e0ae440d2d7ebed867388374b5f82a36f17f3",
+                "src/ui/UListItem.vue": "1e7e8aa410883f8c8cb661eed074f9b0767cc0c4afbbadfbb9d7d5acb002f6fb",
+                "src/ui/menu.ts": "95852c6fcec1ed660646dd817329f29c6cee3475e8e48224dca69261de430a81",
+                "src/ui/overlay-lifecycle.ts": "9762258e501c9531e1112fe7e461b193ca59c725374878f334676e6af8af9bcf",
+                "src/ui/UiSnackbarHost.vue": "cdfb9703d00b2e2e415d8a7bc881024a8ebf1477a84ee635665072e7d3f2317a",
+                "src/ui/USnackbar.vue": "bead583d52971f674c7b82ea4964fc2929d5b91bcd376b2af1c3e3813e02e0c0",
+                "src/ui/snackbar.ts": "82f9be14762efe7738c1246575c0cb34e64f0acef6c5057c89649f6746ff5a75",
+                "src/ui/UiTabPanel.vue": "54b4874a8cd3504c3e10a334533c170041d7e3e13162ae869efc030dec346463",
+                "src/ui/feedback.css": "2e123cbc8999eb4953a65c9b7cf2399598cbcae16d03e52316d866dd3a9568b0",
+                "src/ui/styles.css": "acf590f0603696cad77d9f984aa2c26f068f8bac04e1baaa3da2ab476237a20f"
+            },
+            "sourceSha256After": {
+                "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84",
+                "src/ui/UiProgress.vue": "3dfa90d72daad2c520397cb0a5818290fb0671199b6654d90eb12ef90635be37",
+                "src/ui/UProgressLinear.vue": "c4b3b4708b20f2f79930ce117af647dc2b6e9491f61382583fe16a0e2468b9d9",
+                "src/ui/UiSpinner.vue": "4bd47c8c12ef1c25f5f56659a0d3d37c01fd2eddd3dcc0f3679049422f11e87f",
+                "src/ui/UProgressCircular.vue": "88bb1d4281bc35051fb49670c2791afe6e39a94fb39b29cb5e4f10e47c602fef",
+                "src/ui/controls.css": "c19c2ef98c0c227b9c85de81d1bea6bfad721aece9f2691e231adfdc890c3af7",
+                "src/ui/UiMenu.vue": "e0b050881c3479b2b6b28876779e9f8ee7d97c0fc2fc25c14e6624d58fd85e80",
+                "src/ui/UiMenuItem.vue": "6cfb085c68ad0ee9f3479480b48696527624d1ac77848f42edbd9c574d66653a",
+                "src/ui/UList.vue": "841e3ab800bf937a53069beb8b0e0ae440d2d7ebed867388374b5f82a36f17f3",
+                "src/ui/UListItem.vue": "1e7e8aa410883f8c8cb661eed074f9b0767cc0c4afbbadfbb9d7d5acb002f6fb",
+                "src/ui/menu.ts": "95852c6fcec1ed660646dd817329f29c6cee3475e8e48224dca69261de430a81",
+                "src/ui/overlay-lifecycle.ts": "9762258e501c9531e1112fe7e461b193ca59c725374878f334676e6af8af9bcf",
+                "src/ui/UiSnackbarHost.vue": "cdfb9703d00b2e2e415d8a7bc881024a8ebf1477a84ee635665072e7d3f2317a",
+                "src/ui/USnackbar.vue": "bead583d52971f674c7b82ea4964fc2929d5b91bcd376b2af1c3e3813e02e0c0",
+                "src/ui/snackbar.ts": "82f9be14762efe7738c1246575c0cb34e64f0acef6c5057c89649f6746ff5a75",
+                "src/ui/UiTabPanel.vue": "54b4874a8cd3504c3e10a334533c170041d7e3e13162ae869efc030dec346463",
+                "src/ui/feedback.css": "2e123cbc8999eb4953a65c9b7cf2399598cbcae16d03e52316d866dd3a9568b0",
+                "src/ui/styles.css": "acf590f0603696cad77d9f984aa2c26f068f8bac04e1baaa3da2ab476237a20f"
+            },
+            "sourceUnchanged": true,
+            "screenshot": "artifacts\\component-audit-root\\component-consolidation\\fixture.png",
+            "visualAcceptance": false,
+            "diagnostics": {
+                "progressFillAtHalf": {
+                    "scaleX": 0.495022,
+                    "color": "rgb(163, 79, 54)"
+                },
+                "tabBoundaryBefore": {
+                    "activeElementId": "tracked-keep",
+                    "surfaceState": "open",
+                    "focusables": [
+                        {
+                            "id": "tracked-list",
+                            "tabIndex": 0,
+                            "display": "flex",
+                            "rectCount": 1
+                        },
+                        {
+                            "id": "tracked-menu-inside",
+                            "tabIndex": 0,
+                            "display": "inline-block",
+                            "rectCount": 1
+                        }
+                    ]
+                }
+            },
+            "screenshotCreated": true
+        }
+    }
+}

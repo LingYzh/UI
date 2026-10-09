@@ -1,4 +1,5 @@
 import { themePages } from './themeContent.js';
+import { docsNavigationGroups } from './navigation.js';
 import { completionPages } from './completionContent.js';
 import { buttonAppearanceExample, buttonLoadingExample } from './buttonContent.js';
 import { codeBlockHeightExample } from './codeBlockContent.js';
@@ -10,20 +11,9 @@ import { controlPages } from './controlsContent.js';
 import { layoutPages } from './layoutContent.js';
 import { componentApi } from './apiReference.js';
 import { tooltipProtocolExample } from './tooltipProtocolContent.js';
-import { dialogGeometryExample, layoutBasicsExample, textareaProtocolExample, switchProtocolExample, selectionMenuExample, tabsSelectionExample, menuBranchExample } from './geometryContent.js';
+import { dialogGeometryExample, layoutBasicsExample, layoutOrderExample, overlayPresentationExample, treeFilterExample, stepperItemsExample, listNavigationExample, textareaProtocolExample, switchProtocolExample, selectionMenuExample, tabsSelectionExample, menuBranchExample } from './geometryContent.js';
 
-export const groups = [
-    "开始使用",
-    "布局组件",
-    "操作组件",
-    "表单组件",
-    "导航组件",
-    "容器组件",
-    "反馈组件",
-    "内容组件",
-    "服务",
-    "设计基础"
-];
+export const groups = docsNavigationGroups.map(group => group.title);
 
 export const tokens = [
     [
@@ -581,7 +571,7 @@ export const pages = [
                 "title": "指针操作与键盘焦点",
                 "description": "使用真实开关、复选框、单选、按钮、Tabs、色板、折叠和输入框比较两种操作方式。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabPanel,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">\n        第二项内容\n    </u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabsWindow,\n    UTabsWindowItem,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tabs-window\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item value=\"first\" eager :transition=\"false\">\n            第一项内容\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"second\" eager :transition=\"false\">\n            第二项内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
             },
             {
                 "id": "layout-form-labels",
@@ -667,19 +657,19 @@ export const pages = [
                 "id": "tabs-soft",
                 "title": "基础标签与禁用项",
                 "description": "左右键、Home / End 移动焦点，Enter / Space 确认。禁用项会被跳过，旧数组和面板用法继续兼容。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'unavailable', label: '尚未启用', disabled: true },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"example\" aria-label=\"示例标签页\" />\n    <u-tab-panel :model-value=\"selected\" value=\"overview\" id-prefix=\"example\">概览</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"details\" id-prefix=\"example\">详情</u-tab-panel>\n    <u-tab-panel :model-value=\"selected\" value=\"unavailable\" id-prefix=\"example\">\n        尚未启用\n    </u-tab-panel>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabsWindow, UTabsWindowItem } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'unavailable', label: '尚未启用', disabled: true },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"example\" aria-label=\"示例标签页\" />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"example\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item value=\"overview\" eager :transition=\"false\">\n            概览\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"unavailable\" eager :transition=\"false\" disabled>\n            尚未启用\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"details\" eager :transition=\"false\">\n            详情\n        </u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             },
             {
                 "id": "tabs-variants",
                 "title": "下划线与垂直布局",
                 "description": "切换布局可观察方向键规则；自定义插槽可加入 UAH 图标。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel, UIcon } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览', icon: 'book' },\n    { id: 'details', label: '详情', icon: 'file' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"tools\" variant=\"underline\">\n        <template #default=\"{ item }\">\n            <u-icon :name=\"item.icon\" />\n            {{ item.label }}\n        </template>\n    </u-tabs>\n    <u-tabs\n        v-model=\"selected\"\n        :items=\"items\"\n        id-prefix=\"vertical\"\n        orientation=\"vertical\"\n        indicator-side=\"start\"\n    />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"tools\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"vertical\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UIcon, UTabsWindow, UTabsWindowItem } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览', icon: 'book' },\n    { id: 'details', label: '详情', icon: 'file' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"tools\" variant=\"underline\">\n        <template #default=\"{ item }\">\n            <u-icon :name=\"item.icon\" />\n            {{ item.label }}\n        </template>\n    </u-tabs>\n    <u-tabs\n        v-model=\"selected\"\n        :items=\"items\"\n        id-prefix=\"vertical\"\n        orientation=\"vertical\"\n        indicator-side=\"start\"\n    />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"tools\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"vertical\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             },
             {
                 "id": "tabs-shared-variants",
                 "title": "密度、透明与直角变体",
                 "description": "分别比较默认、dense、ghost 和 rounded=false；每个示例使用真实组件，可独立操作。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabPanel } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-0\" />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-0\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-1\" dense />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-1\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-2\" ghost />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-2\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-3\" :rounded=\"false\" />\n    <u-tab-panel\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        :model-value=\"selected\"\n        :value=\"item.id\"\n        id-prefix=\"sample-3\"\n    >\n        {{ item.label }}内容\n    </u-tab-panel>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTabs, UTabsWindow, UTabsWindowItem } from '@lingyzh/ui';\nconst selected = ref('overview');\nconst items = [\n    { id: 'overview', label: '概览' },\n    { id: 'details', label: '详情' },\n];\n</script>\n\n<template>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-0\" />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"sample-0\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-1\" dense />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"sample-1\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-2\" ghost />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"sample-2\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-tabs v-model=\"selected\" :items=\"items\" id-prefix=\"sample-3\" :rounded=\"false\" />\n    <u-tabs-window\n        v-model=\"selected\"\n        id-prefix=\"sample-3\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item\n            v-for=\"item in items\"\n            :key=\"item.id\"\n            :value=\"item.id\"\n            eager\n            :transition=\"false\"\n        >\n            {{ item.label }}内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n</template>\n"
             }
         ],
         "notes": [
@@ -1280,7 +1270,7 @@ export const pages = [
                 "title": "指针操作与键盘焦点",
                 "text": "使用真实开关、复选框、单选、按钮、Tabs、色板、折叠和输入框比较两种操作方式。",
                 "demo": "layout-focus",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabPanel,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tab-panel :model-value=\"selectedTab\" value=\"first\" id-prefix=\"focus\">第一项内容</u-tab-panel>\n    <u-tab-panel :model-value=\"selectedTab\" value=\"second\" id-prefix=\"focus\">\n        第二项内容\n    </u-tab-panel>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    USwitch,\n    UCheckbox,\n    URadio,\n    UButton,\n    UTabs,\n    UTabsWindow,\n    UTabsWindowItem,\n    UColorSwatches,\n    UActivity,\n    UTextField,\n} from '@lingyzh/ui';\nconst enabled = ref(false);\nconst choice = ref('a');\nconst text = ref('');\nconst selectedTab = ref('first');\nconst color = ref(null);\nconst status = ref('');\n</script>\n\n<template>\n    <label>\n        <u-switch v-model=\"enabled\" />\n        开关\n    </label>\n    <u-checkbox v-model=\"enabled\">复选框</u-checkbox>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"a\">选项 A</u-radio>\n    <u-radio v-model=\"choice\" name=\"choice\" value=\"b\">选项 B</u-radio>\n    <u-button @click=\"status = '动作已执行'\">执行动作</u-button>\n    <u-tabs\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :items=\"[\n            { id: 'first', label: '第一项' },\n            { id: 'second', label: '第二项' },\n        ]\"\n    />\n    <u-tabs-window\n        v-model=\"selectedTab\"\n        id-prefix=\"focus\"\n        :keyboard=\"false\"\n    >\n        <u-tabs-window-item value=\"first\" eager :transition=\"false\">\n            第一项内容\n        </u-tabs-window-item>\n        <u-tabs-window-item value=\"second\" eager :transition=\"false\">\n            第二项内容\n        </u-tabs-window-item>\n    </u-tabs-window>\n    <u-color-swatches v-model=\"color\" label=\"示例色板\" />\n    <u-activity title=\"示例折叠\">折叠内容</u-activity>\n    <u-text-field v-model=\"text\" aria-label=\"保持编辑焦点\" />\n    <p role=\"status\">{{ status }}</p>\n</template>\n"
             }
         ]
     }
@@ -1306,6 +1296,11 @@ for (const page of completionPages) {
     else for (const example of page.examples) if (!existing.examples.some(item => item.id === example.id)) existing.examples.push(example);
 }
 pages.find(page => page.name === 'UButton').examples.push(buttonAppearanceExample, buttonLoadingExample);
+for (const name of ['UApp', 'ULayout']) pages.find(page => page.name === name).examples.push(layoutOrderExample);
+for (const name of ['UDialog', 'UOverlay', 'UMenu', 'UTooltip']) pages.find(page => page.name === name).examples.push(overlayPresentationExample);
+pages.find(page => page.name === 'UList').examples.push(listNavigationExample);
+pages.find(page => page.name === 'UTreeview').examples.push(treeFilterExample);
+for (const name of ['UStepper', 'UStepperVertical']) pages.find(page => page.name === name).examples.push(stepperItemsExample);
 pages.find(page => page.name === 'UCodeBlock').examples.push(codeBlockHeightExample);
 for (const [name, examples] of Object.entries(tableAlignmentExamples)) {
     const page = pages.find(page => page.name === name);
@@ -1316,4 +1311,12 @@ for (const page of pages.filter(page => page.kind === 'component')) {
     const api = componentApi[page.name];
     if (!api) throw new Error(`Missing API reference for ${page.name}`);
     Object.assign(page, api);
+}
+// Generated page modules retain their historical group strings. Apply the
+// navigation taxonomy here so regenerated docs and breadcrumbs stay consistent.
+for (const group of docsNavigationGroups) {
+    for (const id of group.pageIds) {
+        const page = pages.find(page => page.id === id);
+        if (page) page.group = group.title;
+    }
 }

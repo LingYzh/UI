@@ -69,6 +69,86 @@ test('tree search supports function selectors, custom filters, and empty-query r
     assert.equal(all.expanded.size, 0);
 });
 
+test('tree search applies Vuetify filter modes and passes the raw item to key filters', () => {
+    const rows = [
+        { id: 'default-only', title: 'Beta', department: 'Other', rank: 1 },
+        { id: 'custom-and-default', title: 'Other', department: 'Beta', rank: 9 },
+        { id: 'all', title: 'Beta', department: 'Beta', rank: 9 }
+    ];
+    const rowNodes: TreeviewFilterNode<string>[] = rows.map((raw) => ({ id: raw.id, parent: undefined, children: [], raw }));
+    const rawItems: unknown[] = [];
+    const shared = {
+        nodes: rowNodes,
+        query: 'Beta',
+        filterKeys: ['title', 'department', 'rank'],
+        getField: (item: unknown, key: string | ((item: unknown) => unknown)) => typeof key === 'function'
+            ? key(item)
+            : (item as Record<string, unknown>)[key],
+        customKeyFilter: {
+            rank: (value: unknown, _query: string, item: unknown) => {
+                rawItems.push(item);
+                return Number(value) >= 8;
+            }
+        }
+    };
+
+    assert.deepEqual([...filterTreeviewNodes({ ...shared, filterMode: 'some' }).matched], ['default-only', 'custom-and-default', 'all']);
+    assert.deepEqual([...filterTreeviewNodes({ ...shared, filterMode: 'every' }).matched], ['all']);
+    assert.deepEqual([...filterTreeviewNodes({ ...shared, filterMode: 'union' }).matched], ['default-only', 'custom-and-default', 'all']);
+    assert.deepEqual([...filterTreeviewNodes({ ...shared, filterMode: 'intersection' }).matched], ['custom-and-default', 'all']);
+    assert.ok(rawItems.every((item) => rows.includes(item as typeof rows[number])), 'custom key filters receive original items');
+});
+
+test('tree filter accepts numeric indexes, booleans, match ranges, and rejects empty ranges', () => {
+    const node = [nodes[2]];
+    const filter = (customFilter: (value: unknown, query: string, item: unknown) => unknown) => filterTreeviewNodes({
+        nodes: node,
+        query: 'find',
+        filterKeys: ['title'],
+        getField: (item, key) => (item as Record<string, unknown>)[String(key)],
+        customFilter
+    });
+
+    assert.deepEqual([...filter(() => 0).matched], ['needle']);
+    assert.deepEqual([...filter(() => true).matched], ['needle']);
+    assert.deepEqual([...filter(() => [[0, 4]]).matched], ['needle']);
+    assert.deepEqual([...filter(() => []).matched], []);
+    assert.deepEqual([...filter(() => false).matched], []);
+    assert.deepEqual([...filter(() => -1).matched], []);
+});
+
+test('tree filter ignores accents on the configured side and noFilter keeps branches closed', () => {
+    const accentNodes: TreeviewFilterNode<string>[] = [
+        { id: 'accented', parent: undefined, children: [], raw: { title: 'Éclair' } },
+        { id: 'plain', parent: undefined, children: [], raw: { title: 'Eclair' } }
+    ];
+    const filter = (query: string, ignoreAccents: 'query' | 'target' | true) => filterTreeviewNodes({
+        nodes: accentNodes,
+        query,
+        filterKeys: ['title'],
+        getField: (item, key) => (item as Record<string, unknown>)[String(key)],
+        ignoreAccents
+    });
+
+    assert.deepEqual([...filter('eclair', 'target').matched], ['accented', 'plain']);
+    assert.deepEqual([...filter('eclair', true).matched], ['accented', 'plain']);
+    assert.deepEqual([...filter('Éclair', 'query').matched], ['accented', 'plain']);
+    assert.deepEqual([...filter('eclair', 'query').matched], ['plain']);
+    assert.deepEqual([...filter('Éclair', 'target').matched], ['accented']);
+
+    const unfiltered = filterTreeviewNodes({
+        nodes,
+        query: 'missing',
+        filterKeys: ['title'],
+        getField: (item, key) => (item as Record<string, unknown>)[String(key)],
+        customKeyFilter: { title: () => false },
+        noFilter: true
+    });
+    assert.deepEqual([...unfiltered.visible], nodes.map((entry) => entry.id));
+    assert.equal(unfiltered.matched.size, 0);
+    assert.equal(unfiltered.expanded.size, 0);
+});
+
 test('custom itemProps selector supports props field, direct item props, and disabled opt-out', () => {
     assert.deepEqual(resolveTreeviewItemProps({ title: 'one', props: { disabled: true, id: 'row' } }, undefined), { disabled: true, id: 'row' });
     assert.deepEqual(resolveTreeviewItemProps({ title: 'two', disabled: true, children: [] }, true), { title: 'two', disabled: true });

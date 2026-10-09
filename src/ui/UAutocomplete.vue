@@ -198,6 +198,13 @@ function scrollActive(index: number): void {
     void nextTick(() => virtualScroll.value?.scrollToIndex(index, 'start'));
 }
 
+function scrollPresentedSelection(): void {
+    // The DOM host becomes visible after lazy content mounts. Scroll again with its
+    // actual viewport so a preselected virtual row is visible on first opening.
+    const selectedIndex = visible.value.findIndex(item => isSelected(model.value, item, !!props.multiple, !!props.returnObject, props.valueComparator));
+    scrollActive(active.value >= 0 ? active.value : selectedIndex);
+}
+
 function internalItemForValue(value: unknown): SelectionItem | undefined {
     return findSelection(allItems.value, value, !!props.returnObject, props.valueComparator)
         ?? normalizeItems([value], { itemTitle: props.itemTitle, itemValue: props.itemValue, itemProps: props.itemProps })[0];
@@ -438,7 +445,7 @@ defineExpose({
                 <template v-for="(selection, index) in selections" :key="index"><slot name="selection" :item="selection.internalItem.raw" :internal-item="selection.internalItem" :index="index" :props="{ disabled: control.disabled.value || control.readonly.value }" /></template>
             </span>
             <span v-if="!props.chips && props.multiple && selections.length" class="u-autocomplete-summary"><slot name="selection-summary" :items="chosen">{{ chosen.join('、') }}</slot></span>
-            <UiMenu v-bind="menuBindings" :activator="input" :model-value="menuVisible" @update:model-value="menuOpen = $event">
+            <UiMenu v-bind="menuBindings" :activator="input" :model-value="menuVisible" @update:model-value="menuOpen = $event" @after-enter="scrollPresentedSelection">
                     <slot name="menu-header" :items="visible" />
                     <slot name="prepend-item" :items="visible" />
                     <UVirtualScroll v-if="visible.length" ref="virtualScroll" renderless :items="visible" :item-height="34" height="310" :overscan="4" v-slot="{ item: row, index, itemRef }">

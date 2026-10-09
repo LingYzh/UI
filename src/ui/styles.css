@@ -406,7 +406,13 @@
     color: var(--text);
     box-shadow: 0 20px 70px #0003;
 }
-.ui-dialog::backdrop { background: #2626243d; backdrop-filter: blur(2px); }
+.ui-dialog::backdrop { background: var(--ui-overlay-scrim-color, #2626243d); opacity: var(--ui-overlay-scrim-opacity, 1); backdrop-filter: blur(2px); }
+.ui-dialog[data-scrim="false"]::backdrop { backdrop-filter: none; }
+.ui-overlay-layer { inset: 0; pointer-events: none; }
+.ui-overlay-layer > dialog { position: absolute; inset: 0; pointer-events: auto; }
+.ui-overlay-layer > .ui-menu-surface { pointer-events: auto; }
+.ui-overlay-scrim { position: absolute; inset: 0; pointer-events: auto; background: var(--ui-overlay-scrim-color, #2626243d); opacity: var(--ui-overlay-scrim-opacity, 1); backdrop-filter: blur(2px); }
+.ui-overlay-layer > .is-fullscreen, .ui-overlay-layer > .ui-dialog--fullscreen { position: absolute; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; }
 .ui-dialog--scrollable {
     width: 680px;
     padding: 0;
@@ -440,10 +446,10 @@
 .ui-dialog-scroll { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 .ui-dialog-scroll > .ui-scroll-viewport { flex: 1 1 auto; min-height: 0; }
 .ui-dialog-body { padding: calc(16px + var(--ui-dialog-error-space, 0px)) 24px 24px; }
-.ui-dialog[data-state="opening"] { animation: ui-dialog-in 180ms cubic-bezier(.2, .8, .2, 1) both; }
-.ui-dialog[data-state="closing"] { animation: ui-dialog-out 140ms ease-in both; pointer-events: none; }
-.ui-dialog[data-state="opening"]::backdrop { animation: ui-backdrop-in 180ms ease-out both; }
-.ui-dialog[data-state="closing"]::backdrop { animation: ui-backdrop-out 140ms ease-in both; }
+.ui-dialog:not([data-ui-transition="true"])[data-state="opening"] { animation: ui-dialog-in 180ms cubic-bezier(.2, .8, .2, 1) both; }
+.ui-dialog:not([data-ui-transition="true"])[data-state="closing"] { animation: ui-dialog-out 140ms ease-in both; pointer-events: none; }
+.ui-dialog:not([data-ui-transition="true"])[data-state="opening"]::backdrop { animation: ui-backdrop-in 180ms ease-out both; }
+.ui-dialog:not([data-ui-transition="true"])[data-state="closing"]::backdrop { animation: ui-backdrop-out 140ms ease-in both; }
 @keyframes ui-dialog-in { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
 @keyframes ui-dialog-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(5px) scale(.99); } }
 @keyframes ui-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
@@ -493,6 +499,10 @@
 .ui-snackbar-stack[data-position$="center"] { left: 50%; transform: translateX(-50%); }
 .ui-snackbar { display: flex; align-items: center; gap: 10px; padding: 8px 9px 8px 14px; min-height: 48px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); box-shadow: var(--shadow); font: var(--ui-font-body-large)/1.5 var(--font); pointer-events: auto; }
 .ui-snackbar-message { flex: 1; min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+/* Service stacks retain their placement and let USnackbar render each message. */
+.ui-snackbar-service-message .u-notice-placement { position: relative; inset: auto; translate: none; width: 100%; max-width: 100%; }
+.ui-snackbar-service-message .u-notice { min-width: 0; line-height: 1.5; overflow: visible; }
+.ui-snackbar-service-message .u-notice-actions { gap: 0; }
 .ui-snackbar-mark { width: 18px; height: 18px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; border-radius: 50%; color: var(--muted); font-size: var(--ui-font-body-small); }
 .ui-snackbar[data-tone="success"] .ui-snackbar-mark { color: var(--green); }
 .ui-snackbar[data-tone="error"] .ui-snackbar-mark { color: var(--red); }
@@ -698,14 +708,17 @@
     box-shadow: 0 4px 16px #0002;
     pointer-events: none;
     overflow-wrap: anywhere;
+    opacity: 1;
+}
+.ui-tooltip:not([data-ui-transition="true"]) {
     opacity: 0;
     transition: opacity var(--motion-fast), overlay var(--motion-fast) allow-discrete, display var(--motion-fast) allow-discrete;
 }
-.ui-tooltip:popover-open { opacity: 1; }
+.ui-tooltip:not([data-ui-transition="true"]):popover-open { opacity: 1; }
 .ui-tooltip.is-interactive { pointer-events: auto; }
 .ui-tooltip-trigger.is-contained { position: relative; }
 .ui-tooltip.is-contained { position: absolute; opacity: 1; }
-@starting-style { .ui-tooltip:popover-open { opacity: 0; } }
+@starting-style { .ui-tooltip:not([data-ui-transition="true"]):popover-open { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .ui-tooltip, .ui-activity-chevron { transition: none !important; } }
 :root[data-reduced-motion="true"] :is(.ui-tooltip, .ui-activity-chevron) { transition: none !important; }
 

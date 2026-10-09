@@ -110,7 +110,7 @@ const fixture = `<!doctype html>
                         'onUpdate:modelValue': value => { state.live = value; },
                         hideActions: state.liveHideActions,
                         pickerProps: { mode: 'rgba', hideCanvas: true, hideEyeDropper: true, showSwatches: false },
-                        menuProps: { openDelay: 0 }
+                        menuProps: { openDelay: 0, contentProps: { 'data-color-menu': 'live' } }
                     })
                 ]),
                 h('section', { id: 'blocked-region' }, [
@@ -122,7 +122,7 @@ const fixture = `<!doctype html>
                         disabled: state.blockedDisabled,
                         readonly: state.blockedReadonly,
                         pickerProps: { mode: 'rgba', hideCanvas: true, hideEyeDropper: true, showSwatches: false },
-                        menuProps: { openDelay: 0 }
+                        menuProps: { openDelay: 0, contentProps: { 'data-color-menu': 'blocked' } }
                     })
                 ]),
                 h('section', { id: 'custom-region' }, [
@@ -173,7 +173,7 @@ const fixture = `<!doctype html>
                         ref: refs.tab,
                         openOnFocus: true,
                         pickerProps: { hideCanvas: true, hideSliders: true, hideInputs: true, hideEyeDropper: true, modes: [] },
-                        menuProps: { openDelay: 0 }
+                        menuProps: { openDelay: 0, contentProps: { 'data-color-menu': 'tab' } }
                     }),
                     h('button', { id: 'tab-outside', type: 'button' }, 'Outside tab target')
                 ]),
@@ -184,7 +184,7 @@ const fixture = `<!doctype html>
                         openOnFocus: true,
                         hideActions: true,
                         pickerProps: { hideCanvas: true, hideSliders: true, hideInputs: true, hideEyeDropper: true, modes: [] },
-                        menuProps: { openDelay: 0 }
+                        menuProps: { openDelay: 0, contentProps: { 'data-color-menu': 'cleanup' } }
                     })
                 ]),
                 h('button', { id: 'outside-focus', type: 'button' }, 'Outside focus')
@@ -283,7 +283,7 @@ let browser;
 
 try {
     await server.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
     page.on('pageerror', error => report.pageErrors.push(error.message));
     page.on('console', message => {
@@ -296,10 +296,10 @@ try {
     const flush = () => page.evaluate(() => window.colorInputProtocol.flush());
     const state = () => page.evaluate(() => JSON.parse(JSON.stringify(window.colorInputProtocol.state)));
     const openSurface = async selector => {
-        await page.waitForFunction(value => document.querySelector(value)?.matches(':popover-open') === true, selector, { timeout: 5000 });
+        await page.waitForFunction(value => document.querySelector(value)?.matches('[data-state="open"]') === true, selector, { timeout: 5000 });
     };
     const closedSurface = async selector => {
-        await page.waitForFunction(value => !document.querySelector(value)?.matches(':popover-open'), selector, { timeout: 5000 });
+        await page.waitForFunction(value => !document.querySelector(value)?.matches('[data-state="open"]'), selector, { timeout: 5000 });
         await flush();
     };
     const setRange = async (selector, value) => {
@@ -320,17 +320,17 @@ try {
     await page.locator('#main-region .ui-color-pip').click();
     await openSurface(mainSurface);
     await flush();
-    assert.equal(await page.locator('#main-region .ui-color-picker').count(), 1);
+    assert.equal(await page.locator(mainSurface + ' .ui-color-picker').count(), 1);
     assert.equal(await page.locator('#main-input').getAttribute('aria-expanded'), 'true');
-    assert.equal((await state()).mainMenu, true, 'v-model:menu follows the real popover');
+    assert.equal((await state()).mainMenu, true, 'v-model:menu follows the real DOM menu');
     assert.equal(await page.evaluate(() => window.colorInputProtocol.mainPickerMode()), 'rgba');
     assert.equal(await page.locator(mainSurface).getAttribute('data-placement'), 'top-end');
     assert.equal(await page.locator(mainSurface).getAttribute('data-color-menu'), 'main');
     assert.ok((await page.locator(mainSurface).getAttribute('class')).includes('main-menu-custom'));
     assert.ok(await page.locator(mainSurface).getAttribute('aria-label'), 'the menu keeps an accessible name');
-    assert.equal(await page.locator(mainSurface).getAttribute('popover'), 'auto');
+    assert.equal(await page.locator(mainSurface).getAttribute('popover'), null);
     assert.equal(await page.evaluate(() => window.colorInputProtocol.activeFocusListenerCount()), 1, 'open menu installs one document focus listener');
-    report.checks.push('default pip opens lazy UiMenu popover; v-model:menu, pickerProps, menuProps content attributes, location and focus listener are live');
+    report.checks.push('default pip opens lazy UiMenu DOM menu; v-model:menu, pickerProps, menuProps content attributes, location and focus listener are live');
 
     const initialMain = (await state()).main;
     assert.deepEqual(initialMain, { r: 20, g: 40, b: 60, a: 0.4 });
@@ -369,10 +369,10 @@ try {
     assert.notEqual(await page.evaluate(() => window.colorInputProtocol.mainReferenceIsOriginal()), true, 'saved value is a cloned object, not the original input object');
     assert.equal(savedState.mainEvents.at(-1).type, 'save');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'main-input', 'save restores focus to the color input');
-    assert.equal(savedState.mainMenu, false, 'openOnFocus does not reopen the popover after save restores focus');
+    assert.equal(savedState.mainMenu, false, 'openOnFocus does not reopen the DOM menu after save restores focus');
     report.checks.push('save commits the cloned RGBA object, emits save, closes the menu and suppresses openOnFocus during focus restoration');
 
-    const liveSurface = '#live-region .ui-color-input-menu';
+    const liveSurface = '.ui-color-input-menu[data-color-menu="live"]';
     await page.locator('#live-region .ui-color-pip').click();
     await openSurface(liveSurface);
     assert.equal(await page.locator(`${liveSurface} .u-confirm-actions button`).count(), 2);
@@ -387,7 +387,7 @@ try {
     report.checks.push('dynamic hideActions removes buttons immediately and switches picker updates to immediate model writes');
 
     await page.locator('#blocked-region .ui-color-pip').click();
-    const blockedSurface = '#blocked-region .ui-color-input-menu';
+    const blockedSurface = '.ui-color-input-menu[data-color-menu="blocked"]';
     await openSurface(blockedSurface);
     await page.evaluate(() => { window.colorInputProtocol.updateBlocked({ blockedDisabled: true }); });
     await closedSurface(blockedSurface);
@@ -435,7 +435,7 @@ try {
     assert.equal(native.a, 0.35, 'explicit native picker preserves the object model family and alpha');
     report.checks.push('hidePip and pipLocation are consumed; explicit nativePicker keeps the native input and preserves RGBA object/alpha');
 
-    const tabSurface = '#tab-region .ui-color-input-menu';
+    const tabSurface = '.ui-color-input-menu[data-color-menu="tab"]';
     await page.locator('#tab-input').focus();
     await openSurface(tabSurface);
     let tabLeft = false;
@@ -445,7 +445,7 @@ try {
         const activeId = await page.evaluate(() => document.activeElement?.id || '');
         if (activeId === 'tab-outside' || activeId === 'outside-focus') { tabLeft = true; break; }
     }
-    assert.equal(tabLeft, true, 'Tab leaves the field and popover');
+    assert.equal(tabLeft, true, 'Tab leaves the field and DOM menu');
     await closedSurface(tabSurface);
     await page.locator('#tab-input').focus();
     await openSurface(tabSurface);
@@ -457,7 +457,7 @@ try {
 
     const focusBaseline = await page.evaluate(() => window.colorInputProtocol.activeFocusListenerCount());
     await page.locator('#cleanup-input').focus();
-    const cleanupSurface = '#cleanup-region .ui-color-input-menu';
+    const cleanupSurface = '.ui-color-input-menu[data-color-menu="cleanup"]';
     await openSurface(cleanupSurface);
     assert.equal(await page.evaluate(() => window.colorInputProtocol.activeFocusListenerCount()), focusBaseline + 1);
     await page.evaluate(() => { window.colorInputProtocol.state.unmountFocus = true; });

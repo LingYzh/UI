@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { UTabs, UTabPanel, UCard } from '../index';
+import { UTabs, UTabsWindow, UTabsWindowItem, UCard } from '../index';
 import LiveExample from './LiveExample.vue';
 import CodeBlock from './CodeBlock.vue';
 const props = defineProps({ example: { type: Object, required: true } });
@@ -13,7 +13,17 @@ const prefix = `example-card-${props.example.id}`;
     <u-card flush class="docs-example" :aria-labelledby="`${example.id}-heading`">
         <template #header><div class="docs-example-heading"><h3 :id="`${example.id}-heading`">{{ example.title }}</h3><p>{{ example.description }}</p></div></template>
         <u-tabs v-model="selected" :items="tabs" :id-prefix="prefix" variant="underline" :aria-label="`${example.title}展示方式`" class="docs-example-tabs" />
-        <u-tab-panel :model-value="selected" value="preview" :id-prefix="prefix"><LiveExample :example="example.id" /></u-tab-panel>
-        <u-tab-panel :model-value="selected" value="source" :id-prefix="prefix"><CodeBlock :code="example.code" /></u-tab-panel>
+        <u-tabs-window
+            v-model="selected"
+            :id-prefix="prefix"
+            :keyboard="false"
+        >
+            <u-tabs-window-item value="preview" eager :transition="false">
+                <LiveExample :example="example.id" />
+            </u-tabs-window-item>
+            <u-tabs-window-item value="source" eager :transition="false">
+                <CodeBlock :code="example.code" />
+            </u-tabs-window-item>
+        </u-tabs-window>
     </u-card>
 </template>

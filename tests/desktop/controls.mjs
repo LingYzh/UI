@@ -19,7 +19,9 @@ const passed = [];
 
 async function settle(page) {
     await page.evaluate(async () => {
-        await Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => {})));
+        // The Progress family also renders an indeterminate sample, which never finishes.
+        const finiteAnimations = document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity);
+        await Promise.all(finiteAnimations.map((animation) => animation.finished.catch(() => {})));
         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     });
     await page.waitForTimeout(150);
@@ -152,7 +154,7 @@ try {
     // 减少动效：进度填充与勾选过渡关闭。
     await open(page, 'progress');
     await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'true'; });
-    assert.equal(await page.locator('.ui-progress-fill').first().evaluate((element) => getComputedStyle(element).transitionDuration), '0s');
+    assert.equal(await page.locator('.ui-progress .u-progress-value').first().evaluate((element) => getComputedStyle(element).transitionDuration), '0s');
     await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'false'; });
     passed.push('reduced motion disables progress and selection transitions');
 

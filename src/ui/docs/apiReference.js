@@ -1882,7 +1882,7 @@ export const componentApi = {
         "slots": [
             {
                 "name": "default",
-                "type": "{ controlAttrs }",
+                "type": "—",
                 "fallback": "—",
                 "description": "原生 option / optgroup"
             },
@@ -2497,12 +2497,6 @@ export const componentApi = {
                 "type": "{ message }",
                 "fallback": "有默认内容",
                 "description": "自定义 message 区域。 作用域提供 { message }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -2876,11 +2870,11 @@ export const componentApi = {
             },
             {
                 "name": "transition",
-                "type": "boolean | string",
-                "fallback": "false（Vue Boolean 默认值）",
+                "type": "UiTransition",
+                "fallback": "—",
                 "description": "选择内容进入或离开时使用的过渡效果",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "undefined"
                 },
                 "required": false
             },
@@ -5483,6 +5477,67 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "scrim",
+                "type": "boolean | string",
+                "fallback": "true",
+                "description": "在浮层后显示遮罩，并按组件规则处理遮罩交互",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            },
+            {
+                "name": "opacity",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "设置 opacity，供 UDialog 执行对应行为；公开类型为 number | string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "zIndex",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "指定DOM层级；键盘、外部关闭及后退按实际最高zIndex处理，默认嵌套层递增。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "attach",
+                "type": "boolean | string | HTMLElement",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "普通DOM浮层默认挂载body；字符串选择器或HTMLElement指定容器，true原位渲染。可动态移动同一实例。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "contained",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "启用容器内absolute定位；未指定attach时原位渲染，容器需提供定位上下文。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "absolute",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "启用容器内absolute定位；未指定attach时原位渲染，容器需提供定位上下文。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
                 "name": "theme",
                 "type": "string",
                 "fallback": "—",
@@ -5790,6 +5845,16 @@ export const componentApi = {
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "'center'"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "undefined"
                 },
                 "required": false
             }
@@ -9630,6 +9695,46 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "attach",
+                "type": "boolean | string | HTMLElement",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "普通DOM浮层默认挂载body；字符串选择器或HTMLElement指定容器，true原位渲染。可动态移动同一实例。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "contained",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "启用容器内absolute定位；未指定attach时原位渲染，容器需提供定位上下文。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "absolute",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "启用容器内absolute定位；未指定attach时原位渲染，容器需提供定位上下文。",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "zIndex",
+                "type": "number | string",
+                "fallback": "—",
+                "description": "指定DOM层级；键盘、外部关闭及后退按实际最高zIndex处理，默认嵌套层递增。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "placement",
                 "type": "MenuPlacement",
                 "fallback": "'bottom-start'",
@@ -9840,7 +9945,7 @@ export const componentApi = {
                 "name": "nativeDismiss",
                 "type": "boolean",
                 "fallback": "false（Vue Boolean 默认值）",
-                "description": "组合输入在 focus 时开启；由本组件处理关闭，避免同一次指针操作被浏览器 light-dismiss",
+                "description": "兼容旧调用的属性；普通DOM呈现统一由库管理外部点击和Escape。",
                 "declaredDefault": {
                     "kind": "vue-boolean-false"
                 },
@@ -9873,6 +9978,16 @@ export const componentApi = {
                 "type": "string",
                 "fallback": "—",
                 "description": "内置可见标签，自动关联控件，不需要额外 UField",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "transition",
+                "type": "UiTransition",
+                "fallback": "—",
+                "description": "选择内容进入或离开时使用的过渡效果",
                 "declaredDefault": {
                     "kind": "undefined"
                 },
@@ -12034,6 +12149,27 @@ export const componentApi = {
                     "source": "'div'"
                 },
                 "required": false
+            },
+            {
+                "name": "layoutMode",
+                "type": "'legacy' | 'ordered'",
+                "fallback": "'legacy'",
+                "description": "legacy默认保留现有布局几何；ordered按order逐项分配四边空间并消费overlaps。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'legacy'"
+                },
+                "required": false
+            },
+            {
+                "name": "overlaps",
+                "type": "readonly string[]",
+                "fallback": "—",
+                "description": "提供 overlaps 所需的数据集合；类型为 readonly string[]",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             }
         ],
         "events": [],
@@ -12391,12 +12527,6 @@ export const componentApi = {
                 "type": "—",
                 "fallback": "—",
                 "description": "自定义 extension 区域"
-            },
-            {
-                "name": "text",
-                "type": "—",
-                "fallback": "有默认内容",
-                "description": "替换组件的文本内容"
             }
         ],
         "methods": [
@@ -13052,12 +13182,6 @@ export const componentApi = {
                 "type": "{ items }",
                 "fallback": "—",
                 "description": "自定义 menu footer 区域。 作用域提供 { items }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -15093,7 +15217,7 @@ export const componentApi = {
                 "name": "getTimestampAtEvent",
                 "type": "function",
                 "kind": "method",
-                "expression": "(event: MouseEvent, day: CalendarTimestamp) => {\n    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();\n    return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes))));\n}",
+                "expression": "(event: MouseEvent, day: CalendarTimestamp) => {\r\n    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();\r\n    return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes))));\r\n}",
                 "description": "调用 getTimestampAtEvent，访问 (event: MouseEvent, day: CalendarTimestamp) => { const rect = (event.currentTarget as HTMLElement).getBoundingClientRect(); return addCalendarMinutes({ ...day, hour: 0, minute: 0, hasTime: true }, Math.min(1439, Math.max(0, Math.floor(intervals.value.firstMinute + (event.clientY - rect.top) / rect.height * intervals.value.intervalCount * intervals.value.intervalMinutes)))); } 对应的 UCalendar 成员"
             }
         ],
@@ -18164,12 +18288,6 @@ export const componentApi = {
                 "type": "{ items }",
                 "fallback": "—",
                 "description": "自定义 menu footer 区域。 作用域提供 { items }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -21868,12 +21986,6 @@ export const componentApi = {
                 "description": "自定义 message 区域。 作用域提供 { message }"
             },
             {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
-            },
-            {
                 "name": "title",
                 "type": "—",
                 "fallback": "有默认内容",
@@ -24159,12 +24271,6 @@ export const componentApi = {
                 "type": "{ message }",
                 "fallback": "有默认内容",
                 "description": "自定义 message 区域。 作用域提供 { message }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -27013,6 +27119,27 @@ export const componentApi = {
                     "kind": "vue-boolean-false"
                 },
                 "required": false
+            },
+            {
+                "name": "layoutMode",
+                "type": "'legacy' | 'ordered'",
+                "fallback": "'legacy'",
+                "description": "legacy默认保留现有布局几何；ordered按order逐项分配四边空间并消费overlaps。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'legacy'"
+                },
+                "required": false
+            },
+            {
+                "name": "overlaps",
+                "type": "readonly string[]",
+                "fallback": "—",
+                "description": "提供 overlaps 所需的数据集合；类型为 readonly string[]",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
             }
         ],
         "events": [],
@@ -27243,6 +27370,17 @@ export const componentApi = {
     "UList": {
         "props": [
             {
+                "name": "id",
+                "type": "string",
+                "fallback": "undefined",
+                "description": "设置根元素或原生控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "modelValue",
                 "type": "ListValue | ListValue[]",
                 "fallback": "undefined",
@@ -27278,10 +27416,11 @@ export const componentApi = {
             {
                 "name": "opened",
                 "type": "ListValue[]",
-                "fallback": "—",
+                "fallback": "undefined",
                 "description": "提供 opened 所需的数据集合；类型为 ListValue[]",
                 "declaredDefault": {
-                    "kind": "undefined"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             },
@@ -27332,20 +27471,22 @@ export const componentApi = {
             {
                 "name": "disabled",
                 "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
+                "fallback": "false",
                 "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "explicit",
+                    "source": "false"
                 },
                 "required": false
             },
             {
                 "name": "readonly",
                 "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
+                "fallback": "false",
                 "description": "保留控件可读与聚焦状态，同时阻止用户修改模型",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "explicit",
+                    "source": "false"
                 },
                 "required": false
             },
@@ -27436,6 +27577,16 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "activeStrategy",
+                "type": "ActiveStrategyName",
+                "fallback": "—",
+                "description": "默认single-independent仅激活一项，重复激活可取消；显式策略可启用多项或叶节点约束。",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "openStrategy",
                 "type": "OpenStrategyName",
                 "fallback": "'list'",
@@ -27448,7 +27599,7 @@ export const componentApi = {
             },
             {
                 "name": "navigationStrategy",
-                "type": "'focus' | 'track'",
+                "type": "ListNavigationStrategy",
                 "fallback": "'focus'",
                 "description": "设置 navigation Strategy；可选值为 'focus'、'track'",
                 "declaredDefault": {
@@ -27458,12 +27609,23 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "valueComparator",
+                "type": "ValueComparator",
+                "fallback": "—",
+                "description": "自定义两个候选值是否相等的比较函数",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "filterable",
                 "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
+                "fallback": "false",
                 "description": "控制是否启用 filterable 行为",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "explicit",
+                    "source": "false"
                 },
                 "required": false
             },
@@ -27526,13 +27688,19 @@ export const componentApi = {
             },
             {
                 "name": "click:select",
-                "type": "value: { id: ListValue; value: boolean; path: ListValue[] }",
+                "type": "value: ItemChangePayload",
                 "fallback": "—",
                 "description": "当 click:select 发生时触发，并携带 value 参数"
             },
             {
+                "name": "click:activate",
+                "type": "value: ItemChangePayload",
+                "fallback": "—",
+                "description": "当 click:activate 发生时触发，并携带 value 参数"
+            },
+            {
                 "name": "click:open",
-                "type": "value: { id: ListValue; value: boolean; path: ListValue[] }",
+                "type": "value: ItemChangePayload",
                 "fallback": "—",
                 "description": "当 click:open 发生时触发，并携带 value 参数"
             },
@@ -27546,7 +27714,7 @@ export const componentApi = {
         "slots": [
             {
                 "name": "default",
-                "type": "{ selected, activated, opened }",
+                "type": "{ selected, activated, opened, registration }",
                 "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { selected, activated, opened }"
             }
@@ -27560,6 +27728,62 @@ export const componentApi = {
                 "description": "访问组件关联的根元素或原生控件引用"
             },
             {
+                "name": "selected",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "selected",
+                "description": "读取 selected，访问 selected 对应的 UList 成员"
+            },
+            {
+                "name": "activated",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "activated",
+                "description": "读取 activated，访问 activated 对应的 UList 成员"
+            },
+            {
+                "name": "opened",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "opened",
+                "description": "读取 opened，访问 opened 对应的 UList 成员"
+            },
+            {
+                "name": "navigationIndex",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "navigationIndex",
+                "description": "读取 navigationIndex，访问 navigationIndex 对应的 UList 成员"
+            },
+            {
+                "name": "registrationContext",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "registrationContext",
+                "description": "读取 registrationContext，访问 registrationContext 对应的 UList 成员"
+            },
+            {
+                "name": "getRegistrations",
+                "type": "exposed property",
+                "kind": "property",
+                "expression": "registrationSnapshot",
+                "description": "读取 getRegistrations，访问 registrationSnapshot 对应的 UList 成员"
+            },
+            {
+                "name": "getItem",
+                "type": "function",
+                "kind": "method",
+                "expression": "(value: ListValue) => getRegistration(value, 'item')",
+                "description": "调用 getItem，访问 (value: ListValue) => getRegistration(value, 'item') 对应的 UList 成员"
+            },
+            {
+                "name": "getGroup",
+                "type": "function",
+                "kind": "method",
+                "expression": "(value: ListValue) => getRegistration(value, 'group')",
+                "description": "调用 getGroup，访问 (value: ListValue) => getRegistration(value, 'group') 对应的 UList 成员"
+            },
+            {
                 "name": "focus",
                 "type": "function",
                 "kind": "method",
@@ -27567,17 +27791,31 @@ export const componentApi = {
                 "description": "将焦点移到组件的可编辑控件或首个可交互元素"
             },
             {
+                "name": "focusAt",
+                "type": "function",
+                "kind": "method",
+                "expression": "focusAt",
+                "description": "调用 focusAt，访问 focusAt 对应的 UList 成员"
+            },
+            {
                 "name": "select",
                 "type": "function",
                 "kind": "method",
-                "expression": "(value: ListValue) => change(value, 'select')",
+                "expression": "select",
                 "description": "选中原生文本输入框中的全部内容"
+            },
+            {
+                "name": "activate",
+                "type": "function",
+                "kind": "method",
+                "expression": "activate",
+                "description": "调用 activate，访问 activate 对应的 UList 成员"
             },
             {
                 "name": "open",
                 "type": "exposed property",
-                "kind": "property",
-                "expression": "toggleOpen",
+                "kind": "method",
+                "expression": "open",
                 "description": "打开组件面板或浮层"
             }
         ],
@@ -27585,6 +27823,17 @@ export const componentApi = {
     },
     "UListGroup": {
         "props": [
+            {
+                "name": "id",
+                "type": "string",
+                "fallback": "undefined",
+                "description": "设置根元素或原生控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
             {
                 "name": "value",
                 "type": "ListValue",
@@ -27610,6 +27859,17 @@ export const componentApi = {
                 "type": "boolean",
                 "fallback": "false",
                 "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "保留控件可读与聚焦状态，同时阻止用户修改模型",
                 "declaredDefault": {
                     "kind": "explicit",
                     "source": "false"
@@ -27650,7 +27910,7 @@ export const componentApi = {
         "slots": [
             {
                 "name": "activator",
-                "type": "{ props }",
+                "type": "{ props, isOpen, isActive, isSelected, isDisabled, isReadonly, toggle, select, activate }",
                 "fallback": "有默认内容",
                 "description": "自定义打开浮层的触发器；作用域提供需绑定到触发器的属性。 作用域提供 { props }"
             },
@@ -27718,6 +27978,17 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "id",
+                "type": "string",
+                "fallback": "undefined",
+                "description": "设置根元素或原生控件的 DOM id",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "value",
                 "type": "ListValue",
                 "fallback": "—",
@@ -27768,6 +28039,17 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "readonly",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "保留控件可读与聚焦状态，同时阻止用户修改模型",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
                 "name": "selectable",
                 "type": "boolean",
                 "fallback": "true",
@@ -27801,6 +28083,28 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "tabindex",
+                "type": "number",
+                "fallback": "undefined",
+                "description": "设置 tabindex，供 UListItem 执行对应行为；公开类型为 number",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "role",
+                "type": "string",
+                "fallback": "undefined",
+                "description": "设置 role，供 UListItem 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "ripple",
                 "type": "RippleOptions",
                 "fallback": "true",
@@ -27823,31 +28127,31 @@ export const componentApi = {
         "slots": [
             {
                 "name": "prepend",
-                "type": "—",
+                "type": "{  }",
                 "fallback": "—",
                 "description": "在主要内容前追加图标或节点"
             },
             {
                 "name": "title",
-                "type": "—",
+                "type": "{  }",
                 "fallback": "有默认内容",
                 "description": "替换组件默认标题内容"
             },
             {
                 "name": "default",
-                "type": "—",
+                "type": "{  }",
                 "fallback": "—",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点"
             },
             {
                 "name": "subtitle",
-                "type": "—",
+                "type": "{  }",
                 "fallback": "有默认内容",
                 "description": "提供标题下方的辅助说明"
             },
             {
                 "name": "append",
-                "type": "—",
+                "type": "{  }",
                 "fallback": "有默认内容",
                 "description": "自定义右侧内容，优先替换appendText和appendIcon；独立交互控件不触发父行选择或涟漪。"
             }
@@ -31568,12 +31872,6 @@ export const componentApi = {
                 "type": "{ label }",
                 "fallback": "有默认内容",
                 "description": "自定义 label 区域。 作用域提供 { label }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -33594,12 +33892,6 @@ export const componentApi = {
                 "type": "{ label }",
                 "fallback": "有默认内容",
                 "description": "自定义 label 区域。 作用域提供 { label }"
-            },
-            {
-                "name": "default",
-                "type": "{ controlAttrs }",
-                "fallback": "—",
-                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { controlAttrs }"
             }
         ],
         "methods": [
@@ -34745,8 +35037,127 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "editable",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "允许用户直接编辑当前步骤或条目",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许选择多个条目；模型通常为数组，具体类型见本行契约",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "max",
+                "type": "number",
+                "fallback": "—",
+                "description": "限制可选数量、数值上界或展示上限；具体含义由组件和本行类型确定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "itemTitle",
+                "type": "string | ((item: unknown) => unknown)",
+                "fallback": "'title'",
+                "description": "从数据项读取显示文本的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'title'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "string | ((item: unknown) => unknown)",
+                "fallback": "'value'",
+                "description": "从数据项读取模型值或稳定键的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'value'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemProps",
+                "type": "string | boolean | ((item: unknown) => unknown)",
+                "fallback": "'props'",
+                "description": "从数据项提取 disabled、标题等条目属性的映射规则",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'props'"
+                },
+                "required": false
+            },
+            {
+                "name": "hideActions",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 hide Actions 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "prevText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.prev'",
+                "description": "设置 prev Text，供 UStepper 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.prev'"
+                },
+                "required": false
+            },
+            {
+                "name": "nextText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.next'",
+                "description": "设置 next Text，供 UStepper 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.next'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "'primary'",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'primary'"
+                },
+                "required": false
+            },
+            {
                 "name": "modelValue",
-                "type": "GroupValue | null",
+                "type": "GroupValue | GroupValue[] | null",
                 "fallback": "null",
                 "description": "组件的双向绑定值；类型和初始值见本行契约。 也可传入 null 清空或表示当前无值",
                 "declaredDefault": {
@@ -34758,17 +35169,95 @@ export const componentApi = {
         ],
         "events": [
             {
+                "name": "click:prev",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:prev 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:next",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:next 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:finish",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 click:finish 发生时触发"
+            },
+            {
                 "name": "update:modelValue",
-                "type": "value: GroupValue | null",
+                "type": "value: GroupValue | GroupValue[] | null",
                 "fallback": "—",
                 "description": "双向属性 modelValue 更新时触发；参数为最新值"
             }
         ],
         "slots": [
             {
+                "name": "header-item.*",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 header item * 区域"
+            },
+            {
+                "name": "header",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 header 区域"
+            },
+            {
+                "name": "icon",
+                "type": "{ icon }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认图标。 作用域提供 { icon }"
+            },
+            {
+                "name": "title",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认标题内容"
+            },
+            {
+                "name": "subtitle",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "提供标题下方的辅助说明"
+            },
+            {
+                "name": "item.*",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "按列键自定义表格单元格内容"
+            },
+            {
+                "name": "item",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "自定义单个候选项或数据项的内容"
+            },
+            {
+                "name": "actions",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "放置与主要内容关联的操作"
+            },
+            {
+                "name": "prev",
+                "type": "{ props, prev }",
+                "fallback": "有默认内容",
+                "description": "自定义 prev 区域。 作用域提供 { props, prev }"
+            },
+            {
+                "name": "next",
+                "type": "{ props, next }",
+                "fallback": "有默认内容",
+                "description": "自定义 next 区域。 作用域提供 { props, next }"
+            },
+            {
                 "name": "default",
                 "type": "{ next, prev, go, modelValue }",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { next, prev, go, modelValue }"
             }
         ],
@@ -34798,14 +35287,90 @@ export const componentApi = {
         "attributes": []
     },
     "UStepperActions": {
-        "props": [],
-        "events": [],
+        "props": [
+            {
+                "name": "prevText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.prev'",
+                "description": "设置 prev Text，供 UStepperActions 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.prev'"
+                },
+                "required": false
+            },
+            {
+                "name": "nextText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.next'",
+                "description": "设置 next Text，供 UStepperActions 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.next'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "'primary'",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'primary'"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "ActionDisabled",
+                "fallback": "false",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            }
+        ],
+        "events": [
+            {
+                "name": "click:prev",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:prev 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:next",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:next 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:finish",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 click:finish 发生时触发"
+            }
+        ],
         "slots": [
             {
                 "name": "default",
-                "type": "{ prev, next }",
+                "type": "{ prev, next, prevProps, nextProps }",
                 "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { prev, next }"
+            },
+            {
+                "name": "prev",
+                "type": "{ props, prev }",
+                "fallback": "有默认内容",
+                "description": "自定义 prev 区域。 作用域提供 { props, prev }"
+            },
+            {
+                "name": "next",
+                "type": "{ props, next }",
+                "fallback": "有默认内容",
+                "description": "自定义 next 区域。 作用域提供 { props, next }"
             }
         ],
         "methods": [],
@@ -34816,12 +35381,12 @@ export const componentApi = {
             {
                 "name": "value",
                 "type": "GroupValue",
-                "fallback": "无默认值（必填）",
+                "fallback": "—",
                 "description": "当前条目或控件代表的值；选择类组件用它与绑定模型比较",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "undefined"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "title",
@@ -34834,22 +35399,44 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "subtitle",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示标题下方的第二行说明",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "icon",
+                "type": "string",
+                "fallback": "—",
+                "description": "指定使用的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "complete",
                 "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
+                "fallback": "undefined",
                 "description": "将步骤标记为已完成状态",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             },
             {
                 "name": "error",
                 "type": "boolean",
-                "fallback": "false（Vue Boolean 默认值）",
+                "fallback": "undefined",
                 "description": "显示当前错误状态或错误内容；具体呈现由组件决定",
                 "declaredDefault": {
-                    "kind": "vue-boolean-false"
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
                 },
                 "required": false
             },
@@ -34874,6 +35461,17 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "rules",
+                "type": "readonly StepperRule[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "按顺序执行同步或异步校验规则；返回 false 或错误文本表示失败",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
                 "name": "ripple",
                 "type": "RippleOptions",
                 "fallback": "true",
@@ -34885,13 +35483,38 @@ export const componentApi = {
                 "required": false
             }
         ],
-        "events": [],
+        "events": [
+            {
+                "name": "group:selected",
+                "type": "value: { value: boolean }",
+                "fallback": "—",
+                "description": "当 group:selected 发生时触发，并携带 value 参数"
+            }
+        ],
         "slots": [
             {
                 "name": "default",
-                "type": "{ active, complete }",
+                "type": "{  }",
                 "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { active, complete }"
+            },
+            {
+                "name": "icon",
+                "type": "{ icon }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认图标。 作用域提供 { icon }"
+            },
+            {
+                "name": "title",
+                "type": "{ title }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认标题内容。 作用域提供 { title }"
+            },
+            {
+                "name": "subtitle",
+                "type": "{ subtitle }",
+                "fallback": "有默认内容",
+                "description": "提供标题下方的辅助说明。 作用域提供 { subtitle }"
             }
         ],
         "methods": [],
@@ -34911,7 +35534,7 @@ export const componentApi = {
             },
             {
                 "name": "mandatory",
-                "type": "boolean",
+                "type": "boolean | 'force'",
                 "fallback": "false（Vue Boolean 默认值）",
                 "description": "要求选择模型保持至少一个有效值；可用模式见类型",
                 "declaredDefault": {
@@ -34930,8 +35553,127 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "editable",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "允许用户直接编辑当前步骤或条目",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许选择多个条目；模型通常为数组，具体类型见本行契约",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "max",
+                "type": "number",
+                "fallback": "—",
+                "description": "限制可选数量、数值上界或展示上限；具体含义由组件和本行类型确定",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "items",
+                "type": "readonly unknown[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "itemTitle",
+                "type": "string | ((item: unknown) => unknown)",
+                "fallback": "'title'",
+                "description": "从数据项读取显示文本的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'title'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemValue",
+                "type": "string | ((item: unknown) => unknown)",
+                "fallback": "'value'",
+                "description": "从数据项读取模型值或稳定键的字段名或取值函数",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'value'"
+                },
+                "required": false
+            },
+            {
+                "name": "itemProps",
+                "type": "string | boolean | ((item: unknown) => unknown)",
+                "fallback": "'props'",
+                "description": "从数据项提取 disabled、标题等条目属性的映射规则",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'props'"
+                },
+                "required": false
+            },
+            {
+                "name": "hideActions",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 hide Actions 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "prevText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.prev'",
+                "description": "设置 prev Text，供 UStepperVertical 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.prev'"
+                },
+                "required": false
+            },
+            {
+                "name": "nextText",
+                "type": "string",
+                "fallback": "'$vuetify.stepper.next'",
+                "description": "设置 next Text，供 UStepperVertical 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.stepper.next'"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "'primary'",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'primary'"
+                },
+                "required": false
+            },
+            {
                 "name": "modelValue",
-                "type": "GroupValue | null",
+                "type": "GroupValue | GroupValue[] | null",
                 "fallback": "null",
                 "description": "组件的双向绑定值；类型和初始值见本行契约。 也可传入 null 清空或表示当前无值",
                 "declaredDefault": {
@@ -34943,18 +35685,398 @@ export const componentApi = {
         ],
         "events": [
             {
+                "name": "click:finish",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 click:finish 发生时触发"
+            },
+            {
                 "name": "update:modelValue",
-                "type": "value: GroupValue | null",
+                "type": "value: GroupValue | GroupValue[] | null",
                 "fallback": "—",
                 "description": "双向属性 modelValue 更新时触发；参数为最新值"
             }
         ],
         "slots": [
             {
+                "name": "header-item.*",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 header item * 区域"
+            },
+            {
+                "name": "header",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 header 区域"
+            },
+            {
+                "name": "icon",
+                "type": "{ icon }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认图标。 作用域提供 { icon }"
+            },
+            {
+                "name": "title",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认标题内容"
+            },
+            {
+                "name": "subtitle",
+                "type": "{ subtitle }",
+                "fallback": "有默认内容",
+                "description": "提供标题下方的辅助说明。 作用域提供 { subtitle }"
+            },
+            {
+                "name": "item.*",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "按列键自定义表格单元格内容"
+            },
+            {
+                "name": "item",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "自定义单个候选项或数据项的内容"
+            },
+            {
+                "name": "actions",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "放置与主要内容关联的操作"
+            },
+            {
+                "name": "prev",
+                "type": "{ props, prev }",
+                "fallback": "有默认内容",
+                "description": "自定义 prev 区域。 作用域提供 { props, prev }"
+            },
+            {
+                "name": "next",
+                "type": "{ props, next }",
+                "fallback": "有默认内容",
+                "description": "自定义 next 区域。 作用域提供 { props, next }"
+            },
+            {
                 "name": "default",
                 "type": "{ next, prev, go, modelValue }",
-                "fallback": "—",
+                "fallback": "有默认内容",
                 "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { next, prev, go, modelValue }"
+            }
+        ],
+        "methods": [],
+        "attributes": []
+    },
+    "UStepperVerticalActions": {
+        "props": [
+            {
+                "name": "prevText",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 prev Text，供 UStepperVerticalActions 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextText",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 next Text，供 UStepperVerticalActions 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean | 'prev' | 'next'",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            }
+        ],
+        "events": [
+            {
+                "name": "click:prev",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:prev 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:next",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:next 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:finish",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 click:finish 发生时触发"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "type": "{ prev, next, prevProps, nextProps }",
+                "fallback": "有默认内容",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点。 作用域提供 { prev, next, prevProps, nextProps }"
+            },
+            {
+                "name": "prev",
+                "type": "{ props, prev }",
+                "fallback": "有默认内容",
+                "description": "自定义 prev 区域。 作用域提供 { props, prev }"
+            },
+            {
+                "name": "next",
+                "type": "{ props, next }",
+                "fallback": "有默认内容",
+                "description": "自定义 next 区域。 作用域提供 { props, next }"
+            }
+        ],
+        "methods": [],
+        "attributes": []
+    },
+    "UStepperVerticalItem": {
+        "props": [
+            {
+                "name": "value",
+                "type": "GroupValue",
+                "fallback": "—",
+                "description": "当前条目或控件代表的值；选择类组件用它与绑定模型比较",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "title",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示的标题文本；使用 title 插槽时可由插槽内容替代",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "subtitle",
+                "type": "string",
+                "fallback": "—",
+                "description": "显示标题下方的第二行说明",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "icon",
+                "type": "string",
+                "fallback": "—",
+                "description": "指定使用的图标名称",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "complete",
+                "type": "boolean",
+                "fallback": "undefined",
+                "description": "将步骤标记为已完成状态",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "error",
+                "type": "boolean",
+                "fallback": "undefined",
+                "description": "显示当前错误状态或错误内容；具体呈现由组件决定",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "editable",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "允许用户直接编辑当前步骤或条目",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "禁用用户交互；由表单禁用时，子控件不能单独恢复启用",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "rules",
+                "type": "readonly StepperRule[]",
+                "fallback": "每次实例化执行 () => []",
+                "description": "按顺序执行同步或异步校验规则；返回 false 或错误文本表示失败",
+                "declaredDefault": {
+                    "kind": "factory",
+                    "source": "() => []"
+                },
+                "required": false
+            },
+            {
+                "name": "hideActions",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 hide Actions 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "prevText",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 prev Text，供 UStepperVerticalItem 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "nextText",
+                "type": "string",
+                "fallback": "—",
+                "description": "设置 next Text，供 UStepperVerticalItem 执行对应行为；公开类型为 string",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "fallback": "'primary'",
+                "description": "设置组件使用的颜色或主题色值",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'primary'"
+                },
+                "required": false
+            },
+            {
+                "name": "ripple",
+                "type": "RippleOptions",
+                "fallback": "true",
+                "description": "动作表面默认启用涟漪；false 关闭，或传入 { center, circle, color, class, keys }。禁用、只读和减少动效时停用；编辑区与静态容器不触发",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "true"
+                },
+                "required": false
+            }
+        ],
+        "events": [
+            {
+                "name": "group:selected",
+                "type": "value: { value: boolean }",
+                "fallback": "—",
+                "description": "当 group:selected 发生时触发，并携带 value 参数"
+            },
+            {
+                "name": "click:prev",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:prev 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:next",
+                "type": "event?: MouseEvent",
+                "fallback": "—",
+                "description": "当 click:next 发生时触发，并携带 event 参数"
+            },
+            {
+                "name": "click:finish",
+                "type": "—",
+                "fallback": "—",
+                "description": "当 click:finish 发生时触发"
+            }
+        ],
+        "slots": [
+            {
+                "name": "header",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 header 区域"
+            },
+            {
+                "name": "icon",
+                "type": "{ icon }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认图标。 作用域提供 { icon }"
+            },
+            {
+                "name": "title",
+                "type": "{ title }",
+                "fallback": "有默认内容",
+                "description": "替换组件默认标题内容。 作用域提供 { title }"
+            },
+            {
+                "name": "subtitle",
+                "type": "{ subtitle }",
+                "fallback": "有默认内容",
+                "description": "提供标题下方的辅助说明。 作用域提供 { subtitle }"
+            },
+            {
+                "name": "default",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "放置组件主要内容；无作用域参数时由调用方直接提供节点"
+            },
+            {
+                "name": "actions",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "放置与主要内容关联的操作"
+            },
+            {
+                "name": "prev",
+                "type": "{ props, prev }",
+                "fallback": "有默认内容",
+                "description": "自定义 prev 区域。 作用域提供 { props, prev }"
+            },
+            {
+                "name": "next",
+                "type": "{ props, next }",
+                "fallback": "有默认内容",
+                "description": "自定义 next 区域。 作用域提供 { props, next }"
             }
         ],
         "methods": [],
@@ -35189,9 +36311,38 @@ export const componentApi = {
                     "source": "false"
                 },
                 "required": false
+            },
+            {
+                "name": "transition",
+                "type": "boolean | string",
+                "fallback": "undefined",
+                "description": "选择内容进入或离开时使用的过渡效果",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "reverseTransition",
+                "type": "boolean | string",
+                "fallback": "undefined",
+                "description": "设置 reverse Transition，供 UStepperWindowItem 执行对应行为；公开类型为 boolean | string",
+                "declaredDefault": {
+                    "kind": "explicit-undefined",
+                    "source": "undefined"
+                },
+                "required": false
             }
         ],
-        "events": [],
+        "events": [
+            {
+                "name": "group:selected",
+                "type": "value: { value: boolean }",
+                "fallback": "—",
+                "description": "当 group:selected 发生时触发，并携带 value 参数"
+            }
+        ],
         "slots": [
             {
                 "name": "default",
@@ -36304,12 +37455,6 @@ export const componentApi = {
                 "type": "—",
                 "fallback": "—",
                 "description": "内容区下方的扩展行；默认存在插槽时显示，可由extended控制。"
-            },
-            {
-                "name": "text",
-                "type": "—",
-                "fallback": "有默认内容",
-                "description": "替换组件的文本内容"
             }
         ],
         "methods": [
@@ -36476,12 +37621,13 @@ export const componentApi = {
             {
                 "name": "items",
                 "type": "Item[]",
-                "fallback": "无默认值（必填）",
+                "fallback": "每次实例化执行 () => []",
                 "description": "供组件渲染或选择的数据项列表；条目字段按组件类型解析",
                 "declaredDefault": {
-                    "kind": "required"
+                    "kind": "factory",
+                    "source": "() => []"
                 },
-                "required": true
+                "required": false
             },
             {
                 "name": "modelValue",
@@ -36613,6 +37759,17 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "activeStrategy",
+                "type": "TreeviewActiveStrategyInput",
+                "fallback": "'single-independent'",
+                "description": "默认single-independent仅激活一项，重复激活可取消；显式策略可启用多项或叶节点约束。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'single-independent'"
+                },
+                "required": false
+            },
+            {
                 "name": "openOnClick",
                 "type": "boolean",
                 "fallback": "undefined",
@@ -36630,6 +37787,17 @@ export const componentApi = {
                 "description": "设置 select Strategy，供 UTreeview 执行对应行为；公开类型为 SelectStrategyInput<unknown>",
                 "declaredDefault": {
                     "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "itemsRegistration",
+                "type": "'props' | 'render'",
+                "fallback": "'render'",
+                "description": "默认render仅注册当前渲染节点供选择和激活策略使用；props显式注册完整items树，含关闭分支。",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'render'"
                 },
                 "required": false
             },
@@ -36676,12 +37844,75 @@ export const componentApi = {
                 "required": false
             },
             {
+                "name": "filterMode",
+                "type": "'some' | 'every' | 'union' | 'intersection'",
+                "fallback": "—",
+                "description": "设置 filter Mode；可选值为 'some'、'every'、'union'、'intersection'",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
                 "name": "customFilter",
-                "type": "(value: unknown, query: string, item: unknown) => unknown",
+                "type": "TreeviewFilterFunction",
                 "fallback": "—",
                 "description": "以 value、query、item 和 key 自定义表格过滤",
                 "declaredDefault": {
                     "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "customKeyFilter",
+                "type": "Readonly<Record<string, TreeviewFilterFunction>>",
+                "fallback": "—",
+                "description": "设置 custom Key Filter，供 UTreeview 执行对应行为；公开类型为 Readonly<Record<string, TreeviewFilterFunction>>",
+                "declaredDefault": {
+                    "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "ignoreAccents",
+                "type": "boolean | 'query' | 'target'",
+                "fallback": "false（Vue Boolean 默认值）",
+                "description": "设置 ignore Accents，供 UTreeview 执行对应行为；公开类型为 boolean | 'query' | 'target'",
+                "declaredDefault": {
+                    "kind": "vue-boolean-false"
+                },
+                "required": false
+            },
+            {
+                "name": "noFilter",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 no Filter 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "itemType",
+                "type": "ItemProperty",
+                "fallback": "'type'",
+                "description": "设置 item Type，供 UTreeview 执行对应行为；公开类型为 ItemProperty",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'type'"
+                },
+                "required": false
+            },
+            {
+                "name": "openAll",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 open All 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
                 },
                 "required": false
             },
@@ -36692,6 +37923,28 @@ export const componentApi = {
                 "description": "设置 load Children，供 UTreeview 执行对应行为；公开类型为 (item: unknown) => readonly unknown[] | void | Promise<readonly unknown[] | void>",
                 "declaredDefault": {
                     "kind": "undefined"
+                },
+                "required": false
+            },
+            {
+                "name": "hideNoData",
+                "type": "boolean",
+                "fallback": "false",
+                "description": "控制是否启用 hide No Data 行为",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "false"
+                },
+                "required": false
+            },
+            {
+                "name": "noDataText",
+                "type": "string",
+                "fallback": "'$vuetify.noDataText'",
+                "description": "过滤后没有候选项时呈现的说明文字",
+                "declaredDefault": {
+                    "kind": "explicit",
+                    "source": "'$vuetify.noDataText'"
                 },
                 "required": false
             },
@@ -36753,14 +38006,80 @@ export const componentApi = {
                 "type": "value: unknown[]",
                 "fallback": "—",
                 "description": "双向属性 activated 更新时触发；参数为最新值"
+            },
+            {
+                "name": "click:open",
+                "type": "value: { id: unknown; value: boolean; path: unknown[]; event?: Event }",
+                "fallback": "—",
+                "description": "当 click:open 发生时触发，并携带 value 参数"
+            },
+            {
+                "name": "click:select",
+                "type": "value: { id: unknown; value: boolean; path: unknown[]; event?: Event }",
+                "fallback": "—",
+                "description": "当 click:select 发生时触发，并携带 value 参数"
             }
         ],
         "slots": [
+            {
+                "name": "divider",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "自定义 divider 区域"
+            },
+            {
+                "name": "subheader",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 subheader 区域"
+            },
+            {
+                "name": "item",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义单个候选项或数据项的内容"
+            },
+            {
+                "name": "prepend",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "在主要内容前追加图标或节点"
+            },
+            {
+                "name": "toggle",
+                "type": "{  }",
+                "fallback": "有默认内容",
+                "description": "自定义 toggle 区域"
+            },
             {
                 "name": "title",
                 "type": "{ item, title, internalItem, selectedState, isSelected, isIndeterminate, disabled, hasChildren, loading, error, open, select }",
                 "fallback": "有默认内容",
                 "description": "替换组件默认标题内容。 作用域提供 { item, title }"
+            },
+            {
+                "name": "append",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "在主要内容后追加图标或节点"
+            },
+            {
+                "name": "loader",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "自定义 loader 区域"
+            },
+            {
+                "name": "actions",
+                "type": "{  }",
+                "fallback": "—",
+                "description": "放置与主要内容关联的操作"
+            },
+            {
+                "name": "no-data",
+                "type": "{ search }",
+                "fallback": "有默认内容",
+                "description": "自定义没有匹配或可显示条目时的空状态。 作用域提供 { search }"
             }
         ],
         "methods": [
@@ -36831,7 +38150,7 @@ export const componentApi = {
                 "name": "toggleOpen",
                 "type": "function",
                 "kind": "method",
-                "expression": "(value: unknown) => {\n        const id = resolveNodeId(value);\n        const node = id === undefined ? undefined : nodeById.value.get(id);\n        if (node) toggleOpen(node);\n    }",
+                "expression": "(value: unknown) => {\r\n        const id = resolveNodeId(value);\r\n        const node = id === undefined ? undefined : nodeById.value.get(id);\r\n        if (node) toggleOpen(node);\r\n    }",
                 "description": "调用 toggleOpen，访问 (value: unknown) => { const id = resolveNodeId(value); const node = id === undefined ? undefined : nodeById.value.get(id); if (node) toggleOpen(node); } 对应的 UTreeview 成员"
             }
         ],

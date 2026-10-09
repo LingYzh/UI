@@ -1,6 +1,25 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { UActivity, UButton, UTextField, USelect, USwitch, UFormField, UTabs, UTabPanel, UDialog, UCollapse, UCard, UScrollArea, UCodeBlock, UIcon, UTooltip, snackbar } from '../index';
+import {
+    UActivity,
+    UButton,
+    UTextField,
+    USelect,
+    USwitch,
+    UFormField,
+    UTabs,
+    UTabPanel,
+    UTabsWindow,
+    UTabsWindowItem,
+    UDialog,
+    UCollapse,
+    UCard,
+    UScrollArea,
+    UCodeBlock,
+    UIcon,
+    UTooltip,
+    snackbar,
+} from '../index';
 import Icon from '../../components/Icon.vue';
 import { UTextarea } from '../index';
 import VariantExample from './VariantExample.vue';
@@ -24,6 +43,11 @@ import CodeBlockHeightDemo from './CodeBlockHeightDemo.vue';
 import TypographyDemo from './TypographyDemo.vue';
 import DialogGeometryDemo from './DialogGeometryDemo.vue';
 import LayoutBasicsDemo from './LayoutBasicsDemo.vue';
+import LayoutOrderDemo from './LayoutOrderDemo.vue';
+import OverlayPresentationDemo from './OverlayPresentationDemo.vue';
+import TreeFilterDemo from './TreeFilterDemo.vue';
+import StepperItemsDemo from './StepperItemsDemo.vue';
+import ListNavigationDemo from './ListNavigationDemo.vue';
 import TextareaProtocolDemo from './TextareaProtocolDemo.vue';
 import SwitchProtocolsDemo from './SwitchProtocolsDemo.vue';
 import SelectionMenuDemo from './SelectionMenuDemo.vue';
@@ -117,7 +141,12 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <SelectionMenuDemo v-else-if="example === 'selection-menu-protocols'" />
         <TabsSelectionDemo v-else-if="example === 'tabs-selection-protocols'" />
         <MenuBranchDemo v-else-if="example === 'menu-branch-protocols'" />
+        <OverlayPresentationDemo v-else-if="example === 'overlay-presentation-protocols'" />
+        <TreeFilterDemo v-else-if="example === 'tree-filter-protocols'" />
+        <StepperItemsDemo v-else-if="example === 'stepper-items-protocols'" />
+        <ListNavigationDemo v-else-if="example === 'list-navigation-protocols'" />
         <LayoutBasicsDemo v-else-if="example === 'basic-layout-contracts'" />
+        <LayoutOrderDemo v-else-if="example === 'layout-order-protocols'" />
         <ButtonLoadingDemo v-else-if="example === 'button-loading-size'" />
         <ButtonAppearanceDemo v-else-if="example === 'button-variant-color'" />
         <CascaderDemo v-else-if="example === 'cascader-form'" />
@@ -147,9 +176,21 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
                 <u-text-field label="工作区名称" id="variants-name" v-model="name" :dense="dense" :ghost="ghost" :rounded="!square" placeholder="例如 UAH" />
                 <u-select label="显示密度" id="variants-select" v-model="density" :dense="dense" :ghost="ghost" :rounded="!square"><option value="comfortable">舒适</option><option value="compact">紧凑</option></u-select>
                 <u-tabs v-model="selected" :items="items" id-prefix="variants" :dense="dense" :ghost="ghost" :rounded="!square" aria-label="变体标签页" class="mt-4" />
-                <u-tab-panel :model-value="selected" value="overview" id-prefix="variants"><p class="text-muted my-4">所有变体保留原来的键盘操作、错误态与焦点。</p></u-tab-panel>
-                <u-tab-panel :model-value="selected" value="details" id-prefix="variants"><p class="text-muted my-4">通过相同属性控制密度、表面和圆角。</p></u-tab-panel>
-                <u-tab-panel :model-value="selected" value="unavailable" id-prefix="variants">尚未启用。</u-tab-panel>
+                <u-tabs-window
+                    v-model="selected"
+                    id-prefix="variants"
+                    :keyboard="false"
+                >
+                    <u-tabs-window-item value="overview" eager :transition="false">
+                        <p class="text-muted my-4">所有变体保留原来的键盘操作、错误态与焦点。</p>
+                    </u-tabs-window-item>
+                    <u-tabs-window-item value="details" eager :transition="false">
+                        <p class="text-muted my-4">通过相同属性控制密度、表面和圆角。</p>
+                    </u-tabs-window-item>
+                    <u-tabs-window-item value="unavailable" eager :transition="false" disabled>
+                        尚未启用。
+                    </u-tabs-window-item>
+                </u-tabs-window>
                 <u-code-block :code="codeSample" language="vue" :dense="dense" :ghost="ghost" :rounded="!square" />
                 <template #actions><u-button :dense="dense" :ghost="ghost" :rounded="!square" @click="snackbar.show('样式设置示例。')">查看反馈</u-button></template>
             </u-card>
@@ -283,20 +324,51 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <template v-else-if="example === 'field-heading'">
             <u-form-field label="运行环境" description="UAH 桌面工作台"><span class="demo-value">本地工作区</span></u-form-field>
         </template>
-        <template v-else-if="['tabs-soft', 'tabs-variants', 'panel-persistence'].includes(example)">
+        <template v-else-if="['tabs-soft', 'tabs-variants'].includes(example)">
             <div v-if="example === 'tabs-variants'" class="demo-row"><u-switch v-model="vertical" :id="`${prefix}-vertical`" /><label :for="`${prefix}-vertical`">垂直布局</label></div>
             <div v-if="example === 'tabs-variants' && vertical" class="demo-row"><u-switch v-model="indicatorStart" :id="`${prefix}-indicator`" /><label :for="`${prefix}-indicator`">内容放在左侧</label></div>
             <div :class="{ 'demo-vertical': vertical, 'demo-content-first': vertical && indicatorStart }">
                 <u-tabs v-model="selected" :items="items" :id-prefix="prefix" variant="underline" :orientation="vertical ? 'vertical' : 'horizontal'" :indicator-side="indicatorStart ? 'start' : 'end'" aria-label="示例标签页">
                     <template v-if="example === 'tabs-variants'" #default="{ item }"><Icon :name="item.icon" :size="15" />{{ item.label }}</template>
                 </u-tabs>
+                <u-tabs-window
+                    class="demo-panels"
+                    v-model="selected"
+                    :id-prefix="prefix"
+                    :keyboard="false"
+                >
+                    <u-tabs-window-item value="overview" eager :transition="false">
+                        <p>概览内容 · 切换时保留组件状态。</p>
+                    </u-tabs-window-item>
+                    <u-tabs-window-item value="unavailable" eager :transition="false" disabled>
+                        尚未启用。
+                    </u-tabs-window-item>
+                    <u-tabs-window-item value="details" eager :transition="false">
+                        <p>详情内容 · 标签与面板通过 ARIA 关联。</p>
+                        <span class="demo-value">当前工作区 · UAH</span>
+                    </u-tabs-window-item>
+                </u-tabs-window>
+            </div>
+            <output>选中：{{ selected }}</output>
+        </template>
+        <template v-else-if="example === 'panel-persistence'">
+            <div>
+                <u-tabs v-model="selected" :items="items" :id-prefix="prefix" variant="underline" aria-label="示例标签页">
+                    <template #default="{ item }"><Icon :name="item.icon" :size="15" />{{ item.label }}</template>
+                </u-tabs>
                 <div class="demo-panels">
-                    <u-tab-panel :model-value="selected" value="overview" :id-prefix="prefix"><p>概览内容 · 切换时保留组件状态。</p><u-text-field v-if="example === 'panel-persistence'" v-model="draft" aria-label="面板草稿" placeholder="在这里输入，再切换面板" /></u-tab-panel>
+                    <u-tab-panel :model-value="selected" value="overview" :id-prefix="prefix">
+                        <p>概览内容 · 切换时保留组件状态。</p>
+                        <u-text-field v-model="draft" aria-label="面板草稿" placeholder="在这里输入，再切换面板" />
+                    </u-tab-panel>
                     <u-tab-panel :model-value="selected" value="unavailable" :id-prefix="prefix">尚未启用。</u-tab-panel>
-                    <u-tab-panel :model-value="selected" value="details" :id-prefix="prefix"><p>详情内容 · 标签与面板通过 ARIA 关联。</p><span class="demo-value">当前工作区 · UAH</span></u-tab-panel>
+                    <u-tab-panel :model-value="selected" value="details" :id-prefix="prefix">
+                        <p>详情内容 · 标签与面板通过 ARIA 关联。</p>
+                        <span class="demo-value">当前工作区 · UAH</span>
+                    </u-tab-panel>
                 </div>
             </div>
-            <output>选中：{{ selected }}{{ example === 'panel-persistence' ? ` · 草稿：${draft || '（空）'}` : '' }}</output>
+            <output>选中：{{ selected }} · 草稿：{{ draft || '（空）' }}</output>
         </template>
         <template v-else-if="example === 'dialog-scrollable'">
             <u-button @click="open = true; error = ''">打开长表单弹窗</u-button>

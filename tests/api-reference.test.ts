@@ -14,6 +14,12 @@ const sorted = (names: string[]) => [...names].sort();
 const camel = (name: string) => name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 const slotName = (slot: any) => slot.name === '<dynamic>' ? slot.pattern : slot.name;
 
+test('renamed compatibility slots do not expose the consumed child slot names', () => {
+    assert.deepEqual(sorted(componentApi.UMenuItem.slots.map(slot => slot.name)), ['default', 'icon', 'trailing']);
+    assert.ok(componentApi.UToolbar.slots.some(slot => slot.name === 'title'));
+    assert.ok(!componentApi.UToolbar.slots.some(slot => slot.name === 'text'), 'ToolbarTitle text is consumed by Toolbar title');
+});
+
 test('every API table matches current exported props, defaults, models, events and exposed members', () => {
     assert.ok(contracts.length > 0, 'the public component index should export components');
     assert.ok(contracts.every(component => /^U(?!i[A-Z])/.test(component.name)), 'only canonical U* exports belong in the API table');

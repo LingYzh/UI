@@ -140,6 +140,8 @@ import UStepper from './UStepper.vue';
 import UStepperActions from './UStepperActions.vue';
 import UStepperItem from './UStepperItem.vue';
 import UStepperVertical from './UStepperVertical.vue';
+import UStepperVerticalActions from './UStepperVerticalActions.vue';
+import UStepperVerticalItem from './UStepperVerticalItem.vue';
 import UStepperWindow from './UStepperWindow.vue';
 import UStepperWindowItem from './UStepperWindowItem.vue';
 import USystemBar from './USystemBar.vue';
@@ -346,6 +348,8 @@ export const components = {
     UStepperActions,
     UStepperItem,
     UStepperVertical,
+    UStepperVerticalActions,
+    UStepperVerticalItem,
     UStepperWindow,
     UStepperWindowItem,
     USystemBar,

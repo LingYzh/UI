@@ -978,14 +978,15 @@ export const completionPages = [
             {
                 "id": "component-list",
                 "title": "列表的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "navigationStrategy=\"track\" 时根节点为唯一键盘入口，aria-activedescendant 指向可见可用行；默认 focus 保留逐行焦点。对象值由 valueComparator 比较，activeStrategy 默认 single-independent，multiple 只控制选择。item 插槽直接替换整行，绑定作用域 props；title 插槽只替换标题。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UList, UListItem } from '@lingyzh/ui';\nconst selected = ref(['overview']);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UList\">\n        <u-list v-model=\"selected\" selectable>\n            <u-list-item value=\"overview\" title=\"概览\" subtitle=\"项目运行状况\" />\n            <u-list-item value=\"settings\" title=\"设置\" />\n            <u-list-item value=\"disabled\" title=\"归档\" disabled />\n        </u-list>\n        <output>已选：{{ selected }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "navigationStrategy=\"track\" 时根节点为唯一键盘入口，aria-activedescendant 指向可见可用行；默认 focus 保留逐行焦点。对象值由 valueComparator 比较，activeStrategy 默认 single-independent，multiple 只控制选择。item 插槽直接替换整行，绑定作用域 props；title 插槽只替换标题。"
         ]
     },
     {
@@ -1021,14 +1022,15 @@ export const completionPages = [
             {
                 "id": "component-list-group",
                 "title": "列表分组的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "activator 提供 props 和 isOpen；根 disabled/readonly 影响展开与操作。公开 open/select 可以传明确布尔值与原始事件，路径使用业务值。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UIcon, UList, UListGroup, UListItem, UTextField } from '@lingyzh/ui';\nconst opened = ref([]);\nconst name = ref('工作区');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UListGroup\">\n        <div class=\"demo-row\">\n            <u-button size=\"sm\" @click=\"opened = ['settings', 'advanced']\">展开全部</u-button>\n            <u-button size=\"sm\" @click=\"opened = []\">收起全部</u-button>\n        </div>\n        <u-list v-model:opened=\"opened\">\n            <u-list-group value=\"settings\" title=\"配置\">\n                <u-list-item value=\"models\" title=\"模型配置\" />\n                <u-list-item value=\"permissions\" title=\"权限配置\" />\n                <u-text-field v-model=\"name\" label=\"分组内名称\" hint=\"收起再展开，输入内容保持。\" />\n                <u-list-group value=\"advanced\" title=\"高级配置\">\n                    <u-list-item title=\"日志与诊断\" />\n                </u-list-group>\n            </u-list-group>\n            <u-list-group value=\"custom\">\n                <template #activator=\"{ props }\">\n                    <u-button v-bind=\"props\" variant=\"text\">\n                        自定义分组触发器\n                        <u-icon\n                            name=\"mdi-chevron-down\"\n                            class=\"ui-disclosure-icon is-down\"\n                            :class=\"{ 'is-open': props['aria-expanded'] }\"\n                        />\n                    </u-button>\n                </template>\n                <u-list-item title=\"自定义分组内容\" />\n            </u-list-group>\n            <u-list-group value=\"disabled\" title=\"禁用分组\" disabled>\n                <u-list-item title=\"不可展开\" />\n            </u-list-group>\n        </u-list>\n        <output>展开项：{{ opened.join('、') || '无' }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "activator 提供 props 和 isOpen；根 disabled/readonly 影响展开与操作。公开 open/select 可以传明确布尔值与原始事件，路径使用业务值。"
         ]
     },
     {
@@ -1105,14 +1107,15 @@ export const completionPages = [
             {
                 "id": "component-treeview",
                 "title": "树形视图的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "items 可省略；默认按渲染节点注册（itemsRegistration=\"render\"），\"props\" 使用完整树。activeStrategy 默认 single-independent，重复激活可取消；默认显示最近语言的无数据文案，hideNoData 可关闭。筛选支持模式、按键回调、重音和 noFilter，模型在收起或筛选时保持。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTreeview } from '@lingyzh/ui';\nconst tree = ref([]);\nconst opened = ref(['components']);\nconst nodes = [\n    {\n        title: '组件库',\n        value: 'components',\n        children: [\n            {\n                title: '表单控件',\n                value: 'forms',\n                children: [\n                    { title: '输入与选择', value: 'inputs' },\n                    { title: '验证与提交', value: 'validation' },\n                ],\n            },\n            { title: '布局组件', value: 'layout' },\n            {\n                title: '归档组件',\n                value: 'archive',\n                disabled: true,\n                children: [{ title: '历史组件', value: 'history' }],\n            },\n        ],\n    },\n    { title: '文档与示例', value: 'docs' },\n];\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UTreeview\">\n        <u-treeview v-model=\"tree\" v-model:opened=\"opened\" :items=\"nodes\" selectable />\n        <output>选中的叶节点：{{ tree }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "items 可省略；默认按渲染节点注册（itemsRegistration=\"render\"），\"props\" 使用完整树。activeStrategy 默认 single-independent，重复激活可取消；默认显示最近语言的无数据文案，hideNoData 可关闭。筛选支持模式、按键回调、重音和 noFilter，模型在收起或筛选时保持。"
         ]
     },
     {
@@ -1421,7 +1424,7 @@ export const completionPages = [
             {
                 "id": "component-overlay",
                 "title": "浮层的基本用法",
-                "description": "默认非模态，captureFocus/retainFocus=false，scrollStrategy=none；retainFocus=true 显式限制焦点。内容懒挂载，关闭动画完成后卸载，eager=true 保留；default/activator 的 isActive 为 Ref。",
+                "description": "默认普通DOM浮层，支持attach/contained/absolute及zIndex；默认非模态，captureFocus/retainFocus=false，scrollStrategy=none。retainFocus=true显式限制焦点；scrim支持布尔/颜色，opacity控制遮罩透明度。内容懒挂载，关闭动画完成后卸载，eager=true保留；default/activator的isActive为Ref。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UOverlay } from '@lingyzh/ui';\nconst open = ref(false);\nfunction reopen() {\n    open.value = false;\n    requestAnimationFrame(() => {\n        open.value = true;\n    });\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UOverlay\">\n        <u-button @click=\"open = true\">打开浮层</u-button>\n        <u-overlay v-model=\"open\" :width=\"360\" v-slot=\"{ close }\">\n            <h3>通用浮层</h3>\n            <p>\n                默认允许焦点离开，不锁定页面滚动。Escape 或点击外部关闭；retain-focus\n                可显式限制焦点。\n            </p>\n            <div class=\"demo-row\">\n                <u-button @click=\"close\">关闭</u-button>\n                <u-button variant=\"text\" @click=\"reopen\">快速重开</u-button>\n            </div>\n        </u-overlay>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
@@ -1429,7 +1432,7 @@ export const completionPages = [
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
             "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
-            "默认非模态，captureFocus/retainFocus=false，scrollStrategy=none；retainFocus=true 显式限制焦点。内容懒挂载，关闭动画完成后卸载，eager=true 保留；default/activator 的 isActive 为 Ref。"
+            "默认普通DOM浮层，支持attach/contained/absolute及zIndex；默认非模态，captureFocus/retainFocus=false，scrollStrategy=none。retainFocus=true显式限制焦点；scrim支持布尔/颜色，opacity控制遮罩透明度。内容懒挂载，关闭动画完成后卸载，eager=true保留；default/activator的isActive为Ref。"
         ]
     },
     {
@@ -1783,14 +1786,15 @@ export const completionPages = [
             {
                 "id": "component-stepper",
                 "title": "步骤容器的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "items 自动生成 header/window/actions，手动 default 插槽继续保留。editable 默认严格关闭，显式开启可点击标题；操作文案跟随最近语言。multiple 支持 max，多选窗口按步骤注册顺序显示首项，next/prev 只保留跳转目标。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    UStepper,\n    UStepperActions,\n    UStepperItem,\n    UStepperWindow,\n    UStepperWindowItem,\n} from '@lingyzh/ui';\nconst step = ref(1);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UStepper\">\n        <u-stepper v-model=\"step\">\n            <u-stepper-item :value=\"1\" title=\"填写资料\" :complete=\"step > 1\" editable />\n            <u-stepper-item :value=\"2\" title=\"完成\" editable />\n            <u-stepper-window>\n                <u-stepper-window-item :value=\"1\">填写当前步骤所需的资料。</u-stepper-window-item>\n                <u-stepper-window-item :value=\"2\">资料已准备好。</u-stepper-window-item>\n            </u-stepper-window>\n            <u-stepper-actions />\n        </u-stepper>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "items 自动生成 header/window/actions，手动 default 插槽继续保留。editable 默认严格关闭，显式开启可点击标题；操作文案跟随最近语言。multiple 支持 max，多选窗口按步骤注册顺序显示首项，next/prev 只保留跳转目标。"
         ]
     },
     {
@@ -1804,14 +1808,59 @@ export const completionPages = [
             {
                 "id": "component-stepper-vertical",
                 "title": "垂直步骤的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "items 自动生成垂直 Item/Actions，逐项展开，规则不通过时阻止继续；最后一步继续会实际发出 click:finish。手动步骤组合保留。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport {\n    UStepperActions,\n    UStepperItem,\n    UStepperVertical,\n    UStepperWindow,\n    UStepperWindowItem,\n} from '@lingyzh/ui';\nconst step = ref(1);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UStepperVertical\">\n        <u-stepper-vertical v-model=\"step\">\n            <u-stepper-item :value=\"1\" title=\"填写资料\" :complete=\"step > 1\" editable />\n            <u-stepper-item :value=\"2\" title=\"完成\" editable />\n            <u-stepper-window>\n                <u-stepper-window-item :value=\"1\">填写当前步骤所需的资料。</u-stepper-window-item>\n                <u-stepper-window-item :value=\"2\">资料已准备好。</u-stepper-window-item>\n            </u-stepper-window>\n            <u-stepper-actions />\n        </u-stepper-vertical>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "items 自动生成垂直 Item/Actions，逐项展开，规则不通过时阻止继续；最后一步继续会实际发出 click:finish。手动步骤组合保留。"
+        ]
+    },
+    {
+        "id": "stepper-vertical-item",
+        "title": "垂直步骤项",
+        "name": "UStepperVerticalItem",
+        "kind": "component",
+        "group": "导航组件",
+        "description": "垂直步骤项的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-stepper-vertical-item",
+                "title": "垂直步骤项的基本用法",
+                "description": "标题与正文分别替换；状态作用域包含 canEdit/hasError/hasCompleted/active，规则控制继续操作，group:selected 和操作事件透传。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UStepperVertical, UStepperVerticalItem } from '@lingyzh/ui';\n\nconst step = ref(1);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UStepperVerticalItem\">\n        <UStepperVertical v-model=\"step\">\n            <UStepperVerticalItem :value=\"1\" title=\"准备\" subtitle=\"当前步骤展开正文\" editable>\n                请确认资料后继续。\n            </UStepperVerticalItem>\n            <UStepperVerticalItem :value=\"2\" title=\"完成\" editable>\n                点击下一步会发出完成事件。\n            </UStepperVerticalItem>\n        </UStepperVertical>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "标题与正文分别替换；状态作用域包含 canEdit/hasError/hasCompleted/active，规则控制继续操作，group:selected 和操作事件透传。"
+        ]
+    },
+    {
+        "id": "stepper-vertical-actions",
+        "title": "垂直步骤操作",
+        "name": "UStepperVerticalActions",
+        "kind": "component",
+        "group": "导航组件",
+        "description": "垂直步骤操作的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-stepper-vertical-actions",
+                "title": "垂直步骤操作的基本用法",
+                "description": "prev/next 作用域提供可绑定的 props，文案支持最近语言和显式文字；disabled 可分别控制前后按钮，最后一步由 Item 上下文转成真实完成事件。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UStepperVertical, UStepperVerticalItem, UStepperVerticalActions } from '@lingyzh/ui';\n\nconst step = ref(1);\nconst status = ref('尚未完成');\nfunction finished() {\n    status.value = '已完成';\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UStepperVerticalActions\">\n        <UStepperVertical v-model=\"step\" @click:finish=\"finished\">\n            <UStepperVerticalItem :value=\"1\" title=\"当前步骤\" editable>\n                <template #actions>\n                    <UStepperVerticalActions prev-text=\"返回\" next-text=\"完成\" disabled=\"prev\" />\n                </template>\n            </UStepperVerticalItem>\n        </UStepperVertical>\n        <output aria-live=\"polite\">{{ status }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\noutput {\n    color: var(--muted);\n    font-size: var(--ui-font-body-small);\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "prev/next 作用域提供可绑定的 props，文案支持最近语言和显式文字；disabled 可分别控制前后按钮，最后一步由 Item 上下文转成真实完成事件。"
         ]
     },
     {

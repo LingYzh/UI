@@ -180,7 +180,7 @@ const vite = await createServer({
 let browser;
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     page.on('pageerror', error => report.pageErrors.push(error.message));
     page.on('console', message => {

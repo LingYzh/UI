@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/group-state.ts",
+        "../src/ui/stepper-state.ts",
+        "../src/ui/stepper-selection.ts",
+        "../src/ui/stepper-window-context.ts",
+        "../src/ui/window-state.ts",
+        "../src/ui/UStepper.vue",
+        "../src/ui/UStepperActions.vue",
+        "../src/ui/UStepperItem.vue",
+        "../src/ui/UStepperVertical.vue",
+        "../src/ui/UStepperVerticalActions.vue",
+        "../src/ui/UStepperVerticalItem.vue",
+        "../src/ui/UStepperWindow.vue",
+        "../src/ui/UStepperWindowItem.vue"
+    ]
+}

@@ -1,5 +1,45 @@
 # UI 项目交接
 
+## 2026-10-09：0.4.0 主分支合并与发布准备
+
+用户最新授权先合并 UI 分支并发版，再给 UAH 做适配。package/lock同步为0.4.0，迁移说明见 `docs/RELEASE-0.4.0.md`；此次存在已批准默认行为变化，不作为0.3.2同版本覆盖。官方registry查询时latest仍为0.3.2。
+
+最终源码完整类型检查、307/307单测、docs/lib构建、Electron UI 21组/173旧路由、feedback 7组、controls 6组全部通过；TabsWindow属性专项11组、DOM容器10组通过。首轮测试漂移与两项真实焦点缺陷已修复并保留原始失败，见VALIDATION。pack核查541文件、全部公开export在白名单内。发布证据已保存到checkpoint-evidence/2026-10-09-release-0.4.0.json；本节是合并前记录，发布结果以 `.Codex/memory/publishing.md` 的后续增量为准。UAH仍固定0.3.2，正式发布成功后再升级。
+
+## 2026-10-09：用户批准 Vuetify 合并方案，落地完成
+
+最新用户“就按照这个方案来”已授权执行，取代下方仅评估/等待决定状态。本批完成26个使用家族、16组折叠目录、125个使用页入口、独立158组件API目录与同页API选择器；原173页数据、子页搜索和旧裸/examples/usage/api hash均保留。DataTable三种模式保留折叠子页，水平/垂直Stepper、Chip/ChipGroup、Snackbar/Queue及Button独立主边界保持。
+
+Progress/Spinner/MenuItem/SnackbarHost分别复用标准Linear/Circular/ListItem/Snackbar。Root修正普通Menu与List整行/track键盘所有权及负tabindex项的Tab位置定位；panel保留内容导航。Host只用服务计时，六位置、角色、暂停与卸载保持。UI正常Tabs示例迁至Window/Item；TabPanel继续独立兼容，保留panel-persistence例，不直接alias。API生成消除了消费子槽被误报为公开槽的问题。
+
+专项21单测、57项真实文档Chrome检查、12组组件源码协议和专项类型检查通过；旧子页裸hash已定位API且保留URL，root复核9截图。执行细节/边界见 `docs/component-audit-2026-10-08/CONSOLIDATION-IMPLEMENTATION-2026-10-09.md`，证据见其 checkpoint-evidence/2026-10-09-component-consolidation.json，命令见 VALIDATION 顶部。首批四个执行者半数CCS Luna，夹具重复出错后按规则升级一次。未提交、推送、构建或发布；UI仍基于8873720，UAH86f75d4且干净、npm0.3.2。若用户要求提交，再跑全门禁；全库历史深度审计不能自动视为完成。
+
+## 2026-10-09：合并候选按 Vuetify 复评
+
+用户要求重新按Vuetify标准评估，已核对固定4.2.4官方导航/使用页/API表/导出与本库实现。最新建议为 `docs/component-audit-2026-10-08/VUETIFY-CONSOLIDATION-2026-10-09.md`，第一次候选清单仅作历史。关键修正：配套文档可合，公开子API保留；水平/垂直Stepper、Chip/ChipGroup、Snackbar/Queue、Button/按钮组保留独立主边界。实现候选为Progress/Spinner兼容适配、MenuItem行复用、SnackbarHost表面复用、Tabs旧协议迁移。仅评估，无产品变更/测试/构建/提交/推送；等待用户决定执行批次。已确认的默认策略继续生效。
+
+## 2026-10-09：demo 分组与折叠导航
+
+demo 左侧按 Vuetify 官方导航类别重排为16组，复用 UList/UListGroup/UListItem；默认展开开始使用及当前路由所属组，支持独立折叠、键盘、深链接/返回自动展开、搜索展开及清空恢复、手机关闭。上/下篇同步为导航顺序。173个页面、158个公共组件与所有旧hash保留。
+
+用户明确要求本次只列合并候选，最后由用户决定；没有合并页面、组件或导出。候选依据与兼容差异见 `docs/component-audit-2026-10-08/COMPONENT-CONSOLIDATION-2026-10-09.md`，建议优先核对 Progress、Spinner 和 SnackbarHost 的绘制复用，以及配套子组件的文档入口整合。
+
+导航/既有文档覆盖单测13/13，源码 Vite + Chrome真实页面45项通过；截图覆盖浅深、宽窄、390px及125%浏览器缩放模拟（312CSS px、DPR1.25、390物理px截图，并非原生Ctrl+缩放），无页面错误、Vue警告或控制台错误，源码SHA稳定。专项为 `tests/docs-navigation.test.js`、`tests/desktop/docs-navigation-groups.mjs`；旧Electron导航脚本已适应折叠结构，本次未运行构建后的Electron脚本。详见VALIDATION最新节与版本化证据。不提交/推送/发布。
+
+## 2026-10-09：本会话恢复继续
+
+用户要求继续交接全部残留，采用经济型执行子代理，并成功尝试 ccs-p30db4c/gpt-6-luna/max 只读 Stepper 审计；子代理默认任务完成不复用。入场 UI 8873720、UAH 86f75d4，两仓交接分支均干净。Root负责契约、共享CSS、真实demo与最终验收，专项测试继续代替日常完整构建。
+
+交接表中的应用布局、Stepper/Vertical、List、Treeview、Overlay/Menu/Dialog、Tooltip 六组续作已实现。用户的全部默认及模型裁定已落实，具体专项结果见 VALIDATION 最新节和 `.Codex/memory/` 对应记录。下文“提交后停止”及“待回复”为历史检查点，不是当前状态。
+
+- 布局保留 legacy 默认，显式 `layoutMode="ordered"` 启用 order 四边分配、overlaps 和嵌套 absolute 几何。
+- List/Tree 默认 `single-independent` 单项激活且可取消；List `#item` 直接统一整行，`#title` 替换标题。Tree 默认渲染节点注册和本地化无数据提示，`itemsRegistration="props"` 显式启用完整树注册。
+- Overlay/Menu/Dialog 全部普通 DOM 层，支持 attach/contained/absolute/scrim/opacity/zIndex 和显式过渡；最高层处理 Escape/外部点击/Router 返回，嵌套焦点与 KeepAlive 清理已有专项。Menu 默认 Tab 遍历至边界关闭。Tooltip 保留原生 popover 和原默认，补显式 Router 返回及命名/对象过渡。
+- Stepper 补 items、完整状态/操作槽、多选/max、规则状态及两个公开垂直组件；默认本地化文案和严格 editable。多选 Window 按注册顺序显示首个已选项，next/prev 将数组收敛为目标唯一项，垂直最后一步真实发出 `click:finish`。
+- 新增五组真实文档 demo 及两个垂直组件示例；API 同步到 158 个公开组件。Root 复核浅/深、390px、125% CSS zoom 截图，真实 List/Tree/Stepper demo 19 组交互通过。
+
+本会话未运行完整构建或 Electron 全库回归；提交前仍需完整门禁。本会话没有提交、推送、标签或发布；UAH 工作区仍干净，继续消费正式 npm 0.3.2。六组交接续作完成不等于全库深度兼容完成，历史审计中其他组件的待确认/部分验证状态不能自动清零。
+
 ## 2026-10-09：按用户要求完成当前批次后提交推送并停止
 
 用户最新要求为“手里的这个做完就停下来，更新 handoff 后提交推送”。本次收尾限于已开始的 Tabs 复杂选择与键盘入口、文件插槽/文案、布局公开查询与基础属性，以及嵌套菜单分支/缓存生命周期；不继续启动 Stepper、列表/树或弹层容器新阶段。完整门禁、最终结果和已知限制见 VALIDATION 最新入口，下一会话待办见 [NEXT-SESSION-2026-10-09.md](docs/component-audit-2026-10-08/NEXT-SESSION-2026-10-09.md)。全库深度对齐尚未完成。

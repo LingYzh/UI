@@ -35,9 +35,11 @@
 .docs-search { margin: 0 0 22px; }
 .docs-search .ui-input { min-height: 35px; background: var(--soft); font-size: 14px; }
 .docs-search kbd { font: 11px var(--mono); color: var(--faint); border: 1px solid var(--border); border-radius: 4px; padding: 2px 3px; white-space: nowrap; }
-.docs-nav-group { margin-bottom: 21px; }
-.docs-nav-group h2 { margin: 0 12px 8px; color: var(--faint); font-size: 12px; font-weight: 600; letter-spacing: .08em; display: flex; gap: 8px; align-items: center; }
-.docs-nav-group h2 span { font: 11px var(--mono); border: 1px solid var(--border); padding: 1px 4px; border-radius: 4px; }
+.docs-nav-group { margin-bottom: 5px; }
+.docs-navigation .ui-list-group-header { padding: 10px 12px; color: var(--text); font-size: 13px; font-weight: 600; }
+.docs-navigation .ui-list-group-header[aria-expanded="true"] { background: var(--soft); }
+.docs-navigation .docs-nav-group:has(.ui-list-item.is-active) > .ui-list-group-header { color: var(--accent-text); }
+.docs-navigation .ui-list-group-items { padding: 3px 0 7px 8px; margin-inline-start: 12px; border-inline-start: 1px solid var(--line); }
 .docs-navigation { padding: 0; gap: 0; }
 .docs-navigation .ui-list-item { padding: 7px 12px; margin: 2px 0; font-size: 14px; }
 .docs-navigation .ui-list-item:not(.is-active) { color: var(--muted); }
@@ -227,7 +229,16 @@
 .docs-theme-switch { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); font-size: var(--ui-font-body-small); white-space: nowrap; }
 .docs-example > .ui-card-header { padding: 20px 24px 8px; }
 .docs-example-heading { padding: 0; }
-.docs-example > .ui-card-content > .ui-tab-panel > .ui-code-block { border: 0; border-radius: 0; }
+.docs-example > .ui-card-content .ui-tabs-window .ui-code-block { border: 0; border-radius: 0; }
+.docs-navigation-mode { display: flex; gap: 4px; padding: 0 12px 12px; }
+.docs-navigation-mode .ui-button { flex: 1; min-width: 0; }
+.docs-navigation-mode .ui-button[aria-pressed="true"] { background: var(--selected); color: var(--accent-text); }
+.docs-api-picker { max-width: 420px; margin-block: 16px 24px; }
+.docs-family-member > h3 { margin-block: 28px 12px; font-size: var(--ui-font-body-large); }
+.docs-family-member > h3 code { margin-inline-start: 8px; color: var(--muted); font-size: var(--ui-font-body-small); overflow-wrap: anywhere; }
+.docs-shared-examples { color: var(--muted); font-size: var(--ui-font-body-small); line-height: 1.8; }
+.docs-shared-examples a { display: inline-block; margin-inline-end: 12px; }
+.docs-page-heading .docs-family-guidance { margin-top: 20px; padding: 14px 16px; border-inline-start: 3px solid var(--accent); background: var(--soft); border-radius: 0 8px 8px 0; font-size: var(--ui-font-body-medium); }
 .docs-example-tabs.ui-tabs[data-variant="underline"] > button { border-radius: 6px 6px 0 0; padding-inline: 14px; }
 .demo-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .demo-utility { background: var(--soft); border: 1px dashed var(--border); border-radius: 8px; }

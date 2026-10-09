@@ -1,15 +1,11 @@
 const openOverlays: HTMLElement[] = [];
+const dismissedEvents = new WeakSet<Event>();
 const scrollLocks = new Set<symbol>();
 let previousOverflow = '';
 
-/** Keep the native top layer without making the rest of the document inert. */
-export function presentOverlay(element: HTMLDialogElement, modal: boolean) {
-    if (modal) element.showModal();
-    else {
-        element.setAttribute('popover', 'manual');
-        element.setAttribute('open', '');
-        element.showPopover();
-    }
+/** Non-modal dialog semantics inside a DOM layer; focus retention is managed by the library. */
+export function presentOverlay(element: HTMLDialogElement, _modal: boolean) {
+    element.show();
 }
 
 export function dismissOverlay(element: HTMLDialogElement) {
@@ -20,6 +16,13 @@ export function dismissOverlay(element: HTMLDialogElement) {
 
 export function pushOverlay(element: HTMLElement) {
     if (!openOverlays.includes(element)) openOverlays.push(element);
+    let next = 2000;
+    for (const overlay of openOverlays) {
+        const layer = overlay.closest<HTMLElement>('.ui-overlay-layer');
+        if (!layer) continue;
+        layer.style.setProperty('--ui-overlay-stack-z', String(next));
+        next = Math.max(next, Number(getComputedStyle(layer).zIndex) || next) + 10;
+    }
 }
 
 export function popOverlay(element: HTMLElement) {
@@ -28,7 +31,35 @@ export function popOverlay(element: HTMLElement) {
 }
 
 export function isTopOverlay(element: HTMLElement) {
-    return openOverlays.at(-1) === element;
+    const sorted = openOverlays.map((overlay, index) => ({ overlay, index, zIndex: overlay.matches(':popover-open') ? Infinity : Number(getComputedStyle(overlay.closest('.ui-overlay-layer') ?? overlay).zIndex) || 0 }));
+    sorted.sort((a, b) => a.zIndex - b.zIndex || a.index - b.index);
+    return sorted.at(-1)?.overlay === element;
+}
+
+/** Native capture listeners can flush Vue updates between callbacks; claim a
+ * dismissal once so the newly exposed layer cannot consume the same click. */
+export function claimOverlayDismiss(event: Event): boolean {
+    if (dismissedEvents.has(event)) return false;
+    dismissedEvents.add(event);
+    return true;
+}
+
+const focusableSelector = 'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
+export function overlayFocusable(element: HTMLElement, includeNegative = false): HTMLElement[] {
+    const selector = includeNegative ? focusableSelector.replace('[tabindex]:not([tabindex="-1"])', '[tabindex]') : focusableSelector;
+    return [...element.querySelectorAll<HTMLElement>(selector)].filter(node => !node.matches(':disabled, [aria-disabled="true"]') && node.getClientRects().length > 0 && !node.closest('[inert], [hidden], [aria-hidden="true"]'));
+}
+
+/** Tab remains inside the top retained layer, including its empty-content fallback. */
+export function retainOverlayFocus(element: HTMLElement, event: KeyboardEvent): void {
+    if (event.key !== 'Tab' || !isTopOverlay(element)) return;
+    const nodes = overlayFocusable(element);
+    const index = nodes.indexOf(document.activeElement as HTMLElement);
+    if (!nodes.length || index < 0 || event.shiftKey && index === 0 || !event.shiftKey && index === nodes.length - 1) {
+        event.preventDefault();
+        (event.shiftKey ? nodes.at(-1) : nodes[0] ?? element)?.focus({ preventScroll: true });
+        if (!nodes.length) element.focus({ preventScroll: true });
+    }
 }
 
 export function acquireScrollLock(token: symbol) {

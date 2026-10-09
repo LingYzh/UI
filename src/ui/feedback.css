@@ -107,8 +107,16 @@
 @keyframes ui-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .ui-spinner > svg { animation-duration: 1.6s; } }
 :root[data-reduced-motion="true"] .ui-spinner > svg { animation-duration: 1.6s; }
+/* Circular renders the shared SVG; these compatibility rules keep the 24px quarter arc. */
+.ui-spinner .ui-spinner-circular.u-progress-circular { color: inherit; }
+.ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { transform: none; animation: ui-spin 800ms linear infinite; }
+.ui-spinner .ui-spinner-circular.u-progress-circular circle { cx: 12px; cy: 12px; r: 9px; }
+.ui-spinner .ui-spinner-circular.u-progress-circular .u-progress-track { stroke: currentColor; opacity: .2; }
+.ui-spinner .ui-spinner-circular.u-progress-circular .u-progress-value { stroke-dasharray: 14.137167 42.411501; stroke-dashoffset: 0; transform: rotate(-90deg); transform-origin: 12px 12px; transition: none; }
+@media (prefers-reduced-motion: reduce) { .ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { animation-duration: 1.6s; } }
+:root[data-reduced-motion="true"] .ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { animation-duration: 1.6s; }
 
-/* Menu: native auto popover in the top layer, anchored to its activator and flipped at viewport edges. */
+/* Menu uses a DOM layer with connected placement and library dismissal. */
 .ui-menu { display: contents; }
 .ui-menu-surface {
     position: fixed;
@@ -127,20 +135,24 @@
     color: var(--text);
     box-shadow: var(--shadow);
     font: var(--ui-font-body-large)/1.5 var(--font);
+}
+.ui-menu-surface:not([data-ui-transition="true"]) {
     opacity: 0;
     transform: translateY(-3px);
     transition: opacity var(--motion-fast), transform var(--motion-fast), overlay var(--motion-fast) allow-discrete, display var(--motion-fast) allow-discrete;
 }
-.ui-menu-surface:popover-open { opacity: 1; transform: none; }
-@starting-style { .ui-menu-surface:popover-open { opacity: 0; transform: translateY(-3px); } }
+.ui-menu-surface:not([data-ui-transition="true"]):popover-open { opacity: 1; transform: none; }
+.ui-menu-surface:not([data-ui-transition="true"]):is([data-state="opening"], [data-state="open"]) { opacity: 1; transform: none; }
+@starting-style { .ui-menu-surface:not([data-ui-transition="true"]):popover-open { opacity: 0; transform: translateY(-3px); } }
 .ui-menu-surface[data-placement="bottom-start"] { position-area: bottom span-right; margin-top: 5px; }
 .ui-menu-surface[data-placement="bottom-end"] { position-area: bottom span-left; margin-top: 5px; }
 .ui-menu-surface[data-placement="top-start"] { position-area: top span-right; margin-bottom: 5px; }
 .ui-menu-surface[data-placement="top-end"] { position-area: top span-left; margin-bottom: 5px; }
 .ui-menu-surface { position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
-.ui-menu-surface[data-placement^="top"] { transform: translateY(3px); }
-.ui-menu-surface[data-placement^="top"]:popover-open { transform: none; }
-@starting-style { .ui-menu-surface[data-placement^="top"]:popover-open { transform: translateY(3px); } }
+.ui-menu-surface:not([data-ui-transition="true"])[data-placement^="top"] { transform: translateY(3px); }
+.ui-menu-surface:not([data-ui-transition="true"])[data-placement^="top"]:popover-open { transform: none; }
+.ui-menu-surface:not([data-ui-transition="true"])[data-placement^="top"]:is([data-state="opening"], [data-state="open"]) { transform: none; }
+@starting-style { .ui-menu-surface:not([data-ui-transition="true"])[data-placement^="top"]:popover-open { transform: translateY(3px); } }
 .ui-menu-surface:focus-visible:not([data-ui-pointer-focus]) { outline: none; }
 .ui-menu-surface.is-panel { max-width: min(calc(100vw - 16px), calc(100% - 16px)); max-height: min(640px, 80dvh, calc(100% - 16px)); padding: 14px; }
 /* Fields stack inside panels, matching UiCard content: label above a full-width control. */
@@ -177,6 +189,12 @@
 .ui-menu-item-trailing { flex: 0 0 auto; color: var(--faint); font-size: var(--ui-font-body-small); }
 .ui-menu-item-check { flex: 0 0 auto; color: var(--accent-text); opacity: 0; }
 .ui-menu-item-check.is-visible { opacity: 1; }
+/* The ListItem adapter keeps legacy menu density while sharing row structure. */
+.ui-menu-item.ui-list-item { gap: 9px; min-height: 32px; padding: 6px 10px; border-radius: 6px; color: var(--text); font: 14px/1.4 var(--font); }
+.ui-menu-item.ui-list-item.is-danger { color: var(--red); }
+.ui-menu-item.ui-list-item[aria-disabled="true"] { opacity: .45; cursor: not-allowed; background: transparent; }
+.ui-menu-item.ui-list-item:focus-visible:not([data-ui-pointer-focus]) { outline: none; background: var(--selected); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-text) 55%, transparent); }
+.ui-menu-item.ui-list-item.is-danger:focus-visible:not([data-ui-pointer-focus]) { background: color-mix(in srgb, var(--red) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--red) 55%, transparent); }
 .ui-menu-label { padding: 8px 10px 4px; color: var(--muted); font-size: var(--ui-font-body-small); font-weight: 500; }
 .ui-menu-divider { height: 1px; margin: 5px 6px; border: 0; background: var(--line); }
 @media (prefers-reduced-motion: reduce) { .ui-menu-surface, .ui-menu-item, .ui-badge-close { transition: none !important; } }

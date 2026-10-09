@@ -425,6 +425,16 @@
         "file": "stepper-vertical.vue"
     },
     {
+        "name": "UStepperVerticalItem",
+        "example": "component-stepper-vertical-item",
+        "file": "stepper-vertical-item.vue"
+    },
+    {
+        "name": "UStepperVerticalActions",
+        "example": "component-stepper-vertical-actions",
+        "file": "stepper-vertical-actions.vue"
+    },
+    {
         "name": "UStepperItem",
         "example": "component-stepper-item",
         "file": "stepper-item.vue"

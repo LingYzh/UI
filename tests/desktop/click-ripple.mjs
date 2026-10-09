@@ -322,12 +322,12 @@ try {
     const keepOpenMenu = menus.nth(1);
     const tagTrigger = keepOpenMenu.getByRole('button');
     await tagTrigger.click();
-    const trialTag = keepOpenMenu.getByRole('menuitemcheckbox', { name: '试用', exact: true });
+    const trialTag = page.getByRole('menuitemcheckbox', { name: '试用', exact: true });
     await trialTag.waitFor({ state: 'visible' });
     const trialPress = await pointerPress(trialTag);
     await pointerRelease(trialPress);
     check('keep-open MenuItem toggles its checked value', await trialTag.getAttribute('aria-checked'), 'true');
-    check('keep-open MenuItem keeps the native popover open', await keepOpenMenu.locator('.ui-menu-surface').evaluate((element) => element.matches(':popover-open')), true);
+    check('keep-open MenuItem keeps the DOM menu open', await page.locator('.ui-menu-surface').filter({ has: trialTag }).evaluate((element) => element.matches('[data-state="open"]')), true);
     check('keep-open MenuItem has its own ripple', await ownWaveCount(trialTag), 1);
     await waitOwnLayerClear(trialTag, 'keep-open MenuItem wave');
 

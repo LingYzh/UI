@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { computed, mergeProps, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs, watch, type CSSProperties } from 'vue';
+import { computed, mergeProps, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, provide, ref, useAttrs, watch, type CSSProperties } from 'vue';
 import { acquireScrollLock, bindElementProps, dismissOverlay, isTopOverlay, popOverlay, presentOverlay, pushOverlay, releaseScrollLock } from './overlay-lifecycle';
 import { useDefaults } from './defaults';
 import { useReducedMotion } from './motion';
 import type { OverlayProps as Props } from './overlay-props';
 import { dimensionStyles } from './dimensions';
 import { useOverlayBack } from './overlay-back';
-import { overlayPositionStyles, resolveOverlayTarget } from './overlay-position';
+import { claimOverlayDismiss } from './overlay-lifecycle';
+import { overlayActivatorElement, overlayPositionStyles, resolveOverlayTarget } from './overlay-position';
 import { menuContextKey } from './menu';
+import { overlayAppearanceStyles } from './overlay-appearance';
+import UiMaybeTransition from './UiMaybeTransition.vue';
+import { useOverlayTransition } from './overlay-transition';
+import UiOverlayHost from './UiOverlayHost.vue';
+import { retainOverlayFocus } from './overlay-lifecycle';
+import { useOverlayFocus } from './overlay-focus';
 
 type ScrollStrategy = 'none' | 'locked' | 'block' | 'close' | 'reposition';
 type Activator = string | HTMLElement | null;
@@ -44,12 +51,15 @@ const emit = defineEmits<{
 }>();
 
 const internal = ref(false);
+const deactivated = ref(false);
 const disabledCloseLatch = ref(false);
-const open = computed(() => !props.disabled && !disabledCloseLatch.value && (props.modelValue ?? internal.value));
+const open = computed(() => !deactivated.value && !props.disabled && !disabledCloseLatch.value && (props.modelValue ?? internal.value));
 const dialog = ref<HTMLDialogElement>();
+useOverlayFocus(dialog, () => open.value, () => props.retainFocus);
 const state = ref<'opening' | 'open' | 'closing' | 'closed'>('closed');
 const contentMounted = ref(false);
 const reduced = useReducedMotion();
+const transition = useOverlayTransition(() => props.transition);
 const activator = ref<HTMLElement>();
 const anchorStyle = ref<CSSProperties>({});
 let cursor: [number, number] | undefined;
@@ -94,7 +104,7 @@ function scheduleClose() {
     }, Math.max(0, Number(props.closeDelay) || 0));
 }
 function setActivatorElement(value: unknown) {
-    activator.value = value instanceof HTMLElement ? value : undefined;
+    activator.value = overlayActivatorElement(value);
     if (open.value) position();
 }
 function resolveActivator(value: Activator | undefined): HTMLElement | undefined {
@@ -174,11 +184,13 @@ function onScroll(event: Event) {
     else if (props.scrollStrategy === 'reposition') position();
 }
 function onDocumentKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && event.defaultPrevented) return;
     keyboard = true;
     suppressFocusOpen = false;
     const element = dialog.value;
     if (!open.value || !element || !isTopOverlay(element)) return;
     emit('keydown', event);
+    if (props.retainFocus) retainOverlayFocus(element, event);
     if (event.key === 'Escape') {
         event.preventDefault();
         close();
@@ -186,7 +198,8 @@ function onDocumentKeydown(event: KeyboardEvent) {
 }
 function onDocumentClick(event: MouseEvent) {
     const element = dialog.value;
-    if (!open.value || !element || !isTopOverlay(element) || element.contains(event.target as Node) || activator.value?.contains(event.target as Node)) return;
+    if (!open.value || !element || !isTopOverlay(element) || element.closest('.ui-overlay-layer')?.contains(event.target as Node) || activator.value?.contains(event.target as Node)) return;
+    if (!claimOverlayDismiss(event)) return;
     emit('click:outside', event);
     keyboard = false;
     close();
@@ -196,9 +209,11 @@ const contentAttrs = computed(() => mergeProps({
     class: ['ui-overlay', `is-${props.location ?? 'center'}`, props.contentClass, { 'has-scrim': props.scrim, 'is-fullscreen': props.fullscreen }],
     style: {
         ...anchorStyle.value,
+        ...overlayAppearanceStyles(props),
         ...dimensionStyles(props)
     },
     'data-state': state.value,
+    'data-ui-transition': props.transition !== undefined || undefined,
     inert: state.value === 'closing' || undefined,
     'aria-hidden': state.value === 'closing' || undefined,
     'data-scroll-strategy': props.scrollStrategy,
@@ -220,11 +235,10 @@ async function sync() {
     const element = dialog.value;
     if (!element) return;
     if (open.value) {
-        if (element.open && element.matches(':modal') !== props.retainFocus) dismissOverlay(element);
         if (!element.open) {
             returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : activator.value ?? null;
-            presentOverlay(element, props.retainFocus);
             pushOverlay(element);
+            presentOverlay(element, props.retainFocus);
             lock();
             position();
             const initial = element.querySelector<HTMLElement>('[autofocus], button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])') ?? element;
@@ -241,7 +255,19 @@ async function sync() {
     }
     await nextTick();
     getComputedStyle(element).opacity;
-    await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    if (props.transition !== undefined) {
+        const completing = transition.run(open.value);
+        await nextTick();
+        if (open.value) {
+            position();
+            if ((props.captureFocus || props.retainFocus) && !element.contains(document.activeElement)) {
+                const initial = element.querySelector<HTMLElement>('[autofocus], button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])') ?? element;
+                initial.focus({ preventScroll: true });
+            }
+        }
+        await completing;
+    }
+    else await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
     if (current !== generation) return;
     if (open.value) {
         state.value = 'open';
@@ -265,6 +291,7 @@ async function sync() {
 }
 
 watch(open, (value) => {
+    if (deactivated.value) return;
     clearTimers();
     if (value) contentMounted.value = true;
     void sync();
@@ -314,9 +341,21 @@ onMounted(() => {
     document.addEventListener('keydown', onDocumentKeydown, true);
     document.addEventListener('click', onDocumentClick, true);
 });
+onDeactivated(() => {
+    deactivated.value = true;
+    generation++;
+    transition.finish();
+    clearTimers();
+    if (dialog.value?.open) dismissOverlay(dialog.value);
+    if (dialog.value) popOverlay(dialog.value);
+    state.value = 'closed';
+    unlock();
+});
+onActivated(() => { deactivated.value = false; if (open.value) void sync(); });
 onBeforeUnmount(() => {
     positionObserver?.disconnect();
     generation++;
+    transition.finish();
     clearTimers();
     externalActivatorCleanup?.();
     window.removeEventListener('scroll', onScroll, true);
@@ -344,5 +383,15 @@ defineExpose({
 
 <template>
     <slot v-if="!props.activator" name="activator" v-bind="activatorSlot" />
-    <dialog ref="dialog" v-bind="contentAttrs"><slot v-if="contentMounted || props.eager" v-bind="contentSlot" /></dialog>
+    <UiOverlayHost :active="open || state !== 'closed'" :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :scrim="props.scrim" :opacity="props.opacity" :z-index="props.zIndex"
+        @click:outside="event => { if (dialog && isTopOverlay(dialog)) { emit('click:outside', event); close(); } }"
+    >
+    <UiMaybeTransition :transition="props.transition ?? false"
+        @after-enter="transition.finish" @after-leave="transition.finish" @enter-cancelled="transition.finish" @leave-cancelled="transition.finish">
+        <dialog ref="dialog" v-bind="contentAttrs"
+            v-show="props.transition === undefined || transition.visible.value">
+            <slot v-if="contentMounted || props.eager" v-bind="contentSlot" />
+        </dialog>
+    </UiMaybeTransition>
+    </UiOverlayHost>
 </template>

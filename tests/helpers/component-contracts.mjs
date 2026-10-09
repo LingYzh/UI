@@ -429,6 +429,9 @@ function resolveForwardedSlots(contracts, root) {
                 if (edge.dynamic && edge.exclusions.includes(childSlot.name)) continue;
                 const key = identity(childSlot);
                 const existing = slots.get(key);
+                // A wrapper may map #prepend to its public #icon. Consuming a
+                // child slot does not expose that child's name as a new API.
+                if (!edge.dynamic && !existing) continue;
                 if (!existing) {
                     slots.set(key, structuredClone(childSlot));
                     continue;

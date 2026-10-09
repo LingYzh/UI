@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UTreeview.vue",
+        "../src/ui/nested-strategies.ts",
+        "../src/ui/treeview-state.ts",
+        "treeview-state.test.ts"
+    ],
+    "exclude": []
+}

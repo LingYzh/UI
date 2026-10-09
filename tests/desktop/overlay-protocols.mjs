@@ -224,7 +224,7 @@ const warnings = [];
 const errors = [];
 try {
     await server.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => {
@@ -312,7 +312,7 @@ try {
     await page.locator('#external-menu-content').waitFor();
     assert.equal(await page.evaluate(() => window.overlayProtocol.state.externalMenuClicks), 1);
     await page.locator('#dismiss').click();
-    await page.waitForFunction(() => !document.querySelector('#external-menu-content')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#external-menu-content')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.evaluate(() => { window.overlayProtocol.state.externalMenuSelector = '#external-menu-two'; });
     await page.waitForFunction(() => document.querySelector('#external-menu')?.getAttribute('aria-haspopup') === 'menu-baseline' && document.querySelector('#external-menu-two')?.getAttribute('aria-haspopup') === 'menu');
     assert.match(await externalMenu.getAttribute('class'), /external-menu-original/);
@@ -323,7 +323,7 @@ try {
     await page.locator('#external-menu-two').click();
     await page.locator('#external-menu-content').waitFor();
     await page.locator('#dismiss').click();
-    await page.waitForFunction(() => !document.querySelector('#external-menu-content')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#external-menu-content')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.evaluate(() => { window.overlayProtocol.state.externalMenuMounted = false; });
     await page.waitForFunction(() => document.querySelector('#external-menu-two').getAttribute('aria-haspopup') === 'menu-two-baseline');
     assert.match(await page.locator('#external-menu-two').getAttribute('class'), /external-menu-two-original/);
@@ -409,20 +409,20 @@ try {
     await page.waitForFunction(() => document.activeElement?.id === 'enabled-menu-item');
     assert.equal(await page.locator('#disabled-menu-item').isDisabled(), true, 'openOnArrow skips disabled items');
     await page.keyboard.press('Tab');
-    await page.waitForFunction(() => !document.querySelector('#enabled-menu-item')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#enabled-menu-item')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.locator('#arrow-trigger').click();
     await page.locator('#enabled-menu-item').click();
-    await page.waitForFunction(() => !document.querySelector('#enabled-menu-item')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#enabled-menu-item')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     checks.push('openOnArrow and keyboard navigation skip disabled menu items');
 
     await page.locator('#outer-menu-trigger').click();
     await page.locator('#first-child-trigger').click();
-    await page.waitForFunction(() => document.querySelector('#first-child-item')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => document.querySelector('#first-child-item')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.locator('#second-child-trigger').click();
-    await page.waitForFunction(() => document.querySelector('#second-child-item')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => document.querySelector('#second-child-item')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     assert.equal(await page.locator('#first-child-item').count(), 0, 'opening a sibling closes and lazily unmounts the first nested menu');
     await page.locator('#outer-menu-trigger').click();
-    await page.waitForFunction(() => document.querySelectorAll('.ui-menu-surface:popover-open').length === 0, null, { timeout: 3000 });
+    await page.waitForFunction(() => document.querySelectorAll('.ui-menu-surface[data-state="open"]').length === 0, null, { timeout: 3000 });
     checks.push('nested Menu siblings are mutually exclusive and parent close tears down open descendants');
 
     await page.locator('#hover-menu-trigger').hover();
@@ -434,7 +434,7 @@ try {
     await page.mouse.move(0, 0);
     await page.waitForTimeout(100);
     assert.equal(await page.locator('#hover-menu-content').count(), 1, 'default Menu closeDelay is 250ms');
-    await page.waitForFunction(() => !document.querySelector('#hover-menu-content')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#hover-menu-content')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.waitForFunction(() => !document.querySelector('#hover-menu-content'));
     checks.push('Menu default 300/250ms hover delays and content hover transfer');
 
@@ -446,7 +446,7 @@ try {
     await page.locator('#eager-menu-trigger').click();
     await page.locator('#eager-menu-content').waitFor();
     await page.locator('#dismiss').click();
-    await page.waitForFunction(() => !document.querySelector('#eager-menu-content')?.closest('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#eager-menu-content')?.closest('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     assert.equal(await page.locator('#eager-menu-content').count(), 1);
     await page.locator('#eager-dialog-trigger').click();
     await page.locator('dialog.ui-dialog[open]').waitFor();
@@ -489,7 +489,7 @@ try {
         await page.locator('#first-child-trigger').click();
         await page.screenshot({ path: path.join(evidence, `${name}-125.png`), fullPage: true });
         await page.locator('#outer-menu-trigger').click();
-        await page.waitForFunction(() => document.querySelectorAll('.ui-menu-surface:popover-open').length === 0);
+        await page.waitForFunction(() => document.querySelectorAll('.ui-menu-surface[data-state="open"]').length === 0);
         await page.evaluate(() => { document.body.style.zoom = ''; });
     }
     assert.deepEqual(errors, [], `browser errors: ${errors.join('\n')}`);

@@ -1,5 +1,11 @@
 # 全库对齐修复（进行中）
 
+## 2026-10-09 六组交接续作完成
+
+NEXT-SESSION 中应用布局、Stepper/Vertical、List、Treeview、Overlay/Menu/Dialog、Tooltip 续作已按用户全部裁定实现，Root 完成实际 diff、专项和真实 demo 验收。具体见本目录 layout-order/list-completion/stepper-completion/treeview-completion/tree-registration/overlay-presentation/overlay-container/tooltip-back；HANDOFF、VALIDATION 顶部和版本化 checkpoint-evidence 索引为当前入口。历史“待回复/停止/旧组件计数”仅为当时检查点，不是当前结论。
+
+日常专项组合40/40、真实demo19组和DOM容器10组通过；API已158个公开组件。没有完整构建或Electron全库回归、提交/推送/发布；UAH干净且继续正式npm0.3.2。本批完成不改写全库历史部分验证台账。
+
 本会话2026-10-08已在D:/UI与D:/UAH交接分支恢复继续，经济型GPT-6 Luna/max执行非视觉子任务，root负责契约/示例/验收。用户已回答三项冲突：ConfirmEdit、Hover、DefaultsProvider均直接统一标准行为。下文旧“待确认/停止”是历史记录，由HANDOFF当前入口与RESUME-2026-10-08.md替代。三项实现、语言作用域、分组wrapper转发本批补齐，部分验证台账继续保留所有原始缺口。UAH仍消费正式UI0.3.2，不自动接入未发布源码。
 
 2026-10-08 用户授权根据完整审计报告逐项修复和补充。保留本库新增特性与默认值，冲突先询问；经济配置的 gpt-6-luna/max 仅执行 Root 已明确的非视觉任务。Root 亲自处理契约、样式、真实示例和最终验收。日常仅专项检查，完整构建/测试留到提交推送前。

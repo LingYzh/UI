@@ -92,6 +92,14 @@
     transition: transform var(--motion-layout) var(--ease), background-color var(--motion-fast);
 }
 .ui-progress:dir(rtl) .ui-progress-fill { transform-origin: right center; }
+/* Legacy Progress shares Linear's clamping and painting, keeping its scaled fill. */
+.ui-progress.u-progress-linear { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--text) 9%, transparent); color: var(--progress-fill); }
+.ui-progress.u-progress-linear.is-dense { height: 4px; }
+.ui-progress.u-progress-linear .u-progress-buffer { display: none; }
+.ui-progress.u-progress-linear .u-progress-value { inset: 0; width: 100% !important; border-radius: inherit; transform: scaleX(var(--u-progress-ratio)); transform-origin: left center; transition: transform var(--motion-layout) var(--ease), background-color var(--motion-fast); }
+.ui-progress.u-progress-linear:dir(rtl) .u-progress-value { transform-origin: right center; }
+@media (prefers-reduced-motion: reduce) { .ui-progress.u-progress-linear .u-progress-value { transition: none; } }
+:root[data-reduced-motion="true"] .ui-progress.u-progress-linear .u-progress-value { transition: none; }
 
 /* Copy button: a quiet ghost icon that confirms with a green check for a moment.
    Selectors repeat .ui-button because this file is imported before the button rules in styles.css. */

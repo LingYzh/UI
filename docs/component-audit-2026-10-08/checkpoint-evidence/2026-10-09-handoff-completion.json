@@ -1,0 +1,1708 @@
+{
+    "generatedAt": "2026-10-09T02:50:29.330Z",
+    "scope": "Six handed-off families; focused Chrome source fixtures, not full-library acceptance",
+    "uiBase": "8873720",
+    "uahBase": "86f75d4",
+    "focusedUnitTests": {
+        "passed": 40,
+        "failed": 0
+    },
+    "api": {
+        "components": 158,
+        "propsModels": 2704,
+        "events": 324,
+        "slots": 613,
+        "exposedMembers": 541
+    },
+    "rootVisualReview": "Real demos, light/dark, 390px, 125% zoom; 11 refreshed handoff demo screenshots plus layout and overlay captures",
+    "fullBuildOrElectronGateRun": false,
+    "committedOrPublished": false,
+    "sourceSha256": {
+        "src/ui/UApp.vue": "186b7076b87a0bc098b71055fb30a312ee3e96a34e9d84b46986d9ef730254e3",
+        "src/ui/UAppBar.vue": "63555370b458f86d1a6d4d11bee1076d1bbfc79e4ff4078acdac9a5709aba315",
+        "src/ui/UAutocomplete.vue": "3cfcb3c4f1c5004534b99ce0ef55b6587d05eee63f89d8e7cd089284b4ffe10b",
+        "src/ui/UBottomNavigation.vue": "47a24728261443f5e14056d80f843fca5ca4998742abb856d810250f0062a883",
+        "src/ui/UFooter.vue": "8009784e64af31ff2322f1f59d275d958743d63a4ae057d9b0b71c8ff4f6a20c",
+        "src/ui/ULayout.vue": "63a5adcffeee1018af2af9aed49abf575cf8a4c966da169aa25e3e9f06c952a6",
+        "src/ui/UList.vue": "826c7b9ac103f1f8933996ed2490322185c03f4481c631cbab7e7aa61abbf469",
+        "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+        "src/ui/UListItem.vue": "457642fd4c9c4c0cf6129afa47c57c7831356c3131da2e9bbdeaed894c5b6503",
+        "src/ui/UNavigationDrawer.vue": "e5858bf55bacd969aeac30877546c0bcf1ddf495f68f5af07ca36bfc710d241d",
+        "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+        "src/ui/UStepper.vue": "e72e1a05f983b619464e79cc2fc76eda0a2ad2d60b0646eb98cff2f1d7501342",
+        "src/ui/UStepperActions.vue": "c2360b01c40f6fc55efc4ea4108b3ee063e0c815dec9ace8ea05db34642c0652",
+        "src/ui/UStepperItem.vue": "163ab5aa0bec9da313697e3767fcd01fb036dd64dc67b5b89fb150838f0a09c7",
+        "src/ui/UStepperVertical.vue": "13d3aa30acc4601bcf94da650bbffa9071bde62a8f1422fdee700d79649cdd89",
+        "src/ui/UStepperVerticalActions.vue": "5714a8a7b757ed92470334952a147e5d1d4f36ec37075eb5e7a599b8c2906cc1",
+        "src/ui/UStepperVerticalItem.vue": "1e0e0d19bdad121d71ccb2520349a5e212d7fe909247072f3dd8276157825e6c",
+        "src/ui/UStepperWindow.vue": "1c38850a89775ddaeb7b3fa6cd178308d3a37c996ba094e0571e30a80ed53335",
+        "src/ui/UStepperWindowItem.vue": "7a58b95a5ae2e5dd1b05f1737c8e45348231114e9b2e35ccac64cdd865c3ed31",
+        "src/ui/USystemBar.vue": "e1c85f392e3b0d17a075628585132a2ca0482aae72bf4983a732907bd57c0d0e",
+        "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+        "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+        "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+        "src/ui/UiOverlayHost.vue": "9f815bfeb4ba8f3ddd4f36613fd40f47a6029f6b8a86602eadf872f43a5356e4",
+        "src/ui/UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+        "src/ui/component-registry.ts": "68b73b5967174463a8cd44e17853c908df023c1f250993409ab00d7e97945f7c",
+        "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+        "src/ui/docs/LayoutOrderDemo.vue": "e685fd2793a36088a728b2c8094e16f48e002d2bfc0d4389c346e205e84acd29",
+        "src/ui/docs/ListNavigationDemo.vue": "69a74578acc3b6fa1c651c87244cd32474ba45aace3e13c53c45e92b2c81135c",
+        "src/ui/docs/LiveExample.vue": "8987fb6a6f7ca238db30c14d7eff7b2d53b17be2752f2b1e068a057636a16f05",
+        "src/ui/docs/OverlayPresentationDemo.vue": "58e144b4d52063475eed2c7fecaf6eb1ff53069ea69905a6ab1c071b7e39cff3",
+        "src/ui/docs/StepperItemsDemo.vue": "f80bd3d111429a4b5c3340ccd06a99255fe47fa89e79a669579c9e0e4482e8c5",
+        "src/ui/docs/TreeFilterDemo.vue": "33ff279d342ddbb83d4eaba5ad0528c0b15c3078431c36d73a5265e33a6c79b2",
+        "src/ui/docs/apiReference.js": "f7b1c58aad6451e97029622c41536afc533e559fafaf14f6b6ccb43b0359176d",
+        "src/ui/docs/completionContent.js": "e32392193fb6d941379c19f937e3b14ced0004c5c166b6edbc6f03091cef2061",
+        "src/ui/docs/component-examples/stepper-vertical-actions.vue": "9a3c96a9dab4d7f2371c1828ee491f3c679052a094e6f4e23d2983473b87330d",
+        "src/ui/docs/component-examples/stepper-vertical-item.vue": "551fb80bba9ea93c1a122ed250c99059921cb9d4ca1bf4fee73e575c16ebfec4",
+        "src/ui/docs/componentExampleManifest.json": "fbe8d10a17b6c8c853324d7111e774bf0d516134c0e20ec3c7e8d959d528d09a",
+        "src/ui/docs/content.js": "b0e62c05e7d7e748d068b71fc9bb38c817a22fdbaca1951863d1609d1dcacff3",
+        "src/ui/docs/feedbackContent.js": "0dce69a2c621f5acae908f2c9f2616395c6d3ba5d778df08be8955c936c50e43",
+        "src/ui/docs/geometryContent.js": "1aef03f89aea1de9affdc345a5ded7f0ed8db121e3b11425f2935158c433b7a5",
+        "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f",
+        "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84",
+        "src/ui/layout-completion.ts": "348d11c1a7fa6280c210903b486161226fcf9f94019dd5c22615675c4efb4121",
+        "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+        "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c",
+        "src/ui/menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+        "src/ui/overlay-appearance.ts": "585ef94ec45b5aa4527d24b51daa5b887a94b725d512e7dc00ce39ea234693cd",
+        "src/ui/overlay-container.ts": "83e259737a7d4bb6270a066bc1e2188c8c4ae90ace35f6dc22a53ebc4fe95c11",
+        "src/ui/overlay-focus.ts": "2a59a46fd09605c7306d5b14d4a84ff5c99b3de29e8763dc67256687a5de07c1",
+        "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+        "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+        "src/ui/overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930",
+        "src/ui/overlay-transition.ts": "a6d2421171df089a03c90e898e84a8c86495839f73b99d47d8daf6292c478547",
+        "src/ui/stepper-selection.ts": "807fbd0b36cd27bf412d2d3bbff6f158f80ada0f0eaba8c7b5f87fb80c93a57d",
+        "src/ui/stepper-state.ts": "65745e6e6a8a2c55656a18a7c53d5b59fdec4dd1af5ffb95b77b8a05e78aef17",
+        "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+        "src/ui/treeview-state.ts": "dd6113684faef64884a93818a52cb25a1663e47d009f430d2a9f49df4c8ed74e"
+    },
+    "reports": [
+        {
+            "file": "artifacts/full-alignment/layout-order-protocols/report.json",
+            "sha256": "1136ea763149ab1737e6d2072133b53e64305a5968194d4c9695e5afdd48780f",
+            "report": {
+                "checks": [
+                    "legacy default geometry stays intact",
+                    "ordered mode allocates side before top and bottom",
+                    "changing order recomputes cross-edge geometry",
+                    "named overlaps affect actual DOM and preserve mainRect",
+                    "open state and dynamic width update main reservation",
+                    "nested absolute chrome reserves space and stays in container",
+                    "KeepAlive deactivation removes reservation and reactivation restores it",
+                    "real public demo at wide, 390px dark and CSS zoom 125%"
+                ],
+                "pageErrors": [],
+                "warnings": [],
+                "screenshots": [
+                    "wide.png",
+                    "narrow-dark.png",
+                    "zoom.png"
+                ]
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/stepper-completion/report.json",
+            "sha256": "eb8c6269a93647f7e3f2201c59d76b211c777b7f8b30bf44c98b30c319e14fe9",
+            "report": {
+                "method": "Vite source fixture in Chrome; no build",
+                "legacy": {
+                    "initialValue": "first",
+                    "defaultScope": [
+                        "go",
+                        "modelValue",
+                        "next",
+                        "prev"
+                    ],
+                    "modelText": "first",
+                    "valueAfterHeaderClick": "second",
+                    "valueAfterPrev": "first",
+                    "actionEvents": [
+                        "prev"
+                    ]
+                },
+                "generated": {
+                    "initialValue": "alpha",
+                    "slotModel": "alpha",
+                    "headerCount": 4,
+                    "thirdHeaderDisabled": true,
+                    "initialActions": [
+                        "上一步",
+                        "下一步"
+                    ],
+                    "initialActionDisabled": {
+                        "prev": true,
+                        "next": false
+                    },
+                    "initialActionColor": "--ui-button-color: var(--ui-theme-success, var(--green)); --ui-button-on-color: var(--ui-theme-on-success, var(--on-success, #ffffff)); --ui-button-font-size: .875rem;",
+                    "headerDisabled": [
+                        false,
+                        true
+                    ],
+                    "title": "Custom:Title slot step",
+                    "subtitle": "Title slot details",
+                    "icon": "Z",
+                    "headerScopes": [
+                        {
+                            "title": "Third generated",
+                            "value": 3,
+                            "rawBody": "Third body",
+                            "propSubtitle": "Third intro"
+                        },
+                        {
+                            "title": "Alpha generated",
+                            "value": "alpha",
+                            "rawBody": "Alpha body",
+                            "propSubtitle": "Alpha intro"
+                        }
+                    ],
+                    "titleSlotActions": 0,
+                    "titleCustomActions": 0,
+                    "strictDefaultEditable": true,
+                    "valueAfterAction": "beta",
+                    "actionEvents": [
+                        {
+                            "name": "next",
+                            "mouseEvent": true
+                        }
+                    ],
+                    "dynamicHeader": "Beta generated:beta:Beta body",
+                    "dynamicBody": "Beta body"
+                },
+                "boundary": {
+                    "firstDisabled": {
+                        "prev": true,
+                        "next": false
+                    },
+                    "actionLabels": [
+                        "Go back",
+                        "Continue"
+                    ],
+                    "lastDisabled": {
+                        "prev": false,
+                        "next": true
+                    },
+                    "singleDisabled": [
+                        true,
+                        true
+                    ],
+                    "rootDisabled": [
+                        true,
+                        true
+                    ]
+                },
+                "multiple": {
+                    "initialValue": [
+                        "two",
+                        "one"
+                    ],
+                    "initialVisibleWindow": "one",
+                    "afterMaxClick": [
+                        "two",
+                        "one"
+                    ],
+                    "afterNext": [
+                        "two"
+                    ],
+                    "afterPrev": [
+                        "one"
+                    ],
+                    "afterManualAdd": [
+                        "one",
+                        "two"
+                    ],
+                    "afterManualRemove": [
+                        "two"
+                    ],
+                    "mandatoryLastSelection": [
+                        "two"
+                    ]
+                },
+                "linear": {
+                    "initialValue": "linear-one",
+                    "afterDistantClick": "linear-one",
+                    "afterNextClick": "linear-two",
+                    "afterAdjacentClick": "linear-three"
+                },
+                "verticalMultiple": {
+                    "initialValue": [
+                        "v2",
+                        "v1"
+                    ],
+                    "afterMaxClick": [
+                        "v2",
+                        "v1"
+                    ],
+                    "afterNext": [
+                        "v2"
+                    ],
+                    "afterLastStepNext": [
+                        "v3"
+                    ],
+                    "finishEvents": [
+                        "finish"
+                    ],
+                    "afterFinish": [
+                        "v3"
+                    ]
+                },
+                "actions": {
+                    "defaultButtons": [
+                        "Back",
+                        "向后滚动标签页"
+                    ],
+                    "defaultDisabled": {
+                        "prev": true,
+                        "next": false
+                    },
+                    "localizedToken": "Scroll tabs forward",
+                    "localizedDefaults": [
+                        "Previous",
+                        "Next"
+                    ],
+                    "slotDisabled": {
+                        "prev": false,
+                        "next": true
+                    },
+                    "verticalDisabled": {
+                        "prev": true,
+                        "next": false
+                    },
+                    "verticalEvents": [
+                        {
+                            "name": "vertical-next",
+                            "mouseEvent": true
+                        }
+                    ]
+                },
+                "item": {
+                    "firstState": {
+                        "active": true,
+                        "canEdit": true,
+                        "hasError": true,
+                        "hasCompleted": false,
+                        "title": "First step",
+                        "subtitle": "Details",
+                        "step": 1,
+                        "value": "first"
+                    },
+                    "explicitState": {
+                        "hasError": false,
+                        "hasCompleted": true,
+                        "complete": true,
+                        "step": 2,
+                        "value": "second"
+                    },
+                    "strictEditable": {
+                        "canEdit": false,
+                        "disabled": true
+                    },
+                    "validRules": "u-stepper-item is-active is-complete ui-ripple-target",
+                    "groupSelectedEvents": [
+                        {
+                            "step": "first",
+                            "value": true
+                        },
+                        {
+                            "window": "first",
+                            "value": true
+                        },
+                        {
+                            "step": "first",
+                            "value": false
+                        },
+                        {
+                            "step": "second",
+                            "value": true
+                        },
+                        {
+                            "window": "first",
+                            "value": false
+                        },
+                        {
+                            "window": "second",
+                            "value": true
+                        }
+                    ]
+                },
+                "windowItem": {
+                    "customTransitionClass": "u-window-item stepper-transition-enter-active stepper-transition-enter-to",
+                    "reverseTransitionClass": "u-window-item u-fade-enter-active u-fade-enter-to",
+                    "attrsLocation": true,
+                    "transitionBehavior": "transition/reverseTransition supplied to the wrapped UWindowItem; group:selected bubbled through the wrapper"
+                },
+                "vertical": {
+                    "initialValue": "one",
+                    "header": "Vertical one:one",
+                    "genericBody": "one body",
+                    "itemActionLabels": [
+                        "Item back",
+                        "Item continue"
+                    ],
+                    "itemActionColor": "--ui-button-color: var(--ui-theme-success, var(--green)); --ui-button-on-color: var(--ui-theme-on-success, var(--on-success, #ffffff)); --ui-button-font-size: .875rem;",
+                    "rootActionLabels": [
+                        "Root back",
+                        "Root continue"
+                    ],
+                    "rootActionColor": "--ui-button-color: var(--ui-theme-warning, var(--amber)); --ui-button-on-color: var(--ui-theme-on-warning, var(--on-warning, #ffffff)); --ui-button-font-size: .875rem;",
+                    "editableHeaders": [
+                        false,
+                        false
+                    ],
+                    "closedCollapse": "true",
+                    "nextDisabledBeforeRule": true,
+                    "nextDisabledAfterRule": false,
+                    "valueAfterNext": "three",
+                    "skippedDisabled": true,
+                    "collapseOpen": "false"
+                },
+                "verticalItem": {
+                    "initialCanEdit": false,
+                    "initialDisabled": true,
+                    "valueAfterModelUpdate": "manual-vertical",
+                    "selectedEvents": [
+                        {
+                            "value": true
+                        },
+                        {
+                            "value": false
+                        }
+                    ],
+                    "actionEvents": [
+                        {
+                            "name": "prev",
+                            "mouseEvent": true
+                        }
+                    ],
+                    "valueAfterPrev": "three"
+                },
+                "errors": [],
+                "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\stepper-completion"
+            }
+        },
+        {
+            "file": "artifacts/full-alignment/list-completion-protocols/report.json",
+            "sha256": "4fa1cc1bb2b127725cee85a5fe80191fd57798e3c73fd9a40c911c685ac7bcdf",
+            "report": {
+                "checks": [
+                    "object values use default and custom comparators while preserving primitive types",
+                    "track Arrow/Home/End and Enter/Space update navigationIndex and activate real rows without moving focus",
+                    "exposed open/select preserve toggle defaults and emit id/value/path/event with registered raw values",
+                    "public registration snapshots expose item/group DOM refs and canonical raw values",
+                    "exposed focusAt/focus preserve root DOM focus and update the tracked row marker",
+                    "hand-written items and Group activators navigate correctly and emit nested registration paths",
+                    "nested interactive controls retain their keyboard and click behavior",
+                    "aria-activedescendant follows visible rows when filtering changes the rendered set",
+                    "default focus strategy keeps DOM focus navigation and navigationIndex synchronization",
+                    "#item is a full row slot by default, #title replaces title content, and row props carry keyboard/selection/aria behavior",
+                    "single-independent is the default active strategy; explicit independent allows multiple active rows",
+                    "root readonly blocks selection/open and root disabled propagates to row and group activation"
+                ],
+                "pageErrors": [],
+                "windowErrors": [],
+                "unhandledRejections": [],
+                "warnings": [],
+                "screenshots": []
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/treeview-protocols/report.json",
+            "sha256": "5d6e18d8e907a8e8ebd819df84d9bc2ac057bcd2078f975a6dbf49a83ac0b0ef",
+            "report": {
+                "generatedAt": "2026-10-09T02:39:58.897Z",
+                "fixture": "treeview-protocols",
+                "method": "Vite fixture imports the real public UTreeview and ULocaleProvider through src/ui/index.ts and exercises the source in Chromium.",
+                "sourceSha256": {
+                    "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+                    "src/ui/nested-strategies.ts": "90518dfbc154c0d27b3398d8efec70f966124eb2ff697b148bbf9318dd339f2e",
+                    "src/ui/treeview-state.ts": "dd6113684faef64884a93818a52cb25a1663e47d009f430d2a9f49df4c8ed74e",
+                    "tests/nested-strategies.test.ts": "44a492016902f8dc7f5aba00283e6bf30e8389e0092132b690ce46fb0b341e48",
+                    "tests/treeview-state.test.ts": "9e2afe874b8eac5704d5c4716d3df5155376daf08d18cca250082ceb4b48b308",
+                    "tests/desktop/treeview-protocols.mjs": "1843f123346aa0bd8f97d7bc752d9fc52a96202e3da04ae2de9153160de69213",
+                    "tests/tsconfig.treeview.json": "0ad7b4353725bb6ca359b340c7d96b37a840dcc51180cc2b73ea7b6ca52e442f"
+                },
+                "checks": [
+                    {
+                        "name": "single-leaf defaults, openOnClick inference, and selected alias priority",
+                        "details": "The tree defaults to a single-leaf strategy, selectable branches open on click, selected wins over modelValue, and selection emits both array aliases."
+                    },
+                    {
+                        "name": "multiple open strategy adds ancestors",
+                        "details": "The public ref open method emits the opened item and its ancestor path through update:opened."
+                    },
+                    {
+                        "name": "complete-tree multiple cascade compatibility",
+                        "details": "itemsRegistration=props keeps complete-tree cascade output; default render registration is covered by tree-registration-protocols."
+                    },
+                    {
+                        "name": "branch strategy and mixed state",
+                        "details": "Explicit branch strategy returns its selected leaf plus its indeterminate branch ancestor."
+                    },
+                    {
+                        "name": "custom item selectors and itemProps disabled",
+                        "details": "Function itemProps, dotted itemTitle, itemValue and itemChildren selectors are consumed; disabled items keep DOM/ARIA state and cannot be focused or selected."
+                    },
+                    {
+                        "name": "returnObject and custom valueComparator",
+                        "details": "A comparator matches cloned model objects by key, and emitted selected arrays contain the original item objects."
+                    },
+                    {
+                        "name": "activated is opt-in and emits arrays",
+                        "details": "activatable defaults false; single-independent emits an empty array to cancel an already active controlled scalar value."
+                    },
+                    {
+                        "name": "disabled and readonly guards",
+                        "details": "Top-level disabled removes row interaction; readonly keeps the row but blocks selection."
+                    },
+                    {
+                        "name": "search filterKeys and customFilter",
+                        "details": "Custom filtering uses the selected nested key and reveals matching descendants with their ancestor path."
+                    },
+                    {
+                        "name": "keyboard sibling expansion and disabled navigation",
+                        "details": "* expands every enabled sibling branch and End focuses the last enabled rendered treeitem."
+                    },
+                    {
+                        "name": "locale-aware RTL keyboard model",
+                        "details": "Arabic locale reverses horizontal expand/focus and collapse behavior."
+                    },
+                    {
+                        "name": "lazy loader return and mutation protocols",
+                        "details": "Returned child arrays and in-place item.children mutation both rebuild the public tree."
+                    },
+                    {
+                        "name": "lazy errors reach the title slot",
+                        "details": "Rejected loadChildren calls clear pending state and expose the error to the existing title slot scope."
+                    },
+                    {
+                        "name": "stale lazy response invalidation",
+                        "details": "Replacing an item with the same key invalidates the in-flight result and clears the pending marker."
+                    },
+                    {
+                        "name": "unmount lazy cleanup",
+                        "details": "Unmounting with a pending lazy request does not apply its result or produce a browser error."
+                    }
+                ],
+                "pageErrors": [],
+                "consoleErrors": [],
+                "consoleWarnings": [],
+                "limits": [
+                    "Chromium browser renderer only; no Electron renderer acceptance is claimed.",
+                    "No full project build, full test suite, or visual design acceptance was run.",
+                    "The fixture validates local source through the public entry; it does not validate the compiled package bundle."
+                ]
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/treeview-completion-protocols/report.json",
+            "sha256": "183eb58bb1fc606842a4e2bc517a7b389ff846c4fa09501df6de73d35c5e8d09",
+            "report": {
+                "fixture": "treeview-completion-protocols",
+                "method": "Vite dev server imports the real public UTreeview from src/ui/index.ts and drives it in installed Chrome.",
+                "sourceSha256": {
+                    "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+                    "src/ui/treeview-state.ts": "dd6113684faef64884a93818a52cb25a1663e47d009f430d2a9f49df4c8ed74e",
+                    "tests/treeview-state.test.ts": "9e2afe874b8eac5704d5c4716d3df5155376daf08d18cca250082ceb4b48b308",
+                    "tests/desktop/treeview-completion-protocols.mjs": "d4868ba28dc3171ff38cbb18079fbd77bf8a77ff3804c49e1882954133c854a2",
+                    "tests/tsconfig.treeview-completion.json": "627c90f95b68456d893f08734bf26aeb9ed76e7d16881dbb0eb43256dd24963e"
+                },
+                "checks": [
+                    {
+                        "name": "optional items default to an empty tree",
+                        "details": "The public component mounts without an items prop and renders no rows."
+                    },
+                    {
+                        "name": "filter modes invoke raw item callbacks",
+                        "details": "Union keeps default or custom-key matches; intersection requires the custom-key match and a default match, and both callbacks receive original item objects."
+                    },
+                    {
+                        "name": "ignoreAccents honors query and target sides in the public component",
+                        "details": "Target folding matches both spellings for an unaccented query; query-only mode leaves the accented target unmatched."
+                    },
+                    {
+                        "name": "noFilter ignores search without expanding branches",
+                        "details": "All root rows remain available while descendants stay collapsed."
+                    },
+                    {
+                        "name": "openAll expands initial and newly added branches only when opened is uncontrolled",
+                        "details": "An explicit empty opened model remains closed, returnObject values stay compatible, and uncontrolled openAll follows later data additions."
+                    },
+                    {
+                        "name": "initial openAll can start loadChildren during setup",
+                        "details": "The immediate openAll watcher loads the initial empty branch and renders its resolved child without a setup-time initialization error."
+                    },
+                    {
+                        "name": "item and detail slots retain title scope and emit ID paths",
+                        "details": "Prepend, append, toggle, title, item, and actions slots render; open events carry click events and selection events carry the original root-to-item ID path."
+                    },
+                    {
+                        "name": "itemType renders divider and subheader rows as presentation content",
+                        "details": "Only item entries participate in treeitem focus and selection semantics."
+                    },
+                    {
+                        "name": "readonly and disabled guards suppress selection and opening callbacks",
+                        "details": "Readonly blocks selection; disabled blocks branch interaction and its click event."
+                    },
+                    {
+                        "name": "loader slot tracks the existing lazy-load lifecycle",
+                        "details": "Opening an empty branch invokes loadChildren, reports loading through the loader slot, then renders loaded children."
+                    }
+                ],
+                "pageErrors": [],
+                "consoleErrors": [],
+                "consoleWarnings": [],
+                "limits": [
+                    "Chrome browser renderer only; no Electron renderer acceptance is claimed.",
+                    "No full project build or full test suite was run.",
+                    "The fixture validates source through the public entry and does not validate the compiled package bundle."
+                ],
+                "status": "passed"
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/tree-registration-protocols/report.json",
+            "sha256": "ec9c39ac60a4f5a42d5a0f1034a7e587f889fc4ee7a09d6b290f15b73400e673",
+            "report": {
+                "generatedAt": "2026-10-09T02:49:09.144Z",
+                "sourceSha256": {
+                    "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+                    "src/ui/nested-strategies.ts": "90518dfbc154c0d27b3398d8efec70f966124eb2ff697b148bbf9318dd339f2e",
+                    "src/ui/treeview-state.ts": "dd6113684faef64884a93818a52cb25a1663e47d009f430d2a9f49df4c8ed74e",
+                    "tests/desktop/tree-registration-protocols.mjs": "7592731e30f8b2b8d6f75eea2697cfa627eb112c9d1bc7912170ac9f8bb19321",
+                    "tests/tsconfig.tree-registration.json": "9f2aff5e38ec642ea56db0388d685353d02436fdb1109d06a1d2c9a66866a1b3",
+                    ".Codex/memory/tree-registration.md": "377b3132f1752663165dbfea315fc63b9ae0e869da5fdfad65132a1eeabba9d6"
+                },
+                "checks": [
+                    "openAll discovers the initially empty branch and runs its loader once",
+                    "collapsed branch selection uses visible registration by default and the full items tree in props mode",
+                    "explicit selection of a hidden item waits for render registration",
+                    "props registration allows explicit selection in the complete tree",
+                    "expand and collapse update registration without clearing selected model values",
+                    "search registers only the logical visible path and preserves other filtered model IDs on selection",
+                    "default single-independent activation toggles one item; explicit independent activation toggles multiple items",
+                    "item slot activate toggles activation state without the enclosing tree row toggling twice",
+                    "leaf and single-leaf activation strategies reject branches and apply their single/multiple rules",
+                    "mandatory activation cannot clear its last value and readonly/disabled rows cannot activate",
+                    "activate expose toggles a hidden item only under props registration",
+                    "classic selection aggregates parents, emits leaf values, skips disabled descendants, and mandatory protects the last leaf",
+                    "leaf selection rejects branches while leaf/single-leaf enforce their respective value counts",
+                    "returnObject and valueComparator map selected/activated inputs to canonical raw item objects independently",
+                    "empty/search no-data text uses the nearest locale, missing tokens fall back to common.empty, hideNoData and slot scope work",
+                    "window errors, unhandled rejections, page errors, console errors, and Vue warnings are empty"
+                ],
+                "windowErrors": [],
+                "unhandledRejections": [],
+                "pageErrors": [],
+                "console": [
+                    {
+                        "type": "debug",
+                        "text": "[vite] connecting..."
+                    },
+                    {
+                        "type": "debug",
+                        "text": "[vite] connected."
+                    }
+                ],
+                "vueWarnings": []
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/overlay-container-protocols/report.json",
+            "sha256": "aa0df61717edeb110ebb6a1c065b271101958101a49edeefc164eb98b02b72e3",
+            "report": {
+                "generatedAt": "2026-10-09T02:44:20.039Z",
+                "browserChannel": "chrome",
+                "routerVersion": "4.6.3",
+                "checks": [
+                    "Overlay, Dialog and Menu share default, selector, HTMLElement and inline attach behavior with stable instances and explicit zIndex",
+                    "contained and absolute keep all three public surfaces in an absolute parent layer, with Overlay/Dialog scrims matching the container",
+                    "Overlay and Dialog preserve default scrims and consume false, custom color and opacity values",
+                    "Dialog focus retention wraps and redirects; nested Menu receives focus, stacks above its parent and restores focus",
+                    "empty Dialog fallback focus works; retainFocus=false and default Overlay do not trap focus",
+                    "Menu moves focus through items and closes at either Tab boundary; panel Menu uses natural Tab navigation",
+                    "Escape, outside click and Vue Router back close only the highest zIndex surface across reversed opening orders",
+                    "connected target positioning follows real scroll geometry and 125% CSS zoom for Overlay, Dialog and Menu",
+                    "KeepAlive deactivation removes retained stack entries and releases both scroll locks",
+                    "Menu transition reversal, unmount and same-tick open/close finish without a stale presentation, stack entry, callback or scroll lock"
+                ],
+                "pageErrors": [],
+                "windowErrors": [],
+                "unhandledRejections": [],
+                "consoleErrors": [],
+                "consoleWarnings": [],
+                "vueWarnings": [],
+                "sourceFiles": [
+                    "src/ui/UOverlay.vue",
+                    "src/ui/UiDialog.vue",
+                    "src/ui/UiMenu.vue",
+                    "src/ui/UiOverlayHost.vue",
+                    "src/ui/overlay-container.ts",
+                    "src/ui/overlay-focus.ts",
+                    "src/ui/overlay-lifecycle.ts",
+                    "src/ui/overlay-position.ts",
+                    "src/ui/overlay-back.ts",
+                    "src/ui/overlay-props.ts",
+                    "src/ui/overlay-appearance.ts",
+                    "src/ui/overlay-transition.ts",
+                    "src/ui/styles.css",
+                    "src/ui/layout-components.css",
+                    "src/ui/feedback.css"
+                ],
+                "sourceSha256Before": {
+                    "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiOverlayHost.vue": "9f815bfeb4ba8f3ddd4f36613fd40f47a6029f6b8a86602eadf872f43a5356e4",
+                    "src/ui/overlay-container.ts": "83e259737a7d4bb6270a066bc1e2188c8c4ae90ace35f6dc22a53ebc4fe95c11",
+                    "src/ui/overlay-focus.ts": "2a59a46fd09605c7306d5b14d4a84ff5c99b3de29e8763dc67256687a5de07c1",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+                    "src/ui/overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "src/ui/overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930",
+                    "src/ui/overlay-appearance.ts": "585ef94ec45b5aa4527d24b51daa5b887a94b725d512e7dc00ce39ea234693cd",
+                    "src/ui/overlay-transition.ts": "a6d2421171df089a03c90e898e84a8c86495839f73b99d47d8daf6292c478547",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f"
+                },
+                "sourceSha256After": {
+                    "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiOverlayHost.vue": "9f815bfeb4ba8f3ddd4f36613fd40f47a6029f6b8a86602eadf872f43a5356e4",
+                    "src/ui/overlay-container.ts": "83e259737a7d4bb6270a066bc1e2188c8c4ae90ace35f6dc22a53ebc4fe95c11",
+                    "src/ui/overlay-focus.ts": "2a59a46fd09605c7306d5b14d4a84ff5c99b3de29e8763dc67256687a5de07c1",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+                    "src/ui/overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "src/ui/overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930",
+                    "src/ui/overlay-appearance.ts": "585ef94ec45b5aa4527d24b51daa5b887a94b725d512e7dc00ce39ea234693cd",
+                    "src/ui/overlay-transition.ts": "a6d2421171df089a03c90e898e84a8c86495839f73b99d47d8daf6292c478547",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f"
+                },
+                "sourceStable": true
+            }
+        },
+        {
+            "file": "artifacts/full-alignment/overlay-presentation-protocols/report.json",
+            "sha256": "9de76297aa01d7f0c7fc3ad63d38ae61f3b0382fcba20b9380d982f2c4b88fb4",
+            "report": {
+                "checks": [
+                    "overlay: default backdrop preserved; explicit string, opacity and false consumed",
+                    "dialog: default backdrop preserved; explicit string, opacity and false consumed",
+                    "overlay: false, named and JS object transitions complete before lifecycle events",
+                    "dialog: false, named and JS object transitions complete before lifecycle events",
+                    "menu: false, named and JS object transitions complete before lifecycle events",
+                    "tooltip: false, named and JS object transitions complete before lifecycle events"
+                ],
+                "errors": [],
+                "warnings": [],
+                "sourceSha256": {
+                    "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+                    "src/ui/overlay-transition.ts": "a6d2421171df089a03c90e898e84a8c86495839f73b99d47d8daf6292c478547",
+                    "src/ui/overlay-appearance.ts": "585ef94ec45b5aa4527d24b51daa5b887a94b725d512e7dc00ce39ea234693cd",
+                    "src/ui/UiMaybeTransition.vue": "25fce87ab7e333bea92a78f87d1ce6a71291d079b2ebbeea3c9929e725e60ea3",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d"
+                }
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/overlay-protocols/report.json",
+            "sha256": "deb43002ce7124ae80e1b5f3a04c70866233340cf817ba82d5bdd617f244105e",
+            "report": {
+                "checks": [
+                    "public UOverlay/UMenu/UDialog activator slots expose refs and lazy content",
+                    "Overlay v-model, lazy leave cleanup, outside payload, Escape persistence, disabled transition and none scroll lock",
+                    "external selector replacement, merged listeners/attrs and unmount restoration",
+                    "external Menu selector binding, merged activator props and unmount restoration",
+                    "Overlay keyboard focus open/close delay and focus transition cleanup",
+                    "Dialog local locale, standard lifecycle/model events, native Escape, lazy leave and block lock cleanup",
+                    "Menu disabled trigger, closeOnContentClick=false, external dismissal and lazy cleanup",
+                    "openOnArrow and keyboard navigation skip disabled menu items",
+                    "nested Menu siblings are mutually exclusive and parent close tears down open descendants",
+                    "Menu default 300/250ms hover delays and content hover transfer",
+                    "eager=true keeps Overlay/Menu/Dialog slot content mounted after close",
+                    "standard nonmodal Overlay, explicit focus capture, Dialog dimensions/fullscreen and content Ref slots"
+                ],
+                "warnings": [],
+                "errors": [],
+                "sourceHashes": {
+                    "UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+                    "overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73"
+                },
+                "screenshots": [
+                    "light-390-125.png",
+                    "dark-390-125.png"
+                ],
+                "visualAcceptance": false
+            }
+        },
+        {
+            "file": "artifacts/full-alignment/overlay-geometry-protocols/report.json",
+            "sha256": "7b9006f4a22d4daa58f15d45755c1f9e1b30f0f5177703830894298e02046dd8",
+            "report": {
+                "fixture": "overlay-geometry-protocols",
+                "method": "A Chromium fixture imports UOverlay, UMenu and UiDialog from the public index and checks computed browser geometry and native positioning behavior.",
+                "sourceSha256": {
+                    "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+                    "src/ui/overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930",
+                    "src/ui/dimensions.ts": "58b49ed7c31204bcc479d1aed9314ab56dcc0583aa480daf44090959135678a6",
+                    "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "src/ui/menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+                    "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1"
+                },
+                "checks": [
+                    {
+                        "name": "public Overlay and Menu consume dimensions, contentClass and connected target geometry",
+                        "details": "Selector and HTMLElement targets place the open content at target bounds plus configured offsets; all six dimension props reach live content styles."
+                    },
+                    {
+                        "name": "public Dialog consumes point target, dimensions and block scroll strategy",
+                        "details": "A [x,y] target and explicit connected position compute the expected fixed geometry; body lock is visible while open."
+                    },
+                    {
+                        "name": "target replacement and public updateLocation refresh all three components",
+                        "details": "Overlay selector, Menu HTMLElement and Dialog point targets can be replaced while open, and Dialog ref updateLocation remeasures the new point."
+                    },
+                    {
+                        "name": "target ResizeObserver and viewport resize recompute connected placement",
+                        "details": "Target dimension changes update Menu alignment; window resize keeps all open connected surfaces inside the configured viewport margin."
+                    },
+                    {
+                        "name": "scroll strategies preserve none versus reposition behavior",
+                        "details": "Menu follows a scrolled target under reposition; standalone Overlay stays put under none until its public updateLocation is called."
+                    },
+                    {
+                        "name": "legacy location=anchor keeps the four-pixel offset and anchor class",
+                        "details": "Without locationStrategy, the historical anchor alias remains connected to its activator with a 4px main-axis offset."
+                    },
+                    {
+                        "name": "public target aliases parent and cursor resolve live browser anchors",
+                        "details": "External activator selector resolves its parent HTMLElement; slot activator click coordinates resolve the cursor point."
+                    },
+                    {
+                        "name": "default DOM Menu keeps bottom-start placement and five-pixel gap",
+                        "details": "Connected placement preserves the established 5px gap without native popover anchoring."
+                    },
+                    {
+                        "name": "explicit static positioning handles Overlay/Menu/Dialog locations",
+                        "details": "Static mode keeps known Menu placement native when defaulted and applies viewport edge positioning when explicitly requested."
+                    },
+                    {
+                        "name": "default Overlay remains centered when no location is supplied",
+                        "details": "The default class and native dialog bounds center in the viewport."
+                    },
+                    {
+                        "name": "Dialog center and end placements remain available",
+                        "details": "The default center dialog remains viewport centered; placement=end remains a full-height end-aligned drawer."
+                    },
+                    {
+                        "name": "connected placement respects CSS zoom",
+                        "details": "Target client geometry is converted into the content coordinate space at 125% zoom."
+                    },
+                    {
+                        "name": "end Dialog stays inside a narrow zoomed viewport",
+                        "details": "Default drawer width and full height remain bounded at 390px/125%."
+                    },
+                    {
+                        "name": "fullscreen overrides explicit dimensions at CSS zoom",
+                        "details": "Fullscreen Overlay and Dialog fill the visual viewport at 390px/125%."
+                    }
+                ],
+                "protocolFailures": [],
+                "pageErrors": [],
+                "consoleErrors": [],
+                "consoleWarnings": [],
+                "limits": [
+                    "Chromium public-source fixture only; no Electron or packaged-library acceptance is claimed.",
+                    "No full build/test run or visual design acceptance is claimed."
+                ],
+                "sourceSha256After": {
+                    "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+                    "src/ui/overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930",
+                    "src/ui/dimensions.ts": "58b49ed7c31204bcc479d1aed9314ab56dcc0583aa480daf44090959135678a6",
+                    "src/ui/UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "src/ui/menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+                    "src/ui/feedback.css": "0c1301262e1d918d21cfe982ffcf34233242bf3f3f8876c2fb3b1afbb2c7ac8f",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1"
+                },
+                "sourceChangedDuringRun": false
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/menu-branch-protocols/report.json",
+            "sha256": "e10f21b1842ee48b11cf35b417f330dc9090b6b4f138075ad0556db984cbe066",
+            "report": {
+                "checks": [
+                    "external outside click closes the nested branch once",
+                    "three-level external click cascade survives lazy descendant unmount",
+                    "click inside a parent stops ancestor closure",
+                    "persistent ancestor blocks outside cascade",
+                    "Dialog null boundary isolates nested menu item closure",
+                    "keyboard close restores focus to the outermost trigger",
+                    "KeepAlive deactivation releases popovers and locks, and requires fresh controlled values to reopen",
+                    "isolated real MenuBranchDemo light wide capture waits for open state, finished animations, and opacity 1",
+                    "isolated real MenuBranchDemo dark 390px capture waits for fully open surfaces",
+                    "isolated real MenuBranchDemo CSS zoom 125% capture waits for fully open surfaces",
+                    "isolated real MenuBranchDemo Dialog capture waits for open state, finished animations, and opacity 1"
+                ],
+                "beforeHashes": {
+                    "UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+                    "menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+                    "docs/MenuBranchDemo.vue": "143474af1c2aca429e97bb4d2bb6d4a2c739b23ba1f89d17e7232a4a30886742"
+                },
+                "afterHashes": {
+                    "UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+                    "menu.ts": "eec389eb092b3ba41a10ea77795f6bdb427f39d71a4e0ed16b0bb1befbf514db",
+                    "docs/MenuBranchDemo.vue": "143474af1c2aca429e97bb4d2bb6d4a2c739b23ba1f89d17e7232a4a30886742"
+                },
+                "screenshots": [
+                    {
+                        "file": "menu-branch-light-wide.png",
+                        "viewport": {
+                            "width": 1200,
+                            "height": 860
+                        },
+                        "theme": "light",
+                        "cssZoom": "100%",
+                        "surfaces": [
+                            {
+                                "id": "ui-menu-v-2",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            },
+                            {
+                                "id": "ui-menu-v-4",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            }
+                        ]
+                    },
+                    {
+                        "file": "menu-branch-dark-390.png",
+                        "viewport": {
+                            "width": 390,
+                            "height": 844
+                        },
+                        "theme": "dark",
+                        "cssZoom": "100%",
+                        "surfaces": [
+                            {
+                                "id": "ui-menu-v-2",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            },
+                            {
+                                "id": "ui-menu-v-4",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            }
+                        ]
+                    },
+                    {
+                        "file": "menu-branch-light-390-zoom125.png",
+                        "viewport": {
+                            "width": 390,
+                            "height": 844
+                        },
+                        "theme": "light",
+                        "cssZoom": "125%",
+                        "surfaces": [
+                            {
+                                "id": "ui-menu-v-2",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            },
+                            {
+                                "id": "ui-menu-v-4",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            }
+                        ]
+                    },
+                    {
+                        "file": "menu-branch-dialog-open.png",
+                        "viewport": {
+                            "width": 390,
+                            "height": 844
+                        },
+                        "theme": "light",
+                        "cssZoom": "125%",
+                        "surfaces": [
+                            {
+                                "id": "ui-menu-v-2",
+                                "tag": "div",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": null,
+                                "backdropColor": null,
+                                "animationStates": []
+                            },
+                            {
+                                "id": "dialog",
+                                "tag": "dialog",
+                                "state": "open",
+                                "opacity": "1",
+                                "backdropOpacity": "1",
+                                "backdropColor": "rgba(38, 38, 36, 0.24)",
+                                "animationStates": []
+                            }
+                        ]
+                    }
+                ],
+                "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\menu-branch-protocols",
+                "warnings": [],
+                "errors": []
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/overlay-back-protocols/report.json",
+            "sha256": "28441c8ec9e44735bb2f7fbe414e70745932024decad445f2fe1e9bf022f32c3",
+            "report": {
+                "generatedAt": "2026-10-09T02:45:45.899Z",
+                "routerVersion": "4.6.3",
+                "checks": [
+                    "Back closes Overlay and Vue Router restores the current URL.",
+                    "The next back navigates after the surface is closed.",
+                    "Dialog uses the same default back protocol.",
+                    "Nested Menu closes first; a second back closes its parent Dialog.",
+                    "Persistent surfaces cancel repeated back without emitting a close.",
+                    "closeOnBack=false lets routing proceed and keeps the surface open.",
+                    "Programmatic navigation is not mistaken for a history pop.",
+                    "Unmount removes guards and stack registrations."
+                ],
+                "errors": [],
+                "warnings": [],
+                "sourceSha256": {
+                    "UOverlay.vue": "f954a643e66128567adb7f605f65a823c370559b06b43b1505a9e0d0bf27049d",
+                    "UiDialog.vue": "08b08f162cab5ecb04483dd8bd283d57968de8ff002ad811b18abf6c2c1ba17f",
+                    "UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "overlay-props.ts": "60d95c9ae67267ba8a5de3acad38d7d33ab68cd132af83ed7041ec19b8220930"
+                },
+                "visualAcceptance": false,
+                "sourceStable": true
+            }
+        },
+        {
+            "file": "artifacts/full-alignment/selection-menu-protocols/report.json",
+            "sha256": "0094d8cbd79d734a2a5fbf1b1783f9538c719cbb52d59a55302127f8ce287934",
+            "report": {
+                "generatedAt": "2026-10-09T02:45:45.500Z",
+                "routerVersion": "4.6.3",
+                "checks": [
+                    {
+                        "name": "public fixture mounts the live demo and preserves the native select branch",
+                        "evidence": "SelectionMenuDemo.vue is mounted through the public index; simple label/value items without menuProps remain a native SELECT."
+                    },
+                    {
+                        "name": "autocomplete reopens by clicking its already-focused input",
+                        "evidence": "Escape closes the popup without moving focus; a real click on that same focused input reopens it."
+                    },
+                    {
+                        "name": "combobox reopens by clicking its already-focused input",
+                        "evidence": "Escape closes the popup without moving focus; a real click on that same focused input reopens it."
+                    },
+                    {
+                        "name": "real demo opens all four public consumers and cancels a date draft",
+                        "evidence": "Autocomplete, Combobox, menu-backed UiSelect, and UDateInput popups fit the 1200×900 viewport and use docs typography; list inputs retain focus with no default active option, and date Cancel leaves 2026-10-09 committed."
+                    },
+                    {
+                        "name": "DateInput focus opening, custom outside/Escape closing, and persistent guard",
+                        "evidence": "A pointer click that focuses the input keeps its openOnFocus menu; outside click and Escape close a normal menu, while persistent=true rejects both close requests."
+                    },
+                    {
+                        "name": "keyboard navigation scrolls virtualized options without moving focus",
+                        "evidence": "ArrowDown sets the real option as aria-activedescendant and virtual scrolling mounts it while focus remains in the combobox input."
+                    },
+                    {
+                        "name": "menuProps and listProps are consumed by the rendered listbox",
+                        "evidence": "The live surface reflects target, offset, width/maxHeight, contentClass/contentProps, list role/ARIA/class, and custom pointer capture; selected option 90 scrolls into view without becoming the active option."
+                    },
+                    {
+                        "name": "connected positioning follows an external target during document scroll",
+                        "evidence": "Target movement -120px produced the same menu movement -120px."
+                    },
+                    {
+                        "name": "menu closeOnBack=false leaves navigation in control",
+                        "evidence": "Vue Router 4.6.3 returned to the previous route while the menu stayed open."
+                    },
+                    {
+                        "name": "connected placement flips and clamps after resize",
+                        "evidence": "Near-bottom target flipped above itself; after resizing to 390×700, the menu stayed within {\"left\":94,\"top\":508,\"right\":374,\"bottom\":688,\"width\":280,\"height\":180}."
+                    },
+                    {
+                        "name": "lazy content is removed after the leave transition",
+                        "evidence": "The menu surface remains available for the activator protocol while its option slot content is unmounted after 350 ms."
+                    },
+                    {
+                        "name": "noAutoScroll suppresses selected-item virtual scrolling",
+                        "evidence": "With value v-90 selected, enabling noAutoScroll keeps scrollTop at zero and leaves that distant row outside the rendered window."
+                    },
+                    {
+                        "name": "eager and block policies survive close",
+                        "evidence": "Eager option DOM exists both before open and after leave; block temporarily locks body overflow and restores it."
+                    },
+                    {
+                        "name": "scrollStrategy=close responds to page scroll",
+                        "evidence": "An open menu with close strategy closes when the document scrolls."
+                    },
+                    {
+                        "name": "real docs demo fits mobile CSS zoom",
+                        "evidence": "{\"viewportWidth\":390,\"documentWidth\":390,\"bodyWidth\":312,\"demoLeft\":22.5,\"demoRight\":367.5,\"demoWidth\":345,\"zoom\":\"1.25\"}"
+                    },
+                    {
+                        "name": "open real-demo popovers are captured in viewport screenshots",
+                        "evidence": "[{\"fontFamily\":\"-apple-system, BlinkMacSystemFont, \\\"Segoe UI\\\", \\\"Microsoft YaHei\\\", \\\"Noto Sans CJK SC\\\", sans-serif\",\"fontToken\":\"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif\",\"zoom\":\"1\"},{\"fontFamily\":\"-apple-system, BlinkMacSystemFont, \\\"Segoe UI\\\", \\\"Microsoft YaHei\\\", \\\"Noto Sans CJK SC\\\", sans-serif\",\"fontToken\":\"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif\",\"zoom\":\"1\"},{\"fontFamily\":\"-apple-system, BlinkMacSystemFont, \\\"Segoe UI\\\", \\\"Microsoft YaHei\\\", \\\"Noto Sans CJK SC\\\", sans-serif\",\"fontToken\":\"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif\",\"zoom\":\"1.25\"},{\"fontFamily\":\"-apple-system, BlinkMacSystemFont, \\\"Segoe UI\\\", \\\"Microsoft YaHei\\\", \\\"Noto Sans CJK SC\\\", sans-serif\",\"fontToken\":\"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif\",\"zoom\":\"1\"}]"
+                    }
+                ],
+                "screenshots": [
+                    {
+                        "name": "light-1200",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-light-1200.png",
+                        "viewport": "1200x900 CSS px, DPR 1"
+                    },
+                    {
+                        "name": "dark-390",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-dark-390.png",
+                        "viewport": "390x844 CSS px, DPR 1"
+                    },
+                    {
+                        "name": "light-390-csszoom125",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-light-390-csszoom125.png",
+                        "viewport": "390x844 CSS px, DPR 1, body CSS zoom 125%"
+                    },
+                    {
+                        "name": "selection-menu-autocomplete-open-light-1200",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-autocomplete-open-light-1200.png",
+                        "viewport": "1200x900 CSS px, DPR 1",
+                        "theme": "light",
+                        "popupOpen": true,
+                        "visibleContentCount": 1,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", sans-serif",
+                        "fontToken": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif",
+                        "popupBounds": {
+                            "left": 50,
+                            "top": 250.390625,
+                            "right": 1150,
+                            "bottom": 296.390625
+                        }
+                    },
+                    {
+                        "name": "selection-menu-combobox-open-light-390",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-combobox-open-light-390.png",
+                        "viewport": "390x844 CSS px, DPR 1",
+                        "theme": "light",
+                        "popupOpen": true,
+                        "visibleContentCount": 3,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", sans-serif",
+                        "fontToken": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif",
+                        "popupBounds": {
+                            "left": 18,
+                            "top": 424.78125,
+                            "right": 372,
+                            "bottom": 538.78125
+                        }
+                    },
+                    {
+                        "name": "selection-menu-select-open-light-390-csszoom125",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-select-open-light-390-csszoom125.png",
+                        "viewport": "390x844 CSS px, DPR 1, body CSS zoom 125%",
+                        "theme": "light",
+                        "popupOpen": true,
+                        "visibleContentCount": 2,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", sans-serif",
+                        "fontToken": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif",
+                        "popupBounds": {
+                            "left": 22.5,
+                            "top": 638.5,
+                            "right": 367.5,
+                            "bottom": 738
+                        }
+                    },
+                    {
+                        "name": "selection-menu-date-open-dark-390",
+                        "path": "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\selection-menu-protocols\\screenshots\\selection-menu-date-open-dark-390.png",
+                        "viewport": "390x844 CSS px, DPR 1",
+                        "theme": "dark",
+                        "popupOpen": true,
+                        "visibleContentCount": 42,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", sans-serif",
+                        "fontToken": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif",
+                        "popupBounds": {
+                            "left": 18,
+                            "top": 170.78125,
+                            "right": 338,
+                            "bottom": 548.78125
+                        }
+                    }
+                ],
+                "errors": [],
+                "warnings": [],
+                "sourceSha256": {
+                    "src/ui/UAutocomplete.vue": "3cfcb3c4f1c5004534b99ce0ef55b6587d05eee63f89d8e7cd089284b4ffe10b",
+                    "src/ui/UCombobox.vue": "b2124025bdbd554efed5e57a0c9aaa9bc19f5b9e07223a31ff65bae3363aa0d2",
+                    "src/ui/UiSelect.vue": "f9991f46295d860f66d4413f66c8c7b2c1ad207657eb46339315cb8196a2a781",
+                    "src/ui/UiSelectNative.vue": "b74b2790a35d574e891df8b26c5e9be9ba265b5ea3d7ba09b8f27baa89fbe080",
+                    "src/ui/UDateInput.vue": "6fb5b16704f109de2eda2035f275e86cecd4de85842571ea69999c244439f160",
+                    "src/ui/UDatePicker.vue": "8f75a9076afa4f804c3b1c275ec81856fc36760ee31a3934a43db147184b4ad8",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UVirtualScroll.vue": "5cf957a98612b89e75e6d7c6016fd472a9f71231b60a944602ab0c6e3e4a23d5",
+                    "src/ui/autocomplete-props.ts": "db092533a69f7c08913e481b64f16e74bdca5d303370053428c1cd88a6794e91",
+                    "src/ui/selection.ts": "c31dc9b4915276cf0c25c3aa25884bea6729e2a4d416a2324719187f84b18f09",
+                    "src/ui/selection-filter.ts": "459ea66ea298f4105f0d188034aaec2e05420ef7c6d7488bec24d6728b037063",
+                    "src/ui/use-virtual-scroll.ts": "3b8f6abe0e31ce7a9b43e42b8029748686e868d0d3a4b236b4a19733b8e92591",
+                    "src/ui/date-model.ts": "a11b532df5c8a1fffa88b84d37453b421c25dd56257e66eba7ac186d7d7b0d2f",
+                    "src/ui/date-input-format.ts": "5d2ff8b196a4c96bf53f25ab132f112d2021631094d548a596c594c5b221b35c",
+                    "src/ui/overlay-position.ts": "a0cce4bba706cdf74402e3e422d0e0a5abf7c9eab529f1b071e9c05c54bcdb18",
+                    "src/ui/overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73",
+                    "src/ui/dimensions.ts": "58b49ed7c31204bcc479d1aed9314ab56dcc0583aa480daf44090959135678a6",
+                    "src/ui/docs/SelectionMenuDemo.vue": "47cbbe9754e9db687212f515b73b6bdc134202c6c8c66a18185dc3a804061988",
+                    "src/ui/docs/LiveExample.vue": "8987fb6a6f7ca238db30c14d7eff7b2d53b17be2752f2b1e068a057636a16f05",
+                    "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/forms-components.css": "6132b78ee611940d7e4bfb2cf9f3a2e74f95495a6b120da71d78c7ae38fd63c3",
+                    "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+                    "src/docs-base.css": "38803d8e26f9ab942ab3b0f5babb01f65c27d31a53db7dd06336b58554597966"
+                },
+                "visualAcceptance": false,
+                "sourceStable": true
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/color-input-menu-protocols/report.json",
+            "sha256": "d44a2ffb10aa6df4a2b89f3e7f6cb8f7f77956d39c34a021df89e36cf8e0a739",
+            "report": {
+                "method": "Vite fixture importing public src/ui/index.ts and Chromium DOM interactions",
+                "generatedAt": "2026-10-09T02:45:45.837Z",
+                "evidence": "E:\\WebstormProjects\\UI\\artifacts\\component-audit-root\\color-input-menu-protocols",
+                "visualAcceptance": false,
+                "sourceHashesBefore": {
+                    "src/ui/UColorInput.vue": "7f4c4b2f17c5f4ff0e88185c6d6e9409e37a6ce8b995c96f3da62e7b17d69f8a",
+                    "src/ui/UColorPicker.vue": "3004bbff567add7f7b6e811a358bafa3df5ab19d180e2fb0f13c20c0cff3924d",
+                    "src/ui/UConfirmEdit.vue": "42e78c42caabba674e8fcaf7fc95faeb98cc351ba8e5efaab798a08c7210d4a9",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiControlFrame.vue": "81ebb1c66bdf73a1b24dbc8142cd987a16b71810c1448e6739af7441f6dab89b",
+                    "src/ui/form.ts": "b5dbf54526ef1b8ca2d49d0baae7b66bc4e152f25fffb8c5a98006ae0bfcc11b",
+                    "src/ui/color-model.ts": "0606a4feda54fb48d288ac57ab74f222a58f94456917f20c7b77c7a3c60b56b6",
+                    "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84"
+                },
+                "checks": [
+                    "default pip opens lazy UiMenu DOM menu; v-model:menu, pickerProps, menuProps content attributes, location and focus listener are live",
+                    "object RGBA alpha edits use the deep-cloned draft and do not mutate the parent model",
+                    "external model replacement resets the live draft; cancel restores the latest value and emits cancel",
+                    "save commits the cloned RGBA object, emits save, closes the menu and suppresses openOnFocus during focus restoration",
+                    "dynamic hideActions removes buttons immediately and switches picker updates to immediate model writes",
+                    "disabled and readonly changes close the open menu, disable the pip, and preserve the model",
+                    "picker/actions slots receive the edit scope; custom actions suppress defaults and save through the public menu",
+                    "hidePip and pipLocation are consumed; explicit nativePicker keeps the native input and preserves RGBA object/alpha",
+                    "openOnFocus opens on keyboard focus; tabbing fully out and Escape both close the menu",
+                    "unmounting an open ColorInput removes its document focusin listener with no ghost handler"
+                ],
+                "vueErrors": [],
+                "vueWarnings": [],
+                "pageErrors": [],
+                "browserConsoleIssues": [],
+                "status": "passed",
+                "sourceHashesAfter": {
+                    "src/ui/UColorInput.vue": "7f4c4b2f17c5f4ff0e88185c6d6e9409e37a6ce8b995c96f3da62e7b17d69f8a",
+                    "src/ui/UColorPicker.vue": "3004bbff567add7f7b6e811a358bafa3df5ab19d180e2fb0f13c20c0cff3924d",
+                    "src/ui/UConfirmEdit.vue": "42e78c42caabba674e8fcaf7fc95faeb98cc351ba8e5efaab798a08c7210d4a9",
+                    "src/ui/UiMenu.vue": "aaa92332ca878f8928f5080ad372d3ea70f036ea453637becabafeae3e83d41e",
+                    "src/ui/UiControlFrame.vue": "81ebb1c66bdf73a1b24dbc8142cd987a16b71810c1448e6739af7441f6dab89b",
+                    "src/ui/form.ts": "b5dbf54526ef1b8ca2d49d0baae7b66bc4e152f25fffb8c5a98006ae0bfcc11b",
+                    "src/ui/color-model.ts": "0606a4feda54fb48d288ac57ab74f222a58f94456917f20c7b77c7a3c60b56b6",
+                    "src/ui/index.ts": "9186b32e6ffb01e275e9e2980ce46a9d1d4ab5c9b3a2643e272d9f9d5a5e5e84"
+                },
+                "sourceHashesUnchanged": true
+            }
+        },
+        {
+            "file": "artifacts/component-audit-root/tooltip-back-protocols/report.json",
+            "sha256": "d8cbc8aae609f1fde0e1d473b0b07f387269d0c689eb39eca35ced8ef5701204",
+            "report": {
+                "generatedAt": "2026-10-09T02:49:09.079Z",
+                "fixturePath": "artifacts/full-alignment/vue-router/package/dist/vue-router.esm-browser.prod.js",
+                "fixtureSha256": "11472cc319a0eea5df6b9e38b5e1440b03e7ab6b381fb11bd9fade7810128be9",
+                "sourceSha256": {
+                    "src/ui/UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+                    "src/ui/overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73"
+                },
+                "checks": [
+                    "closeOnBack=true cancels a real history back, closes the tooltip, and lets the next back navigate.",
+                    "Omitted closeOnBack keeps its false default, allows router navigation, and leaves a lower Dialog open.",
+                    "persistent tooltip cancels router back and remains open without emitting a close.",
+                    "Changing attach/contained resets presentation state, and an eager=false bubble can be replaced and registered again.",
+                    "Tooltip above Menu and Dialog closes first; each back closes only the current top overlay.",
+                    "KeepAlive deactivation releases the stack and scroll lock; reactivation restores the controlled tooltip; unmount cleans it again.",
+                    "Without Vue Router, synthetic popstate closes only the top tooltip through the fallback handler."
+                ],
+                "errors": [],
+                "warnings": [],
+                "browserErrors": [
+                    [],
+                    []
+                ],
+                "sourceSha256After": {
+                    "src/ui/UiTooltip.vue": "a663a52e914af3e00abb5241ab0b62dcdd68fd09a1d2428ee666d0a095714ab0",
+                    "src/ui/overlay-back.ts": "5033e3184ca2e75a214619c6b192ba71d7db6764c6fa9a3ebc94f940ec02cc19",
+                    "src/ui/overlay-lifecycle.ts": "1daaa96b1a7e7cf4a78c878796f6def5c3c5a08d6f9292a878a3b49f70287a73"
+                },
+                "sourceStableDuringRun": true
+            }
+        },
+        {
+            "file": "artifacts/full-alignment/handoff-demos-protocols/report.json",
+            "sha256": "0cfcaa479ff666586501bd3f8ac9682a74ca51659f5d214e064885414978884b",
+            "report": {
+                "checks": [
+                    "List: root retains DOM focus; End/ArrowDown skip disabled rows; Space/Enter toggle selection; repeated activation cancels",
+                    "list-wide-1000: visible with no horizontal overflow",
+                    "list-dark-390: visible with no horizontal overflow",
+                    "list-zoom-125: visible with no horizontal overflow",
+                    "Tree: cafe matches Café; action selection reports its full path; unmatched search shows no-data; pause filtering restores items",
+                    "tree-wide-1000: visible with no horizontal overflow",
+                    "tree-dark-390: visible with no horizontal overflow",
+                    "tree-zoom-125: visible with no horizontal overflow",
+                    "Stepper items: generated window content follows selection; horizontal and vertical failed rules expose error; vertical actions block continue",
+                    "stepper-items-wide-1000: visible with no horizontal overflow",
+                    "Stepper items: confirmation passes the rule; next reveals the final item; hide-actions removes both action bars",
+                    "stepper-items-dark-390: visible with no horizontal overflow",
+                    "stepper-items-zoom-125: visible with no horizontal overflow",
+                    "VerticalActions: finish action reaches the demo output 已完成",
+                    "stepper-vertical-actions-wide-1000: visible with no horizontal overflow",
+                    "VerticalItem: manually selecting the second item expands its own content",
+                    "stepper-vertical-item-wide-1000: visible with no horizontal overflow",
+                    "Runtime: zero page errors, console warnings/errors, window errors, and unhandled rejections",
+                    "Source SHA-256: before and after snapshots match"
+                ],
+                "screenshots": [
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\list-wide-1000.png",
+                        "example": "list-navigation-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 341.375,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\list-dark-390.png",
+                        "example": "list-navigation-protocols",
+                        "width": 390,
+                        "height": 844,
+                        "dark": true,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 390,
+                                "height": 844
+                            },
+                            "document": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "body": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 390,
+                                "width": 390,
+                                "height": 352.5625,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\list-zoom-125.png",
+                        "example": "list-navigation-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 125,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 800,
+                                "scrollWidth": 800
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 800
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 429.5,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\tree-wide-1000.png",
+                        "example": "tree-filter-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 307.390625,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\tree-dark-390.png",
+                        "example": "tree-filter-protocols",
+                        "width": 390,
+                        "height": 844,
+                        "dark": true,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 390,
+                                "height": 844
+                            },
+                            "document": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "body": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 390,
+                                "width": 390,
+                                "height": 299.390625,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\tree-zoom-125.png",
+                        "example": "tree-filter-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 125,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 800,
+                                "scrollWidth": 800
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 800
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 383.75,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\stepper-items-wide-1000.png",
+                        "example": "stepper-items-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 600.1875,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\stepper-items-dark-390.png",
+                        "example": "stepper-items-protocols",
+                        "width": 390,
+                        "height": 844,
+                        "dark": true,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 390,
+                                "height": 844
+                            },
+                            "document": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "body": {
+                                "clientWidth": 390,
+                                "scrollWidth": 390
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 390,
+                                "width": 390,
+                                "height": 646.1875,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\stepper-items-zoom-125.png",
+                        "example": "stepper-items-protocols",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 125,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 800,
+                                "scrollWidth": 800
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 800
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 752.5,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\stepper-vertical-actions-wide-1000.png",
+                        "example": "component-stepper-vertical-actions",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 217.59375,
+                                "visible": true
+                            }
+                        }
+                    },
+                    {
+                        "file": "artifacts\\full-alignment\\handoff-demos-protocols\\stepper-vertical-item-wide-1000.png",
+                        "example": "component-stepper-vertical-item",
+                        "width": 1000,
+                        "height": 800,
+                        "dark": false,
+                        "zoom": 100,
+                        "layout": {
+                            "viewport": {
+                                "width": 1000,
+                                "height": 800
+                            },
+                            "document": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "body": {
+                                "clientWidth": 1000,
+                                "scrollWidth": 1000
+                            },
+                            "demo": {
+                                "left": 0,
+                                "right": 1000,
+                                "width": 1000,
+                                "height": 268,
+                                "visible": true
+                            }
+                        }
+                    }
+                ],
+                "pageErrors": [],
+                "consoleIssues": [],
+                "windowIssues": [],
+                "sourceSha256Before": {
+                    "src/docs-base.css": "38803d8e26f9ab942ab3b0f5babb01f65c27d31a53db7dd06336b58554597966",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/docs/docs.css": "d04c9bbcd5cf04c32c27b4dfe4116f86a8868b8b8ad9153d6aa145a866752bce",
+                    "src/ui/UList.vue": "826c7b9ac103f1f8933996ed2490322185c03f4481c631cbab7e7aa61abbf469",
+                    "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+                    "src/ui/UStepper.vue": "e72e1a05f983b619464e79cc2fc76eda0a2ad2d60b0646eb98cff2f1d7501342",
+                    "src/ui/UStepperActions.vue": "c2360b01c40f6fc55efc4ea4108b3ee063e0c815dec9ace8ea05db34642c0652",
+                    "src/ui/UStepperItem.vue": "163ab5aa0bec9da313697e3767fcd01fb036dd64dc67b5b89fb150838f0a09c7",
+                    "src/ui/UStepperVertical.vue": "13d3aa30acc4601bcf94da650bbffa9071bde62a8f1422fdee700d79649cdd89",
+                    "src/ui/UStepperVerticalActions.vue": "5714a8a7b757ed92470334952a147e5d1d4f36ec37075eb5e7a599b8c2906cc1",
+                    "src/ui/UStepperVerticalItem.vue": "1e0e0d19bdad121d71ccb2520349a5e212d7fe909247072f3dd8276157825e6c",
+                    "src/ui/UStepperWindow.vue": "1c38850a89775ddaeb7b3fa6cd178308d3a37c996ba094e0571e30a80ed53335",
+                    "src/ui/UStepperWindowItem.vue": "7a58b95a5ae2e5dd1b05f1737c8e45348231114e9b2e35ccac64cdd865c3ed31",
+                    "src/ui/stepper-selection.ts": "807fbd0b36cd27bf412d2d3bbff6f158f80ada0f0eaba8c7b5f87fb80c93a57d",
+                    "src/ui/stepper-state.ts": "65745e6e6a8a2c55656a18a7c53d5b59fdec4dd1af5ffb95b77b8a05e78aef17",
+                    "src/ui/docs/LiveExample.vue": "8987fb6a6f7ca238db30c14d7eff7b2d53b17be2752f2b1e068a057636a16f05",
+                    "src/ui/docs/ListNavigationDemo.vue": "69a74578acc3b6fa1c651c87244cd32474ba45aace3e13c53c45e92b2c81135c",
+                    "src/ui/docs/TreeFilterDemo.vue": "33ff279d342ddbb83d4eaba5ad0528c0b15c3078431c36d73a5265e33a6c79b2",
+                    "src/ui/docs/StepperItemsDemo.vue": "f80bd3d111429a4b5c3340ccd06a99255fe47fa89e79a669579c9e0e4482e8c5",
+                    "src/ui/docs/component-examples/stepper-vertical-actions.vue": "9a3c96a9dab4d7f2371c1828ee491f3c679052a094e6f4e23d2983473b87330d",
+                    "src/ui/docs/component-examples/stepper-vertical-item.vue": "551fb80bba9ea93c1a122ed250c99059921cb9d4ca1bf4fee73e575c16ebfec4"
+                },
+                "sourceSha256After": {
+                    "src/docs-base.css": "38803d8e26f9ab942ab3b0f5babb01f65c27d31a53db7dd06336b58554597966",
+                    "src/ui/styles.css": "bd20ff58bca7dfac24dcedca6bdde911991e449867b70a07bd8f964aa16274c1",
+                    "src/ui/data-components.css": "d82d055d49db489f5af4f3f41915cbf26348c116a6f28a2fd9185b8aa20f7a45",
+                    "src/ui/layout-components.css": "f7064a66c98e30fe153a8501a42d84b23f053e63210369305f116d659792ac8d",
+                    "src/ui/docs/docs.css": "d04c9bbcd5cf04c32c27b4dfe4116f86a8868b8b8ad9153d6aa145a866752bce",
+                    "src/ui/UList.vue": "826c7b9ac103f1f8933996ed2490322185c03f4481c631cbab7e7aa61abbf469",
+                    "src/ui/UTreeview.vue": "c5f209522c7e6fef62094ec9a35b4593138581b86df37c1c4bca081cff6d8e9c",
+                    "src/ui/UStepper.vue": "e72e1a05f983b619464e79cc2fc76eda0a2ad2d60b0646eb98cff2f1d7501342",
+                    "src/ui/UStepperActions.vue": "c2360b01c40f6fc55efc4ea4108b3ee063e0c815dec9ace8ea05db34642c0652",
+                    "src/ui/UStepperItem.vue": "163ab5aa0bec9da313697e3767fcd01fb036dd64dc67b5b89fb150838f0a09c7",
+                    "src/ui/UStepperVertical.vue": "13d3aa30acc4601bcf94da650bbffa9071bde62a8f1422fdee700d79649cdd89",
+                    "src/ui/UStepperVerticalActions.vue": "5714a8a7b757ed92470334952a147e5d1d4f36ec37075eb5e7a599b8c2906cc1",
+                    "src/ui/UStepperVerticalItem.vue": "1e0e0d19bdad121d71ccb2520349a5e212d7fe909247072f3dd8276157825e6c",
+                    "src/ui/UStepperWindow.vue": "1c38850a89775ddaeb7b3fa6cd178308d3a37c996ba094e0571e30a80ed53335",
+                    "src/ui/UStepperWindowItem.vue": "7a58b95a5ae2e5dd1b05f1737c8e45348231114e9b2e35ccac64cdd865c3ed31",
+                    "src/ui/stepper-selection.ts": "807fbd0b36cd27bf412d2d3bbff6f158f80ada0f0eaba8c7b5f87fb80c93a57d",
+                    "src/ui/stepper-state.ts": "65745e6e6a8a2c55656a18a7c53d5b59fdec4dd1af5ffb95b77b8a05e78aef17",
+                    "src/ui/docs/LiveExample.vue": "8987fb6a6f7ca238db30c14d7eff7b2d53b17be2752f2b1e068a057636a16f05",
+                    "src/ui/docs/ListNavigationDemo.vue": "69a74578acc3b6fa1c651c87244cd32474ba45aace3e13c53c45e92b2c81135c",
+                    "src/ui/docs/TreeFilterDemo.vue": "33ff279d342ddbb83d4eaba5ad0528c0b15c3078431c36d73a5265e33a6c79b2",
+                    "src/ui/docs/StepperItemsDemo.vue": "f80bd3d111429a4b5c3340ccd06a99255fe47fa89e79a669579c9e0e4482e8c5",
+                    "src/ui/docs/component-examples/stepper-vertical-actions.vue": "9a3c96a9dab4d7f2371c1828ee491f3c679052a094e6f4e23d2983473b87330d",
+                    "src/ui/docs/component-examples/stepper-vertical-item.vue": "551fb80bba9ea93c1a122ed250c99059921cb9d4ca1bf4fee73e575c16ebfec4"
+                }
+            }
+        }
+    ]
+}

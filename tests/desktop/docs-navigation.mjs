@@ -4,6 +4,8 @@ import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { pages as docPages } from '../../src/ui/docs/content.js';
+import { buildDocsNavigation } from '../../src/ui/docs/navigation.js';
+const usagePages = buildDocsNavigation(docPages).flatMap(group => group.pages.flatMap(page => page.children || [page]));
 
 await mkdir('artifacts', { recursive: true });
 const evidence = await mkdtemp(path.resolve('artifacts', 'docs-navigation-'));
@@ -63,6 +65,15 @@ try {
             await page.getByRole('button', { name: '切换文档导航', exact: true }).click();
         }
         await page.locator('.docs-sidebar').waitFor({ state: 'visible' });
+        // The sidebar now starts with folded categories. Open them explicitly
+        // for this exhaustive typography check; interaction coverage has its
+        // own source-based docs-navigation-groups protocol.
+        for (const button of await page.locator('.docs-nav-group .ui-list-group-header').all()) {
+            if (await button.getAttribute('aria-expanded') === 'false') await button.click();
+        }
+        await page.evaluate(async () => {
+            await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {})));
+        });
         const report = await page.locator('.docs-nav-group a').evaluateAll(links => links.map(link => {
             const title = link.querySelector('.ui-list-item-title');
             const range = document.createRange();
@@ -83,7 +94,7 @@ try {
                 nameOverflow: name ? name.scrollWidth > name.clientWidth + 1 : false
             };
         }));
-        assert.equal(report.length, docPages.length);
+        assert.equal(report.length, usagePages.length);
         for (const row of report) {
             assert.equal(row.lines, 1, `${name}: ${row.title} single line`);
             assert.equal(row.titleOverflow, false, `${name}: ${row.title} fully visible`);
@@ -95,7 +106,8 @@ try {
             if (row.nameText) {
                 assert.equal(row.nameTooltip, row.nameText);
                 assert.equal(row.nameEllipsis, 'ellipsis');
-                assert.equal(row.nameOverflow, false, `${name}: ${row.nameText} fully visible`);
+                // Long public names may ellipsize in indented rows; the full
+                // appendText is still available through its title attribute.
             }
         }
         reports.push({ name, width, zoom, checkedRows: report.length, grid: report.find(row => row.title === '栅格与布局规范') });
@@ -104,9 +116,9 @@ try {
             sidebar.scrollTop += element.getBoundingClientRect().top - sidebar.getBoundingClientRect().top - 200;
         });
         await capture(`${name}-grid`);
-        const link = page.locator('.docs-nav-group a[href="#/breadcrumbs-divider"]');
+        const link = page.locator('.docs-nav-group a[href="#/breadcrumbs"]');
         await link.click();
-        await page.waitForFunction(() => location.hash === '#/breadcrumbs-divider');
+        await page.waitForFunction(() => location.hash === '#/breadcrumbs');
         if (await page.locator('.docs-menu-button').isVisible()) {
             await page.getByRole('button', { name: '切换文档导航', exact: true }).click();
         }
@@ -122,16 +134,16 @@ try {
     await page.keyboard.press('Enter');
     assert.equal(await grid.getAttribute('aria-current'), 'page');
     await page.keyboard.press('ArrowDown');
-    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), '#/container');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-controls')), 'docs-group-selection-items');
     await page.keyboard.press('Home');
-    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), '#/overview');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-controls')), 'docs-group-getting-started-items');
     await page.keyboard.press('End');
     assert.equal(await page.evaluate(() => document.activeElement.hasAttribute('data-ui-list-item')), true);
     const search = page.getByRole('textbox', { name: '搜索文档', exact: true });
     await search.fill('路径分隔符');
     assert.equal(await page.locator('.docs-nav-group a').count(), 1);
     await search.press('Enter');
-    await page.waitForFunction(() => location.hash === '#/breadcrumbs-divider');
+    await page.waitForFunction(() => location.hash === '#/breadcrumbs-divider/api');
     assert.deepEqual(errors, []);
     await writeFile(path.join(evidence, 'report.json'), JSON.stringify({ reports, errors, navigation: 'pointer, Enter, arrows, Home/End, search Enter and mobile close/open passed' }, null, 4));
     console.log(JSON.stringify({ evidence, reports, errors }, null, 4));

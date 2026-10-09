@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { computed, mergeProps, nextTick, normalizeClass, onMounted, onBeforeUnmount, provide, ref, useId, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
+import { computed, getCurrentInstance, mergeProps, nextTick, normalizeClass, onActivated, onBeforeUnmount, onDeactivated, onMounted, provide, ref, useId, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
 import { vPointerBlur } from './pointer-focus';
 import { useDefaults } from './defaults';
-import { acquireScrollLock, releaseScrollLock } from './overlay-lifecycle';
+import { acquireScrollLock, isTopOverlay, popOverlay, pushOverlay, releaseScrollLock } from './overlay-lifecycle';
+import { useOverlayBack } from './overlay-back';
 import { provideUiTheme } from './theme';
 import { menuContextKey } from './menu';
+import UiMaybeTransition, { type UiTransition } from './UiMaybeTransition.vue';
+import { useOverlayTransition } from './overlay-transition';
 
 type ElementTarget = string | HTMLElement | ComponentPublicInstance;
 const rawProps = withDefaults(defineProps<{
@@ -38,7 +41,7 @@ const rawProps = withDefaults(defineProps<{
     eager?: boolean;
     attach?: boolean | string | HTMLElement;
     contained?: boolean;
-    transition?: boolean | string;
+    transition?: UiTransition;
     zIndex?: number | string;
     width?: number | string;
     height?: number | string;
@@ -52,7 +55,10 @@ const rawProps = withDefaults(defineProps<{
     persistent: false, scrollStrategy: 'close', locationStrategy: 'connected', eager: true
 });
 const props = useDefaults(rawProps, 'UTooltip');
+const transition = useOverlayTransition(() => props.transition);
 provide(menuContextKey, null);
+const router = (getCurrentInstance()?.proxy as unknown as { $router?: { beforeEach?: unknown; afterEach?: unknown } } | null)?.$router;
+const hasRouterBack = typeof router?.beforeEach === 'function' && typeof router?.afterEach === 'function';
 const emit = defineEmits<{
     'update:modelValue': [value: boolean]; 'click:outside': [event: MouseEvent];
     keydown: [event: KeyboardEvent]; afterEnter: []; afterLeave: [];
@@ -76,12 +82,16 @@ let contentHovered = false;
 let contentFocused = false;
 let pointerFocus = false;
 let disposed = false;
+let deactivated = false;
+let runtimeListenersBound = false;
 let revision = 0;
 let showTimer: ReturnType<typeof setTimeout> | undefined;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let resizeObserver: ResizeObserver | undefined;
+let positionFrame: number | undefined;
 const scrollToken = Symbol('ui-tooltip-scroll');
 const externalCleanup: Array<() => void> = [];
+let stackedBubble: HTMLElement | undefined;
 function unit(value?: number | string): string | undefined {
     return typeof value === 'number' || value !== undefined && /^\d+(\.\d+)?$/.test(value) ? `${value}px` : value;
 }
@@ -122,13 +132,17 @@ function scheduleShow(): void {
     clearTimeout(hideTimer);
     clearTimeout(showTimer);
     if (props.disabled) return;
-    showTimer = setTimeout(() => { if (!disposed && !props.disabled) setVisible(true); }, Math.max(0, Number(props.openDelay) || 0));
+    showTimer = setTimeout(() => {
+        showTimer = undefined;
+        if (!disposed && !deactivated && !props.disabled) setVisible(true);
+    }, Math.max(0, Number(props.openDelay) || 0));
 }
 function scheduleHide(): void {
     clearTimeout(showTimer);
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
-        if (!disposed && !hovered && !focused && !contentHovered && !contentFocused && !props.persistent) setVisible(false);
+        hideTimer = undefined;
+        if (!disposed && !deactivated && !hovered && !focused && !contentHovered && !contentFocused && !props.persistent) setVisible(false);
     }, Math.max(0, Number(props.closeDelay) || 0));
 }
 function enter(event?: Event): void {
@@ -155,10 +169,15 @@ function blur(event?: FocusEvent): void {
     if (wasFocused && props.openOnFocus && !hovered) scheduleHide();
 }
 function hide(): void {
-    clearTimeout(showTimer);
-    clearTimeout(hideTimer);
+    clearTimers();
     hovered = focused = contentHovered = contentFocused = false;
     setVisible(false);
+}
+function clearTimers(): void {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    showTimer = undefined;
+    hideTimer = undefined;
 }
 function onKeydown(event: KeyboardEvent): void {
     emit('keydown', event);
@@ -170,7 +189,7 @@ const activatorBindings = computed(() => mergeProps({
     onMouseenter: enter, onMouseleave: leave, onFocus: focus, onBlur: blur, onKeydown
 }, props.activatorProps ?? {}));
 function position(): void {
-    if (!visible.value || !bubble.value || props.locationStrategy === 'static') return;
+    if (disposed || deactivated || !visible.value || !bubble.value || props.locationStrategy === 'static') return;
     const anchor = resolveElement(typeof props.target === 'string' || !Array.isArray(props.target) ? props.target as ElementTarget : undefined) ?? targetElement.value ?? trigger.value;
     const coordinates = Array.isArray(props.target) ? props.target : undefined;
     if (!anchor && !coordinates) return;
@@ -207,28 +226,74 @@ function position(): void {
         left -= container.left;
         top -= container.top;
     }
-    bubble.value.style.left = `${left}px`;
-    bubble.value.style.top = `${top}px`;
+    const nextLeft = `${left}px`;
+    const nextTop = `${top}px`;
+    if (bubble.value.style.left !== nextLeft) bubble.value.style.left = nextLeft;
+    if (bubble.value.style.top !== nextTop) bubble.value.style.top = nextTop;
+}
+function schedulePosition(): void {
+    if (positionFrame !== undefined || disposed || deactivated) return;
+    positionFrame = window.requestAnimationFrame(() => {
+        positionFrame = undefined;
+        if (!disposed && !deactivated) position();
+    });
+}
+function cancelScheduledPosition(): void {
+    if (positionFrame === undefined) return;
+    window.cancelAnimationFrame(positionFrame);
+    positionFrame = undefined;
+}
+function popBubble(element: HTMLElement): void {
+    if (element.matches(':popover-open')) element.hidePopover();
+    popOverlay(element);
+    if (stackedBubble === element) stackedBubble = undefined;
+}
+function clearPresentation(element?: HTMLElement): void {
+    if (element) popBubble(element);
+    else if (stackedBubble) popBubble(stackedBubble);
+    releaseScrollLock(scrollToken);
+}
+function registerBubble(element: HTMLElement): void {
+    if (stackedBubble && stackedBubble !== element) popBubble(stackedBubble);
+    if (stackedBubble !== element) {
+        pushOverlay(element);
+        stackedBubble = element;
+    }
 }
 async function sync(): Promise<void> {
     const version = ++revision;
+    if (deactivated) {
+        clearPresentation();
+        return;
+    }
+    if (!visible.value) clearTimers();
     if (visible.value) rendered.value = true;
     await nextTick();
     if (disposed || version !== revision) return;
     const tooltip = bubble.value;
-    if (!tooltip) return;
+    if (!tooltip) {
+        if (!visible.value) clearPresentation();
+        return;
+    }
     if (visible.value) {
         if (!props.contained && !tooltip.matches(':popover-open')) tooltip.showPopover();
+        else if (props.contained && tooltip.matches(':popover-open')) tooltip.hidePopover();
+        registerBubble(tooltip);
         if (props.scrollStrategy === 'block') acquireScrollLock(scrollToken);
+        else releaseScrollLock(scrollToken);
         position();
-    } else {
-        if (tooltip.matches(':popover-open')) tooltip.hidePopover();
-        releaseScrollLock(scrollToken);
+    } else if (props.transition === undefined) {
+        clearPresentation(tooltip);
     }
-    await Promise.all(tooltip.getAnimations().map(animation => animation.finished.catch(() => {})));
+    if (props.transition !== undefined) {
+        const completing = transition.run(visible.value);
+        await nextTick();
+        if (visible.value) position();
+        await completing;
+    } else await Promise.all(tooltip.getAnimations().map(animation => animation.finished.catch(() => {})));
     if (disposed || version !== revision) return;
     if (visible.value) emit('afterEnter');
-    else { if (!props.eager) rendered.value = false; emit('afterLeave'); }
+    else { clearPresentation(tooltip); if (!props.eager) rendered.value = false; emit('afterLeave'); }
 }
 function onScroll(event: Event): void {
     if (!visible.value || bubble.value?.contains(event.target as Node)) return;
@@ -240,7 +305,13 @@ function outside(event: MouseEvent): void {
     emit('click:outside', event);
     if (!props.persistent) hide();
 }
-function back(): void { if (props.closeOnBack && !props.persistent) hide(); }
+function requestBackClose(): void { if (!props.persistent) hide(); }
+// Let Vue Router observe popstate first so its guard can cancel the back navigation.
+function onPopstateFallback(): void {
+    const tooltip = bubble.value;
+    if (!hasRouterBack && props.closeOnBack === true && !deactivated && visible.value && tooltip && isTopOverlay(tooltip)) requestBackClose();
+}
+useOverlayBack(bubble, () => props.closeOnBack === true, () => !deactivated && visible.value, requestBackClose);
 function bindExternal(): void {
     externalCleanup.splice(0).forEach(cleanup => cleanup());
     const element = resolveElement(props.activator);
@@ -261,45 +332,83 @@ function bindExternal(): void {
         }
     }
 }
-watch(visible, sync, { flush: 'post' });
-watch(() => [props.location, props.offset, props.target, props.width, props.height], position, { flush: 'post', deep: true });
-watch(() => [props.activator, props.activatorProps, props.id], bindExternal, { flush: 'post', deep: true });
-watch([bubble, trigger, targetElement], () => {
+function clearExternal(): void { externalCleanup.splice(0).forEach(cleanup => cleanup()); }
+function observeElements(): void {
     resizeObserver?.disconnect();
     if (bubble.value) resizeObserver?.observe(bubble.value);
     if (trigger.value) resizeObserver?.observe(trigger.value);
     if (targetElement.value) resizeObserver?.observe(targetElement.value);
+}
+function bindRuntimeListeners(): void {
+    if (runtimeListenersBound) return;
+    runtimeListenersBound = true;
+    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('resize', position);
+    window.addEventListener('keydown', keyboard, true);
+    if (!hasRouterBack) window.addEventListener('popstate', onPopstateFallback);
+    document.addEventListener('click', outside);
+}
+function clearRuntimeListeners(): void {
+    if (!runtimeListenersBound) return;
+    runtimeListenersBound = false;
+    window.removeEventListener('scroll', onScroll, true);
+    window.removeEventListener('resize', position);
+    window.removeEventListener('keydown', keyboard, true);
+    if (!hasRouterBack) window.removeEventListener('popstate', onPopstateFallback);
+    document.removeEventListener('click', outside);
+}
+function deactivate(): void {
+    deactivated = true;
+    revision++;
+    transition.finish();
+    clearTimers();
+    cancelScheduledPosition();
+    hovered = focused = contentHovered = contentFocused = false;
+    // Keep the controlled model value; activation syncs its current value back into the overlay stack.
+    clearPresentation();
+    clearExternal();
+    resizeObserver?.disconnect();
+    clearRuntimeListeners();
+}
+function activate(): void {
+    if (disposed) return;
+    deactivated = false;
+    bindExternal();
+    observeElements();
+    bindRuntimeListeners();
+    void sync();
+}
+watch(visible, sync, { flush: 'post' });
+watch(() => [props.location, props.offset, props.target, props.width, props.height], position, { flush: 'post', deep: true });
+watch(() => [props.activator, props.activatorProps, props.id], () => { if (!deactivated) bindExternal(); }, { flush: 'post', deep: true });
+watch([bubble, trigger, targetElement], ([currentBubble], [previousBubble]) => {
+    if (previousBubble && previousBubble !== currentBubble) clearPresentation(previousBubble);
+    if (!deactivated) observeElements();
+    if (currentBubble !== previousBubble && visible.value && !deactivated) void sync();
+}, { flush: 'post' });
+watch(() => [props.attach, props.contained] as const, () => {
+    clearPresentation();
+    if (visible.value && !deactivated) void sync();
 }, { flush: 'post' });
 watch(() => props.disabled, value => { if (value) hide(); });
 watch(() => props.scrollStrategy, value => {
     releaseScrollLock(scrollToken);
-    if (visible.value && value === 'block') acquireScrollLock(scrollToken);
+    if (visible.value && !deactivated && value === 'block') acquireScrollLock(scrollToken);
 });
 onMounted(() => {
     if (!props.standardProtocol && !props.activator) trigger.value = wrapper.value;
     bindExternal();
-    resizeObserver = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(position);
-    if (bubble.value) resizeObserver?.observe(bubble.value);
-    if (trigger.value) resizeObserver?.observe(trigger.value);
-    window.addEventListener('scroll', onScroll, true);
-    window.addEventListener('resize', position);
-    window.addEventListener('keydown', keyboard, true);
-    window.addEventListener('popstate', back);
-    document.addEventListener('click', outside);
+    resizeObserver = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(schedulePosition);
+    observeElements();
+    bindRuntimeListeners();
     if (visible.value) void sync();
 });
+onActivated(activate);
+onDeactivated(deactivate);
 onBeforeUnmount(() => {
-    disposed = true; revision++;
-    clearTimeout(showTimer); clearTimeout(hideTimer);
-    if (bubble.value?.matches(':popover-open')) bubble.value.hidePopover();
-    externalCleanup.splice(0).forEach(cleanup => cleanup());
+    disposed = true;
+    deactivate();
     resizeObserver?.disconnect();
-    releaseScrollLock(scrollToken);
-    window.removeEventListener('scroll', onScroll, true);
-    window.removeEventListener('resize', position);
-    window.removeEventListener('keydown', keyboard, true);
-    window.removeEventListener('popstate', back);
-    document.removeEventListener('click', outside);
 });
 defineExpose({ isActive: visible, activatorEl: trigger, contentEl: bubble, updateLocation: position, open: () => setVisible(true), close: hide });
 </script>
@@ -314,9 +423,14 @@ defineExpose({ isActive: visible, activatorEl: trigger, contentEl: bubble, updat
         <slot v-if="props.standardProtocol || $slots.activator" name="activator" :props="activatorBindings" :activator-ref="setTrigger" :target-ref="setTarget" :is-active="visible" />
         <slot v-else />
         <Teleport :to="teleportTarget" :disabled="!props.attach || props.attach === true || props.contained">
+            <UiMaybeTransition :transition="props.transition ?? false"
+                @after-enter="transition.finish" @after-leave="transition.finish"
+                @enter-cancelled="transition.finish" @leave-cancelled="transition.finish"
+            >
             <span v-if="props.eager || rendered" :id="id" ref="bubble" class="ui-tooltip" :class="[contentClass, { 'is-interactive': props.interactive, 'is-contained': props.contained }]" :style="styles" :data-theme="theme.current.value.dark ? 'dark' : 'light'"
                 v-bind="props.contentProps" :popover="props.contained ? undefined : 'manual'" :aria-hidden="!visible" role="tooltip"
-                v-show="!props.contained || visible"
+                :data-ui-transition="props.transition !== undefined || undefined"
+                v-show="props.transition === undefined ? !props.contained || visible : transition.visible.value"
                 @mouseenter="contentEnter"
                 @mouseleave="contentHovered = false; props.openOnHover && scheduleHide()"
                 @focusin="contentFocus" @focusout="contentBlur"
@@ -324,6 +438,7 @@ defineExpose({ isActive: visible, activatorEl: trigger, contentEl: bubble, updat
                 <slot v-if="props.standardProtocol" :is-active="contentScope.isActive">{{ props.text }}</slot>
                 <slot v-else name="content" :is-active="visible">{{ props.text }}</slot>
             </span>
+            </UiMaybeTransition>
         </Teleport>
     </span>
 </template>

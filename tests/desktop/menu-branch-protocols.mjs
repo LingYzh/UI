@@ -178,7 +178,7 @@ const warnings = [];
 const errors = [];
 try {
     await server.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
     function captureBrowserErrors(browserPage) {
         browserPage.on('pageerror', error => errors.push(error.message));
@@ -192,10 +192,10 @@ try {
     await page.waitForFunction(() => Boolean(window.menuBranchProtocol));
     await page.locator('#branch-parent-trigger').click();
     await page.locator('#branch-child-trigger').click();
-    await page.locator('#branch-child-surface:popover-open').waitFor();
+    await page.locator('#branch-child-surface[data-state="open"]').waitFor();
     await page.locator('#branch-outside').click();
-    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches(':popover-open'));
-    assert.equal(await page.locator('#branch-child-surface:popover-open').count(), 0, 'outside click closes the child surface');
+    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
+    assert.equal(await page.locator('#branch-child-surface[data-state="open"]').count(), 0, 'outside click closes the child surface');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.childUpdates), [true, false], 'child emits one open and one close update');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.parentUpdates), [true, false], 'outside cascade emits one parent close update');
     checks.push('external outside click closes the nested branch once');
@@ -203,9 +203,9 @@ try {
     await page.locator('#branch-parent-trigger').click();
     await page.locator('#branch-child-trigger').click();
     await page.locator('#branch-grandchild-trigger').click();
-    await page.locator('#branch-grandchild-surface:popover-open').waitFor();
+    await page.locator('#branch-grandchild-surface[data-state="open"]').waitFor();
     await page.locator('#branch-outside').click();
-    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.grandchildUpdates), [true, false], 'grandchild outside dismissal closes the complete three-level chain');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.childUpdates), [true, false, true, false], 'middle menu remains registered until its descendant closes');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.parentUpdates), [true, false, true, false], 'three-level cascade reaches the outer menu');
@@ -214,60 +214,60 @@ try {
     await page.locator('#branch-parent-trigger').click();
     await page.locator('#branch-child-trigger').click();
     await page.locator('#branch-parent-area').click();
-    await page.waitForFunction(() => !document.querySelector('#branch-child-surface')?.matches(':popover-open'));
-    assert.equal(await page.locator('#branch-parent-surface:popover-open').count(), 1, 'clicking inside the parent closes only its child');
+    await page.waitForFunction(() => !document.querySelector('#branch-child-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
+    assert.equal(await page.locator('#branch-parent-surface[data-state="open"]').count(), 1, 'clicking inside the parent closes only its child');
     checks.push('click inside a parent stops ancestor closure');
 
     await page.locator('#branch-child-trigger').click();
     await page.evaluate(() => { window.menuBranchProtocol.state.parentPersistent = true; });
     await page.locator('#branch-outside').click();
-    await page.waitForFunction(() => !document.querySelector('#branch-child-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#branch-child-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.waitForTimeout(70);
-    assert.equal(await page.locator('#branch-parent-surface:popover-open').count(), 1, 'persistent parent remains open after child outside dismissal');
+    assert.equal(await page.locator('#branch-parent-surface[data-state="open"]').count(), 1, 'persistent parent remains open after child outside dismissal');
     checks.push('persistent ancestor blocks outside cascade');
 
     await page.evaluate(() => { window.menuBranchProtocol.state.parentPersistent = false; window.menuBranchProtocol.state.branchParent = false; });
-    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.locator('#dialog-parent-trigger').click();
     await page.locator('#dialog-boundary-open').click();
     await page.locator('dialog.ui-dialog[open]').waitFor();
     await page.locator('#dialog-boundary-child-trigger').click();
     await page.locator('#dialog-boundary-item').click();
     await page.waitForFunction(() => !document.querySelector('#dialog-boundary-child-trigger')?.getAttribute('aria-expanded') || document.querySelector('#dialog-boundary-child-trigger')?.getAttribute('aria-expanded') === 'false');
-    assert.equal(await page.locator('#dialog-parent-menu:popover-open').count(), 1, 'menu inside Dialog closes without reaching the outer Menu context');
+    assert.equal(await page.locator('#dialog-parent-menu[data-state="open"]').count(), 1, 'menu inside Dialog closes without reaching the outer Menu context');
     checks.push('Dialog null boundary isolates nested menu item closure');
 
     await page.evaluate(() => { window.menuBranchProtocol.state.dialogOpen = false; window.menuBranchProtocol.state.dialogParent = false; });
-    await page.waitForFunction(() => !document.querySelector('#dialog-parent-menu')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#dialog-parent-menu')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.locator('#branch-parent-trigger').click();
     await page.locator('#branch-child-trigger').click();
     await page.keyboard.press('ArrowDown');
     await page.waitForFunction(() => document.activeElement?.id === 'branch-child-item');
     await page.evaluate(() => { window.menuBranchProtocol.state.branchParent = false; });
-    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#branch-parent-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.waitForFunction(() => document.querySelector('#branch-parent-surface')?.getAttribute('data-state') === 'closed');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'branch-parent-trigger', 'parent closure restores focus to its outer trigger only');
     checks.push('keyboard close restores focus to the outermost trigger');
 
     await page.evaluate(() => { window.menuBranchProtocol.state.keepMounted = true; });
-    await page.locator('#keep-parent-surface:popover-open').waitFor();
-    await page.locator('#keep-child-surface:popover-open').waitFor();
+    await page.locator('#keep-parent-surface[data-state="open"]').waitFor();
+    await page.locator('#keep-child-surface[data-state="open"]').waitFor();
     await page.waitForFunction(() => document.body.style.overflow !== 'clip');
     await page.evaluate(() => { window.menuBranchProtocol.state.keepMounted = false; });
-    await page.waitForFunction(() => !document.querySelector('#keep-child-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#keep-child-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await page.waitForFunction(() => document.body.style.overflow === 'clip');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.keepParentUpdates), [false], 'KeepAlive deactivation emits one controlled parent close');
     assert.deepEqual(await page.evaluate(() => window.menuBranchProtocol.state.keepChildUpdates), [false], 'KeepAlive deactivation emits one controlled child close');
     await page.evaluate(() => { window.menuBranchProtocol.state.keepMounted = true; });
     await page.waitForTimeout(80);
     assert.equal(await page.locator('#keep-parent-trigger').count(), 1, 'cached menu branch reactivates');
-    assert.equal(await page.locator(':popover-open').count(), 0, 'stale controlled true values do not reopen on reactivation');
+    assert.equal(await page.locator('[data-state="open"]').count(), 0, 'stale controlled true values do not reopen on reactivation');
     await page.evaluate(() => { window.menuBranchProtocol.state.keepParent = false; window.menuBranchProtocol.state.keepChild = false; });
     await page.waitForTimeout(30);
     await page.evaluate(() => { window.menuBranchProtocol.state.keepParent = true; window.menuBranchProtocol.state.keepChild = true; });
-    await page.locator('#keep-child-surface:popover-open').waitFor();
+    await page.locator('#keep-child-surface[data-state="open"]').waitFor();
     await page.evaluate(() => { window.menuBranchProtocol.state.keepParent = false; window.menuBranchProtocol.state.keepChild = false; });
-    await page.waitForFunction(() => !document.querySelector('#keep-parent-trigger')?.closest('.ui-menu')?.querySelector(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('#keep-parent-trigger')?.closest('.ui-menu')?.querySelector('[data-state="open"]'));
     await page.waitForFunction(() => document.body.style.overflow === 'clip');
     checks.push('KeepAlive deactivation releases popovers and locks, and requires fresh controlled values to reopen');
 
@@ -284,7 +284,7 @@ try {
     async function waitForSettledSurfaces(targetPage) {
         await targetPage.evaluate(() => { window.__menuVisualStableFrames = 0; });
         await targetPage.waitForFunction(() => {
-            const surfaces = [...document.querySelectorAll(':popover-open, dialog[open]')];
+            const surfaces = [...document.querySelectorAll('[data-state="open"], dialog[open]')];
             const ready = surfaces.length >= 2 && surfaces.every(surface =>
                 surface.getAttribute('data-state') === 'open' &&
                 Number.parseFloat(getComputedStyle(surface).opacity) >= 0.99 &&
@@ -296,11 +296,11 @@ try {
     }
     async function settleAndCapture(file, theme, zoom) {
         await capturePage.waitForFunction(() => {
-            const surfaces = [...document.querySelectorAll(':popover-open, dialog[open]')];
+            const surfaces = [...document.querySelectorAll('[data-state="open"], dialog[open]')];
             return surfaces.length >= 2 && surfaces.every(surface => surface.getAttribute('data-state') === 'open');
         });
         await waitForSettledSurfaces(capturePage);
-        const surfaces = await capturePage.evaluate(() => [...document.querySelectorAll(':popover-open, dialog[open]')].map(surface => ({
+        const surfaces = await capturePage.evaluate(() => [...document.querySelectorAll('[data-state="open"], dialog[open]')].map(surface => ({
             id: surface.id || surface.tagName.toLowerCase(),
             tag: surface.tagName.toLowerCase(),
             state: surface.getAttribute('data-state'),
@@ -334,12 +334,12 @@ try {
 
     await capturePage.getByRole('button', { name: '打开独立对话框' }).click();
     await capturePage.locator('dialog.ui-dialog[open]').waitFor();
-    await capturePage.waitForFunction(() => [...document.querySelectorAll(':popover-open, dialog[open]')]
+    await capturePage.waitForFunction(() => [...document.querySelectorAll('[data-state="open"], dialog[open]')]
         .every(surface => surface.getAttribute('data-state') === 'open'));
     await waitForSettledSurfaces(capturePage);
-    await capturePage.waitForFunction(() => [...document.querySelectorAll(':popover-open, dialog[open]')]
+    await capturePage.waitForFunction(() => [...document.querySelectorAll('[data-state="open"], dialog[open]')]
         .every(surface => Number.parseFloat(getComputedStyle(surface).opacity) >= 0.99));
-    const dialogSurfaces = await capturePage.evaluate(() => [...document.querySelectorAll(':popover-open, dialog[open]')].map(surface => ({
+    const dialogSurfaces = await capturePage.evaluate(() => [...document.querySelectorAll('[data-state="open"], dialog[open]')].map(surface => ({
         id: surface.id || surface.tagName.toLowerCase(),
         tag: surface.tagName.toLowerCase(),
         state: surface.getAttribute('data-state'),

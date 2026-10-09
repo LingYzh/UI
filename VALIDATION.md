@@ -1,5 +1,69 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-09 UI 0.4.0 发布前完整门禁
+
+用户授权先合并 UI main 并正式发0.4.0，再从官方 npm 适配 UAH；本节覆盖最新发布源码。Node24.19.0，完整 typecheck、307/307测试（fail/skip均0）、docs/lib构建通过；Electron UI 21组遍历173原URL、27截图、errors=[]。feedback 7组/17截图、controls 6组/14截图通过。打包白名单541文件，公开exports全部包含。Vite仅保留大chunk提示。
+
+TabsWindow属性/事件专项11组、DOM容器专项10组通过。Root复核当前完整UI的Snackbar/Tabs截图及feedback菜单/抽屉截图；之前的家族导航和适配器视觉验收仍保留原证据。
+
+原始失败未删除：Snackbar家族选择器歧义、chip路由及复用动画节点定位已修正；controls等待无限动画的卡住改为只等待有限动画。feedback发现的UButton组件触发器引用丢失、Dialog鼠标打开后Escape捕获阶段未标记焦点归还均修复产品源码；等待离场后仍保留实际焦点断言。最终完整重跑通过，历史attempt保存在发布证据中。
+
+版本化证据：`docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-release-0.4.0.json`，记录各门禁attempt、报告、541包文件及额外配置/测试的SHA256。原始日志与截图在本机忽略的artifacts中。UAH在此发布前检查点仍消费0.3.2，正式消费验证按用户要求在发布后执行；本次不是全库Vuetify深度审计完成声明。
+
+## 2026-10-09 已批准组件合并落地
+
+本批使用家族收纳、兼容适配和Tabs调用方迁移已实现。原173页/158公开组件保留，使用目录125入口、26家族与16分类；两套源代码浏览器测试均无运行错误/Vue警告，hash未在运行中变化。
+
+| 专项命令 | 结果 |
+| --- | --- |
+| `node --import tsx --test tests/api-reference.test.ts tests/docs-navigation.test.js tests/layout.test.ts` | 21/21 |
+| `node node_modules/vue-tsc/bin/vue-tsc.js --noEmit -p tests/tsconfig.component-consolidation.json` | 通过 |
+| `node tests/desktop/component-consolidation.mjs` | 12组，通过；Chrome channel + Vite源码夹具 |
+| `node tests/desktop/docs-navigation-groups.mjs` | 57项，通过；8张截图；旧子页裸hash定位API并保留URL |
+| `git -c core.whitespace=cr-at-eol diff --check` | 通过 |
+
+使用Node24.19.0。组件报告 `artifacts/component-audit-root/component-consolidation/result.json`，文档报告 `artifacts/full-alignment/docs-navigation-groups/report.json`；版本化副本 `docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-component-consolidation.json`。Root检查8文档截图和1组件截图，明暗、1440/900/390视口及125% DPR模拟无横向溢出；125%模拟不是原生Ctrl+缩放。
+
+先前fixture错误与Progress过渡中间帧读数已修正，并修复了真实Menu Tab位置缺陷；最终复跑覆盖正反遍历、panel/track/整行插槽、禁用/keepOpen、Host六位置、6000/5000ms默认、独立暂停及卸载。独立TabPanel兼容保留，正常真实示例已迁Window/Item。完整构建、完整测试和Electron UI未在本批运行，尚未提交/推送/发布。详见 CONSOLIDATION-IMPLEMENTATION-2026-10-09.md。
+
+## 2026-10-09 demo 分类与折叠导航
+
+本批仅改变 demo 导航分类、交互与顺序；173页面、158组件及旧hash全部保留。用户要求合并候选先列清单，未执行合并。
+
+| 检查 | 结果 |
+| --- | --- |
+| `tests/docs-navigation.test.js` | 5/5：16组全覆盖、无重复、关键归类、中文/API/描述搜索与路径 |
+| `tests/layout.test.ts` | 8/8：公开导出与页面对应、真实示例与manifest继续一致 |
+| UiPreview Vue script/template 编译 | 通过 |
+| `tests/desktop/docs-navigation-groups.mjs` | 45项：真实 Vite 源码 + Chrome，初始/多组展开、鼠标/键盘、折叠项不可聚焦、搜索恢复、route/Back/前后篇、手机关闭与布局 |
+| 浅深与窄屏 | 1440/900/390 CSS px及125%浏览器缩放模拟（312×800 CSS px、DPR1.25、截图390×1000物理px，并非原生Ctrl+缩放）；173项展开时无行/页面横向溢出；另有默认折叠截图供Root复核 |
+| Runtime 与来源 | 0 pageerror / Vue警告 / console.error；11个源文件运行前后SHA一致 |
+
+本机报告和截图：`artifacts/full-alignment/docs-navigation-groups/`。版本化报告：`docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-docs-navigation-groups.json`。`tests/desktop/docs-navigation.mjs` 更新为先展开全部组再做文字检查，Home目标为首组按钮，长API名称允许省略并保留title；本次未运行该构建后Electron专项。未运行完整构建/全库门禁、未提交/推送/发布。
+
+## 2026-10-09 交接六组续作专项完成
+
+基于 UI 8873720 继续 NEXT-SESSION 中六组交接范围，用户所有默认/模型决策已落实。经济型 Luna/max 执行子代理与一次 ccs-p30db4c/gpt-6-luna/max 审计使用成功；Root 负责方案、共享样式、真实 demo 和最终验收。以下为源码 Vite/安装 Chrome 专项，未运行完整构建或 Electron 全库门禁；历史完整门禁结果仅对应前一检查点。
+
+| 专项 | 最终结果 |
+| --- | --- |
+| API、布局、List、Tree、Stepper helper 单元组合 | 40/40；包含源码 API/示例 5项检查 |
+| 应用布局 API / order 几何 | 6 / 8组；legacy默认、ordered、overlaps、动态次序、嵌套absolute、KeepAlive及真实demo |
+| Stepper 完整协议 | isolated typecheck、11项原专项组合及真实 Chrome 全部断言通过；items/slots/multiple/max/Window/严格editable/本地化/finish |
+| List 完整协议 | 12组；track根焦点、对象值、整行槽、状态/事件/ref与公开focus方法 |
+| Tree 原协议 / 过滤扩展 / 注册与空态 | 15 / 10 / 16项；原完整树级联夹具显式itemsRegistration=props，默认render及取消激活另有新断言 |
+| Overlay/Dialog/Menu DOM 容器 | 10组；15个源文件SHA前后稳定，attach移动保持实例、容器几何、scrim、最高zIndex、焦点、Tab、Router、滚动/125%zoom、KeepAlive、反向/卸载 |
+| 四类显式过渡与遮罩外观 | 6组；false/string/JS done/custom component、实际DOM scrim |
+| 原浮层 / 几何 / 嵌套菜单 / Router返回 | 12 / 14 / 11 / 8组 |
+| 共享输入 Menu / ColorInput Menu / Tooltip Router返回 | 16 / 10 / 7组 |
+| 真实 List/Tree/Stepper 与垂直新组件 demo | 19组；11张截图，源码SHA前后稳定，Root复核浅/深、390px和125%缩放 |
+
+上述浏览器专项记录页面/控制台/Vue错误或警告、window error/未处理拒绝的项目均为空。相关 isolated tsconfig（app-layout-api、stepper-completion、list-completion、treeview-completion、tree-registration、overlay-protocols、overlay-geometry、overlay-container、tooltip-back）已通过。API生成并校验158个公开组件、2704属性/模型、324事件、613插槽、541公开成员；声明数量不代表全库行为兼容完成。
+
+新增五组真实demo和两个垂直组件示例，源码/复制示例/API同步。Root修复动态Teleport旧target、一次Escape/外部click关闭多层、Dialog省略scrim/初始焦点、DateInput同次focus-click关闭、Autocomplete初始虚拟选中项滚动，以及Stepper省略Boolean覆盖rules状态的问题。
+
+原始报告在 `artifacts/{full-alignment,component-audit-root}/` 各专项目录；纳入版本管理的恢复索引与最终源码SHA见 `docs/component-audit-2026-10-08/checkpoint-evidence/2026-10-09-handoff-completion.json`。截图为本机忽略文件，Root视觉范围只覆盖本批真实demo及布局/浮层，不宣称全库视觉验收。`git diff --check`通过。UI未提交/推送/发包；UAH 86f75d4 工作区干净，仍消费正式npm0.3.2。提交时仍须完整 typecheck/test/docs+lib build/Electron UI 门禁。
+
 ## 2026-10-09 当前批次提交前最终检查
 
 用户要求完成正在处理的批次、更新交接、提交推送后停止。全库深度对齐尚未完成；本节覆盖此次累计变更的完整门禁及最后一批专项，取代下文仍执行或尚未运行完整检查的历史状态。

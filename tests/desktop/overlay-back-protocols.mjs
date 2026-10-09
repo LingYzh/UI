@@ -33,7 +33,7 @@ const report = { generatedAt: new Date().toISOString(), routerVersion: '4.6.3', 
 let browser;
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage();
     page.on('pageerror', error => report.errors.push(error.message));
     page.on('console', message => { if (message.type() === 'warning' && message.text().includes('[Vue warn]')) report.warnings.push(message.text()); });
@@ -61,7 +61,7 @@ try {
     report.checks.push('Dialog uses the same default back protocol.');
     await set({ dialog: true });
     await set({ menu: true });
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface')?.matches(':popover-open'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await back();
     assert.equal((await read()).route, '/two');
     assert.equal((await read()).menu, false);

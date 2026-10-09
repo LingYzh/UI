@@ -10,7 +10,7 @@ await mkdir('artifacts', { recursive: true });
 const evidence = await mkdtemp(path.resolve('artifacts/feedback-'));
 const server = await preview({ build: { outDir: path.resolve('dist/docs') }, preview: { host: '127.0.0.1', port: 0, strictPort: false } });
 const base = `${server.resolvedUrls.local[0]}index.html`;
-const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'profile'), UAH_UI_PREVIEW_URL: `${base}#/badge` };
+const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'profile'), UAH_UI_PREVIEW_URL: `${base}#/chip` };
 delete env.ELECTRON_RUN_AS_NODE;
 delete env.UAH_DEV_URL;
 const app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], env });
@@ -53,7 +53,7 @@ try {
     });
 
     // Badge：语义色与自定义颜色，移除按钮名称与描述关联。
-    await open(page, 'badge');
+    await open(page, 'chip');
     const custom = await region(page, '自定义颜色与移除');
     const remove = custom.getByRole('button', { name: '移除' }).first();
     assert.equal(await remove.evaluate((element) => document.getElementById(element.getAttribute('aria-describedby')).textContent), '工作');
@@ -86,7 +86,7 @@ try {
     // Spinner：减少动效放慢而不停止。
     await theme(page, 'light');
     await open(page, 'spinner');
-    const spinner = page.locator('.ui-spinner > svg').first();
+    const spinner = page.locator('.ui-spinner .ui-spinner-circular svg').first();
     assert.equal(await spinner.evaluate((element) => getComputedStyle(element).animationDuration), '0.8s');
     await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'true'; });
     assert.equal(await spinner.evaluate((element) => getComputedStyle(element).animationDuration), '1.6s');
@@ -105,7 +105,9 @@ try {
     await open(page, 'menu');
     const items = await region(page, '操作与勾选菜单');
     const trigger = items.getByRole('button', { name: /全部账号/ });
-    await trigger.click();
+    // DOM menus move initial focus when opened from the keyboard.
+    await trigger.focus();
+    await page.keyboard.press('Enter');
     const menu = page.getByRole('menu', { name: /全部账号/ });
     await menu.waitFor();
     // toggle 事件异步派发，等待 v-model 同步回触发器与初始焦点。
@@ -125,6 +127,8 @@ try {
     await page.keyboard.press('Escape');
     await menu.waitFor({ state: 'hidden' });
     await page.waitForFunction((element) => element.getAttribute('aria-expanded') === 'false', await trigger.elementHandle());
+    // aria-hidden changes at leave start; focus returns only after the DOM layer finishes leaving.
+    await page.waitForFunction((element) => element === document.activeElement, await trigger.elementHandle());
     assert.equal(await trigger.evaluate((element) => element === document.activeElement), true);
     await trigger.click();
     await page.getByRole('menuitemcheckbox', { name: '测试分组' }).click();
@@ -139,7 +143,8 @@ try {
     await page.getByRole('menu', { name: /标签/ }).waitFor({ state: 'hidden' });
     // 面板：Tab 在表单内移动，Esc 关闭。
     const panelCard = await region(page, '自由内容面板');
-    await panelCard.getByRole('button', { name: '筛选' }).click();
+    await panelCard.getByRole('button', { name: '筛选' }).focus();
+    await page.keyboard.press('Enter');
     const panel = page.getByRole('dialog', { name: '筛选账号' });
     await panel.waitFor();
     await page.waitForFunction(() => document.activeElement?.getAttribute('placeholder') === '邮箱或昵称');
@@ -153,7 +158,8 @@ try {
     await panel.waitFor({ state: 'hidden' });
     // 焦点仍在初始输入框时，Esc 同样关闭面板并把焦点还给触发器。
     const filterTrigger = panelCard.getByRole('button', { name: '筛选' });
-    await filterTrigger.click();
+    await filterTrigger.focus();
+    await page.keyboard.press('Enter');
     await panel.waitFor();
     await page.waitForFunction(() => document.activeElement?.getAttribute('placeholder') === '邮箱或昵称');
     await page.keyboard.press('Escape');
@@ -219,6 +225,7 @@ try {
     }
     await page.keyboard.press('Escape');
     await drawer.waitFor({ state: 'hidden' });
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('button')).find(element => element.textContent.trim() === '打开抽屉') === document.activeElement);
     assert.equal(await sizes.getByRole('button', { name: '打开抽屉' }).evaluate((element) => element === document.activeElement), true);
     // 减少动效：共享 .ui-dialog 的 !important 规则同样关闭抽屉的滑入动画。
     await page.evaluate(() => { document.documentElement.dataset.reducedMotion = 'true'; });

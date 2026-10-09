@@ -1,0 +1,18 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UiProgress.vue",
+        "../src/ui/UiSpinner.vue",
+        "../src/ui/UiMenuItem.vue",
+        "../src/ui/UiSnackbarHost.vue",
+        "../src/ui/USnackbar.vue",
+        "../src/ui/UiMenu.vue",
+        "../src/ui/UList.vue",
+        "../src/ui/UiTabsWindow.vue",
+        "../src/ui/UiTabsWindowItem.vue"
+    ]
+}

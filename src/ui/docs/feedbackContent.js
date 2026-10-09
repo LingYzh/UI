@@ -84,7 +84,7 @@ export const feedbackPages = [
         "name": "UiMenu",
         "group": "操作组件",
         "kind": "component",
-        "description": "由按钮打开的操作菜单或自由内容面板；原生顶层显示，不会被滚动容器或弹窗裁切。",
+        "description": "由按钮打开的操作菜单或自由内容面板；默认挂载到 body 的 DOM 浮层，支持指定容器及层级。",
         "examples": [
             {
                 "id": "menu-items",
@@ -102,11 +102,11 @@ export const feedbackPages = [
             }
         ],
         "notes": [
-            "activator 必须是按钮（UButton 或原生 button）：打开与关闭由原生 popovertarget 负责，点击外部关闭后不会被同一次点击重新打开。",
+            "activator 插槽的 props 绑定到触发按钮，库统一管理点击、键盘与焦点还原。",
             "UMenuItem：checked 为布尔值时成为 menuitemcheckbox；disabled、danger、keep-open；插槽 icon / default / trailing。",
             "辅助 class：ui-menu-label（分组标题）、ui-menu-divider（hr 分隔线）。",
-            "ref 暴露 close()。菜单使用 popover=\"auto\"，同一时间只保留一个自动弹层。",
-            "依赖 CSS anchor positioning 与 Popover API（Chromium 125+）。",
+            "ref 暴露 close()；attach 支持选择器、HTMLElement 或 true（原位渲染），contained/absolute 将浮层定位在容器内，zIndex 决定 DOM 层级。",
+            "普通菜单的 Tab/Shift+Tab 遍历内部可聚焦项，到边界关闭；panel 模式保留自然 Tab 顺序。嵌套菜单逐级管理关闭与焦点。",
             "鼠标／触摸完成操作后释放当前控件焦点；键盘 Enter、Space 和方向键操作保留焦点。打开的菜单／弹窗仍管理内部焦点，关闭时仅为键盘操作恢复触发器焦点；文本输入保留编辑焦点。"
         ]
     },

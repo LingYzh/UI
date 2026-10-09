@@ -3,6 +3,11 @@ import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { formatDemoSource } from './demo-source-format.mjs';
 const geometrySource = await formatDemoSource(await readFile(new URL('../src/ui/docs/DialogGeometryDemo.vue', import.meta.url), 'utf8'));
 const layoutSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/LayoutBasicsDemo.vue', import.meta.url), 'utf8'));
+const layoutOrderSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/LayoutOrderDemo.vue', import.meta.url), 'utf8'));
+const overlayPresentationSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/OverlayPresentationDemo.vue', import.meta.url), 'utf8'));
+const treeFilterSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/TreeFilterDemo.vue', import.meta.url), 'utf8'));
+const stepperItemsSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/StepperItemsDemo.vue', import.meta.url), 'utf8'));
+const listNavigationSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ListNavigationDemo.vue', import.meta.url), 'utf8'));
 const textareaSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/TextareaProtocolDemo.vue', import.meta.url), 'utf8'));
 const switchSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/SwitchProtocolsDemo.vue', import.meta.url), 'utf8'));
 const selectionMenuSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/SelectionMenuDemo.vue', import.meta.url), 'utf8'));
@@ -14,6 +19,15 @@ await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), 
 await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const selectionMenuExample = ' + JSON.stringify({ id: 'selection-menu-protocols', title: '菜单位置、滚动与草稿', description: '选择与日期输入复用共享 Menu；可配置定位、滚动策略和内容保留。', fullSource: true, code: selectionMenuSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
 await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const tabsSelectionExample = ' + JSON.stringify({ id: 'tabs-selection-protocols', title: '对象值、空值与多选', description: '标签与内容使用稳定注册 ID；对象副本、null 标签和最多两项多选使用真实组件。', fullSource: true, code: tabsSelectionSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
 await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const menuBranchExample = ' + JSON.stringify({ id: 'menu-branch-protocols', title: '嵌套菜单与缓存实例', description: '菜单分支的外部关闭、KeepAlive 停用和独立对话框边界使用真实组件。', fullSource: true, code: menuBranchSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const layoutOrderExample = ' + JSON.stringify({ id: 'layout-order-protocols', title: '显式空间分配与重叠', description: '默认保留原布局；layoutMode="ordered" 按 order 分配空间，overlaps 调整命名栏的交界。', fullSource: true, code: layoutOrderSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), '\nexport const overlayPresentationExample = ' + JSON.stringify({ id: 'overlay-presentation-protocols', title: '遮罩与过渡', description: 'Dialog、Overlay、Menu、Tooltip 显式过渡使用真实进入与离开生命周期；遮罩颜色和透明度可配置。', fullSource: true, code: overlayPresentationSource.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+for (const [name, id, title, description, source] of [
+    ['treeFilterExample', 'tree-filter-protocols', '筛选与行内操作', '重音筛选、暂停筛选、节点类型和操作插槽使用真实树组件。', treeFilterSource],
+    ['stepperItemsExample', 'stepper-items-protocols', '自动步骤与规则', 'items 自动生成步骤和内容；垂直步骤逐项展开，规则限制继续操作。', stepperItemsSource],
+    ['listNavigationExample', 'list-navigation-protocols', '键盘定位与整行插槽', '对象值、根节点键盘导航和整行 item 插槽使用真实列表。', listNavigationSource]
+]) {
+    await appendFile(new URL('../src/ui/docs/geometryContent.js', import.meta.url), `\nexport const ${name} = ` + JSON.stringify({ id, title, description, fullSource: true, code: source.replaceAll("from '../index'", "from '@lingyzh/ui'") }, null, 4) + ';\n');
+}
 const families = [
     ['内容组件', 'alignment-code', '', '行内代码', ['UCode']],
     ['导航组件', 'alignment-slide', '', '通用滑动选择', ['USlideGroup', 'USlideGroupItem']],
@@ -32,7 +46,7 @@ const families = [
     ['表单组件', 'completion-dates', 'DataCompletionDemo', '日期、时间与确认编辑', ['UDateInput', 'UDatePicker', 'UTimePicker', 'UCalendar', 'UPicker', 'UConfirmEdit']],
     ['反馈组件', 'completion-progress', 'DataCompletionDemo', '确定与不确定的进度', ['UProgressCircular', 'UProgressLinear']],
     ['容器组件', 'completion-panels', 'ExperienceCompletionDemo', '折叠组与展开过渡', ['UExpansionPanels', 'UExpansionPanel', 'UExpansionPanelTitle', 'UExpansionPanelText']],
-    ['导航组件', 'completion-stepper', 'ExperienceCompletionDemo', '步骤与当前内容共享模型', ['UStepper', 'UStepperVertical', 'UStepperItem', 'UStepperWindow', 'UStepperWindowItem', 'UStepperActions']],
+    ['导航组件', 'completion-stepper', 'ExperienceCompletionDemo', '步骤与当前内容共享模型', ['UStepper', 'UStepperVertical', 'UStepperVerticalItem', 'UStepperVerticalActions', 'UStepperItem', 'UStepperWindow', 'UStepperWindowItem', 'UStepperActions']],
     ['容器组件', 'completion-window', 'ExperienceCompletionDemo', '窗口、懒挂载与轮播', ['UWindow', 'UWindowItem', 'UCarousel', 'UCarouselItem']],
     ['内容组件', 'completion-media', 'ExperienceCompletionDemo', '图片、比例、懒显示与快捷键', ['UImg', 'UResponsive', 'UHover', 'UHotkey', 'UKbd', 'ULazy', 'UNoSsr', 'UParallax']],
     ['内容组件', 'completion-loading', 'ExperienceCompletionDemo', '滚动加载与下拉刷新', ['UInfiniteScroll', 'UPullToRefresh']],
@@ -61,7 +75,16 @@ titles.USlideGroup = '滑动选择组';
 titles.USlideGroupItem = '滑动选择项';
 titles.USnackbar = '受控消息';
 titles.USnackbarQueue = '消息队列';
+titles.UStepperVerticalItem = '垂直步骤项';
+titles.UStepperVerticalActions = '垂直步骤操作';
 const focusNotes = {
+    UList: 'navigationStrategy="track" 时根节点为唯一键盘入口，aria-activedescendant 指向可见可用行；默认 focus 保留逐行焦点。对象值由 valueComparator 比较，activeStrategy 默认 single-independent，multiple 只控制选择。item 插槽直接替换整行，绑定作用域 props；title 插槽只替换标题。',
+    UListGroup: 'activator 提供 props 和 isOpen；根 disabled/readonly 影响展开与操作。公开 open/select 可以传明确布尔值与原始事件，路径使用业务值。',
+    UTreeview: 'items 可省略；默认按渲染节点注册（itemsRegistration="render"），"props" 使用完整树。activeStrategy 默认 single-independent，重复激活可取消；默认显示最近语言的无数据文案，hideNoData 可关闭。筛选支持模式、按键回调、重音和 noFilter，模型在收起或筛选时保持。',
+    UStepper: 'items 自动生成 header/window/actions，手动 default 插槽继续保留。editable 默认严格关闭，显式开启可点击标题；操作文案跟随最近语言。multiple 支持 max，多选窗口按步骤注册顺序显示首项，next/prev 只保留跳转目标。',
+    UStepperVertical: 'items 自动生成垂直 Item/Actions，逐项展开，规则不通过时阻止继续；最后一步继续会实际发出 click:finish。手动步骤组合保留。',
+    UStepperVerticalItem: '标题与正文分别替换；状态作用域包含 canEdit/hasError/hasCompleted/active，规则控制继续操作，group:selected 和操作事件透传。',
+    UStepperVerticalActions: 'prev/next 作用域提供可绑定的 props，文案支持最近语言和显式文字；disabled 可分别控制前后按钮，最后一步由 Item 上下文转成真实完成事件。',
     UField: 'UField现为输入装饰表面：七种variant、内侧图标、clear/loader/label插槽、focused模型和标准default scope。输入值由使用者管理。旧布局组件更名UFormField，UiField仍指向旧实现；description/error/layout/controlAttrs保留为扩展。',
     UPicker: 'UPicker现为标题/header/body/actions容器，支持横向布局、分隔线和尺寸。原items/model选项列表能力保留，独立旧实现更名UOptionPicker。',
     UOptionPicker: '原UPicker选项列表实现更名保留；本轮没有安排弃用日期。新UPicker承载Vuetify容器职责，并可选择开启items扩展。',
@@ -97,7 +120,7 @@ const focusNotes = {
     UColorPicker: '保留默认黑色、HSV 滑块与 hex 输入。显式 hideCanvas=false 开启饱和度/明度二维面板，mode 切换 hex/hexa/rgb/rgba/hsl/hsla；对象模型保留颜色通道类型与透明度。',
     UNumberInput: '保留默认小数精度与左右分置按钮；controlVariant=end 显式末端排列，stacked/hidden/inset 支持不同控制配置。只有显式 locale 才本地化显示，模型仍为数字，空模型为 null。',
     UMain: '继承应用栏布局偏移，tag 与六项尺寸实际消费；scrollable 开启独立正文滚动，不改变外层布局。',
-    UOverlay: '默认非模态，captureFocus/retainFocus=false，scrollStrategy=none；retainFocus=true 显式限制焦点。内容懒挂载，关闭动画完成后卸载，eager=true 保留；default/activator 的 isActive 为 Ref。',
+    UOverlay: '默认普通DOM浮层，支持attach/contained/absolute及zIndex；默认非模态，captureFocus/retainFocus=false，scrollStrategy=none。retainFocus=true显式限制焦点；scrim支持布尔/颜色，opacity控制遮罩透明度。内容懒挂载，关闭动画完成后卸载，eager=true保留；default/activator的isActive为Ref。',
     UFileInput: '鼠标选择文件不显示键盘焦点框；Tab 进入时显示焦点提示。',
     UFileUpload: '上传区域仅在键盘焦点或拖放文件时高亮；鼠标点击选择文件不保持焦点高亮。',
     UColorInput: '颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。'

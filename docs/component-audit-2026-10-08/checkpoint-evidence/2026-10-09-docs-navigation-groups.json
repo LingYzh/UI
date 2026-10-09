@@ -1,0 +1,534 @@
+{
+    "test": "docs-navigation-groups",
+    "startedAt": "2026-10-09T04:09:44.741Z",
+    "browser": "Chrome channel via Playwright",
+    "expected": {
+        "pageCount": 173,
+        "componentCount": 158,
+        "groupCount": 16
+    },
+    "sourceHashesBefore": {
+        "index.html": "6fb90233fd55bef1a8e0d3befea599d97c9a369d2d5b7bb7e29b321f1b72517e",
+        "src/main.js": "fe7c44fa01e03442902a2e94321537f42e728d32d21b4e85bcae91ab912becd2",
+        "src/ui/UiPreview.vue": "fb2a9b8e6dbd5cccb4e70aa9049ce5e1d417beb5a73a33258a705ca52c67f860",
+        "src/ui/docs/content.js": "0eb291487f962368612004a58a2ab528a81ad61e3d45c6cb210c199a40fcc9ba",
+        "src/ui/docs/navigation.js": "eb362cc4629c7ff9061c9dded48c79e598f5bfb3caa3dec562f9da94d5d02bf6",
+        "src/ui/docs/docs.css": "84fbbd00ae9c5f951969ad332c10f10294081b6b9f9d5a3391d011eee2adcc63",
+        "src/ui/UList.vue": "826c7b9ac103f1f8933996ed2490322185c03f4481c631cbab7e7aa61abbf469",
+        "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+        "src/ui/UListItem.vue": "457642fd4c9c4c0cf6129afa47c57c7831356c3131da2e9bbdeaed894c5b6503",
+        "src/ui/UiCollapse.vue": "0e3a47b708e4ea1c16b9986c7502c65fc2480ccfeae7729e9392048aca21b4a9",
+        "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c"
+    },
+    "sourceHashesAfter": {
+        "index.html": "6fb90233fd55bef1a8e0d3befea599d97c9a369d2d5b7bb7e29b321f1b72517e",
+        "src/main.js": "fe7c44fa01e03442902a2e94321537f42e728d32d21b4e85bcae91ab912becd2",
+        "src/ui/UiPreview.vue": "fb2a9b8e6dbd5cccb4e70aa9049ce5e1d417beb5a73a33258a705ca52c67f860",
+        "src/ui/docs/content.js": "0eb291487f962368612004a58a2ab528a81ad61e3d45c6cb210c199a40fcc9ba",
+        "src/ui/docs/navigation.js": "eb362cc4629c7ff9061c9dded48c79e598f5bfb3caa3dec562f9da94d5d02bf6",
+        "src/ui/docs/docs.css": "84fbbd00ae9c5f951969ad332c10f10294081b6b9f9d5a3391d011eee2adcc63",
+        "src/ui/UList.vue": "826c7b9ac103f1f8933996ed2490322185c03f4481c631cbab7e7aa61abbf469",
+        "src/ui/UListGroup.vue": "01d10cac40a4cb1d7acf19206bacaf154c7d386dd68334caba08f1eb9f438269",
+        "src/ui/UListItem.vue": "457642fd4c9c4c0cf6129afa47c57c7831356c3131da2e9bbdeaed894c5b6503",
+        "src/ui/UiCollapse.vue": "0e3a47b708e4ea1c16b9986c7502c65fc2480ccfeae7729e9392048aca21b4a9",
+        "src/ui/list-completion.ts": "50b12e6757477b6a5a44ef7054847ff5e307b403cd7bf0d6f3a99d33ae95986c"
+    },
+    "sourceChangedDuringRun": [],
+    "zoom125Simulation": {
+        "method": "Playwright browser-context deviceScaleFactor emulation; not native browser Ctrl+ zoom",
+        "cssViewport": {
+            "width": 312,
+            "height": 800
+        },
+        "deviceScaleFactor": 1.25,
+        "equivalentPhysicalViewport": {
+            "width": 390,
+            "height": 1000
+        },
+        "actualViewport": {
+            "innerWidth": 312,
+            "innerHeight": 800,
+            "devicePixelRatio": 1.25
+        },
+        "screenshotPixels": {
+            "width": 390,
+            "height": 1000
+        },
+        "layoutMetrics": {
+            "viewportWidth": 312,
+            "devicePixelRatio": 1.25,
+            "documentWidth": 312,
+            "bodyWidth": 312,
+            "sidebarWidth": 279,
+            "sidebarScrollWidth": 279,
+            "expandedVisibleRows": 173,
+            "rowOverflow": []
+        }
+    },
+    "screenshots": [
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\default-groups-light-wide.png",
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\light-wide-1440.png",
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\dark-narrow-900.png",
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\light-mobile-390.png",
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\dark-page-zoom-125-312.png",
+        "E:\\WebstormProjects\\UI\\artifacts\\full-alignment\\docs-navigation-groups\\default-groups-dark-mobile.png"
+    ],
+    "checks": [
+        {
+            "name": "renders all navigation categories in contract order",
+            "passed": true,
+            "details": {
+                "actual": [
+                    "getting-started",
+                    "foundations",
+                    "application",
+                    "containment",
+                    "navigation",
+                    "form-inputs-and-controls",
+                    "data-and-display",
+                    "grids",
+                    "selection",
+                    "feedback",
+                    "images-and-icons",
+                    "pickers",
+                    "providers",
+                    "miscellaneous",
+                    "uah-extensions",
+                    "services"
+                ],
+                "expected": [
+                    "getting-started",
+                    "foundations",
+                    "application",
+                    "containment",
+                    "navigation",
+                    "form-inputs-and-controls",
+                    "data-and-display",
+                    "grids",
+                    "selection",
+                    "feedback",
+                    "images-and-icons",
+                    "pickers",
+                    "providers",
+                    "miscellaneous",
+                    "uah-extensions",
+                    "services"
+                ]
+            }
+        },
+        {
+            "name": "renders all pages without dropping routes",
+            "passed": true,
+            "details": {
+                "rendered": 173,
+                "expected": 173
+            }
+        },
+        {
+            "name": "renders every page route once",
+            "passed": true,
+            "details": {
+                "unique": 173,
+                "rendered": 173
+            }
+        },
+        {
+            "name": "renders 158 component pages in navigation",
+            "passed": true,
+            "details": {
+                "componentPages": 158
+            }
+        },
+        {
+            "name": "opens the start category by default",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "opens the current page category by default",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "keeps unrelated categories collapsed initially",
+            "passed": true,
+            "details": {
+                "actual": "false",
+                "expected": "false"
+            }
+        },
+        {
+            "name": "marks the current route with aria-current",
+            "passed": true,
+            "details": {
+                "actual": "page",
+                "expected": "page"
+            }
+        },
+        {
+            "name": "pointer expands a category",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "multiple strategy preserves other open categories",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "pointer collapses a category",
+            "passed": true,
+            "details": {
+                "actual": "false",
+                "expected": "false"
+            }
+        },
+        {
+            "name": "collapsed pages are inert and hidden from assistive technology",
+            "passed": true,
+            "details": {}
+        },
+        {
+            "name": "collapsed pages cannot receive focus",
+            "passed": true,
+            "details": {
+                "attempted": "#/bottom-sheet",
+                "activeAfterAttempt": ""
+            }
+        },
+        {
+            "name": "Enter toggles a category open",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "Space toggles a category closed",
+            "passed": true,
+            "details": {
+                "actual": "false",
+                "expected": "false"
+            }
+        },
+        {
+            "name": "keyboard navigation has visible targets",
+            "passed": true,
+            "details": {
+                "targets": 24
+            }
+        },
+        {
+            "name": "ArrowDown moves to the next visible navigation item",
+            "passed": true,
+            "details": {
+                "actual": "href:#/overview",
+                "expected": "href:#/overview"
+            }
+        },
+        {
+            "name": "ArrowUp wraps to the last visible navigation item",
+            "passed": true,
+            "details": {
+                "actual": "id:docs-group-services-activator",
+                "expected": "id:docs-group-services-activator"
+            }
+        },
+        {
+            "name": "Home moves to the first visible navigation item",
+            "passed": true,
+            "details": {
+                "actual": "id:docs-group-getting-started-activator",
+                "expected": "id:docs-group-getting-started-activator"
+            }
+        },
+        {
+            "name": "End moves to the last visible navigation item",
+            "passed": true,
+            "details": {
+                "actual": "id:docs-group-services-activator",
+                "expected": "id:docs-group-services-activator"
+            }
+        },
+        {
+            "name": "a manually opened category is recorded",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "API-name search shows the matching filtered pages",
+            "passed": true,
+            "details": {
+                "actual": [
+                    "input"
+                ],
+                "expected": [
+                    "input"
+                ]
+            }
+        },
+        {
+            "name": "search expands every category containing results",
+            "passed": true,
+            "details": {
+                "actual": [
+                    "form-inputs-and-controls"
+                ],
+                "expected": [
+                    "form-inputs-and-controls"
+                ]
+            }
+        },
+        {
+            "name": "zero-result search removes all page links",
+            "passed": true,
+            "details": {
+                "actual": 0,
+                "expected": 0
+            }
+        },
+        {
+            "name": "clearing search restores manually opened categories",
+            "passed": true,
+            "details": {
+                "actual": [
+                    "getting-started",
+                    "grids",
+                    "providers"
+                ],
+                "expected": [
+                    "getting-started",
+                    "grids",
+                    "providers"
+                ]
+            }
+        },
+        {
+            "name": "Enter opens the first filtered page and clears search",
+            "passed": true,
+            "details": {
+                "actual": "#/list-group",
+                "expected": "#/list-group"
+            }
+        },
+        {
+            "name": "search destination category expands automatically",
+            "passed": true,
+            "details": {
+                "pageId": "list-group"
+            }
+        },
+        {
+            "name": "previous and next links follow navigation category order",
+            "passed": true,
+            "details": {
+                "actual": [
+                    "#/collapse",
+                    "#/app-bar-title"
+                ],
+                "expected": [
+                    "#/collapse",
+                    "#/app-bar-title"
+                ]
+            }
+        },
+        {
+            "name": "next-page link follows the navigation order",
+            "passed": true,
+            "details": {
+                "actual": "#/app-bar-title",
+                "expected": "#/app-bar-title"
+            }
+        },
+        {
+            "name": "browser Back restores the prior active page",
+            "passed": true,
+            "details": {
+                "actual": "#/grid",
+                "expected": "#/grid"
+            }
+        },
+        {
+            "name": "browser Back keeps the active category expanded",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "deep links expand the destination category",
+            "passed": true,
+            "details": {
+                "actual": "true",
+                "expected": "true"
+            }
+        },
+        {
+            "name": "all categories can remain open together",
+            "passed": true,
+            "details": {
+                "actual": 16,
+                "expected": 16
+            }
+        },
+        {
+            "name": "no horizontal overflow at light-wide-1440",
+            "passed": true,
+            "details": {
+                "viewportWidth": 1440,
+                "devicePixelRatio": 1,
+                "documentWidth": 1440,
+                "bodyWidth": 1440,
+                "sidebarWidth": 319,
+                "sidebarScrollWidth": 319,
+                "expandedVisibleRows": 173,
+                "rowOverflow": []
+            }
+        },
+        {
+            "name": "no horizontal overflow at dark-narrow-900",
+            "passed": true,
+            "details": {
+                "viewportWidth": 900,
+                "devicePixelRatio": 1,
+                "documentWidth": 900,
+                "bodyWidth": 900,
+                "sidebarWidth": 319,
+                "sidebarScrollWidth": 319,
+                "expandedVisibleRows": 173,
+                "rowOverflow": []
+            }
+        },
+        {
+            "name": "mobile sidebar opens at 390",
+            "passed": true,
+            "details": {
+                "width": 390
+            }
+        },
+        {
+            "name": "no horizontal overflow at light-mobile-390",
+            "passed": true,
+            "details": {
+                "viewportWidth": 390,
+                "devicePixelRatio": 1,
+                "documentWidth": 390,
+                "bodyWidth": 390,
+                "sidebarWidth": 319,
+                "sidebarScrollWidth": 319,
+                "expandedVisibleRows": 173,
+                "rowOverflow": []
+            }
+        },
+        {
+            "name": "125% browser-zoom simulation opens the mobile navigation drawer",
+            "passed": true,
+            "details": {
+                "cssViewportWidth": 312,
+                "deviceScaleFactor": 1.25
+            }
+        },
+        {
+            "name": "125% browser-zoom simulation uses a 390x1000 physical viewport without horizontal overflow",
+            "passed": true,
+            "details": {
+                "method": "Playwright browser-context deviceScaleFactor emulation; not native browser Ctrl+ zoom",
+                "cssViewport": {
+                    "width": 312,
+                    "height": 800
+                },
+                "deviceScaleFactor": 1.25,
+                "equivalentPhysicalViewport": {
+                    "width": 390,
+                    "height": 1000
+                },
+                "actualViewport": {
+                    "innerWidth": 312,
+                    "innerHeight": 800,
+                    "devicePixelRatio": 1.25
+                },
+                "screenshotPixels": {
+                    "width": 390,
+                    "height": 1000
+                },
+                "layoutMetrics": {
+                    "viewportWidth": 312,
+                    "devicePixelRatio": 1.25,
+                    "documentWidth": 312,
+                    "bodyWidth": 312,
+                    "sidebarWidth": 279,
+                    "sidebarScrollWidth": 279,
+                    "expandedVisibleRows": 173,
+                    "rowOverflow": []
+                }
+            }
+        },
+        {
+            "name": "Escape closes the mobile sidebar and returns focus to its trigger",
+            "passed": true,
+            "details": {
+                "expanded": "false"
+            }
+        },
+        {
+            "name": "clicking the mobile backdrop closes the sidebar",
+            "passed": true,
+            "details": {}
+        },
+        {
+            "name": "choosing a mobile route closes the sidebar and expands its category",
+            "passed": true,
+            "details": {
+                "route": "#/date-picker"
+            }
+        },
+        {
+            "name": "no browser page errors",
+            "passed": true,
+            "details": {
+                "actual": [],
+                "expected": []
+            }
+        },
+        {
+            "name": "no Vue warnings",
+            "passed": true,
+            "details": {
+                "actual": [],
+                "expected": []
+            }
+        },
+        {
+            "name": "no browser console errors",
+            "passed": true,
+            "details": {
+                "actual": [],
+                "expected": []
+            }
+        }
+    ],
+    "runtime": {
+        "pageErrors": [],
+        "vueWarnings": [],
+        "consoleErrors": []
+    },
+    "success": true,
+    "finishedAt": "2026-10-09T04:10:05.649Z"
+}

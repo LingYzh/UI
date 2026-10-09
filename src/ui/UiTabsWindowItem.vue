@@ -6,6 +6,9 @@ import UWindowItem from './UWindowItem.vue';
 import { windowContextKey } from './window-state';
 import { tabsKey, tabsWindowKey } from './tabs';
 
+// Registration uses a hidden sibling marker, so native attrs need an explicit panel target.
+defineOptions({ inheritAttrs: false });
+
 const rawProps = withDefaults(defineProps<{
     value?: unknown;
     eager?: boolean;
@@ -50,6 +53,7 @@ defineExpose({ element, selected, isSelected: selected, disabled, value });
     <span ref="marker" hidden aria-hidden="true" :data-ui-panel="ticketId" />
     <div
         ref="panelElement"
+        v-bind="$attrs"
         v-focus-modality
         :id="`${context.prefix.value}-panel-${context.token(value)}`"
         class="ui-tab-panel ui-tabs-window-item"

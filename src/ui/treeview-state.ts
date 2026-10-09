@@ -1,4 +1,8 @@
 import type { ItemProperty, ValueComparator } from './selection';
+import { findMatchRanges } from '@vuetify/v0/utilities';
+import type { SelectionFilterMode } from './autocomplete-props';
+
+export type TreeviewFilterFunction = (value: unknown, query: string, item: unknown) => unknown;
 
 export interface TreeviewFilterNode<Id = unknown> {
     id: Id;
@@ -12,7 +16,11 @@ export interface TreeviewFilterOptions<Id = unknown> {
     query: string;
     filterKeys: readonly ItemProperty[];
     getField: (item: unknown, key: ItemProperty) => unknown;
-    customFilter?: (value: unknown, query: string, item: unknown) => unknown;
+    customFilter?: TreeviewFilterFunction;
+    customKeyFilter?: Readonly<Record<string, TreeviewFilterFunction>>;
+    filterMode?: SelectionFilterMode;
+    ignoreAccents?: boolean | 'query' | 'target';
+    noFilter?: boolean;
 }
 
 export interface TreeviewFilterState<Id = unknown> {
@@ -22,29 +30,72 @@ export interface TreeviewFilterState<Id = unknown> {
 }
 
 export function filterTreeviewNodes<Id>(options: TreeviewFilterOptions<Id>): TreeviewFilterState<Id> {
-    const { nodes, query, filterKeys, getField, customFilter } = options;
+    const { nodes, query, filterKeys, getField, customFilter, customKeyFilter = {} } = options;
     const matched = new Set<Id>();
     const visible = new Set<Id>();
     const expanded = new Set<Id>();
     const normalizedQuery = query.trim();
+    const customFilterCount = Object.keys(customKeyFilter).length;
 
-    if (!normalizedQuery) {
+    if (options.noFilter || !normalizedQuery && !customFilterCount) {
         nodes.forEach((node) => visible.add(node.id));
         return { matched, visible, expanded };
     }
 
     const byId = new Map(nodes.map((node) => [node.id, node]));
-    const match = (value: unknown, item: unknown) => {
-        if (customFilter) {
-            const result = customFilter(value, normalizedQuery, item);
-            return result !== false && result !== -1 && result !== null && result !== undefined;
-        }
+    const matchResult = (result: unknown) => {
+        if (result === false || result === -1 || result === null || result === undefined) return false;
+        return !Array.isArray(result) || result.length > 0;
+    };
+    const defaultMatch = (value: unknown) => {
         if (value === null || value === undefined) return false;
-        return String(value).toLocaleLowerCase().includes(normalizedQuery.toLocaleLowerCase());
+        if (!normalizedQuery) return true;
+        const ranges = findMatchRanges(String(value), normalizedQuery, {
+            ignoreCase: true,
+            ignoreAccents: options.ignoreAccents ?? false,
+            matchAll: true
+        });
+        return ranges.length > 0;
     };
 
     for (const node of nodes) {
-        if (filterKeys.some((key) => match(getField(node.raw, key), node.raw))) matched.add(node.id);
+        if (!filterKeys.length) continue;
+        let defaultMatches = 0;
+        let customMatches = 0;
+        let allKeysMatch = true;
+
+        for (const key of filterKeys) {
+            const customKey = typeof key === 'string' ? customKeyFilter[key] : undefined;
+            const value = getField(node.raw, key);
+            const result = customKey
+                ? customKey(value, normalizedQuery, node.raw)
+                : customFilter
+                    ? customFilter(value, normalizedQuery, node.raw)
+                    : defaultMatch(value);
+            const isMatch = matchResult(result);
+
+            if (!isMatch) {
+                allKeysMatch = false;
+                if (options.filterMode === 'every') break;
+                continue;
+            }
+
+            if (customKey) customMatches++;
+            else defaultMatches++;
+        }
+
+        const mode = options.filterMode ?? 'intersection';
+        const isMatched = options.filterMode === 'every'
+            ? allKeysMatch
+            : mode === 'some'
+                ? defaultMatches + customMatches > 0
+                : mode === 'union'
+                    ? defaultMatches + customMatches > 0 && (customMatches === customFilterCount || defaultMatches > 0)
+                    : defaultMatches + customMatches > 0
+                        && customMatches === customFilterCount
+                        && (defaultMatches > 0 || filterKeys.length === customFilterCount);
+
+        if (isMatched) matched.add(node.id);
     }
 
     const addDescendants = (id: Id, visited: Set<Id>) => {

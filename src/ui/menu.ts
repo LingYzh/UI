@@ -2,6 +2,8 @@ import type { InjectionKey } from 'vue';
 
 /** UiMenu 提供给菜单项和嵌套菜单的运行时关系。 */
 export interface MenuContext {
+    /** 普通菜单统一处理方向键；自由内容面板将导航交还内容组件。 */
+    ownsNavigation: () => boolean;
     /** 内容选择时按 closeOnContentClick 设置关闭此菜单及其祖先。 */
     close: () => void;
     /** 父菜单关闭或同级互斥时，只关闭此菜单分支。 */
@@ -12,7 +14,7 @@ export interface MenuContext {
     cancelCloseParents: () => void;
     /** 子菜单关闭时，仅在本菜单仍可承载焦点时恢复到触发器。 */
     canRestoreFocus: () => boolean;
-    openChild: (key: object, closeChild: () => void, deactivateChild?: () => void) => void;
+    openChild: (key: object, closeChild: () => void, deactivateChild?: () => void, containsFocus?: () => boolean) => void;
     unregisterChild: (key: object) => void;
 }
 

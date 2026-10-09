@@ -60,7 +60,7 @@ import { UTab, UTabs, UTabsWindow, UTabsWindowItem } from '/src/ui/index.ts';
 
 const state = reactive({
     nestedTab: 'beta', betaDisabled: false, gammaDisabled: false,
-    groupEvents: [], scopeValue: 'scope-b', scopeDisabled: false, scopeUpdates: [],
+    groupEvents: [], panelClicks: 0, scopeValue: 'scope-b', scopeDisabled: false, scopeUpdates: [],
     controlledWindow: null, controlledBound: false, controlledUpdates: [],
     adjacentValue: 'adj-b', legacyValue: 'legacy-b',
     autoValue: 0, autoRows: [{ id: 'alpha' }, { id: 'beta' }, { id: 'gamma' }], autoContinuous: false,
@@ -95,7 +95,7 @@ window.__tabsWindow = { state, refs, counts };
                         <Probe name="alpha">Alpha:{{ selected.value }}:{{ isSelected.value }}:{{ disabled.value }}:{{ value.value }}:{{ element.value?.classList.contains('ui-tab-panel') }}</Probe>
                     </template>
                 </UTabsWindowItem>
-                <UTabsWindowItem :ref="refs.panelBeta" value="beta" @group:selected="state.groupEvents.push('beta:' + $event.value)">
+                <UTabsWindowItem :ref="refs.panelBeta" value="beta" class="consumer-panel" style="padding: 13px" data-consumer="beta" title="Panel details" @click="state.panelClicks += 1" @group:selected="state.groupEvents.push('beta:' + $event.value)">
                     <template #default="{ selected, disabled, value }"><Probe name="beta">Beta:{{ selected.value }}:{{ disabled.value }}:{{ value.value }}</Probe></template>
                 </UTabsWindowItem>
                 <UTabsWindowItem :ref="refs.panelGamma" value="gamma" :disabled="false" @group:selected="state.groupEvents.push('gamma:' + $event.value)">
@@ -236,7 +236,7 @@ const settle = (page, count = 3) => page.evaluate(frames => new Promise(resolve 
 
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, channel: 'chrome' });
     const page = await browser.newPage({ viewport: { width: 1280, height: 1100 } });
     page.on('pageerror', error => report.pageErrors.push(error.message));
     page.on('console', message => {
@@ -256,6 +256,13 @@ try {
     assert.equal(await panelBeta.getAttribute('aria-labelledby'), 'nested-tab-s-beta');
     assert.equal(await panelBeta.getAttribute('aria-hidden'), 'false');
     assert.ok((await panelBeta.getAttribute('class') ?? '').includes('ui-tabs-window-item'));
+    assert.ok((await panelBeta.getAttribute('class') ?? '').includes('consumer-panel'));
+    assert.equal(await panelBeta.getAttribute('data-consumer'), 'beta');
+    assert.equal(await panelBeta.getAttribute('title'), 'Panel details');
+    assert.equal(await panelBeta.evaluate(element => getComputedStyle(element).padding), '13px');
+    await panelBeta.click();
+    assert.equal(await page.evaluate(() => window.__tabsWindow.state.panelClicks), 1);
+    record('native panel attrs and events', 'class, style, native attrs and click listeners reach the semantic panel root.');
     const inactiveAlpha = page.locator('#nested-fixture #nested-panel-s-alpha');
     assert.equal(await inactiveAlpha.getAttribute('inert'), '');
     assert.equal(await inactiveAlpha.getAttribute('tabindex'), '-1');

@@ -242,6 +242,8 @@ export { default as UStepper } from './UStepper.vue';
 export { default as UStepperActions } from './UStepperActions.vue';
 export { default as UStepperItem } from './UStepperItem.vue';
 export { default as UStepperVertical } from './UStepperVertical.vue';
+export { default as UStepperVerticalActions } from './UStepperVerticalActions.vue';
+export { default as UStepperVerticalItem } from './UStepperVerticalItem.vue';
 export { default as UStepperWindow } from './UStepperWindow.vue';
 export { default as UStepperWindowItem } from './UStepperWindowItem.vue';
 export { default as USystemBar } from './USystemBar.vue';

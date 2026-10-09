@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch, type HTMLAttributes } from 'vue';
 import UiButton from './UiButton.vue';
 import UiSpinner from './UiSpinner.vue';
 import { buttonColorStyles } from './button-colors';
@@ -12,7 +12,7 @@ const rawProps = withDefaults(defineProps<SnackbarProps>(), { timeout: 5000, loc
 const props = useDefaults(rawProps, 'USnackbar');
 const model = defineModel<boolean>({ default: false });
 const emit = defineEmits<{ 'after-leave': []; 'after-enter': []; timeout: []; 'click:outside': [event: Event] }>();
-const attrs = useAttrs();
+const attrs = useAttrs() as HTMLAttributes;
 const theme = useUiTheme();
 const surface = ref<HTMLElement>();
 const remaining = ref(0);
@@ -60,7 +60,7 @@ defineExpose({ close, pause, resume, surface });
     <Teleport :to="props.attach || 'body'" :disabled="props.contained || props.attach === false">
         <Transition name="ui-snackbar" @after-leave="emit('after-leave')" @after-enter="emit('after-enter')">
             <div v-if="model" class="u-notice-placement" :class="{ 'is-contained': props.contained }" :data-position="location" :style="[theme.styles.value, { '--u-queue-index': props.queueIndex }]" :data-ui-theme="theme.name.value" :data-theme="theme.current.value.dark ? 'dark' : 'light'">
-                <div ref="surface" v-click-outside="outside" v-bind="attrs" class="u-notice" :class="[{ 'is-vertical': props.vertical, 'is-square': props.rounded === false }, attrs.class]" :style="[colors, attrs.style as any]" :data-variant="props.variant" role="status" aria-live="polite" aria-atomic="true" @pointerenter="pause('pointer')" @pointerleave="resume('pointer')" @focusin="pause('focus')" @focusout="focusout" @keydown.esc="escape">
+                <div ref="surface" v-click-outside="outside" v-bind="attrs" class="u-notice" :class="[{ 'is-vertical': props.vertical, 'is-square': props.rounded === false }, attrs.class]" :style="[colors, attrs.style as any]" :data-variant="props.variant" :role="attrs.role ?? 'status'" :aria-live="attrs['aria-live'] ?? (attrs.role === 'alert' ? 'assertive' : 'polite')" aria-atomic="true" @pointerenter="pause('pointer')" @pointerleave="resume('pointer')" @focusin="pause('focus')" @focusout="focusout" @keydown.esc="escape">
                     <UiSpinner v-if="props.loading" :size="18" label="正在处理" />
                     <slot name="prepend" />
                     <div class="u-notice-content">

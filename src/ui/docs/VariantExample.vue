@@ -1,6 +1,16 @@
 <script setup>
 import { reactive } from 'vue';
-import { UButton, UTextField, USelect, UTabs, UTabPanel, UCard, UScrollArea, UCodeBlock } from '../index';
+import {
+    UButton,
+    UTextField,
+    USelect,
+    UTabs,
+    UTabsWindow,
+    UTabsWindowItem,
+    UCard,
+    UScrollArea,
+    UCodeBlock,
+} from '../index';
 defineProps({ component: { type: String, required: true } });
 const variants = [
     { id: 'default', label: '默认', attrs: {} },
@@ -22,8 +32,28 @@ const code = '<u-button dense :rounded="false">保存更改</u-button>';
             <u-text-field v-else-if="component === 'input'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}输入框`" />
             <u-select v-else-if="component === 'select'" v-model="values[variant.id]" v-bind="variant.attrs" :aria-label="`${variant.label}选择器`"><option value="UAH">UAH 工作台</option><option value="personal">个人工作区</option></u-select>
             <template v-else-if="component === 'tabs'">
-                <u-tabs v-model="selected[variant.id]" :items="items" :id-prefix="`variant-tabs-${variant.id}`" v-bind="variant.attrs" :aria-label="`${variant.label}标签页`" />
-                <u-tab-panel v-for="item in items" :key="item.id" :model-value="selected[variant.id]" :value="item.id" :id-prefix="`variant-tabs-${variant.id}`"><p class="ma-0 py-3 text-muted">{{ item.label }}内容</p></u-tab-panel>
+                <u-tabs
+                    v-model="selected[variant.id]"
+                    :items="items"
+                    :id-prefix="`variant-tabs-${variant.id}`"
+                    v-bind="variant.attrs"
+                    :aria-label="`${variant.label}标签页`"
+                />
+                <u-tabs-window
+                    v-model="selected[variant.id]"
+                    :id-prefix="`variant-tabs-${variant.id}`"
+                    :keyboard="false"
+                >
+                    <u-tabs-window-item
+                        v-for="item in items"
+                        :key="item.id"
+                        :value="item.id"
+                        eager
+                        :transition="false"
+                    >
+                        <p class="ma-0 py-3 text-muted">{{ item.label }}内容</p>
+                    </u-tabs-window-item>
+                </u-tabs-window>
             </template>
             <u-card v-else-if="component === 'card'" title="工作区" subtitle="容器的间距与表面" v-bind="variant.attrs">项目、文件与最近使用的内容。<template #actions><u-button v-bind="variant.attrs">打开工作区</u-button></template></u-card>
             <u-scroll-area v-else-if="component === 'scroll-area'" :label="`${variant.label}滚动区域`" height="120px" always v-bind="variant.attrs"><p v-for="line in 10" :key="line" class="ma-0 pa-3">日志 {{ line }} · 保留原生滚动操作</p></u-scroll-area>

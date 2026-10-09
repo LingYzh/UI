@@ -48,14 +48,22 @@ test('virtual range tracks scroll and changing item count without rendering ever
 });
 
 test('overlay stack only treats the newest live overlay as topmost', () => {
-    const first = {} as HTMLDialogElement;
-    const second = {} as HTMLDialogElement;
-    pushOverlay(first);
-    pushOverlay(second);
-    pushOverlay(second);
-    assert.equal(isTopOverlay(first), false);
-    assert.equal(isTopOverlay(second), true);
-    popOverlay(second);
-    assert.equal(isTopOverlay(first), true);
-    popOverlay(first);
+    // This unit fixture has no DOM; the browser container runner covers real CSS stacking.
+    const first = { closest: () => null, matches: () => false } as unknown as HTMLDialogElement;
+    const second = { closest: () => null, matches: () => false } as unknown as HTMLDialogElement;
+    const previousStyle = globalThis.getComputedStyle;
+    globalThis.getComputedStyle = (() => ({ zIndex: '0' })) as typeof getComputedStyle;
+    try {
+        pushOverlay(first);
+        pushOverlay(second);
+        pushOverlay(second);
+        assert.equal(isTopOverlay(first), false);
+        assert.equal(isTopOverlay(second), true);
+        popOverlay(second);
+        assert.equal(isTopOverlay(first), true);
+    } finally {
+        popOverlay(first);
+        popOverlay(second);
+        globalThis.getComputedStyle = previousStyle;
+    }
 });

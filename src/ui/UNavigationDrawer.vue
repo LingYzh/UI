@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
-import { useLayoutItem } from './layout-completion';
+import { useAppLayout, useLayoutItem } from './layout-completion';
 import { useDisplay } from './display';
 import { useDefaults } from './defaults';
 import { useLocale } from './locale-context';
@@ -74,7 +74,9 @@ const expanded = computed(() => shown.value && (!props.rail || props.expandOnHov
 const visualRail = computed(() => props.rail && !(props.expandOnHover && hovering.value));
 const size = computed(() => props.rail && !(props.expandOnHover && hovering.value) ? props.railWidth : props.width);
 const layoutSize = computed(() => props.rail && props.expandOnHover ? props.railWidth : size.value);
-const { layout, offset } = useLayoutItem(physicalLocation, layoutSize, computed(() => shown.value && !overlay.value && !props.absolute), computed(() => Number(props.order) || 0), computed(() => props.name));
+const layout = useAppLayout();
+const { offset, styles: layoutStyles } = useLayoutItem(physicalLocation, layoutSize, computed(() => shown.value && !overlay.value && (!props.absolute || !!layout?.ordered.value)), computed(() => Number(props.order) || 0), computed(() => props.name));
+const orderedStyles = computed(() => overlay.value ? {} : layoutStyles.value);
 const topOffset = computed(() => overlay.value || props.absolute ? 0 : layout?.offsets.value.top ?? 0);
 const bottomOffset = computed(() => overlay.value || props.absolute ? 0 : layout?.offsets.value.bottom ?? 0);
 const scrimStyle = computed(() => typeof props.scrim === 'string' ? { backgroundColor: props.scrim } : undefined);
@@ -205,7 +207,7 @@ defineExpose({ element, open, close, toggle, expanded, size, isActive: shown });
     <component :is="props.tag" v-bind="attrs" ref="element" class="ui-navigation-drawer"
         :class="{ 'is-open': shown, 'is-temporary': overlay, 'is-rail': visualRail, 'is-absolute': props.absolute, 'is-expand-on-hover': props.expandOnHover, 'is-hovering': hovering }"
         :data-location="physicalLocation"
-        :style="{ width: size + 'px', [physicalLocation]: offset + 'px', top: topOffset + 'px', bottom: bottomOffset + 'px' }"
+        :style="{ width: size + 'px', [physicalLocation]: offset + 'px', top: topOffset + 'px', bottom: bottomOffset + 'px', ...orderedStyles }"
         :aria-hidden="!shown" :inert="!shown"
         @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
         <slot v-if="$slots.prepend" name="prepend" :is-active="shown" :expanded="expanded" :rail="visualRail" :toggle="toggle" :open="open" :close="close" />

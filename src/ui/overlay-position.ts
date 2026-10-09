@@ -1,4 +1,14 @@
-import type { CSSProperties } from 'vue';
+import { unref, type CSSProperties } from 'vue';
+
+/** Slot activators receive component refs as well as native element refs. */
+export function overlayActivatorElement(value: unknown): HTMLElement | undefined {
+    if (value instanceof HTMLElement) return value;
+    if (!value || typeof value !== 'object') return undefined;
+    const component = value as { element?: unknown; $el?: unknown };
+    const element = unref(component.element);
+    if (element instanceof HTMLElement) return element;
+    return component.$el instanceof HTMLElement ? component.$el : undefined;
+}
 
 export type OverlayTarget = string | HTMLElement | [number, number] | null;
 export interface OverlayPositionProps {
@@ -88,6 +98,7 @@ export function connectedOverlayPosition(props: OverlayPositionProps, target: Bo
 
 export function overlayPositionStyles(props: OverlayPositionProps, content: HTMLElement, activator?: HTMLElement, cursor?: [number, number]): CSSProperties {
     const rtl = getComputedStyle(activator ?? content).direction === 'rtl';
+    const layer = content.closest<HTMLElement>('.ui-overlay-layer');
     if ((props.locationStrategy ?? (props.location === 'anchor' ? 'connected' : 'static')) !== 'connected') {
         const origin = props.origin && props.origin !== 'auto' && props.origin !== 'overlap' ? anchor(props.origin, rtl) : undefined;
         const styles: CSSProperties = origin ? { transformOrigin: `${origin.side} ${origin.align}` } : {};
@@ -104,6 +115,7 @@ export function overlayPositionStyles(props: OverlayPositionProps, content: HTML
             styles.positionArea = 'none';
             styles.positionTryFallbacks = 'none';
         }
+        if (layer && getComputedStyle(layer).position === 'absolute') styles.position = 'absolute';
         return styles;
     }
     const target = resolveOverlayTarget(props.target, activator, content, cursor);
@@ -119,5 +131,15 @@ export function overlayPositionStyles(props: OverlayPositionProps, content: HTML
     const clientBox = Array.isArray(target) ? { left: target[0], top: target[1], width: 0, height: 0 } : target.getBoundingClientRect();
     const box = { left: clientBox.left / zoom, top: clientBox.top / zoom, width: clientBox.width / zoom, height: clientBox.height / zoom };
     const view = window.visualViewport;
-    return connectedOverlayPosition(props, box, { width: content.offsetWidth, height: content.offsetHeight }, { left: (view?.offsetLeft ?? 0) / zoom, top: (view?.offsetTop ?? 0) / zoom, width: (view?.width ?? window.innerWidth) / zoom, height: (view?.height ?? window.innerHeight) / zoom }, rtl);
+    const layerBox = layer?.getBoundingClientRect();
+    const viewport = layerBox
+        ? { left: layerBox.left / zoom, top: layerBox.top / zoom, width: layerBox.width / zoom, height: layerBox.height / zoom }
+        : { left: (view?.offsetLeft ?? 0) / zoom, top: (view?.offsetTop ?? 0) / zoom, width: (view?.width ?? window.innerWidth) / zoom, height: (view?.height ?? window.innerHeight) / zoom };
+    const styles = connectedOverlayPosition(props, box, { width: content.offsetWidth, height: content.offsetHeight }, viewport, rtl);
+    if (layerBox) {
+        styles.position = 'absolute';
+        styles.left = `${Number.parseFloat(String(styles.left)) - layerBox.left / zoom}px`;
+        styles.top = `${Number.parseFloat(String(styles.top)) - layerBox.top / zoom}px`;
+    }
+    return styles;
 }

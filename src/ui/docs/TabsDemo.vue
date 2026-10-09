@@ -82,7 +82,7 @@ const scrollItems = Array.from({ length: 10 }, (_, index) => ({
                         <MountProbe name="overview" />
                         <u-text-field v-model="draft" label="面板草稿" hint="默认离场后卸载；开启保留内容后持续挂载。" />
                     </u-tabs-window-item>
-                    <u-tabs-window-item value="unavailable">尚未启用。</u-tabs-window-item>
+                    <u-tabs-window-item value="unavailable" disabled>尚未启用。</u-tabs-window-item>
                     <u-tabs-window-item value="details" :eager="eager">
                         <MountProbe name="details" />
                         <p>通过 #window 自动关联模型与标签，无需逐个绑定。</p>
@@ -98,7 +98,7 @@ const scrollItems = Array.from({ length: 10 }, (_, index) => ({
                         hint="首次访问才挂载；eager 开启时切换后保留内容。"
                     />
                 </u-tabs-window-item>
-                <u-tabs-window-item value="unavailable">尚未启用。</u-tabs-window-item>
+                <u-tabs-window-item value="unavailable" disabled>尚未启用。</u-tabs-window-item>
                 <u-tabs-window-item value="details" :eager="eager">
                     <MountProbe name="details" />
                     <p>Tabs 和 Window 共享一个模型，标签与内容通过 value 对应。</p>

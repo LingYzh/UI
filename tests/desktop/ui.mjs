@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { pages as docPages } from '../../src/ui/docs/content.js';
+import { getDocsUsageFamily } from '../../src/ui/docs/navigation.js';
 
 await mkdir('artifacts', { recursive: true });
 const evidence = await mkdtemp(path.resolve('artifacts', 'ui-'));
@@ -37,7 +38,8 @@ try {
     const { page, app } = gallery;
     async function openDoc(id) {
         await page.goto(`${server.resolvedUrls.local[0]}index.html#/${id}`);
-        await page.getByRole('heading', { name: new RegExp(docPages.find((doc) => doc.id === id).title), level: 1 }).waitFor();
+        const familyId = getDocsUsageFamily(id).id;
+        await page.getByRole('heading', { name: new RegExp(docPages.find((doc) => doc.id === familyId).title), level: 1 }).waitFor();
     }
     await openDoc('input');
     const search = page.getByRole('textbox', { name: '搜索', exact: true });
@@ -100,10 +102,11 @@ try {
     await openDoc('motion');
     await page.getByRole('checkbox', { name: '示例减少动效', exact: true }).uncheck();
     await openDoc('snackbar-service');
-    await page.getByRole('combobox', { name: '提示时长' }).selectOption('0');
+    const snackbarService = page.getByRole('region', { name: '创建、撤销与清空', exact: true });
+    await snackbarService.getByRole('combobox', { name: '提示时长' }).selectOption('0');
     for (const position of ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']) {
-        await page.getByRole('combobox', { name: '提示方位' }).selectOption(position);
-        await page.getByRole('button', { name: '显示提示', exact: true }).click();
+        await snackbarService.getByRole('combobox', { name: '提示方位' }).selectOption(position);
+        await snackbarService.getByRole('button', { name: '显示提示', exact: true }).click();
         const notice = page.locator(`.ui-snackbar-stack[data-position="${position}"] .ui-snackbar`);
         await notice.waitFor();
         await notice.evaluate(async (element) => { await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {}))); });
@@ -118,8 +121,8 @@ try {
         await notice.getByRole('button', { name: '关闭通知' }).click();
         await notice.waitFor({ state: 'hidden' });
     }
-    await page.getByRole('combobox', { name: '提示时长' }).selectOption('800');
-    await page.getByRole('button', { name: '显示提示', exact: true }).click();
+    await snackbarService.getByRole('combobox', { name: '提示时长' }).selectOption('800');
+    await snackbarService.getByRole('button', { name: '显示提示', exact: true }).click();
     const notice = page.locator('.ui-snackbar');
     await notice.hover();
     await notice.getByRole('button').focus();
@@ -128,12 +131,14 @@ try {
     await page.mouse.move(0, 0);
     await page.waitForTimeout(900);
     assert.equal(await notice.isVisible(), true);
-    await page.getByRole('button', { name: '显示提示', exact: true }).focus();
+    await snackbarService.getByRole('button', { name: '显示提示', exact: true }).focus();
     await notice.waitFor({ state: 'hidden' });
     passed.push('snackbar supports all six positions, manual close, and independent pointer/focus timer pauses');
     for (const doc of docPages) {
         await openDoc(doc.id);
-        assert.ok((await page.locator('.docs-page-heading h1').textContent()).includes(doc.title), `document heading: ${doc.id}`);
+        const family = docPages.find(page => page.id === getDocsUsageFamily(doc.id).id);
+        assert.ok((await page.locator('.docs-page-heading h1').textContent()).includes(family.title), `document family heading: ${doc.id}`);
+        assert.equal(await page.evaluate(() => location.hash), `#/${doc.id}`, `legacy document URL: ${doc.id}`);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `horizontal overflow: ${doc.id}`);
     }
     passed.push(`all ${docPages.length} documentation routes render without page overflow`);

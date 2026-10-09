@@ -24,7 +24,7 @@ let browser;
 const checks = [], errors = [], warnings = [];
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     const page = await browser.newPage({ viewport: { width: 1200, height: 1000 } });
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'warning') warnings.push(message.text()); if (message.type() === 'error') errors.push(message.text()); });
@@ -51,7 +51,7 @@ try {
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${theme}/${width}/${zoom} no horizontal page overflow`);
         await page.screenshot({ path: path.join(evidence, `${theme}-${width}-${zoom}.png`), fullPage: true });
         await page.locator('#color-input .ui-color-pip').first().click();
-        await page.waitForFunction(() => document.querySelector('.ui-color-input-menu')?.matches(':popover-open'));
+        await page.waitForFunction(() => document.querySelector('.ui-color-input-menu')?.matches('[data-state="open"]'));
         await page.waitForTimeout(200);
         const menu = page.locator('.ui-color-input-menu:visible');
         const bounds = await menu.boundingBox();

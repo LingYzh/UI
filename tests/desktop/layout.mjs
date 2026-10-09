@@ -236,29 +236,29 @@ try {
     const menuDemo = await openExample('menu-item', 'layout-menu-item');
     const menu = menuDemo.locator('.ui-menu');
     const menuTrigger = menu.getByRole('button', { name: '操作菜单', exact: true });
-    const menuSurface = menu.locator('.ui-menu-surface');
+    const menuSurface = page.locator('.ui-menu-surface').filter({ has: page.getByRole('menuitem', { name: '编辑配置', exact: true }) });
     await menuTrigger.click();
-    await page.waitForFunction((element) => element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     const closeOnSelect = menuSurface.getByRole('menuitem', { name: '编辑配置', exact: true });
     await closeOnSelect.click();
-    await page.waitForFunction((element) => !element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => !element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await assertBlurred(closeOnSelect, 'menu item closing click');
     await assertBlurred(menuTrigger, 'pointer-closed menu trigger');
 
     await menuTrigger.click();
-    await page.waitForFunction((element) => element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     const keepOpen = menuSurface.getByRole('menuitemcheckbox', { name: '启用', exact: true });
     const checkedBeforePointer = await keepOpen.getAttribute('aria-checked');
     await keepOpen.click();
-    await page.waitForFunction((element) => element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     assert.notEqual(await keepOpen.getAttribute('aria-checked'), checkedBeforePointer, 'keep-open item applies its action');
     await assertBlurred(keepOpen, 'keep-open menu item click');
 
     await page.keyboard.press('Escape');
-    await page.waitForFunction((element) => !element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => !element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await menuTrigger.focus();
     await page.keyboard.press('Enter');
-    await page.waitForFunction((element) => element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await page.keyboard.press('ArrowDown');
     await assertFocused(keepOpen, 'menu ArrowDown');
     const checkedBeforeSpace = await keepOpen.getAttribute('aria-checked');
@@ -267,12 +267,12 @@ try {
         { selector: '.ui-menu-surface [role="menuitemcheckbox"]', previous: checkedBeforeSpace });
     await assertFocused(keepOpen, 'keep-open menu Space');
     await page.keyboard.press('Escape');
-    await page.waitForFunction((element) => !element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction((element) => !element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await assertFocused(menuTrigger, 'keyboard-closed menu trigger');
     await page.keyboard.press('Enter');
-    await page.waitForFunction(element => element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction(element => element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await menuDemo.getByRole('status').click();
-    await page.waitForFunction(element => !element.matches(':popover-open'), await menuSurface.elementHandle());
+    await page.waitForFunction(element => !element.matches('[data-state="open"]'), await menuSurface.elementHandle());
     await assertBlurred(menuTrigger, 'keyboard-opened menu dismissed by an outside pointer');
     passed.push('menu selection closes after pointer action, keep-open stays open, and keyboard arrow/Space/Escape preserve or restore focus');
 

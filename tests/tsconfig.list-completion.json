@@ -1,0 +1,20 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UList.vue",
+        "../src/ui/UListGroup.vue",
+        "../src/ui/UListItem.vue",
+        "../src/ui/list-completion.ts",
+        "../src/ui/nested-strategies.ts",
+        "../src/ui/selection.ts",
+        "list-completion.test.ts"
+    ],
+    "exclude": []
+}

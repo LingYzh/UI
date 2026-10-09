@@ -294,7 +294,7 @@ try {
 
     report.registry = await page.evaluate(() => window.componentRepair.registry);
     assert.equal(report.registry.formFieldAliasIdentity, true, 'UFormField keeps the exact UiField alias');
-    assert.equal(report.registry.canonicalRegisteredCount, 156, 'createUI registers all 156 canonical components');
+    assert.equal(report.registry.canonicalRegisteredCount, 158, 'createUI registers all 158 canonical components');
     assert.deepEqual(report.registry.requiredGlobalNames, { 'u-field': true, 'u-form-field': true, 'u-picker': true, 'u-option-picker': true, 'u-hotkey': true, 'u-hotkey-listener': true, 'u-counter': true });
     assert.deepEqual(report.registry.missingCanonicalGlobalNames, [], 'every registered canonical component also has its u-* global name');
     report.registry.formFieldCompatibility = await page.evaluate(() => {

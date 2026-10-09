@@ -48,7 +48,7 @@ provide(stepperWindowContextKey, registrations);
 const windowModel = computed<GroupValue | null>(() => {
     if (model.value != null) return model.value;
     const selected = stepper?.selected.value;
-    if (Array.isArray(selected)) return selected[0] ?? null;
+    if (Array.isArray(selected)) return stepper?.values.find(value => selected.includes(value)) ?? null;
     return selected ?? null;
 });
 

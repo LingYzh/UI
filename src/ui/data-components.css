@@ -13,11 +13,16 @@
 .u-stepper-item.is-error .u-stepper-number { background: var(--red); color: #fff; }
 .u-stepper-item:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 .u-stepper-copy { min-width: 0; }
+.u-stepper-title, .u-stepper-subtitle { display: block; }
+.u-stepper-subtitle { margin-block-start: 2px; color: var(--muted); font-size: var(--ui-font-body-small); }
 .u-stepper-window { display: grid; flex-basis: 100%; min-width: 0; padding-block: 12px; }
 .u-stepper-window-item { grid-area: 1 / 1; min-width: 0; }
 .u-stepper-actions { display: flex; justify-content: space-between; gap: 12px; flex-basis: 100%; }
 .u-stepper-vertical { flex-direction: column; align-items: stretch; }
 .u-stepper-vertical .u-stepper-window { margin-inline-start: 25px; padding-inline-start: 24px; border-inline-start: 1px solid var(--border); }
+.u-stepper-vertical-item { min-width: 0; }
+.u-stepper-vertical-item > .u-stepper-item { width: 100%; }
+.u-stepper-vertical-content { display: grid; gap: 16px; margin-inline-start: 25px; padding: 12px 12px 20px 24px; border-inline-start: 1px solid var(--border); }
 .u-window { display: grid; position: relative; width: 100%; min-width: 0; overflow: clip; }
 .u-window-item { grid-area: 1 / 1; width: 100%; min-width: 0; }
 .u-window-controls { position: absolute; inset: 0; pointer-events: none; }

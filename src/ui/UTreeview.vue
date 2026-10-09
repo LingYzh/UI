@@ -9,19 +9,24 @@ import { useReducedMotion } from './motion';
 import { useExpandMotion } from './expand-motion';
 import { vPointerBlur } from './pointer-focus';
 import { getItemField } from './list-completion';
+import UDivider from './UDivider.vue';
+import UListSubheader from './UListSubheader.vue';
 import { useDefaults } from './defaults';
 import { useLocale } from './locale-context';
-import { buildNestedIndex, createOpenStrategy, createSelectStrategy, type NestedSelectionState, type SelectStrategyInput } from './nested-strategies';
+import { buildNestedIndex, createOpenStrategy, createSelectStrategy, type NestedSelectStrategy, type NestedSelectionState, type SelectStrategyFactory, type SelectStrategyInput } from './nested-strategies';
 import { defaultValueComparator, type ItemProperty, type ValueComparator } from './selection';
-import { filterTreeviewNodes, modelValuesToTreeviewIds, resolveTreeviewItemProps, treeviewIdsToModelValues, type TreeviewFilterNode } from './treeview-state';
+import { filterTreeviewNodes, modelValuesToTreeviewIds, resolveTreeviewItemProps, treeviewIdsToModelValues, type TreeviewFilterNode, type TreeviewFilterFunction } from './treeview-state';
 
 type Item = unknown;
+type TreeviewActiveStrategyName = 'single-independent' | 'independent' | 'leaf' | 'single-leaf';
+type TreeviewActiveStrategyInput = TreeviewActiveStrategyName | NestedSelectStrategy<unknown> | SelectStrategyFactory<unknown>;
 interface Node {
     id: unknown;
     raw: unknown;
     item: Item;
     value: unknown;
     title: string;
+    type: string;
     parent: unknown | undefined;
     depth: number;
     disabled: boolean;
@@ -32,8 +37,15 @@ interface Node {
     domKey: string;
 }
 
+interface TreeviewRegistrationIndex {
+    children: Map<unknown, unknown[]>;
+    parents: Map<unknown, unknown>;
+    disabled: Set<unknown>;
+    registered: Set<unknown>;
+}
+
 const rawProps = withDefaults(defineProps<{
-    items: Item[];
+    items?: Item[];
     modelValue?: unknown[];
     selected?: unknown[];
     opened?: unknown[];
@@ -46,30 +58,48 @@ const rawProps = withDefaults(defineProps<{
     multiple?: boolean;
     mandatory?: boolean;
     activatable?: boolean;
+    activeStrategy?: TreeviewActiveStrategyInput;
     openOnClick?: boolean;
     selectStrategy?: SelectStrategyInput<unknown>;
+    itemsRegistration?: 'props' | 'render';
     returnObject?: boolean;
     valueComparator?: ValueComparator;
     search?: string;
     filterKeys?: ItemProperty | ItemProperty[];
-    customFilter?: (value: unknown, query: string, item: unknown) => unknown;
+    filterMode?: 'some' | 'every' | 'union' | 'intersection';
+    customFilter?: TreeviewFilterFunction;
+    customKeyFilter?: Readonly<Record<string, TreeviewFilterFunction>>;
+    ignoreAccents?: boolean | 'query' | 'target';
+    noFilter?: boolean;
+    itemType?: ItemProperty;
+    openAll?: boolean;
     loadChildren?: (item: unknown) => readonly unknown[] | void | Promise<readonly unknown[] | void>;
+    hideNoData?: boolean;
+    noDataText?: string;
     disabled?: boolean;
     readonly?: boolean;
 } & { ripple?: RippleOptions }>(), {
+    items: () => [],
     ripple: true,
     activated: undefined,
     itemTitle: 'title',
     itemValue: 'value',
     itemChildren: 'children',
+    itemType: 'type',
     itemProps: 'props',
     openOnClick: undefined,
+    activeStrategy: 'single-independent',
+    itemsRegistration: 'render',
     selectable: false,
     multiple: false,
     mandatory: false,
     activatable: false,
     returnObject: false,
     search: '',
+    openAll: false,
+    noFilter: false,
+    hideNoData: false,
+    noDataText: '$vuetify.noDataText',
     disabled: false,
     readonly: false
 });
@@ -79,6 +109,8 @@ const emit = defineEmits<{
     'update:selected': [value: unknown[]];
     'update:opened': [value: unknown[]];
     'update:activated': [value: unknown[]];
+    'click:open': [value: { id: unknown; value: boolean; path: unknown[]; event?: Event }];
+    'click:select': [value: { id: unknown; value: boolean; path: unknown[]; event?: Event }];
 }>();
 
 const localSelected = ref<unknown[]>([]);
@@ -103,6 +135,14 @@ const openStrategy = createOpenStrategy<unknown>('multiple');
 
 function currentItemProps(item: Item) {
     return resolveTreeviewItemProps(item, props.itemProps);
+}
+
+function currentItemType(item: Item) {
+    return String(getItemField(item, props.itemType!, 'item') ?? 'item');
+}
+
+function isPresentationItemType(type: string) {
+    return type === 'divider' || type === 'subheader';
 }
 
 function itemValue(item: Item, index: number, parent: unknown | undefined) {
@@ -136,10 +176,10 @@ const nestedIndex = computed(() => {
     revision.value;
     return buildNestedIndex<Item, unknown>(props.items, {
         getId: (item, index, parent) => itemValue(item, index, parent),
-        getChildren: (item) => itemChildren(item),
+        getChildren: (item) => isPresentationItemType(currentItemType(item)) ? undefined : itemChildren(item),
         isDisabled: (item) => {
             const selectedProps = currentItemProps(item);
-            return Boolean(props.disabled || (selectedProps.disabled ?? getItemField(item, 'disabled', false)));
+            return isPresentationItemType(currentItemType(item)) || Boolean(props.disabled || (selectedProps.disabled ?? getItemField(item, 'disabled', false)));
         },
         inheritDisabled: true
     });
@@ -153,18 +193,20 @@ const allNodes = computed<Node[]>(() => {
         const propsForItem = currentItemProps(item);
         const value = entry.id;
         const title = getItemField(item, props.itemTitle!, value);
+        const type = currentItemType(item);
         const node: Node = {
             id: value,
             raw: item,
             item,
             value,
             title: String(title ?? ''),
+            type,
             parent: entry.parent,
             depth: entry.depth,
             disabled: entry.disabled,
             props: propsForItem,
             children: [],
-            hasChildren: index.children.has(value),
+            hasChildren: !isPresentationItemType(type) && index.children.has(value),
             index: position,
             domKey: stableDomKey(value, item, position)
         };
@@ -199,7 +241,7 @@ const selectedIds = computed(() => modelValuesToTreeviewIds(
 const strategyInput = computed<SelectStrategyInput<unknown>>(() => props.selectStrategy ?? (props.multiple ? 'legacy-cascade' : 'single-leaf'));
 const selectStrategy = computed(() => createSelectStrategy<unknown>(strategyInput.value, props.mandatory));
 const selectState = computed<Map<unknown, NestedSelectionState>>(() => {
-    const index = nestedIndex.value;
+    const index = registrationIndex.value;
     return selectStrategy.value.in(selectedIds.value, index.children, index.parents, index.disabled);
 });
 const multiSelectable = computed(() => {
@@ -217,6 +259,31 @@ const openedIds = computed(() => modelValuesToTreeviewIds(
     modelValueForNode,
     comparator.value
 ));
+let seenOpenAllBranches = new Set<unknown>();
+watch([allNodes, () => props.openAll, () => props.opened !== undefined], () => {
+    if (!props.openAll || props.opened !== undefined) {
+        seenOpenAllBranches = new Set();
+        return;
+    }
+
+    const branchIds = new Set(allNodes.value.filter((node) => node.hasChildren).map((node) => node.id));
+    const newlyAdded = [...branchIds].filter((id) => !seenOpenAllBranches.has(id));
+    const currentIds = modelValuesToTreeviewIds(allNodes.value, localOpened.value, modelValueForNode, comparator.value);
+    const next = new Set(currentIds.filter((id) => !seenOpenAllBranches.has(id) || branchIds.has(id)));
+    newlyAdded.forEach((id) => next.add(id));
+    seenOpenAllBranches = branchIds;
+
+    const nextValues = valuesForIds([...next]);
+    const unchanged = nextValues.length === localOpened.value.length
+        && nextValues.every((value, index) => comparator.value(value, localOpened.value[index]));
+    if (!unchanged) {
+        localOpened.value = nextValues;
+    }
+    newlyAdded.forEach((id) => {
+        const node = nodeById.value.get(id);
+        if (node) void requestChildren(node);
+    });
+}, { immediate: true, flush: 'sync' });
 const activatedModel = computed(() => props.activated !== undefined ? props.activated : localActivated.value);
 const activatedValues = computed(() => {
     const value = activatedModel.value;
@@ -228,6 +295,11 @@ const activatedIds = computed(() => modelValuesToTreeviewIds(
     modelValueForNode,
     comparator.value
 ));
+const activeStrategy = computed(() => createSelectStrategy<unknown>(props.activeStrategy ?? 'single-independent', props.mandatory));
+const activatedState = computed<Map<unknown, NestedSelectionState>>(() => {
+    const index = registrationIndex.value;
+    return activeStrategy.value.in(activatedIds.value, index.children, index.parents, index.disabled);
+});
 
 const filterKeys = computed<ItemProperty[]>(() => {
     const configured = props.filterKeys;
@@ -240,23 +312,63 @@ const filterState = computed(() => filterTreeviewNodes({
     query: props.search ?? '',
     filterKeys: filterKeys.value,
     getField: (item, key) => typeof key === 'function' ? key(item) : getItemField(item, key, undefined),
-    customFilter: props.customFilter
+    customFilter: props.customFilter,
+    customKeyFilter: props.customKeyFilter,
+    filterMode: props.filterMode,
+    ignoreAccents: props.ignoreAccents,
+    noFilter: props.noFilter
 }));
+const searchActive = computed(() => !props.noFilter && (Boolean(props.search?.trim()) || Object.keys(props.customKeyFilter ?? {}).length > 0));
 const expandedIds = computed(() => new Set([...openedIds.value, ...filterState.value.expanded]));
 const visible = computed<Node[]>(() => {
     const result: Node[] = [];
     const byId = nodeById.value;
-    const searchActive = Boolean(props.search?.trim());
     const visit = (ids: readonly unknown[]) => {
         for (const id of ids) {
             const node = byId.get(id);
-            if (!node || searchActive && !filterState.value.visible.has(id)) continue;
+            if (!node || searchActive.value && !filterState.value.visible.has(id)) continue;
             result.push(node);
             if (expandedIds.value.has(id)) visit(node.children.map((child) => child.id));
         }
     };
     visit(nestedIndex.value.roots);
     return result;
+});
+
+const registrationIndex = computed<TreeviewRegistrationIndex>(() => {
+    if (props.itemsRegistration === 'props') {
+        const index = nestedIndex.value;
+        return {
+            children: index.children,
+            parents: index.parents,
+            disabled: index.disabled,
+            registered: new Set(index.nodes.keys())
+        };
+    }
+
+    const registeredNodes = visible.value.filter((node) => !isPresentationItemType(node.type));
+    const registered = new Set(registeredNodes.map((node) => node.id));
+    const children = new Map<unknown, unknown[]>();
+    const parents = new Map<unknown, unknown>();
+    const disabled = new Set<unknown>();
+
+    for (const node of registeredNodes) {
+        // Keep a rendered branch classified as a branch while its descendants are collapsed or filtered out.
+        if (node.hasChildren) children.set(node.id, []);
+        if (node.disabled) disabled.add(node.id);
+        if (node.parent !== undefined && registered.has(node.parent)) {
+            parents.set(node.id, node.parent);
+            children.get(node.parent)?.push(node.id);
+        }
+    }
+
+    return { children, parents, disabled, registered };
+});
+const hasVisibleTreeItems = computed(() => visible.value.some((node) => !isPresentationItemType(node.type)));
+const noDataLabel = computed(() => {
+    const key = props.noDataText ?? '$vuetify.noDataText';
+    const translated = locale.t(key);
+    return key.startsWith('$vuetify.') && translated === key ? locale.t('common.empty') : translated;
 });
 
 function state(node: Node): 'checked' | 'mixed' | 'unchecked' {
@@ -268,12 +380,53 @@ function nodeIsOpen(node: Node) {
     return expandedIds.value.has(node.id);
 }
 
+function nodeIsActivated(node: Node) {
+    return activatedState.value.get(node.id) === 'on';
+}
+
 function valuesForIds(ids: readonly unknown[]) {
     return treeviewIdsToModelValues(allNodes.value, ids, modelValueForNode);
 }
 
+function itemPath(id: unknown) {
+    const path = [id];
+    const seen = new Set(path);
+    let node = nodeById.value.get(id);
+    while (node?.parent !== undefined && !seen.has(node.parent)) {
+        path.unshift(node.parent);
+        seen.add(node.parent);
+        node = nodeById.value.get(node.parent);
+    }
+    return path;
+}
+
+function itemSlotProps(node: Node) {
+    const selectedState = state(node);
+    return {
+        item: node.item,
+        internalItem: node,
+        index: node.index,
+        title: node.title,
+        props: node.props,
+        path: itemPath(node.id),
+        selectedState,
+        isSelected: selectedState === 'checked',
+        isIndeterminate: selectedState === 'mixed',
+        isOpen: nodeIsOpen(node),
+        isActivated: nodeIsActivated(node),
+        disabled: node.disabled || props.disabled,
+        hasChildren: node.hasChildren,
+        loading: isLoading(node),
+        error: loadError(node),
+        open: openForSlot(node),
+        select: selectForSlot(node),
+        activate: () => toggleActivated(node),
+        toggleOpen: (event?: Event) => toggleOpen(node, event)
+    };
+}
+
 function commitSelection(map: Map<unknown, NestedSelectionState>) {
-    const index = nestedIndex.value;
+    const index = registrationIndex.value;
     const ids = selectStrategy.value.out(map, index.children, index.parents, index.disabled);
     const values = valuesForIds(ids);
     localSelected.value = values;
@@ -281,10 +434,10 @@ function commitSelection(map: Map<unknown, NestedSelectionState>) {
     emit('update:selected', values);
 }
 
-function selectNode(id: unknown, selected = true) {
+function selectNode(id: unknown, selected = true, event?: Event) {
     const node = nodeById.value.get(id);
-    if (!node || node.disabled || props.disabled || props.readonly || !props.selectable) return;
-    const index = nestedIndex.value;
+    if (!node || !registrationIndex.value.registered.has(id) || node.disabled || props.disabled || props.readonly || !props.selectable) return;
+    const index = registrationIndex.value;
     const next = selectStrategy.value.select({
         id,
         value: selected,
@@ -295,6 +448,7 @@ function selectNode(id: unknown, selected = true) {
     });
     if (next.size === selectState.value.size && [...next].every(([key, value]) => selectState.value.get(key) === value)) return;
     commitSelection(next);
+    emit('click:select', { id, value: selected, path: itemPath(id), ...(event ? { event } : {}) });
 }
 
 function resolveNodeId(value: unknown) {
@@ -373,27 +527,29 @@ async function requestChildren(node: Node) {
     }
 }
 
-function setOpened(id: unknown, value: boolean) {
+function setOpened(id: unknown, value: boolean, event?: Event) {
     const node = nodeById.value.get(id);
     if (!node || !node.hasChildren || node.disabled || props.disabled) return;
+    if (openedIds.value.includes(id) === value) return;
     const index = nestedIndex.value;
     const opened = new Set(openedIds.value);
     const next = openStrategy.open({ id, value, opened, parents: index.parents });
     if (next.size !== opened.size || [...next].some((entry) => !opened.has(entry))) commitOpened(next);
+    emit('click:open', { id, value, path: itemPath(id), ...(event ? { event } : {}) });
     if (value) void requestChildren(node);
 }
 
 function openForSlot(node: Node) {
-    return (value: boolean) => setOpened(node.id, value);
+    return (value: boolean, event?: Event) => setOpened(node.id, value, event);
 }
 
 function selectForSlot(node: Node) {
-    return (value: boolean) => selectNode(node.id, value);
+    return (value = true, event?: Event) => selectNode(node.id, value, event);
 }
 
-function toggleOpen(node: Node) {
+function toggleOpen(node: Node, event?: Event) {
     if (!node.hasChildren || node.disabled || props.disabled) return;
-    setOpened(node.id, !openedIds.value.includes(node.id));
+    setOpened(node.id, !openedIds.value.includes(node.id), event);
 }
 
 function open(value: unknown) {
@@ -406,29 +562,44 @@ function close(value: unknown) {
     if (id !== undefined) setOpened(id, false);
 }
 
-function setActivated(node: Node) {
-    if (!props.activatable || node.disabled || props.disabled || props.readonly) return;
-    const values = [props.returnObject ? node.item : node.id];
+function setActivated(node: Node, active: boolean) {
+    if (!props.activatable || !registrationIndex.value.registered.has(node.id) || node.disabled || props.disabled || props.readonly) return;
+    const index = registrationIndex.value;
+    const next = activeStrategy.value.select({
+        id: node.id,
+        value: active,
+        selected: activatedState.value,
+        children: index.children,
+        parents: index.parents,
+        disabled: index.disabled
+    });
+    if (next.size === activatedState.value.size && [...next].every(([key, value]) => activatedState.value.get(key) === value)) return;
+    const ids = activeStrategy.value.out(next, index.children, index.parents, index.disabled);
+    const values = valuesForIds(ids);
     localActivated.value = values;
     emit('update:activated', values);
 }
 
-function activate(value: unknown) {
+function toggleActivated(node: Node) {
+    setActivated(node, !nodeIsActivated(node));
+}
+
+function activate(value: unknown, active?: boolean) {
     const id = resolveNodeId(value);
     const node = id === undefined ? undefined : nodeById.value.get(id);
-    if (node) setActivated(node);
+    if (node) setActivated(node, active ?? !nodeIsActivated(node));
 }
 
 const shouldOpenOnClick = computed(() => props.openOnClick ?? (props.selectable && !props.activatable));
 
 function handleRowClick(node: Node, event?: MouseEvent) {
     if (node.disabled || props.disabled || event && isNestedControlEvent(event, event.currentTarget as HTMLElement)) return;
-    setActivated(node);
+    toggleActivated(node);
     if (node.hasChildren && shouldOpenOnClick.value) {
-        toggleOpen(node);
+        toggleOpen(node, event);
         return;
     }
-    if (props.selectable) selectNode(node.id, state(node) !== 'checked');
+    if (props.selectable) selectNode(node.id, state(node) !== 'checked', event);
 }
 
 function isLoading(node: Node) {
@@ -490,12 +661,13 @@ function focusParent(node: Node) {
     if (node.parent !== undefined) focusNode(node.parent);
 }
 
-function expandSiblings(node: Node) {
+function expandSiblings(node: Node, event?: Event) {
     const siblingIds = node.parent === undefined
         ? nestedIndex.value.roots
         : nestedIndex.value.children.get(node.parent) ?? [];
     const index = nestedIndex.value;
-    let next = new Set(openedIds.value);
+    const opened = new Set(openedIds.value);
+    let next = new Set(opened);
     const toLoad: Node[] = [];
     for (const id of siblingIds) {
         const sibling = nodeById.value.get(id);
@@ -504,6 +676,11 @@ function expandSiblings(node: Node) {
         toLoad.push(sibling);
     }
     if (next.size !== openedIds.value.length || [...next].some((id) => !openedIds.value.includes(id))) commitOpened(next);
+    toLoad.forEach((sibling) => {
+        if (!opened.has(sibling.id) && next.has(sibling.id)) {
+            emit('click:open', { id: sibling.id, value: true, path: itemPath(sibling.id), ...(event ? { event } : {}) });
+        }
+    });
     toLoad.forEach((sibling) => void requestChildren(sibling));
 }
 
@@ -533,19 +710,19 @@ function keydown(event: KeyboardEvent, node: Node) {
         else focusParent(node);
     } else if (event.key === '*') {
         event.preventDefault();
-        expandSiblings(node);
+        expandSiblings(node, event);
     } else if (event.key === 'Enter') {
         event.preventDefault();
         if (node.props.to || node.props.href) { currentElement.click(); return; }
-        setActivated(node);
-        if (node.hasChildren) toggleOpen(node);
-        else if (props.selectable) selectNode(node.id, state(node) !== 'checked');
+        toggleActivated(node);
+        if (node.hasChildren) toggleOpen(node, event);
+        else if (props.selectable) selectNode(node.id, state(node) !== 'checked', event);
     } else if (event.key === ' ') {
         event.preventDefault();
         const name = typeof strategyInput.value === 'string' ? strategyInput.value : '';
         const branchSelectable = !['leaf', 'single-leaf'].includes(name);
-        if (props.selectable && (!node.hasChildren || branchSelectable)) selectNode(node.id, state(node) !== 'checked');
-        else if (node.hasChildren) toggleOpen(node);
+        if (props.selectable && (!node.hasChildren || branchSelectable)) selectNode(node.id, state(node) !== 'checked', event);
+        else if (node.hasChildren) toggleOpen(node, event);
     }
 }
 
@@ -554,7 +731,7 @@ function setCheckboxIndeterminate(element: unknown, node: Node) {
 }
 
 function handleCheckboxChange(node: Node, event: Event) {
-    selectNode(node.id, (event.currentTarget as HTMLInputElement).checked);
+    selectNode(node.id, (event.currentTarget as HTMLInputElement).checked, event);
 }
 
 watch(() => allNodes.value.map((node) => ({ id: node.id, item: node.item })), (entries) => {
@@ -607,13 +784,102 @@ defineExpose({
 <template>
     <div ref="root" class="ui-treeview" role="tree" :aria-multiselectable="multiSelectable" :aria-readonly="props.readonly">
         <TransitionGroup :css="false" @enter="enterBranch" @leave="leaveBranch" @enter-cancelled="motion.cancel" @leave-cancelled="motion.cancel">
-            <div v-for="node in visible" :key="node.domKey" class="ui-treeview-branch">
-                <UiLinkSurface v-bind="node.props" :disabled="node.disabled || props.disabled" v-focus-modality v-ripple="props.ripple" class="ui-treeview-item" :class="{ 'is-active': activatedIds.includes(node.id) }" role="treeitem" :data-treeview-index="node.index" :aria-level="node.depth + 1" :aria-expanded="node.hasChildren ? nodeIsOpen(node) : undefined" :aria-selected="state(node) === 'checked'" :aria-disabled="node.disabled || props.disabled" :aria-busy="isLoading(node) ? 'true' : undefined" :style="{ paddingInlineStart: `${node.depth * 20 + 8}px` }" :tabindex="node.disabled || props.disabled ? -1 : 0" @click="handleRowClick(node, $event)" @keydown="keydown($event, node)">
-                    <button v-ripple="props.ripple" v-if="node.hasChildren" v-pointer-blur type="button" class="ui-treeview-toggle" :disabled="node.disabled || props.disabled" :aria-label="nodeIsOpen(node) ? 'Collapse' : 'Expand'" :aria-expanded="nodeIsOpen(node)" @click.stop.prevent="toggleOpen(node)"><Icon name="mdi-chevron-right" :size="18" class="ui-disclosure-icon" :class="{ 'is-open': nodeIsOpen(node) }" /></button><span v-else class="ui-treeview-spacer" />
-                    <span v-if="props.selectable" class="ui-selection-ripple is-checkbox" v-ripple.center.circle="props.ripple"><input type="checkbox" :checked="state(node) === 'checked'" :disabled="node.disabled || props.disabled || props.readonly" :aria-label="node.title" :ref="(element) => setCheckboxIndeterminate(element, node)" @click.stop @change="handleCheckboxChange(node, $event)" /></span>
-                    <span class="ui-treeview-title"><slot name="title" :item="node.item" :title="node.title" :internalItem="node" :selectedState="state(node)" :isSelected="state(node) === 'checked'" :isIndeterminate="state(node) === 'mixed'" :disabled="node.disabled" :hasChildren="node.hasChildren" :loading="isLoading(node)" :error="loadError(node)" :open="openForSlot(node)" :select="selectForSlot(node)">{{ node.title }}</slot></span>
-                </UiLinkSurface>
-            </div>
+            <template v-for="node in visible" :key="node.domKey">
+                <UDivider v-if="node.type === 'divider' && $slots.divider" v-bind="node.props">
+                    <slot name="divider" v-bind="itemSlotProps(node)" />
+                </UDivider>
+                <UDivider v-else-if="node.type === 'divider'" v-bind="node.props" />
+                <UListSubheader v-else-if="node.type === 'subheader' && $slots.subheader" v-bind="node.props">
+                    <slot name="subheader" v-bind="itemSlotProps(node)">{{ node.title }}</slot>
+                </UListSubheader>
+                <UListSubheader v-else-if="node.type === 'subheader'" v-bind="node.props">{{ node.title }}</UListSubheader>
+                <div v-else class="ui-treeview-branch">
+                    <UiLinkSurface
+                        v-bind="node.props"
+                        class="ui-treeview-item"
+                        :class="{ 'is-active': nodeIsActivated(node) }"
+                        :disabled="node.disabled || props.disabled"
+                        :aria-level="node.depth + 1"
+                        :aria-expanded="node.hasChildren ? nodeIsOpen(node) : undefined"
+                        :aria-selected="state(node) === 'checked'"
+                        :aria-disabled="node.disabled || props.disabled"
+                        :aria-busy="isLoading(node) ? 'true' : undefined"
+                        :style="{ paddingInlineStart: `${node.depth * 20 + 8}px` }"
+                        :tabindex="node.disabled || props.disabled ? -1 : 0"
+                        :data-treeview-index="node.index"
+                        role="treeitem"
+                        v-focus-modality
+                        v-ripple="props.ripple"
+                        @click="handleRowClick(node, $event)"
+                        @keydown="keydown($event, node)"
+                    >
+                        <slot name="item" v-bind="itemSlotProps(node)">
+                            <span v-if="$slots.prepend" class="ui-treeview-prepend">
+                                <slot name="prepend" v-bind="itemSlotProps(node)" />
+                            </span>
+                            <button
+                                v-if="node.hasChildren"
+                                v-ripple="props.ripple"
+                                v-pointer-blur
+                                type="button"
+                                class="ui-treeview-toggle"
+                                :disabled="node.disabled || props.disabled"
+                                :aria-label="nodeIsOpen(node) ? 'Collapse' : 'Expand'"
+                                :aria-expanded="nodeIsOpen(node)"
+                                @click.stop.prevent="toggleOpen(node, $event)"
+                            >
+                                <slot name="toggle" v-bind="itemSlotProps(node)">
+                                    <Icon name="mdi-chevron-right" :size="18" class="ui-disclosure-icon" :class="{ 'is-open': nodeIsOpen(node) }" />
+                                </slot>
+                            </button>
+                            <span v-else class="ui-treeview-spacer" />
+                            <span v-if="props.selectable" class="ui-selection-ripple is-checkbox" v-ripple.center.circle="props.ripple">
+                                <input
+                                    type="checkbox"
+                                    :checked="state(node) === 'checked'"
+                                    :disabled="node.disabled || props.disabled || props.readonly"
+                                    :aria-label="node.title"
+                                    :ref="(element) => setCheckboxIndeterminate(element, node)"
+                                    @click.stop
+                                    @change="handleCheckboxChange(node, $event)"
+                                />
+                            </span>
+                            <span class="ui-treeview-title">
+                                <slot
+                                    name="title"
+                                    v-bind="itemSlotProps(node)"
+                                    :item="node.item"
+                                    :title="node.title"
+                                    :internalItem="node"
+                                    :selectedState="state(node)"
+                                    :isSelected="state(node) === 'checked'"
+                                    :isIndeterminate="state(node) === 'mixed'"
+                                    :disabled="node.disabled"
+                                    :hasChildren="node.hasChildren"
+                                    :loading="isLoading(node)"
+                                    :error="loadError(node)"
+                                    :open="openForSlot(node)"
+                                    :select="selectForSlot(node)"
+                                >
+                                    {{ node.title }}
+                                </slot>
+                            </span>
+                            <span v-if="$slots.append" class="ui-treeview-append">
+                                <slot name="append" v-bind="itemSlotProps(node)" />
+                            </span>
+                            <span v-if="$slots.loader && (isLoading(node) || loadError(node))" class="ui-treeview-loader">
+                                <slot name="loader" v-bind="itemSlotProps(node)" />
+                            </span>
+                            <span v-if="$slots.actions" class="ui-treeview-actions">
+                                <slot name="actions" v-bind="itemSlotProps(node)" />
+                            </span>
+                        </slot>
+                    </UiLinkSurface>
+                </div>
+            </template>
         </TransitionGroup>
+        <div v-if="!hasVisibleTreeItems && !props.hideNoData" class="ui-treeview-empty" role="status">
+            <slot name="no-data" :search="props.search ?? ''">{{ noDataLabel }}</slot>
+        </div>
     </div>
 </template>

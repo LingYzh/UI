@@ -378,6 +378,13 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (['UApp', 'ULayout'].includes(contract.name) && prop.name === 'layoutMode') return 'legacy默认保留现有布局几何；ordered按order逐项分配四边空间并消费overlaps。';
+    if (contract.name === 'UTreeview' && prop.name === 'itemsRegistration') return '默认render仅注册当前渲染节点供选择和激活策略使用；props显式注册完整items树，含关闭分支。';
+    if (['UList', 'UTreeview'].includes(contract.name) && prop.name === 'activeStrategy') return '默认single-independent仅激活一项，重复激活可取消；显式策略可启用多项或叶节点约束。';
+    if (['UOverlay', 'UDialog', 'UMenu'].includes(contract.name) && prop.name === 'attach') return '普通DOM浮层默认挂载body；字符串选择器或HTMLElement指定容器，true原位渲染。可动态移动同一实例。';
+    if (['UOverlay', 'UDialog', 'UMenu'].includes(contract.name) && ['contained', 'absolute'].includes(prop.name)) return '启用容器内absolute定位；未指定attach时原位渲染，容器需提供定位上下文。';
+    if (['UOverlay', 'UDialog', 'UMenu'].includes(contract.name) && prop.name === 'zIndex') return '指定DOM层级；键盘、外部关闭及后退按实际最高zIndex处理，默认嵌套层递增。';
+    if (contract.name === 'UMenu' && prop.name === 'nativeDismiss') return '兼容旧调用的属性；普通DOM呈现统一由库管理外部点击和Escape。';
     if (contract.name === 'UTabs' && prop.name === 'modelValue') return '支持对象、数组、字符串、数字和 null 标签值；null 是有效值，空列表或取消选择时可为 undefined。multiple 时模型为选中值数组，max 限制选中数量，valueComparator 控制比较。';
     if (contract.name === 'UTabsWindowItem' && prop.name === 'eager') return '省略时继承 UTabsWindow 的 eager；true 提前挂载并保留内容。默认首次激活时挂载，离场动画结束后卸载。';
     if (contract.name === 'UFileInput' && ['counterString', 'counterSizeString'].includes(prop.name)) return '计数文案或最近语言作用域中的字典键；支持 {0}/{1}（文件数/可读大小）及 {count}/{size} 命名模板。';

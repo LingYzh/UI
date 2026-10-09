@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
-import { useLayoutItem } from './layout-completion';
+import { useAppLayout, useLayoutItem } from './layout-completion';
 import { useDefaults } from './defaults';
 import UToolbar from './UToolbar.vue';
 const rawProps = withDefaults(defineProps<{
@@ -29,7 +29,8 @@ const imageOpacity = computed(() => behaviors.value.has('fade-image') ? behavior
 const contentHeight = computed(() => Math.max(0, Number(props.height) * (props.density === 'prominent' ? 2 : 1) - (props.density === 'comfortable' ? 8 : props.density === 'compact' ? 16 : 0)));
 const extensionHeight = computed(() => (props.extended ?? !!slots.extension) ? Math.max(0, Number(props.extensionHeight)) : 0);
 const layoutHeight = computed(() => !active.value ? 0 : behaviors.value.has('hide') && !behaviors.value.has('fully-hide') && scroll.value >= threshold.value ? contentHeight.value : measured.value);
-const { offset } = useLayoutItem(computed(() => props.location), layoutHeight, computed(() => props.fixed && !props.absolute), computed(() => Number(props.order) || 0), computed(() => props.name));
+const appLayout = useAppLayout();
+const { offset, styles: layoutStyles } = useLayoutItem(computed(() => props.location), layoutHeight, computed(() => props.fixed && (!props.absolute || !!appLayout?.ordered.value)), computed(() => Number(props.order) || 0), computed(() => props.name));
 function onScroll() {
     if (!scrollElement) return;
     const current = scrollElement instanceof Window ? scrollElement.scrollY : scrollElement.scrollTop;
@@ -61,7 +62,7 @@ defineExpose({ element, toolbar, contentHeight, extensionHeight, isActive: activ
 </script>
 
 <template>
-    <component :is="props.tag" ref="element" class="ui-app-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute, 'is-hidden': !active, 'is-collapsed': collapsed, 'is-floating': props.floating }" :data-location="props.location" :aria-hidden="!active || undefined" :inert="!active" :style="{ [props.location]: offset + 'px', transform: active ? undefined : `translateY(${props.location === 'top' ? '-100%' : '100%'})`, '--ui-app-bar-image-opacity': imageOpacity }">
+    <component :is="props.tag" ref="element" class="ui-app-bar" :class="{ 'is-fixed': props.fixed && !props.absolute, 'is-absolute': props.absolute, 'is-hidden': !active, 'is-collapsed': collapsed, 'is-floating': props.floating }" :data-location="props.location" :aria-hidden="!active || undefined" :inert="!active" :style="{ [props.location]: offset + 'px', transform: active ? undefined : `translateY(${props.location === 'top' ? '-100%' : '100%'})`, '--ui-app-bar-image-opacity': imageOpacity, ...(props.fixed || props.absolute ? layoutStyles : {}) }">
         <UToolbar ref="toolbar" v-bind="props" :tag="'div'" :absolute="false" :location="undefined" :collapse="collapsed" :elevation="elevated ? props.elevation || 4 : 0" :flat="!elevated">
             <template v-for="(_, name) in $slots" #[name]="scope"><slot :name="name" v-bind="scope ?? {}" /></template>
         </UToolbar>

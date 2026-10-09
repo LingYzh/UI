@@ -332,7 +332,7 @@ try {
     const url = new URL(virtualRoute.slice(1), server.resolvedUrls.local[0]).href;
     const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
     assert.equal(response.status, 200, 'fixture document is served');
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
     page = await browser.newPage({ viewport: { width: 900, height: 700 }, reducedMotion: 'reduce' });
     page.on('pageerror', error => pageErrors.push(error.stack ?? error.message));
     page.on('console', message => {
@@ -341,7 +341,7 @@ try {
         if (message.type() === 'warning') consoleWarnings.push(line);
     });
     await page.goto(url, { waitUntil: 'networkidle' });
-    await page.waitForFunction(() => document.querySelector('dialog.ui-overlay[open]') && document.querySelector('.ui-menu-surface:popover-open'));
+    await page.waitForFunction(() => document.querySelector('dialog.ui-overlay[open]') && document.querySelector('.ui-menu-surface[data-state="open"]'));
     await settle(120);
 
     const overlay = await rect('dialog.ui-overlay.geometry-overlay-class');
@@ -352,8 +352,8 @@ try {
     ]) {
         for (const [property, value] of Object.entries(expected)) assert.equal(item.style[property], value, `${name} consumes ${property}`);
     }
-    assert.equal(overlay.style.position, 'fixed');
-    assert.equal(menu.style.position, 'fixed');
+    assert.equal(overlay.style.position, 'absolute');
+    assert.equal(menu.style.position, 'absolute');
     assert.equal(await page.locator('#geometry-overlay-content').count(), 1);
     assert.equal(await page.locator('#geometry-menu-content').count(), 1);
     closeTo(overlay.left, 124, 'selector target overlay left');
@@ -485,26 +485,26 @@ try {
     passed('public target aliases parent and cursor resolve live browser anchors', 'External activator selector resolves its parent HTMLElement; slot activator click coordinates resolve the cursor point.');
 
     await page.locator('#native-trigger').click();
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[aria-label="Native default menu"]')?.matches(':popover-open'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface[aria-label="Native default menu"]')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     const nativeMenu = await rect('.ui-menu-surface[aria-label="Native default menu"]');
     const nativeTrigger = await rect('#native-trigger');
     const nativeMarginTop = await page.locator('.ui-menu-surface[aria-label="Native default menu"]').evaluate(element => getComputedStyle(element).marginTop);
-    assert.equal(nativeMarginTop, '5px', 'native default Menu retains the five pixel CSS gap');
+    assert.equal(nativeMarginTop, '0px', 'DOM default Menu uses connected placement rather than a CSS anchor margin');
     assert.equal(await page.locator('.ui-menu-surface[aria-label="Native default menu"]').getAttribute('data-placement'), 'bottom-start');
     closeTo(nativeMenu.top - nativeTrigger.bottom, 5, 'native default Menu gap', 3);
     await page.locator('#native-trigger').click();
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[aria-label="Native default menu"]')?.matches(':popover-open'));
-    passed('default Menu keeps its native bottom-start anchor and five-pixel gap', 'The default path stays on native popover anchor positioning and exposes the established 5px gap.');
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[aria-label="Native default menu"]')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
+    passed('default DOM Menu keeps bottom-start placement and five-pixel gap', 'Connected placement preserves the established 5px gap without native popover anchoring.');
 
     await page.evaluate(() => { window.__overlayGeometry.state.staticMenuOpen = true; });
-    await page.waitForFunction(() => document.querySelector('.ui-menu-surface.static-menu-class')?.matches(':popover-open'));
+    await page.waitForFunction(() => document.querySelector('.ui-menu-surface.static-menu-class')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
     await settle(80);
     recordStaticProtocol('Menu explicit static locationStrategy uses viewport static positioning for a known bottom-start location', await staticStyle('.ui-menu-surface.static-menu-class'), {
         position: 'fixed', inset: '0px', marginTop: 'auto', marginRight: 'auto', marginBottom: '12px', marginLeft: '12px',
         positionAnchor: 'none', positionArea: 'none', positionTryFallbacks: 'none', rect: { left: 12, bottom: 688 }
     });
     await page.evaluate(() => { window.__overlayGeometry.state.staticMenuOpen = false; });
-    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface.static-menu-class')?.matches(':popover-open'));
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface.static-menu-class')?.matches('[data-state=opening], [data-state=open], [data-state=closing]'));
 
     for (const [stateKey, selector, expectedRect] of [
         ['staticTopOverlayOpen', 'dialog.static-top-overlay-class', { top: 12 }],
@@ -620,7 +620,7 @@ try {
                 }),
                 surfaces: Array.from(document.querySelectorAll('dialog.ui-overlay, .ui-menu-surface, dialog.ui-dialog')).map(element => {
                     const bounds = element.getBoundingClientRect();
-                    return { className: element.className, state: element.getAttribute('data-state'), open: element.open, popover: element.matches(':popover-open'), style: element.getAttribute('style'), bounds: { left: bounds.left, top: bounds.top, right: bounds.right, bottom: bounds.bottom } };
+                    return { className: element.className, state: element.getAttribute('data-state'), open: element.open, popover: element.matches('[data-state=opening], [data-state=open], [data-state=closing]'), style: element.getAttribute('style'), bounds: { left: bounds.left, top: bounds.top, right: bounds.right, bottom: bounds.bottom } };
                 }),
                 bodyOverflow: document.body.style.overflow
             }));

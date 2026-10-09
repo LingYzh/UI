@@ -25,7 +25,8 @@ import {
     URadio,
     UColorSwatches,
     UTabs,
-    UTabPanel,
+    UTabsWindow,
+    UTabsWindowItem,
     UActivity,
     confirmDialog,
 } from '../index';
@@ -116,12 +117,18 @@ async function confirm() {
                     { id: 'second', label: '第二项' },
                 ]"
             />
-            <u-tab-panel :model-value="selectedTab" value="first" id-prefix="focus-demo">
-                第一项内容
-            </u-tab-panel>
-            <u-tab-panel :model-value="selectedTab" value="second" id-prefix="focus-demo">
-                第二项内容
-            </u-tab-panel>
+            <u-tabs-window
+                v-model="selectedTab"
+                id-prefix="focus-demo"
+                :keyboard="false"
+            >
+                <u-tabs-window-item value="first" eager :transition="false">
+                    第一项内容
+                </u-tabs-window-item>
+                <u-tabs-window-item value="second" eager :transition="false">
+                    第二项内容
+                </u-tabs-window-item>
+            </u-tabs-window>
             <u-color-swatches v-model="color" label="焦点示例色板" class="my-4" />
             <u-activity title="焦点示例折叠">展开后标题按钮不保留指针焦点。</u-activity>
             <u-form class="mt-4">

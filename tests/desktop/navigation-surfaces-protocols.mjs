@@ -369,7 +369,7 @@ try {
     assert.equal(await page.locator('#sheet-inner').count(), 0);
     assert.equal(await page.locator('#sheet-eager-content').count(), 1);
     await page.locator('#sheet-open').click();
-    await page.waitForFunction(() => document.querySelector('#sheet-dialog')?.matches(':modal'));
+    await page.waitForFunction(() => document.querySelector('#sheet-dialog')?.matches('[open][data-state="open"]'));
     await page.waitForFunction(() => window.navigationSurfacesProbe.state.sheetEnter === 1);
     await flush();
     const sheet = page.locator('#sheet-dialog');
