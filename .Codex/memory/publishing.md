@@ -1,5 +1,15 @@
 # npm 发布记忆
 
+## 2026-10-09：正式 0.4.2 消费验收通过
+
+UAH 适配提交 196d397eedbf73bd0bdcb0f9ac0b3b81c0795bb9 已推送，审阅请求：https://github.com/LingYzh/UAH-desktop/pull/1（draft，目标 main）。
+
+UAH 已使用官方 0.4.2 tarball/integrity 完成适配，最新 11 项消费门禁通过，完整单测 1045 项 / 1043 pass / 0 fail / 2 skip。共享 Vue 物理路径核对一致、普通安装目录、其他锁元数据不变；真实动画、800px 搜索布局/关闭按钮、焦点/原生视图关闭生命周期、15 eager Items 和 600px 阅读位置均受测。版本化消费者证据在 UAH docs/checkpoint-evidence/2026-10-09-ui-0.4.2-consumer.json，历史失败留档。UI 此次只提交发布证据和项目记忆，不移动已发布标签。
+
+## 2026-10-09：0.4.2正式发布成功，UAH最终验收中
+
+main7f6317940535e2d37f4db2eadba1b502ddcb8fd4/v0.4.2已原子推送，Actions37896838790/job113710005316包含Linux308/308、Build、Publish全部成功，Signed provenance确认。registry version/latest0.4.2、541文件、unpacked4429826B、tarball/integrity已确认；短暂传播404/ETARGET后才执行正常npm安装，没有使用直链或本地源码替代。正式integrity=sha512-eQiOy5BIz1ncwP2IrRP+wDxTXNRmjBryt+p394RujK0HAiLZlWYIIYT9zJAzmLjZ9fJ0++3KiwyvjVgqPVb5rg==。UAH已正式固定0.4.2，最终消费门禁中。发布证据2026-10-09-release-0.4.2-published.json。
+
 ## 2026-10-09：正式消费者发现遗漏属性动画回归，补丁0.4.2
 
 UAH实际生产搜索弹窗未传transition，Vue把UiTransition中的Boolean联合属性缺省转换false，造成data-ui-transition=true且默认CSS动画被跳过。UiDialog、UiMenu、UOverlay显式声明transition: undefined，恢复省略时CSS分支，显式false仍禁用动画。feedback真实SFC新增省略属性的动画关键帧回归；旧presentation fixture显式传undefined，无法覆盖省略属性转换。0.4.1已经正式发布，使用新0.4.2补丁，不覆盖旧tag。门禁和最终发布结果待本轮验证。

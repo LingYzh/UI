@@ -1,0 +1,44 @@
+{
+  "status": "published",
+  "version": "0.4.2",
+  "commit": "7f6317940535e2d37f4db2eadba1b502ddcb8fd4",
+  "tag": "v0.4.2",
+  "workflowRunId": 37896838790,
+  "workflowJobId": 113710005316,
+  "workflowUrl": "https://github.com/LingYzh/UI/actions/runs/37896838790",
+  "linuxTests": {
+    "total": 308,
+    "pass": 308,
+    "fail": 0
+  },
+  "publish": "success with signed provenance",
+  "registry": "https://registry.npmjs.org/",
+  "latest": "0.4.2",
+  "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.4.2.tgz",
+  "integrity": "sha512-eQiOy5BIz1ncwP2IrRP+wDxTXNRmjBryt+p394RujK0HAiLZlWYIIYT9zJAzmLjZ9fJ0++3KiwyvjVgqPVb5rg==",
+  "shasum": "971a5b2bbaecc4699ec158c594431d05faf2e20c",
+  "fileCount": 541,
+  "unpackedSize": 4429826,
+  "attestations": "https://registry.npmjs.org/-/npm/v1/attestations/@lingyzh%2fui@0.4.2",
+  "consumer": {
+    "repository": "LingYzh/UAH-desktop",
+    "version": "0.4.2",
+    "status": "validated-for-review",
+    "gatesPassed": 11,
+    "unit": {
+      "total": 1045,
+      "pass": 1043,
+      "fail": 0,
+      "skip": 2
+    },
+    "evidence": "docs/checkpoint-evidence/2026-10-09-ui-0.4.2-consumer.json",
+    "mainMerged": false,
+    "commit": "196d397eedbf73bd0bdcb0f9ac0b3b81c0795bb9",
+    "pullRequest": "https://github.com/LingYzh/UAH-desktop/pull/1"
+  },
+  "historicalAttempts": [
+    "v0.4.0 CI failed before publishing",
+    "0.4.1 published; omitted transition default defect found by production consumer",
+    "0.4.2 registry propagation initially returned E404/ETARGET; later metadata and installation confirmed"
+  ]
+}

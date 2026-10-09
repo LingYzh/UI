@@ -1,5 +1,17 @@
 # UI 项目交接
 
+## 2026-10-09：0.4.2 发布与 UAH 消费验收完成
+
+UAH 适配提交 196d397eedbf73bd0bdcb0f9ac0b3b81c0795bb9 已推送，审阅请求：https://github.com/LingYzh/UAH-desktop/pull/1（draft，目标 main）。
+
+main 的 v0.4.2 发布提交 7f63179、Actions 37896838790 / Linux 308/308 / Publish / provenance 和 official registry latest=0.4.2 已确认。UAH 正式固定 0.4.2，五组 TabsWindow / 15 eager Items 迁移、生产弹层布局及旧会话滚动修复完成，11 项消费门禁全部通过：完整单测 1045/1043/0/2、build/typecheck、完整 docs UI 与七组桌面专项。消费者保留所有先前失败及版本化源码/日志哈希；UAH 到 main 的审阅请求准备中，尚未合并或发布安装包。
+
+UI 此次后续提交仅同步发布与消费者验收记录，不移动 v0.4.2 标签；全库历史审计未覆盖项继续保留。
+
+## 2026-10-09：0.4.2已正式发布，UAH消费适配最终验收中
+
+main7f63179/v0.4.2已推送，Actions37896838790/Linux308/308/Publish全部成功，official registry version/latest0.4.2及tarball/integrity确认。UAH已经正常安装固定正式0.4.2并完成Window组合迁移，最终完整消费门禁进行中。保留0.4.0失败标签、0.4.1已发布与消费者发现动画缺陷的完整历史，不覆盖旧tag。
+
 ## 2026-10-09：正式消费者动画修复，0.4.2待推送发布
 
 UAH正式0.4.1包验证发现省略transition的Vue Boolean转换问题。UiDialog/UiMenu/UOverlay设置显式undefined默认，恢复缺省CSS动画且保留false/named/object协议。0.4.2完整typecheck、308/308单测、build、Electron21组/173URL、feedback7组、controls6组、presentation6组、pack541全部通过。新增真实SFC省略属性动画关键帧回归；恢复退场动画后确认服务须等closed再检查结果，原失败保留。Root复核当前弹窗截图。UAH完整消费验证仍有运行时资源/滚动记忆及测试索引问题正在处理，不能称为UAH通过。下一步按既定授权发布0.4.2，再升级正式包继续适配。
