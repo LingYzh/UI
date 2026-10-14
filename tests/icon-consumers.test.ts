@@ -128,6 +128,32 @@ test('createIcons normalizes built-in defaults, aliases, and custom icon sets', 
     assert.equal(resolveIcon('$protocolPath', { aliases: { protocolPath: pathOne } }).path, pathOne);
 });
 
+test('Icon normalizes numeric string sizes and preserves CSS lengths', async () => {
+    const icon = await loadComponent('/src/components/Icon.vue');
+    for (const [size, expected] of [[16, '16px'], ['16', '16px'], [' 16 ', '16px'], ['18.5', '18.5px'], ['1.25rem', '1.25rem'], ['var(--toolbar-icon-size)', 'var(--toolbar-icon-size)']] as const) {
+        const { html } = await renderSsrComponent(icon, { icon: pathOne, size });
+        assert.ok(html.includes(`--icon-size:${expected}`), `size ${size} must produce a valid CSS length`);
+    }
+});
+
+test('Dialog renders named header/footer without requiring scrollable', async () => {
+    const dialog = await loadComponent('/src/ui/UiDialog.vue');
+    const slots = { header: () => h('h2', 'Import header'), default: () => h('p', 'Selected file'), footer: () => h('button', 'Import confirm') };
+    const plain = await renderSsrComponent(dialog, { eager: true, attach: true, scrollable: false }, slots);
+    assert.match(plain.html, /ui-dialog--structured/);
+    assert.match(plain.html, /ui-dialog-header/);
+    assert.match(plain.html, /Import header/);
+    assert.match(plain.html, /ui-dialog-body--plain/);
+    assert.match(plain.html, /Import confirm/);
+    const scrollable = await renderSsrComponent(dialog, { eager: true, attach: true, scrollable: true }, slots);
+    assert.match(scrollable.html, /ui-dialog-scroll/);
+    assert.match(scrollable.html, /Import header/);
+    assert.match(scrollable.html, /Import confirm/);
+    const bare = await renderSsrComponent(dialog, { eager: true, attach: true }, { default: slots.default });
+    assert.doesNotMatch(bare.html, /ui-dialog--structured|ui-dialog-body--plain/);
+    assert.match(bare.html, /Selected file/);
+});
+
 test('compiled consumer SFCs accept IconValue strings, path arrays, and Vue components', async () => {
     const carouselItem = await loadComponent('/src/ui/UCarouselItem.vue');
     const consumers: Array<{

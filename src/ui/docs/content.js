@@ -1296,6 +1296,8 @@ for (const page of completionPages) {
     else for (const example of page.examples) if (!existing.examples.some(item => item.id === example.id)) existing.examples.push(example);
 }
 pages.find(page => page.name === 'UButton').examples.push(buttonAppearanceExample, buttonLoadingExample);
+const cascaderPage = pages.find(page => page.name === 'UCascader');
+cascaderPage.notes.push('multiple 输出完整路径数组；未指定仍为单路径。filterable 搜索完整标签路径，checkStrictly 允许父节点独立选择，max 限制选中路径数量。');
 for (const name of ['UApp', 'ULayout']) pages.find(page => page.name === name).examples.push(layoutOrderExample);
 for (const name of ['UDialog', 'UOverlay', 'UMenu', 'UTooltip']) pages.find(page => page.name === name).examples.push(overlayPresentationExample);
 pages.find(page => page.name === 'UList').examples.push(listNavigationExample);
@@ -1306,6 +1308,9 @@ for (const [name, examples] of Object.entries(tableAlignmentExamples)) {
     const page = pages.find(page => page.name === name);
     page.examples.push(...examples);
     page.notes.push(...tableAlignmentNotes);
+}
+for (const name of ['UDialog', 'UOverlay', 'UDrawer']) {
+    pages.find(page => page.name === name)?.notes.push('共享遮罩默认淡入 180ms、淡出 140ms，关闭等待面板与遮罩过渡完成。减少动效或 transition=false 时立即切换；快速重开沿当前透明度继续。');
 }
 for (const page of pages.filter(page => page.kind === 'component')) {
     const api = componentApi[page.name];

@@ -17,6 +17,21 @@ function createState(initialModel: unknown, initialProps: ItemGroupStateProps = 
     return { model, props, state, register };
 }
 
+test('explicit item deselection respects a live minimum without forcing initial values', () => {
+    const group = createState(['a', 'b'], { multiple: true, min: 2 });
+    group.register('a', () => 'a');
+    group.register('b', () => 'b');
+    group.register('c', () => 'c');
+    group.state.select('a', false);
+    assert.deepEqual(group.model.value, ['a', 'b']);
+    group.state.select('c', true);
+    group.state.select('a', false);
+    assert.deepEqual(group.model.value, ['b', 'c']);
+    group.props.min = 1;
+    group.state.select('b', false);
+    assert.deepEqual(group.model.value, ['c']);
+});
+
 test('matches deep objects and treats an array-valued single item as one model value', () => {
     const objectModel = ref<unknown>({ code: 4, label: 'Four' });
     const objectGroup = createItemGroupState(objectModel, () => ({}));

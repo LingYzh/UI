@@ -1,0 +1,24 @@
+.u-date-picker-options button.is-selected {
+    background: var(--accent);
+    color: var(--on-primary-surface, #fff);
+}
+
+.u-date-input-time-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.u-date-input-time-fields > * {
+    flex: 1 1 160px;
+    min-width: min(100%, 160px);
+}
+.ui-menu-surface:has(.u-date-input-time-fields) .u-date-picker { border: 0; border-radius: 0; }
+.u-date-input-time-fields .u-time-picker-controls { margin-top: 0; gap: 4px; }
+.u-date-input-time-fields .ui-field { gap: 6px; }
+
+@media (max-width: 480px) {
+    .u-date-input-time-fields > * { flex-basis: 100%; min-width: 0; }
+}

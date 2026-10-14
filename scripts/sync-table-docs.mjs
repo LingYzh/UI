@@ -22,10 +22,11 @@ for (const [component, file, title, description] of definitions) {
 }
 const notes = [
     '稳定表格接口对照 Vuetify 4.2.4；保留 UAH 外观、dense/ghost/rounded/ripple 与原有业务回调。完整盘点见 docs/TABLE-ALIGNMENT-2026-10-08.md。',
-    'DataTable 的 headers 可省略自动推导；children 构成嵌套表头，value 可为路径/路径数组/函数。固定列使用数字像素宽度，多个固定列需要明确宽度。',
+    'DataTable 的 headers 可省略自动推导；children 构成嵌套表头，value 可为路径/路径数组/函数。固定列使用数字像素宽度，多个固定列需要明确宽度；左侧固定组的末列、右侧固定组的首列显示主题细分界线，移动卡片不显示固定列分界线。',
     '数据表默认按 lg（1145px）自动切换移动布局；mobile=false 保持传统列，mobile=true 强制移动布局，mobile-breakpoint 可覆盖。虚拟表格 height 保留本库外框高度语义。',
     '标准 item/header 插槽同时提供 column/internalItem 与原有 item/header；data-table-group/data-table-select 可返回 td，group-header/expanded-row 可返回完整 tr，旧正文插槽继续兼容。',
     '服务端表格只显示传入数据，不执行本地过滤/排序/二次分页；select-strategy=all 只覆盖已提供的当前页数据，不代表选择整个远程库。',
+    '切换每页数量会回到第 1 页；翻页或更改每页数量会回到表格顶部。同页数据刷新、选择和展开不主动重置滚动位置。',
     '每页数量控件为13px，自适应选项宽度；items-per-page=-1 表示全部，可用数字或 { value, title } 配置选项。',
     'Material 默认主题、Vuetify 内部组件实例和 $vuetify 注入对象不属于本库实现；主题、图标、动画和滚动区域复用本库能力。'
 ];

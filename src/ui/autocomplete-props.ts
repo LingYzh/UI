@@ -33,6 +33,7 @@ export interface AutocompleteProps extends ControlSizing, FormControlProps {
     noFilter?: boolean;
     autoSelectFirst?: boolean | 'exact';
     clearOnSelect?: boolean;
+    /** Pointer selection blurs by default only in single mode; multiple keeps focus/menu. */
     blurOnSelect?: boolean;
     delimiters?: readonly string[];
     trimValues?: boolean;

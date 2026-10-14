@@ -76,8 +76,8 @@ try {
     assert.equal(await styleCount(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
     const frame = await page.evaluate(() => {
-        const animation = document.getAnimations().find(animation => animation.animationName === 'ui-theme-reveal');
-        if (!animation) throw new Error('Missing rendered theme reveal animation');
+        const animation = document.getAnimations().find(animation => animation.animationName === 'ui-theme-conceal');
+        if (!animation) throw new Error('Missing rendered dark theme contraction animation');
         animation.pause();
         animation.currentTime = 180;
         const style = [...document.head.querySelectorAll('style')].find(style => style.textContent.includes('@keyframes ui-theme-reveal')).textContent;
@@ -95,12 +95,12 @@ try {
         const pixel = (x, y) => [...bytes.subarray((y * width + x) * 4, (y * width + x) * 4 + 3)];
         return { left: pixel(280, 100), right: pixel(1400, 100) };
     });
-    assert.ok(pixels.left.every(channel => channel > 200) && pixels.right.every(channel => channel < 80), `midpoint contains both old and new themes: ${JSON.stringify(pixels)}`);
-    await page.evaluate(() => document.getAnimations().find(animation => animation.animationName === 'ui-theme-reveal').play());
+    assert.ok(pixels.left.every(channel => channel < 80) && pixels.right.every(channel => channel > 200), `dark contracts the old light snapshot toward the switch: ${JSON.stringify(pixels)}`);
+    await page.evaluate(() => document.getAnimations().find(animation => animation.animationName === 'ui-theme-conceal').play());
     await settle();
     await capture('theme-dark-after');
     assert.equal(await header.evaluate(element => element === document.activeElement), false);
-    passed.push('topbar defaults to a real 400ms reveal from the switch, preserves pointer focus policy and cleans its style');
+    passed.push('topbar dark mode contracts the light snapshot to the switch in 400ms, preserves pointer focus policy and cleans its style');
 
     await reduced.check();
     await page.waitForFunction(() => document.documentElement.dataset.reducedMotion === 'true');
@@ -136,13 +136,13 @@ try {
     passed.push('change/toggle/cycle share the default and retain explicit false for host opt-out');
 
     await page.evaluate(async () => { await window.fixtureTheme.change('light'); await window.transitions.at(-1).ready; window.fixtureReducedMotion.value = true; });
-    await page.waitForFunction(() => !document.getAnimations().some(animation => animation.animationName === 'ui-theme-reveal'));
+    await page.waitForFunction(() => !document.getAnimations().some(animation => ['ui-theme-reveal', 'ui-theme-conceal'].includes(animation.animationName)));
     await settle();
     assert.equal(await reduced.isChecked(), true);
     await reduced.uncheck();
     await page.evaluate(async () => { await window.fixtureTheme.change('dark'); await window.transitions.at(-1).ready; });
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.waitForFunction(() => !document.getAnimations().some(animation => animation.animationName === 'ui-theme-reveal'));
+    await page.waitForFunction(() => !document.getAnimations().some(animation => ['ui-theme-reveal', 'ui-theme-conceal'].includes(animation.animationName)));
     await settle();
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     passed.push('manual and system reduced motion immediately finish a transition already playing');

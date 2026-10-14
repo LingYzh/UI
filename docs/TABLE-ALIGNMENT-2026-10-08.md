@@ -54,6 +54,12 @@
 - virtual 的 height 仍表示本库整个外框高度，包含 top/bottom 内容；分页控件不出现在虚拟表格中。选择策略 all 对服务端只覆盖已传入的当前页数据。
 - 完整 tr 的展开槽由调用方负责行结构；旧正文槽仍使用本库展开过渡。内部实例、Vue 注入符号和 Material 默认样式不作为二进制替换协议。
 
+### 2026-10-10 移动布局复查
+
+再次对照 [VDataTableRow 4.2.4](https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataTable/VDataTableRow.tsx) 和 [VDataTable 样式](https://github.com/vuetifyjs/vuetify/blob/v4.2.4/packages/vuetify/src/components/VDataTable/VDataTable.sass)：移动模式不沿用桌面列宽，普通单元格使用等宽的标题/值双列，标题靠起始边、值靠末端；选择框靠末端、展开控件居中。共享 DataTableCore 已修复固定宽度让时间与操作单元格挤压标签的问题，自定义 item 插槽同样放入值区。
+
+本轮使用本地链接的 NC_Admin 验证 390px、602px 和 1280px：窄屏无单元格/页面横向溢出，选择和修改操作正常，桌面列宽保留；表格专项 14/14 通过。此记录不替代完整发布验收。
+
 ## 验证证据
 
 遵循用户最新规则，只运行相关专项及视觉复核，无完整 build、全量测试或全项目 typecheck。此前记录里的完整检查属于更早阶段。

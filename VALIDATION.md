@@ -1,5 +1,11 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-14：0.6.0 发布门禁
+
+普通 npm 依赖恢复后，最终源码通过 typecheck、381/381 测试、文档与库 build、Electron 21 组（artifacts/ui-kHrdMZ）。新增树形多选真实 demo 覆盖浅色、深色、390px；tree-select-form-multiple 覆盖 required、readonly、disabled、独立/显式策略、清空与 UiForm reset。Root 复核真实截图；源码发布包 569 文件白名单通过。日志 .Codex/release-060-*，首次 fixture 定位与主题设置错误保留，最终运行以实际主题开关断言为准。
+
+NC_Admin 使用本地 link 的平台业务及旧若依模式另有隔离浏览器验收；不代表真实后端权限、写入或文件生成通过。UI 发布状态以 HANDOFF 最新记录及官方 registry 为准。
+
 ## 2026-10-09 UI 0.4.2 正式消费者动画补丁
 
 省略transition属性的实际Vue组件被Boolean转换为false，UAH生产搜索验证发现默认动画缺失。三种DOM弹层显式undefined默认恢复CSS分支，feedback增加真实SFC缺省属性入场关键帧校验。恢复退场动画后确认服务结果等待closed完成，首轮同步假设失败保留，feedback第二轮7组/17图通过。

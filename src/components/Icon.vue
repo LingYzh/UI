@@ -22,6 +22,10 @@ const icons = Object.fromEntries(Object.entries(iconFiles).map(([path, source]) 
     source
 ]));
 const iconOptions = useIcons();
+// Vue 的静态 size="16" 是字符串；无单位数字仍须转换为 CSS 像素长度。
+const iconSize = computed(() => typeof props.size === 'number' || /^-?\d+(?:\.\d+)?$/.test(props.size.trim())
+    ? `${Number(props.size)}px`
+    : props.size);
 
 const resolved = computed(() => {
     const value = props.icon || props.name;
@@ -37,7 +41,7 @@ const markup = computed(() => resolved.value.kind === 'local' && resolved.value.
 <template>
     <span
         class="icon prototype-icon"
-        :style="{ '--icon-size': typeof size === 'number' ? `${size}px` : size, color: color ? `var(--ui-theme-${color}, ${color})` : undefined }"
+        :style="{ '--icon-size': iconSize, color: color ? `var(--ui-theme-${color}, ${color})` : undefined }"
         :aria-hidden="label ? undefined : true"
         :role="label ? 'img' : undefined"
         :aria-label="label || undefined"

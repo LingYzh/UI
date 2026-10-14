@@ -12,7 +12,7 @@ const badgeProps = computed(() => ({ dot: !slots.badge, color: typeof props.badg
 </script>
 
 <template>
-    <component :is="props.badge ? UBadge : 'span'" v-bind="props.badge ? badgeProps : {}">
+    <component :is="props.badge ? UBadge : 'span'" class="ui-avatar-wrapper" v-bind="props.badge ? badgeProps : {}">
         <span class="ui-avatar" :class="{ 'is-rounded': props.rounded }" :style="{ width: dimension, height: dimension, background: props.color }"><slot><img v-if="props.image" :src="props.image" :alt="props.alt ?? props.text ?? ''" /><UiIcon v-else-if="props.icon" :icon="props.icon" :label="props.alt" /><span v-else>{{ props.text }}</span></slot></span>
         <template v-if="$slots.badge" #badge><slot name="badge" /></template>
     </component>

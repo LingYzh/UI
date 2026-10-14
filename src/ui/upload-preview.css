@@ -1,0 +1,9 @@
+.ui-upload-thumbnail { width: 48px; height: 48px; flex: 0 0 auto; border: 0; padding: 0; border-radius: 4px; background: var(--soft); cursor: pointer; }
+.ui-upload-thumbnail:disabled { cursor: not-allowed; }
+.ui-upload-thumbnail > img { width: 100%; height: 100%; object-fit: contain; }
+.ui-upload-files.is-picture > li { min-height: 64px; }
+.ui-upload-files.is-picture-card { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 120px), 1fr)); gap: 12px; }
+.ui-upload-files.is-picture-card > li { position: relative; display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.ui-upload-files.is-picture-card .ui-upload-thumbnail { width: 100%; height: 96px; }
+.ui-upload-files.is-picture-card > li > span { min-width: 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-upload-files.is-picture-card > li > .ui-control-clear { position: absolute; inset-block-start: 4px; inset-inline-end: 4px; }

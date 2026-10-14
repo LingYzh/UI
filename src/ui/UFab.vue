@@ -4,6 +4,7 @@ import { useDefaults } from './defaults';
 import { useLayoutItem } from './layout-completion';
 import UiButton from './UiButton.vue';
 import UTransition from './UTransition.vue';
+import Icon from '../components/Icon.vue';
 defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<{
     disabled?: boolean; loading?: boolean; label?: string; active?: boolean;
@@ -12,12 +13,13 @@ const rawProps = withDefaults(defineProps<{
 }>(), { active: true, location: 'bottom end', order: 0, transition: 'scale' });
 const props = useDefaults(rawProps, 'UFab');
 const model = defineModel<boolean>({ default: true });
+const visible = computed(() => props.active && model.value);
 const attrs = useAttrs();
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
 const element = ref<HTMLElement>();
 const measured = ref(44);
 const edge = computed<'top' | 'bottom'>(() => props.location.includes('top') ? 'top' : 'bottom');
-const { offset } = useLayoutItem(edge, computed(() => props.layout ? measured.value + 24 : 0), computed(() => props.app && model.value), computed(() => Number(props.order)));
+const { offset } = useLayoutItem(edge, computed(() => props.layout ? measured.value + 24 : 0), computed(() => props.app && visible.value), computed(() => Number(props.order)));
 const positioned = computed(() => props.app || props.absolute);
 const positionStyle = computed(() => {
     if (!positioned.value) return {};
@@ -39,7 +41,7 @@ function activate(event: MouseEvent) { if (!props.disabled && !props.loading) em
 <template>
     <div ref="element" class="u-fab-wrapper" :class="{ 'is-positioned': positioned, 'is-offset': props.offset }" :style="positionStyle">
         <UTransition :variant="props.transition === false || props.transition === true ? 'scale' : props.transition" :disabled="props.transition === false" :appear="props.appear">
-            <span v-show="props.active" class="u-fab-container"><UiButton v-bind="attrs" class="u-fab" :class="{ 'is-extended': props.extended }" :disabled="props.disabled" :loading="props.loading" :aria-label="props.label" @click="activate"><template v-if="$slots.prepend" #prepend><slot name="prepend" /></template><template v-if="$slots.default || !attrs.icon" #default><slot v-if="$slots.default" /><template v-else>+</template></template><template v-if="$slots.append" #append><slot name="append" /></template><template v-if="$slots.loader" #loader><slot name="loader" /></template></UiButton></span>
+            <span v-show="visible" class="u-fab-container"><UiButton v-bind="attrs" class="u-fab" :class="{ 'is-extended': props.extended }" :disabled="props.disabled" :loading="props.loading" :aria-label="props.label" @click="activate"><template v-if="$slots.prepend" #prepend><slot name="prepend" /></template><template v-if="$slots.default || !attrs.icon" #default><slot v-if="$slots.default" /><Icon v-else name="$plus" :size="20" /></template><template v-if="$slots.append" #append><slot name="append" /></template><template v-if="$slots.loader" #loader><slot name="loader" /></template></UiButton></span>
         </UTransition>
     </div>
 </template>

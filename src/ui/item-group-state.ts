@@ -9,6 +9,7 @@ export interface ItemGroupStateProps {
     multiple?: boolean;
     mandatory?: ItemGroupMandatory;
     max?: number;
+    min?: number;
     disabled?: boolean;
     readonly?: boolean;
     valueComparator?: ValueComparator;
@@ -123,7 +124,7 @@ export function createItemGroupState(model: Ref<unknown>, getProps: () => ItemGr
             if (shouldRemove) {
                 if (!hasValue) return;
                 const next = current.filter((currentValue) => !compare(currentValue, nextValue));
-                if (isMandatory(props) && next.length === 0) return;
+                if (next.length < Math.max(isMandatory(props) ? 1 : 0, props.min ?? 0)) return;
                 model.value = next;
                 return;
             }
@@ -173,6 +174,7 @@ export function createItemGroupState(model: Ref<unknown>, getProps: () => ItemGr
         if (props.multiple && props.max !== undefined && props.max < 1) return;
 
         const nextValue = effectiveEntryValue(target);
+        if (props.multiple && (props.min ?? 0) > 1) { select(target.id, true); return; }
         model.value = props.multiple ? [nextValue] : nextValue;
     }
 

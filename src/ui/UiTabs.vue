@@ -123,9 +123,12 @@ function measure() {
     atEnd.value = position >= total - size - 1;
     mobile.value = window.innerWidth < 600;
     const active = host.querySelector<HTMLElement>('.ui-tab[aria-selected="true"]');
+    // offsetWidth/offsetLeft 会取整，均分奇数宽度时让末端滑块多出 1px 并触发滚动条。
+    const hostBounds = host.getBoundingClientRect();
+    const activeBounds = active?.getBoundingClientRect();
     const measured: Record<string, string> = !active || !host.clientWidth ? { opacity: '0' } : vertical
-        ? { opacity: '1', height: `${active.offsetHeight}px`, transform: `translateY(${active.offsetTop}px)` }
-        : { opacity: '1', width: `${active.offsetWidth}px`, transform: `translateX(${active.offsetLeft}px)` };
+        ? { opacity: '1', height: `${activeBounds!.height}px`, transform: `translateY(${activeBounds!.top - hostBounds.top - host.clientTop + host.scrollTop}px)` }
+        : { opacity: '1', width: `${activeBounds!.width}px`, transform: `translateX(${activeBounds!.left - hostBounds.left - host.clientLeft + host.scrollLeft}px)` };
     if (JSON.stringify(slider.value) !== JSON.stringify(measured)) slider.value = measured;
 }
 function reveal(target: HTMLElement | null, center = false) {

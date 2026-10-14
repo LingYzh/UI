@@ -378,6 +378,9 @@ function humanize(name) {
 }
 
 function propDescription(contract, prop, previous) {
+    if (['USelect', 'UAutocomplete'].includes(contract.name) && prop.name === 'blurOnSelect') return '未指定时，单选指针选择后失焦，多选保持焦点和菜单以便连续选择；显式 true/false 覆盖。键盘选择保留焦点。';
+    if (contract.name === 'UDateInput' && prop.name === 'editable') return '默认 false，仅通过日期面板选择；true 允许手动填写，并按 updateOn 提交。readonly 仍会阻止整个控件修改。';
+    if (contract.name === 'UDrawer' && prop.name === 'restoreFocus') return '默认 true，关闭后恢复触发器焦点，并取消该触发器尚未执行的鼠标失焦。';
     if (prop.name === 'icon' || /Icon$/.test(prop.name)) return commonProps.icon + (contract.name === 'UButton' && prop.name === 'icon' ? ' Boolean true 只启用图标按钮外观，默认插槽优先。' : '');
     if (['UIcon', 'UiIcon'].includes(contract.name) && prop.name === 'name') return '兼容旧版图标名称，与 icon 使用相同解析；icon 显式值优先。';
     if (['UIcon', 'UiIcon'].includes(contract.name) && prop.name === 'path') return '兼容显式 SVG 路径，优先于 icon/name，并使用 SVG 渲染器。';

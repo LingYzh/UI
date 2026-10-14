@@ -9,7 +9,7 @@ import { useLocale } from './locale-context';
 import UiMenu from './UiMenu.vue';
 import UColorPicker from './UColorPicker.vue';
 import UConfirmEdit from './UConfirmEdit.vue';
-type ColorMode = 'hex' | 'hexa' | 'rgb' | 'rgba' | 'hsl' | 'hsla';
+type ColorMode = 'hex' | 'hexa' | 'rgb' | 'rgba' | 'hsl' | 'hsla' | 'hsv' | 'hsva';
 
 defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<FormControlProps & {
@@ -68,7 +68,7 @@ function hasExplicitAlpha(value: unknown): boolean {
     if (typeof value === 'string') {
         const source = value.trim();
         if (/^#[\da-f]{4}$/i.test(source) || /^#[\da-f]{8}$/i.test(source)) return true;
-        const match = source.match(/^(?:rgba?|hsla?)\(([\s\S]*)\)$/i);
+        const match = source.match(/^(?:rgba?|hsla?|hsva?)\(([\s\S]*)\)$/i);
         if (!match) return false;
         const channels = match[1].split('/')[0].trim();
         if (match[1].includes('/')) return true;

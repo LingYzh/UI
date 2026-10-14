@@ -11,6 +11,7 @@ import { defaultValueComparator, type ValueComparator } from './selection';
 defineOptions({ inheritAttrs: false });
 
 type RadioProps = FormControlProps & {
+    bordered?: boolean;
     /** 本单选项代表的值；与 v-model 相等时选中。 */
     value?: T;
     trueValue?: T;
@@ -77,6 +78,7 @@ defineExpose({
     <UiControlFrame
         v-slot="{ controlAttrs }"
         v-bind="props"
+        :label="props.bordered ? undefined : props.label"
         :framed="control.framed.value"
         :for="control.id()"
         :error="control.displayErrors.value.join('\n')"
@@ -85,9 +87,9 @@ defineExpose({
         :label-width="control.labelWidth.value"
     >
         <label
-            v-if="$slots.default"
+            v-if="$slots.default || props.bordered && props.label"
             class="ui-radio"
-            :class="[$attrs.class, { 'is-disabled': control.disabled.value }]"
+            :class="[$attrs.class, { 'is-disabled': control.disabled.value, 'is-bordered': props.bordered, 'is-selected': checked, 'is-dense': control.dense.value }]"
             :style="$attrs.style as any"
         >
             <span
@@ -115,7 +117,7 @@ defineExpose({
                     @change="change"
                 />
             </span>
-            <span class="ui-radio-label"><slot /></span>
+            <span class="ui-radio-label"><slot>{{ props.label }}</slot></span>
         </label>
         <span
             v-else

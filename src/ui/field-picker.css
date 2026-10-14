@@ -65,6 +65,14 @@
     font-size: 16px;
     outline: none;
 }
+/* The field surface owns focus feedback, including native slotted inputs. */
+.u-field-surface .u-field-input:focus-visible {
+    outline: none;
+}
+.u-field-surface.is-plain:has(.u-field-input:focus-visible:not([data-ui-pointer-focus])) {
+    outline: 1px solid var(--accent-text);
+    outline-offset: 2px;
+}
 .u-field-label {
     position: absolute;
     inset-inline-start: 12px;

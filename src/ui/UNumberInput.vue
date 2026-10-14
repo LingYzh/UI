@@ -5,6 +5,7 @@ import { mergeControlAttrs } from './form';
 import { vPointerBlur } from './pointer-focus';
 import { computed, onBeforeUnmount, ref, useAttrs, useId, useSlots, watch } from 'vue';
 import { useFormControl, type FormControlProps } from './form';
+import Icon from '../components/Icon.vue';
 import { useDefaults } from './defaults';
 import { useLocale } from './locale-context';
 import { clampNumber, formatLocalizedNumber, parseLocalizedNumber, parseNumberInput, stepNumber } from './specialized-inputs';
@@ -215,7 +216,7 @@ defineExpose({ element, text, invalidInput, canDecrease, canIncrease, control, u
         <template #default="{ controlAttrs }">
             <slot name="prepend" />
             <div class="ui-input ui-number-input" :class="[attrs.class, control.classes.value, `is-control-${effectiveControlVariant}`, { 'is-inset': props.inset, 'is-input-hidden': props.hideInput }]" :data-control-variant="effectiveControlVariant" :data-inset="props.inset || undefined" :style="[control.styles.value, attrs.style as any]">
-                <slot v-if="effectiveControlVariant !== 'hidden'" name="decrement" :props="stepProps(-1)"><button v-bind="stepProps(-1)" v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur>−</button></slot>
+                <slot v-if="effectiveControlVariant !== 'hidden'" name="decrement" :props="stepProps(-1)"><button v-bind="stepProps(-1)" v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur><Icon name="$minus" :size="effectiveControlVariant === 'stacked' ? 12 : 16" /></button></slot>
                 <div v-if="!props.hideInput" class="ui-number-input-body">
                     <span v-if="$slots['prepend-inner']" class="ui-input-adornment"><slot name="prepend-inner" /></span>
                     <span v-if="props.prefix" class="ui-input-adornment">{{ props.prefix }}</span>
@@ -226,7 +227,7 @@ defineExpose({ element, text, invalidInput, canDecrease, canIncrease, control, u
                     <span v-if="$slots['append-inner']" class="ui-input-adornment"><slot name="append-inner" /></span>
                     <slot v-bind="inputSlotScope" />
                 </div>
-                <slot v-if="effectiveControlVariant !== 'hidden'" name="increment" :props="stepProps(1)"><button v-bind="stepProps(1)" v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur>+</button></slot>
+                <slot v-if="effectiveControlVariant !== 'hidden'" name="increment" :props="stepProps(1)"><button v-bind="stepProps(1)" v-ripple="control.disabled.value || control.readonly.value ? false : props.ripple" v-pointer-blur><Icon name="$plus" :size="effectiveControlVariant === 'stacked' ? 12 : 16" /></button></slot>
             </div>
             <slot name="append" />
             <output v-if="hasCounter" v-show="counterActive" :id="counterId" class="u-input-counter" :class="{ 'is-over-limit': counterMax !== undefined && counterValue > Number(counterMax) }" :for="control.id()"><slot name="counter" :counter="formattedCounter" :max="counterMax" :value="counterValue">{{ formattedCounter }}</slot></output>

@@ -130,6 +130,13 @@ test('server total/string size/all preserve incoming ordering and loading page',
     assert.deepEqual(state.currentItems.value.map(item => item.raw.id), [1, 2, 3, 4]); assert.equal(state.pageCount.value, 10);
     props.itemsLength = '0'; await nextTick(); assert.equal(models.page.value, '5');
     props.itemsLength = '100'; props.loading = false; await nextTick();
+    state.setItemsPerPage(25); await nextTick();
+    assert.equal(models.page.value, 1);
+    assert.equal(state.size.value, 25);
+    assert.equal(state.pageCount.value, 4);
+    assert.deepEqual(state.currentItems.value.map(item => item.raw.id), [1, 2, 3, 4]);
+    state.setPage(3); await nextTick();
+    assert.equal(models.page.value, 3);
     state.setItemsPerPage(-1); await nextTick(); assert.equal(state.pageCount.value, 1); assert.equal(models.page.value, 1); dispose();
 });
 test('virtual shares filters/groups/selection without local pagination', () => {

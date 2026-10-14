@@ -125,14 +125,41 @@ test('empty selections and placeholders follow single, multiple, and range modes
     assert.deepEqual(multiple.parseInput('   '), { valid: true, value: [] });
 });
 
-test('range input accepts the local en dash delimiter and rejects extra or invalid values', () => {
-    const dateInput = createDateInputFormat({ mode: 'range', inputFormat: 'mm/dd/yyyy' });
+test('custom range separators are literal and round-trip date ranges without splitting date hyphens', () => {
+    const values = [new Date(2024, 2, 5), new Date(2024, 2, 7)];
+    for (const rangeSeparator of ['至', ' ~ ', ' -> ', '.*']) {
+        const range = createDateInputFormat({ mode: 'range', inputFormat: 'yyyy-mm-dd', rangeSeparator });
+        assert.deepEqual(range.separators, { date: '-', multiple: ', ', range: rangeSeparator, join: rangeSeparator });
+        assert.equal(range.placeholder, `yyyy-mm-dd${rangeSeparator}yyyy-mm-dd`);
+        const text = range.formatSelection(values);
+        assert.equal(range.joinDates(values), text);
+        assert.equal(text, `2024-03-05${rangeSeparator}2024-03-07`);
+        const parsed = range.parseInput(text);
+        assert.equal(parsed.valid, true);
+        assert.deepEqual((parsed.value as Date[]).map(iso), ['2024-03-05', '2024-03-07']);
+    }
+    const dash = createDateInputFormat({ mode: 'range', inputFormat: 'yyyy-mm-dd', rangeSeparator: '-' });
+    const dashText = dash.formatSelection(values);
+    assert.equal(dashText, '2024-03-05-2024-03-07');
+    assert.deepEqual(((dash.parseInput(dashText).value) as Date[]).map(iso), ['2024-03-05', '2024-03-07']);
+    const fallback = createDateInputFormat({ mode: 'range', inputFormat: 'yyyy-mm-dd', rangeSeparator: '' });
+    const whitespaceFallback = createDateInputFormat({ mode: 'range', inputFormat: 'yyyy-mm-dd', rangeSeparator: '   ' });
+    assert.deepEqual(fallback.separators, { date: '-', multiple: ', ', range: ' - ', join: ' - ' });
+    assert.deepEqual(whitespaceFallback.separators, fallback.separators);
+    assert.equal(fallback.joinDates(values), '2024-03-05 - 2024-03-07');
+    const multiple = createDateInputFormat({ mode: 'multiple', inputFormat: 'yyyy-mm-dd', rangeSeparator: '至' });
+    assert.equal(multiple.joinDates(values), '2024-03-05, 2024-03-07');
+    assert.equal(multiple.parseInput('2024-03-05, 2024-03-07').valid, true);
+});
+
+test('range input uses its configured literal en dash delimiter and rejects extra or invalid values', () => {
+    const dateInput = createDateInputFormat({ mode: 'range', inputFormat: 'mm/dd/yyyy', rangeSeparator: ' – ' });
     const result = dateInput.parseInput('03/05/2024 – 03/07/2024');
     assert.equal(result.valid, true);
     assert.ok(Array.isArray(result.value));
     assert.deepEqual((result.value as Date[]).map(iso), ['2024-03-05', '2024-03-07']);
-    assert.equal(dateInput.parseInput('03/05/2024 - 03/07/2024 - 03/08/2024').valid, false);
-    assert.equal(dateInput.parseInput('03/05/2024 - 02/30/2024').valid, false);
+    assert.equal(dateInput.parseInput('03/05/2024 – 03/07/2024 – 03/08/2024').valid, false);
+    assert.equal(dateInput.parseInput('03/05/2024 – 02/30/2024').valid, false);
 });
 
 test('RTL joining reverses a copy and does not mutate the caller array', () => {

@@ -85,7 +85,7 @@ const supportingStyle = {
     'completion-panel': '.completion-panel { padding: 16px; border: 1px solid var(--border); border-radius: 8px; }',
     'completion-window-card': '.completion-window-card { display: grid; place-items: center; min-height: 140px; padding: 20px; background: var(--accent-soft); color: var(--accent-text); }',
 };
-const independent = new Set(['UBtnToggle', 'UCode', 'USlideGroup', 'USlideGroupItem', 'USnackbar', 'USnackbarQueue']);
+const independent = new Set(['UBtnToggle', 'UCode', 'USlideGroup', 'USlideGroupItem', 'USnackbar', 'USnackbarQueue', 'UCascader', 'UDrawer', 'UImageViewer', 'UTreeSelect', 'UTreeTable', 'UTimeInput']);
 const manifest = [];
 for (const page of completionPages) {
     if (independent.has(page.name)) {
@@ -105,6 +105,14 @@ for (const page of completionPages) {
     const filename = kebab(page.name).slice(2) + '.vue';
     await writeFile(new URL(filename, directory), await formatDemoSource(source));
     manifest.push({ name: page.name, example: 'component-' + filename.slice(0, -4), file: filename });
+}
+for (const page of completionPages) {
+    for (const example of page.examples.filter(item => item.id.startsWith('component-'))) {
+        if (manifest.some(entry => entry.name === page.name && entry.example === example.id)) continue;
+        const file = example.id.slice('component-'.length) + '.vue';
+        await readFile(new URL(file, directory), 'utf8');
+        manifest.push({ name: page.name, example: example.id, file });
+    }
 }
 await writeFile(new URL('../src/ui/docs/componentExampleManifest.json', import.meta.url), JSON.stringify(manifest, null, 4) + '\n');
 console.log(`Wrote ${manifest.length} individual component demos.`);

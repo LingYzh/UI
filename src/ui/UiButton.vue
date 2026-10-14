@@ -6,6 +6,7 @@ import { buttonGroupKey } from './button-group';
 import { itemGroupKey, itemGroupItemIdKey } from './item-group-context';
 import { formContextKey } from './form';
 import { vRipple, type RippleOptions } from './ripple';
+import UProgressCircular from './UProgressCircular.vue';
 import { useDefaults } from './defaults';
 import Icon from '../components/Icon.vue';
 import type { IconValue } from './icon-config';
@@ -48,7 +49,14 @@ const isSelected = computed(() => !!group && group.selected(groupValue.value));
 watch(isSelected, value => emit('group:selected', { value }));
 const isDisabled = computed(() => props.disabled || form?.disabled.value || group?.disabled.value);
 const link = useUiLink(props);
-const isDense = computed(() => props.density ? props.density === 'compact' : props.dense ?? form?.dense.value ?? false);
+// 显式 dense 是 density 的兼容入口，不能被全局 density 默认值覆盖。
+const density = computed(() => rawProps.density
+    ?? (rawProps.dense !== undefined ? (rawProps.dense ? 'compact' : 'default') : undefined)
+    ?? props.density
+    ?? (props.dense !== undefined ? (props.dense ? 'compact' : 'default') : undefined)
+    ?? form?.density?.value
+    ?? (form?.dense.value ? 'compact' : 'default'));
+const isDense = computed(() => density.value === 'compact');
 const isGhost = computed(() => props.ghost ?? form?.ghost.value ?? false);
 const isRounded = computed(() => props.rounded ?? form?.rounded.value ?? true);
 const loadingSize = ref<CSSProperties>({});
@@ -65,7 +73,17 @@ watch(() => props.loading, (loading, previous) => {
     };
 }, { flush: 'pre' });
 const classVariant = computed(() => `ui-button--variant-${isGhost.value ? 'text' : props.variant}`);
-const styles = computed(() => ({ ...buttonColorStyles(props.color), '--ui-button-font-size': ({ 'x-small': '.625rem', sm: '.75rem', small: '.75rem', md: '.875rem', default: '.875rem', large: '1rem', 'x-large': '1.125rem' } as Record<string, string>)[String(props.size)], '--ui-button-height': typeof props.size === 'number' ? `${props.size}px` : ({ 'x-small': '24px', small: '28px', default: '36px', large: '44px', 'x-large': '52px' } as Record<string, string>)[props.size], ...loadingSize.value }));
+const styles = computed(() => ({
+    ...buttonColorStyles(props.color),
+    '--ui-button-font-size': ({ 'x-small': '.625rem', sm: '.75rem', small: '.75rem', md: '.875rem', default: '.875rem', large: '1rem', 'x-large': '1.125rem' } as Record<string, string>)[String(props.size)],
+    // 保留显式 size 尺寸；普通 md 按钮随密度响应，不再把 comfortable 和 default 合并。
+    '--ui-button-height': typeof props.size === 'number' ? `${props.size}px` : ({ 'x-small': '24px', sm: '28px', small: '28px', default: '36px', large: '44px', 'x-large': '52px' } as Record<string, string>)[props.size]
+        ?? (props.size === 'md' ? `${{ default: 36, comfortable: 34, compact: 32 }[density.value]}px` : undefined),
+    // Small sizes must accommodate the icon without padding making them taller than text-only peers.
+    '--ui-button-padding-block': props.size === 'x-small' ? '2px' : props.size === 'sm' || props.size === 'small' ? '4px'
+        : density.value === 'compact' ? '4px' : density.value === 'comfortable' ? '6px' : undefined,
+    ...loadingSize.value
+}));
 function guard(event: MouseEvent) {
     if (isDisabled.value || props.loading) { event.preventDefault(); return; }
     if (!group?.readonly.value) group?.toggle(groupValue.value);
@@ -79,15 +97,16 @@ function guardDisabled(event: MouseEvent) {
 </script>
 
 <template>
-    <Button.Root v-slot="{ attrs }" :disabled="isDisabled || props.loading" :loading="props.loading" renderless>
-        <component :is="link.isLink.value ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="{ ...attrs, ...$attrs }" :href="isDisabled || props.loading ? undefined : link.href.value" :type="link.isLink.value ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-current="($attrs['aria-current'] ?? (link.isActive.value ? 'page' : undefined)) as any" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" :tabindex="(isDisabled || props.loading) && link.isLink.value ? -1 : $attrs.tabindex as any" @click.capture="guardDisabled" @click="guard">
-            <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><span class="ui-button-loading" /></slot></span>
+    <component :is="link.isLink.value ? 'a' : 'button'" v-pointer-blur ref="element" v-ripple="group?.readonly.value ? false : props.ripple" v-bind="$attrs" :disabled="!link.isLink.value && (isDisabled || props.loading)" :aria-busy="props.loading || undefined" :data-loading="props.loading || undefined" :href="isDisabled || props.loading ? undefined : link.href.value" :type="link.isLink.value ? undefined : props.type" class="ui-button" :class="[classVariant, isSelected ? [itemGroup?.selectedClass(), props.selectedClass] : undefined, isDense || ['sm', 'small', 'x-small'].includes(String(props.size)) ? 'sm' : 'md', { 'is-icon': props.icon, 'is-square': !isRounded, 'is-loading': props.loading, 'has-color': props.color, 'is-group-selected': isSelected }]" :style="styles" :aria-current="($attrs['aria-current'] ?? (link.isActive.value ? 'page' : undefined)) as any" :aria-pressed="group ? isSelected : $attrs['aria-pressed'] as any" :aria-disabled="isDisabled || props.loading || undefined" :tabindex="(isDisabled || props.loading) && link.isLink.value ? -1 : $attrs.tabindex as any" @click.capture="guardDisabled" @click="guard">
+        <!-- A native root lets consumer DOM directives target the actual control. -->
+        <Button.Root :disabled="isDisabled || props.loading" :loading="props.loading" renderless>
+            <span v-if="props.loading" class="ui-button-loader" aria-hidden="true"><slot name="loader"><UProgressCircular class="ui-button-loading" indeterminate :size="20" :width="2" /></slot></span>
             <span class="ui-button-content" :class="{ 'is-loading': props.loading }">
                 <slot name="prepend"><Icon v-if="props.prependIcon" :icon="props.prependIcon" :size="18" /></slot>
                 <Icon v-if="typeof props.icon !== 'boolean' && props.icon !== undefined && !$slots.default" :icon="props.icon" :size="18" />
                 <slot />
                 <slot name="append"><Icon v-if="props.appendIcon" :icon="props.appendIcon" :size="18" /></slot>
             </span>
-        </component>
-    </Button.Root>
+        </Button.Root>
+    </component>
 </template>

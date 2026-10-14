@@ -3,6 +3,14 @@ import { trackFocusModality } from './focus-modality';
 
 const pointerTargets = new WeakSet<HTMLElement>();
 const cleanups = new WeakMap<HTMLElement, () => void>();
+const pendingBlur = new WeakMap<HTMLElement, number>();
+
+/** A closing overlay may restore its trigger before that trigger's click frame completes. */
+export function cancelPointerBlur(element: HTMLElement): void {
+    const frame = pendingBlur.get(element);
+    if (frame !== undefined) cancelAnimationFrame(frame);
+    pendingBlur.delete(element);
+}
 
 export function wasPointerActivated(element: HTMLElement | null) {
     return Boolean(element && pointerTargets.has(element));
@@ -29,8 +37,10 @@ export const vPointerBlur: ObjectDirective<HTMLElement> = {
             pointerTargets.add(element);
             cancelAnimationFrame(frame);
             frame = requestAnimationFrame(() => {
+                pendingBlur.delete(element);
                 if (document.activeElement === element) element.blur();
             });
+            pendingBlur.set(element, frame);
         };
         element.addEventListener('pointerdown', pointerDown);
         element.addEventListener('keydown', keydown);
@@ -38,6 +48,7 @@ export const vPointerBlur: ObjectDirective<HTMLElement> = {
         cleanups.set(element, () => {
             releaseModality();
             cancelAnimationFrame(frame);
+            pendingBlur.delete(element);
             element.removeEventListener('pointerdown', pointerDown);
             element.removeEventListener('keydown', keydown);
             element.removeEventListener('click', click);

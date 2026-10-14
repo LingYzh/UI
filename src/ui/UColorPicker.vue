@@ -11,7 +11,7 @@ import { hsvToHsl, hsvToRgb, parseColorModel, serializeColorModel, type ColorMod
 import { useLocale } from './locale-context';
 import { dimensionLength as dimension, dimensionStyles, type DimensionProps } from './dimensions';
 
-type Mode = 'hex' | 'hexa' | 'rgb' | 'rgba' | 'hsl' | 'hsla';
+type Mode = 'hex' | 'hexa' | 'rgb' | 'rgba' | 'hsl' | 'hsla' | 'hsv' | 'hsva';
 type Swatch = string | ColorModelInput;
 
 defineOptions({ inheritAttrs: false });
@@ -32,7 +32,7 @@ const rawProps = withDefaults(defineProps<FormControlProps & DimensionProps & {
 }>(), {
     ripple: true, dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined,
     hideCanvas: true, hideEyeDropper: false, canvasHeight: 150, dotSize: 10, swatchesMaxHeight: 150,
-    showInputs: true, showSwatches: undefined, modes: () => ['rgb', 'rgba', 'hsl', 'hsla', 'hex', 'hexa']
+    showInputs: true, showSwatches: undefined, modes: () => ['rgb', 'rgba', 'hsl', 'hsla', 'hsv', 'hsva', 'hex', 'hexa']
 });
 const props = useDefaults(rawProps, 'UColorPicker');
 defineEmits<{ 'update:focused': [value: boolean] }>();
@@ -47,8 +47,17 @@ const hsv = ref<HSVA>(parseColorModel(model.value) ?? { h: 0, s: 0, v: 0, a: 1 }
 const color = computed(() => String(serializeColorModel(hsv.value, '#000000') ?? ''));
 const hexInput = computed(() => String(serializeColorModel({ ...hsv.value, a: mode.value === 'hexa' ? hsv.value.a : 1 }, mode.value === 'hexa' ? '#000000FF' : '#000000') ?? ''));
 const blocked = computed(() => control.disabled.value || control.readonly.value);
-const channels = computed(() => mode.value.startsWith('rgb') ? ['r', 'g', 'b'] : ['h', 's', 'l']);
-const channelValues = computed<Record<string, number>>(() => ({ ...(mode.value.startsWith('rgb') ? hsvToRgb(hsv.value) : hsvToHsl(hsv.value)) }));
+const isHsvMode = computed(() => mode.value.startsWith('hsv'));
+const channels = computed(() => mode.value.startsWith('rgb') ? ['r', 'g', 'b'] : isHsvMode.value ? ['h', 's', 'v'] : ['h', 's', 'l']);
+const channelValues = computed<Record<string, number>>((): Record<string, number> => {
+    if (mode.value.startsWith('rgb')) {
+        const rgb = hsvToRgb(hsv.value)!;
+        return { r: rgb.r, g: rgb.g, b: rgb.b };
+    }
+    if (isHsvMode.value) return { h: hsv.value.h, s: hsv.value.s * 100, v: hsv.value.v * 100 };
+    const hsl = hsvToHsl(hsv.value)!;
+    return { h: hsl.h, s: hsl.s, l: hsl.l };
+});
 const swatches = computed(() => (props.swatches ?? []).flatMap(swatch => Array.isArray(swatch) ? [...swatch] : [swatch]));
 const showSwatches = computed(() => props.showSwatches ?? swatches.value.length > 0);
 const eyeDropperAvailable = typeof window !== 'undefined' && 'EyeDropper' in window;
@@ -71,14 +80,21 @@ function update(next: Pick<HSVA, 'h' | 's' | 'v'> & { a?: number }) {
     control.editable.value = serializeColorModel(parsed, model.value);
 }
 function updateChannel(channel: keyof HSVA, value: number) { update({ ...hsv.value, [channel]: value }); }
+function channelSliderScale(channel: keyof HSVA): number { return channel === 'h' || channel === 'a' && mode.value === 'hsva' ? 1 : 100; }
 function updateHex(value: string) {
     const parsed = parseColorModel(value);
     if (parsed) update(parsed);
 }
 function updateNumeric(channel: string, value: string) {
     if (!value.trim() || !Number.isFinite(Number(value))) return;
-    if (channel === 'a') { updateChannel('a', Number(value)); return; }
-    const parsed = parseColorModel({ ...channelValues.value, [channel]: Number(value) });
+    const numeric = Number(value);
+    if (channel === 'a') { updateChannel('a', numeric); return; }
+    if (isHsvMode.value) {
+        if (channel === 'h') updateChannel('h', numeric);
+        else if (channel === 's' || channel === 'v') updateChannel(channel, numeric / 100);
+        return;
+    }
+    const parsed = parseColorModel({ ...channelValues.value, [channel]: numeric });
     if (parsed) update(parsed);
 }
 function moveCanvas(event: PointerEvent) {
@@ -146,14 +162,14 @@ defineExpose({ element, canvas, hsv, mode, control, update, updateChannel, updat
             </div>
             <div class="ui-color-preview" :style="{ backgroundColor: color }"><span>{{ color }}</span></div>
             <template v-if="!props.hideSliders">
-                <label v-for="channel in ['h', 's', 'v', ...(mode.endsWith('a') ? ['a'] : [])] as (keyof HSVA)[]" :key="channel" class="ui-color-channel"><span>{{ locale.t(`color.${channel}`) }}</span><input v-focus-modality type="range" min="0" :max="channel === 'h' ? 360 : 100" step="any" :value="channel === 'h' ? hsv[channel] : hsv[channel] * 100" :disabled="blocked" @input="updateChannel(channel, Number(($event.target as HTMLInputElement).value) / (channel === 'h' ? 1 : 100))" @focus="control.focus" @blur="control.blur" /></label>
+                <label v-for="channel in ['h', 's', 'v', ...(mode.endsWith('a') ? ['a'] : [])] as (keyof HSVA)[]" :key="channel" class="ui-color-channel"><span>{{ locale.t(`color.${channel}`) }}</span><input v-focus-modality type="range" min="0" :max="channel === 'h' ? 360 : channelSliderScale(channel)" step="any" :value="hsv[channel] * channelSliderScale(channel)" :disabled="blocked" @input="updateChannel(channel, Number(($event.target as HTMLInputElement).value) / channelSliderScale(channel))" @focus="control.focus" @blur="control.blur" /></label>
             </template>
             <div v-if="props.showInputs !== false && !props.hideInputs" class="ui-color-inputs">
                 <input v-if="mode.startsWith('hex')" :id="`${control.id()}-input`" class="ui-color-hex" :value="hexInput" :aria-label="locale.t('color.hex')" :disabled="control.disabled.value" :readonly="control.readonly.value" @change="updateHex(($event.target as HTMLInputElement).value)" @focus="control.focus" @blur="control.blur" />
                 <template v-else>
                     <label v-for="channel in [...channels, ...(mode.endsWith('a') ? ['a'] : [])]" :key="channel" class="ui-color-number">
                         <span v-if="!props.hideInputLabels">{{ channel.toUpperCase() }}</span>
-                        <input :id="channel === channels[0] ? `${control.id()}-input` : undefined" type="number" min="0" :max="channel === 'h' ? 360 : ['r', 'g', 'b'].includes(channel) ? 255 : 1" :step="['r', 'g', 'b', 'h'].includes(channel) ? 1 : .01"
+                        <input :id="channel === channels[0] ? `${control.id()}-input` : undefined" type="number" min="0" :max="channel === 'h' ? 360 : ['r', 'g', 'b'].includes(channel) ? 255 : isHsvMode && channel !== 'a' ? 100 : 1" :step="['r', 'g', 'b', 'h'].includes(channel) ? 1 : .01"
                             :value="channel === 'a' ? hsv.a : Number(channelValues[channel]).toFixed(['r', 'g', 'b', 'h'].includes(channel) ? 0 : 2)"
                             :aria-label="locale.t(`color.${channel}`)" :disabled="control.disabled.value" :readonly="control.readonly.value" @change="updateNumeric(channel, ($event.target as HTMLInputElement).value)" @focus="control.focus" @blur="control.blur" />
                     </label>

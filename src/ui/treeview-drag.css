@@ -1,0 +1,6 @@
+.ui-treeview-item.is-draggable { cursor: grab; position: relative; }
+.ui-treeview-item.is-dragging { opacity: .5; cursor: grabbing; }
+.ui-treeview-item.is-drop-target[data-drop-position="inner"] { outline: 1px solid var(--accent-text); outline-offset: -1px; background: var(--accent-soft); }
+.ui-treeview-item.is-drop-target[data-drop-position="before"]::before, .ui-treeview-item.is-drop-target[data-drop-position="after"]::after { content: ''; position: absolute; inset-inline: 0; height: 2px; background: var(--accent-text); pointer-events: none; }
+.ui-treeview-item.is-drop-target[data-drop-position="before"]::before { inset-block-start: 0; }
+.ui-treeview-item.is-drop-target[data-drop-position="after"]::after { inset-block-end: 0; }

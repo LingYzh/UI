@@ -14,7 +14,9 @@ const seconds = ref('09:15:20');
         />
         <u-time-picker
             v-model="time"
-            label="12 小时显示，模型仍为 24 小时"
+            label="紧凑时间选择，模型仍为 24 小时"
+            hide-header
+            hide-input
             format="ampm"
             variant="select"
         />

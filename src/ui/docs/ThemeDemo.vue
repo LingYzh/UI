@@ -46,6 +46,21 @@ const choices = [
     { value: 'ocean', label: '海蓝 · 自定义浅色' },
     { value: 'midnight', label: '夜海 · 自定义深色' },
 ];
+
+function setOrigin(event) {
+    theme.setTransitionOrigin(event.currentTarget);
+}
+
+function toggleTheme(event) {
+    setOrigin(event);
+    void theme.toggle();
+}
+
+function cycleTheme(event) {
+    setOrigin(event);
+    // System may resolve to the same palette as light/dark, so demonstrate distinct themes here.
+    void theme.cycle(['light', 'dark', 'ocean', 'midnight']);
+}
 </script>
 
 <template>
@@ -58,6 +73,8 @@ const choices = [
                         label="全局主题"
                         :items="choices"
                         hint="system 会在系统外观改变时自动更新。"
+                        @pointerdown.capture="setOrigin"
+                        @keydown.capture="setOrigin"
                     />
                 </u-col>
                 <u-col :cols="12" :sm="5">
@@ -69,8 +86,8 @@ const choices = [
                 </u-col>
             </u-row>
             <div class="theme-demo-actions">
-                <u-button @click="theme.toggle()">切换明暗</u-button>
-                <u-button variant="text" @click="theme.cycle()">循环主题</u-button>
+                <u-button @click="toggleTheme">切换明暗</u-button>
+                <u-button variant="text" @click="cycleTheme">循环主题</u-button>
                 <span role="status">模式 {{ theme.mode.value }} · 当前 {{ theme.name.value }}</span>
             </div>
             <u-card title="当前主题预览" subtitle="文档与组件同步更新">

@@ -11,7 +11,7 @@ const rawProps = withDefaults(defineProps<Omit<FormControlProps, 'variant'> & {
     format?: TimeFormat; min?: string; max?: string; minuteStep?: number;
     allowedHours?: AllowedTimeValues; allowedMinutes?: AllowedTimeValues; allowedSeconds?: AllowedTimeValues;
     useSeconds?: boolean; scrollable?: boolean; variant?: 'select' | 'dial' | 'input';
-    hideHeader?: boolean; title?: string; ampmInTitle?: boolean;
+    hideHeader?: boolean; hideInput?: boolean; title?: string; ampmInTitle?: boolean;
 }>(), { label: '时间', format: '24h', minuteStep: 1, variant: 'dial', dense: undefined, ghost: undefined, rounded: undefined });
 const props = useDefaults(rawProps, 'UTimePicker');
 const emit = defineEmits<{
@@ -116,7 +116,7 @@ defineExpose({ element, focus: () => element.value?.focus(), select, validate: c
                     <div class="u-time-picker-heading"><UiButton v-for="field in fields" :key="field" variant="text" :aria-pressed="viewMode === field" :disabled="blocked" @click="viewMode = field">{{ selectedValue(field) === '' ? '--' : String(selectedValue(field)).padStart(2, '0') }}</UiButton><span v-if="twelveHour && props.ampmInTitle">{{ period.toUpperCase() }}</span></div>
                 </slot>
             </header>
-            <div class="ui-input" :class="control.classes.value" :style="control.styles.value"><input ref="element" v-model="text" v-bind="inputAttrs(controlAttrs)" type="text" :name="props.name" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="!valid || undefined" :placeholder="twelveHour ? 'hh:mm AM' : props.useSeconds ? 'HH:mm:ss' : 'HH:mm'" @focus="control.focus" @blur="commitText(); control.blur()" @keydown.enter.prevent="commitText" /></div>
+            <div v-show="!props.hideInput" class="ui-input" :class="control.classes.value" :style="control.styles.value"><input ref="element" v-model="text" v-bind="inputAttrs(controlAttrs)" type="text" :name="props.name" :disabled="control.disabled.value" :readonly="control.readonly.value" :aria-invalid="!valid || undefined" :placeholder="twelveHour ? 'hh:mm AM' : props.useSeconds ? 'HH:mm:ss' : 'HH:mm'" @focus="control.focus" @blur="commitText(); control.blur()" @keydown.enter.prevent="commitText" /></div>
             <slot :hour="parts.hour" :minute="parts.minute" :second="parts.second" :period="period" :view-mode="viewMode" :select="select">
                 <div v-if="props.variant === 'dial'" class="u-time-picker-dial" :data-mode="viewMode" role="group" :aria-label="viewMode" @wheel="onWheel" @keydown.up.prevent="step(1)" @keydown.down.prevent="step(-1)">
                     <button v-for="(item, index) in dialItems" :key="item.value" type="button" :class="{ 'is-tick': viewMode !== 'hour' && item.value % 5 !== 0 }" :aria-label="item.label" :style="dialStyle(index, dialItems.length)" :disabled="blocked || item.disabled" :aria-pressed="selectedValue(viewMode) === item.value" @click="select(viewMode, item.value, true)">{{ viewMode === 'hour' || item.value % 5 === 0 ? item.label : '·' }}</button>

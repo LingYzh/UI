@@ -116,14 +116,15 @@ export const completionPages = [
             {
                 "id": "component-autocomplete",
                 "title": "自动完成的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "多选默认保持输入焦点和菜单，可连续选项；blur-on-select 显式 true 恢复指针选择后失焦。单选保持原来的关闭行为。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UAutocomplete } from '@lingyzh/ui';\nconst options = [\n    { title: '默认工作区', value: 'default' },\n    { title: '完整的很长选项文字应保持单行，并在控件宽度不足时截断显示', value: 'long' },\n    { title: '归档工作区', value: 'archived', props: { disabled: true } },\n];\nconst choice = ref('default');\nconst required = (value) => (Array.isArray(value) ? value.length > 0 : !!value) || '请填写此项。';\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UAutocomplete\">\n        <u-autocomplete\n            v-model=\"choice\"\n            :items=\"options\"\n            label=\"搜索工作区\"\n            hint=\"输入筛选，方向键选择；选项保留对象模型能力。\"\n            clearable\n            :rules=\"[required]\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UAutocomplete } from '@lingyzh/ui';\nconst options = [\n    { title: '默认工作区', value: 'default' },\n    {\n        title: '完整的很长选项文字应保持单行，并在控件宽度不足时截断显示',\n        value: 'long',\n    },\n    { title: '归档工作区', value: 'archived', props: { disabled: true } },\n];\nconst choice = ref('default');\nconst multiple = ref(['default']);\nconst required = (value) => (Array.isArray(value) ? value.length > 0 : !!value) || '请填写此项。';\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UAutocomplete\">\n        <u-autocomplete\n            v-model=\"choice\"\n            :items=\"options\"\n            label=\"搜索工作区\"\n            hint=\"输入筛选，方向键选择；选项保留对象模型能力。\"\n            clearable\n            :rules=\"[required]\"\n        />\n        <u-autocomplete\n            v-model=\"multiple\"\n            :items=\"options\"\n            label=\"连续选择工作区\"\n            hint=\"多选后保持菜单与焦点，可继续选择；Esc 或点击外部收起。\"\n            multiple\n            chips\n            clearable\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "多选默认保持输入焦点和菜单，可连续选项；blur-on-select 显式 true 恢复指针选择后失焦。单选保持原来的关闭行为。"
         ]
     },
     {
@@ -160,7 +161,7 @@ export const completionPages = [
                 "title": "数值输入的基本用法",
                 "description": "保留默认小数精度与左右分置按钮；controlVariant=end 显式末端排列，stacked/hidden/inset 支持不同控制配置。只有显式 locale 才本地化显示，模型仍为数字，空模型为 null。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UNumberInput, USwitch } from '@lingyzh/ui';\nconst number = ref(5);\nconst price = ref(1234.5);\nconst loading = ref(false);\nconst persistentCounter = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UNumberInput\">\n        <u-number-input\n            v-model=\"number\"\n            label=\"执行并发数\"\n            :min=\"1\"\n            :max=\"10\"\n            :step=\"1\"\n            hint=\"按钮与方向键均遵守 1–10 边界。\"\n        />\n        <u-number-input\n            :model-value=\"1234.5\"\n            locale=\"de-DE\"\n            control-variant=\"end\"\n            grouping\n            label=\"末端按钮与本地化小数\"\n        />\n        <u-number-input :model-value=\"5\" control-variant=\"stacked\" inset label=\"上下排列按钮\" />\n        <u-switch v-model=\"loading\" label=\"显示加载状态\" />\n        <u-switch v-model=\"persistentCounter\" label=\"始终显示计数\" />\n        <u-number-input\n            v-model=\"price\"\n            label=\"金额与自定义按钮\"\n            prefix=\"¥\"\n            suffix=\"元\"\n            clearable\n            :loading=\"loading\"\n            counter=\"12\"\n            :persistent-counter=\"persistentCounter\"\n            :step=\"0.5\"\n            :min=\"0\"\n            control-variant=\"end\"\n            data-number-custom-demo\n        >\n            <template #increment=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"text\">+</u-button>\n            </template>\n            <template #decrement=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"text\">−</u-button>\n            </template>\n            <template #counter=\"{ counter }\">输入 {{ counter }} 个字符</template>\n        </u-number-input>\n        <output>金额模型：{{ price === null ? 'null' : price }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UNumberInput, USwitch } from '@lingyzh/ui';\nconst number = ref(5);\nconst price = ref(1234.5);\nconst loading = ref(false);\nconst persistentCounter = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UNumberInput\">\n        <u-number-input\n            v-model=\"number\"\n            label=\"执行并发数\"\n            :min=\"1\"\n            :max=\"10\"\n            :step=\"1\"\n            hint=\"按钮与方向键均遵守 1–10 边界。\"\n        />\n        <u-number-input\n            :model-value=\"1234.5\"\n            locale=\"de-DE\"\n            control-variant=\"end\"\n            grouping\n            label=\"末端按钮与本地化小数\"\n        />\n        <u-number-input :model-value=\"5\" control-variant=\"stacked\" inset label=\"上下排列按钮\" />\n        <u-switch v-model=\"loading\" label=\"显示加载状态\" />\n        <u-switch v-model=\"persistentCounter\" label=\"始终显示计数\" />\n        <u-number-input\n            v-model=\"price\"\n            label=\"金额与自定义按钮\"\n            prefix=\"¥\"\n            suffix=\"元\"\n            clearable\n            :loading=\"loading\"\n            counter=\"12\"\n            :persistent-counter=\"persistentCounter\"\n            :step=\"0.5\"\n            :min=\"0\"\n            control-variant=\"end\"\n            data-number-custom-demo\n        >\n            <template #increment=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"text\" icon=\"$plus\" />\n            </template>\n            <template #decrement=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"text\" icon=\"$minus\" />\n            </template>\n            <template #counter=\"{ counter }\">输入 {{ counter }} 个字符</template>\n        </u-number-input>\n        <output>金额模型：{{ price === null ? 'null' : price }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -204,7 +205,7 @@ export const completionPages = [
                 "title": "文件上传的基本用法",
                 "description": "上传区域仅在键盘焦点或拖放文件时高亮；鼠标点击选择文件不保持焦点高亮。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFileUpload, USwitch } from '@lingyzh/ui';\nconst upload = ref(null);\nconst single = ref(new File(['单文件示例'], '交接说明.txt', { type: 'text/plain' }));\nconst inset = ref(false);\nconst showSize = ref(true);\nconst clearable = ref(true);\nconst loading = ref(false);\nconst rejected = ref([]);\nconst details = ref([]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UFileUpload\">\n        <u-switch v-model=\"inset\" label=\"文件列表内嵌\" />\n        <u-switch v-model=\"showSize\" label=\"显示文件大小\" />\n        <u-switch v-model=\"clearable\" label=\"显示移除按钮\" />\n        <u-switch v-model=\"loading\" label=\"显示加载状态\" />\n        <u-file-upload\n            v-model=\"upload\"\n            label=\"拖放附件\"\n            multiple\n            accept=\".md,.txt,.png\"\n            filter-by-type=\".md,.txt,.png\"\n            :max-size=\"10485760\"\n            :inset-file-list=\"inset\"\n            :show-size=\"showSize\"\n            :clearable=\"clearable\"\n            :loading=\"loading\"\n            subtitle=\"Markdown、文本或图片，单文件最多 10 MB\"\n            hint=\"支持拖放、粘贴与删除；空模型为 null，选择后为 File 数组。\"\n            @rejected=\"rejected = $event\"\n            @rejected-details=\"details = $event\"\n        >\n            <template #browse=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"tonal\">浏览附件</u-button>\n            </template>\n        </u-file-upload>\n        <u-file-upload\n            v-model=\"single\"\n            label=\"单文件和自定义条目\"\n            :clearable=\"clearable\"\n            :show-size=\"showSize\"\n            inset-file-list\n        >\n            <template #single=\"{ file, props }\">\n                <span>{{ file.name }}</span>\n                <u-button v-if=\"clearable\" v-bind=\"props\" variant=\"text\" aria-label=\"移除单文件\">\n                    移除\n                </u-button>\n            </template>\n        </u-file-upload>\n        <output>\n            多文件：{{ upload === null ? 'null' : upload.length + ' 项' }}；单文件：{{\n                single?.name ?? 'null'\n            }}\n        </output>\n        <output>\n            拒绝 {{ rejected.length }} 项{{\n                details.length\n                    ? '：' +\n                      details.map((item) => item.file.name + '（' + item.reason + '）').join('、')\n                    : ''\n            }}\n        </output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFileUpload, USwitch, USelect } from '@lingyzh/ui';\nconst upload = ref(null);\nconst previewFiles = ref([]);\nconst listType = ref('picture');\nconst single = ref(new File(['单文件示例'], '交接说明.txt', { type: 'text/plain' }));\nconst inset = ref(false);\nconst showSize = ref(true);\nconst clearable = ref(true);\nconst loading = ref(false);\nconst rejected = ref([]);\nconst details = ref([]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UFileUpload\">\n        <USelect\n            v-model=\"listType\"\n            label=\"文件预览布局\"\n            :items=\"[\n                { value: 'text', title: '文本' },\n                { value: 'picture', title: '图片列表' },\n                { value: 'picture-card', title: '图片卡片' },\n            ]\"\n        />\n        <UFileUpload\n            v-model=\"previewFiles\"\n            label=\"图片预览\"\n            :list-type=\"listType\"\n            multiple\n            accept=\"image/*\"\n            filter-by-type=\"image/*\"\n        />\n        <u-switch v-model=\"inset\" label=\"文件列表内嵌\" />\n        <u-switch v-model=\"showSize\" label=\"显示文件大小\" />\n        <u-switch v-model=\"clearable\" label=\"显示移除按钮\" />\n        <u-switch v-model=\"loading\" label=\"显示加载状态\" />\n        <u-file-upload\n            v-model=\"upload\"\n            label=\"拖放附件\"\n            multiple\n            accept=\".md,.txt,.png\"\n            filter-by-type=\".md,.txt,.png\"\n            :max-size=\"10485760\"\n            :inset-file-list=\"inset\"\n            :show-size=\"showSize\"\n            :clearable=\"clearable\"\n            :loading=\"loading\"\n            subtitle=\"Markdown、文本或图片，单文件最多 10 MB\"\n            hint=\"支持拖放、粘贴与删除；空模型为 null，选择后为 File 数组。\"\n            @rejected=\"rejected = $event\"\n            @rejected-details=\"details = $event\"\n        >\n            <template #browse=\"{ props }\">\n                <u-button v-bind=\"props\" variant=\"tonal\">浏览附件</u-button>\n            </template>\n        </u-file-upload>\n        <u-file-upload\n            v-model=\"single\"\n            label=\"单文件和自定义条目\"\n            :clearable=\"clearable\"\n            :show-size=\"showSize\"\n            inset-file-list\n        >\n            <template #single=\"{ file, props }\">\n                <span>{{ file.name }}</span>\n                <u-button v-if=\"clearable\" v-bind=\"props\" variant=\"text\" aria-label=\"移除单文件\">\n                    移除\n                </u-button>\n            </template>\n        </u-file-upload>\n        <output>\n            多文件：{{ upload === null ? 'null' : upload.length + ' 项' }}；单文件：{{\n                single?.name ?? 'null'\n            }}\n        </output>\n        <output>\n            拒绝 {{ rejected.length }} 项{{\n                details.length\n                    ? '：' +\n                      details.map((item) => item.file.name + '（' + item.reason + '）').join('、')\n                    : ''\n            }}\n        </output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -246,15 +247,15 @@ export const completionPages = [
             {
                 "id": "component-range-slider",
                 "title": "范围滑块的基本用法",
-                "description": "默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。手柄不可互相越过，Tab 分别进入两个手柄。",
+                "description": "默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。重合时按拖动方向切换活动端并可继续拖动分开，Tab 分别进入两个手柄。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URangeSlider } from '@lingyzh/ui';\nconst range = ref([20.125, 70.875]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URangeSlider\">\n        <u-range-slider\n            v-model=\"range\"\n            label=\"连续小数范围\"\n            hint=\"默认步长为 0，两个手柄不能越过彼此。\"\n        />\n        <output>{{ range }}</output>\n        <u-range-slider\n            :model-value=\"[25, 75]\"\n            direction=\"vertical\"\n            :ticks=\"{ 0: '0', 50: '50', 100: '100' }\"\n            show-ticks\n            thumb-label=\"always\"\n            label=\"纵向范围\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URangeSlider } from '@lingyzh/ui';\nconst range = ref([20.125, 70.875]);\nconst vertical = ref([25, 75]);\nconst coincident = ref([50, 50]);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URangeSlider\">\n        <u-range-slider\n            v-model=\"range\"\n            label=\"连续小数范围\"\n            hint=\"默认步长为 0，重合后可向两侧拖动来重新分开。\"\n        />\n        <output>{{ range }}</output>\n        <u-range-slider\n            v-model=\"coincident\"\n            label=\"从重合位置开始拖动\"\n            :step=\"1\"\n            thumb-label=\"always\"\n        />\n        <u-range-slider\n            v-model=\"vertical\"\n            direction=\"vertical\"\n            :step=\"1\"\n            :ticks=\"{ 0: '0', 50: '50', 100: '100' }\"\n            show-ticks\n            thumb-label=\"always\"\n            label=\"纵向范围\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
             "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
-            "默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。手柄不可互相越过，Tab 分别进入两个手柄。"
+            "默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。重合时按拖动方向切换活动端并可继续拖动分开，Tab 分别进入两个手柄。"
         ]
     },
     {
@@ -292,7 +293,7 @@ export const completionPages = [
                 "title": "颜色输入的基本用法",
                 "description": "颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UColorInput } from '@lingyzh/ui';\nconst color = ref('#bd6749');\nconst translucent = ref({ r: 189, g: 103, b: 73, a: 0.45 });\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UColorInput\">\n        <u-color-input\n            v-model=\"color\"\n            label=\"标记颜色\"\n            hint=\"点击色块打开组件库面板，确认后提交，取消保留原颜色。\"\n        />\n        <u-color-input\n            v-model=\"translucent\"\n            label=\"透明色对象\"\n            :picker-props=\"{ mode: 'rgba', hideCanvas: false }\"\n            open-on-focus\n        />\n        <u-color-input v-model=\"color\" label=\"即时更新\" hide-actions pip-location=\"append-inner\" />\n        <u-color-input v-model=\"color\" label=\"系统选择器扩展\" native-picker />\n        <output>{{ translucent }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UColorInput } from '@lingyzh/ui';\nconst color = ref('#bd6749');\nconst translucent = ref({ r: 189, g: 103, b: 73, a: 0.45 });\nconst hsv = ref('hsv(20, 65%, 74%)');\nconst hsva = ref('hsva(20, 65%, 74%, 0.45)');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UColorInput\">\n        <u-color-input\n            v-model=\"color\"\n            label=\"标记颜色\"\n            hint=\"点击色块打开组件库面板，确认后提交，取消保留原颜色。\"\n        />\n        <u-color-input\n            v-model=\"translucent\"\n            label=\"透明色对象\"\n            :picker-props=\"{ mode: 'rgba', hideCanvas: false }\"\n            open-on-focus\n        />\n        <u-color-input v-model=\"color\" label=\"即时更新\" hide-actions pip-location=\"append-inner\" />\n        <u-color-input v-model=\"color\" label=\"系统选择器扩展\" native-picker />\n        <UColorInput v-model=\"hsv\" label=\"HSV 字符串\" :modes=\"['hsv']\" />\n        <UColorInput v-model=\"hsva\" label=\"HSVA 字符串\" :modes=\"['hsva']\" />\n        <output>{{ hsv }} / {{ hsva }}</output>\n        <output>{{ translucent }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -399,7 +400,7 @@ export const completionPages = [
                 "title": "单选组的基本用法",
                 "description": "可直接组合URadio，组统一管理模型、name、对象比较、禁用和只读；子Radio仍可独立使用v-model。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URadioGroup, URadio, USwitch } from '@lingyzh/ui';\nconst radio = ref('a');\nconst disabled = ref(false);\nconst readonly = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URadioGroup\">\n        <u-switch v-model=\"disabled\" label=\"禁用整组\" />\n        <u-switch v-model=\"readonly\" label=\"整组只读\" />\n        <u-radio-group\n            v-model=\"radio\"\n            :disabled=\"disabled\"\n            :readonly=\"readonly\"\n            label=\"单选组\"\n            hint=\"URadio读取组的模型、名称、禁用和只读状态。\"\n        >\n            <u-radio value=\"a\">默认</u-radio>\n            <u-radio value=\"b\">自定义</u-radio>\n        </u-radio-group>\n        <output>当前选择：{{ radio }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { URadioGroup, URadio, USwitch } from '@lingyzh/ui';\nconst radio = ref('a');\nconst disabled = ref(false);\nconst readonly = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"URadioGroup\">\n        <u-switch v-model=\"disabled\" label=\"禁用整组\" />\n        <u-switch v-model=\"readonly\" label=\"整组只读\" />\n        <u-radio-group\n            v-model=\"radio\"\n            :disabled=\"disabled\"\n            :readonly=\"readonly\"\n            label=\"单选组\"\n            hint=\"URadio读取组的模型、名称、禁用和只读状态。\"\n        >\n            <u-radio value=\"a\" bordered>默认</u-radio>\n            <u-radio value=\"b\" bordered>自定义</u-radio>\n        </u-radio-group>\n        <output>当前选择：{{ radio }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -421,7 +422,7 @@ export const completionPages = [
                 "title": "多选组的基本用法",
                 "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCheckboxGroup, USelectionControl } from '@lingyzh/ui';\nconst checks = ref(['a']);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UCheckboxGroup\">\n        <u-checkbox-group v-model=\"checks\" label=\"多选组\">\n            <u-selection-control value=\"a\" label=\"测试\" />\n            <u-selection-control value=\"b\" label=\"文档\" />\n        </u-checkbox-group>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UCheckbox, UCheckboxGroup, USelectionControl } from '@lingyzh/ui';\nconst checks = ref(['a']);\nconst bounded = ref(['a', 'b']);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UCheckboxGroup\">\n        <u-checkbox-group v-model=\"checks\" label=\"多选组\">\n            <u-selection-control value=\"a\" label=\"测试\" />\n            <u-selection-control value=\"b\" label=\"文档\" />\n        </u-checkbox-group>\n        <UCheckboxGroup\n            v-model=\"bounded\"\n            label=\"带边框，至少两项、最多三项\"\n            :min=\"2\"\n            :max=\"3\"\n            inline\n        >\n            <UCheckbox value=\"a\" label=\"第一项\" bordered />\n            <UCheckbox value=\"b\" label=\"第二项\" bordered />\n            <UCheckbox value=\"c\" label=\"第三项\" bordered />\n            <UCheckbox value=\"d\" label=\"第四项\" bordered />\n        </UCheckboxGroup>\n        <output>{{ bounded }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -1110,6 +1111,13 @@ export const completionPages = [
                 "description": "items 可省略；默认按渲染节点注册（itemsRegistration=\"render\"），\"props\" 使用完整树。activeStrategy 默认 single-independent，重复激活可取消；默认显示最近语言的无数据文案，hideNoData 可关闭。筛选支持模式、按键回调、重音和 noFilter，模型在收起或筛选时保持。",
                 "fullSource": true,
                 "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTreeview } from '@lingyzh/ui';\nconst tree = ref([]);\nconst opened = ref(['components']);\nconst nodes = [\n    {\n        title: '组件库',\n        value: 'components',\n        children: [\n            {\n                title: '表单控件',\n                value: 'forms',\n                children: [\n                    { title: '输入与选择', value: 'inputs' },\n                    { title: '验证与提交', value: 'validation' },\n                ],\n            },\n            { title: '布局组件', value: 'layout' },\n            {\n                title: '归档组件',\n                value: 'archive',\n                disabled: true,\n                children: [{ title: '历史组件', value: 'history' }],\n            },\n        ],\n    },\n    { title: '文档与示例', value: 'docs' },\n];\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UTreeview\">\n        <u-treeview v-model=\"tree\" v-model:opened=\"opened\" :items=\"nodes\" selectable />\n        <output>选中的叶节点：{{ tree }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+            },
+            {
+                "id": "component-tree-drag",
+                "title": "树内拖拽",
+                "description": "支持同级排序、跨分支移动和明确的前后/内部目标；禁用节点及循环移动不可投放。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTreeview } from '@lingyzh/ui';\nconst items = ref([\n    { id: 'north', name: '华北', children: [{ id: 'beijing', name: '北京' }, { id: 'tianjin', name: '天津' }] },\n    { id: 'east', name: '华东', children: [{ id: 'shanghai', name: '上海' }, { id: 'locked', name: '停用节点', props: { disabled: true } }] }\n]);\nconst lastDrop = ref(null);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"TreeDrag\">\n        <UTreeview v-model:items=\"items\" item-title=\"name\" item-value=\"id\" draggable open-all @node-drop=\"lastDrop = { source: $event.rawItem.id, target: $event.targetRaw.id, position: $event.position }\" />\n        <output>最近移动：{{ lastDrop }}</output>\n        <output>顺序：{{ JSON.stringify(items) }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo { display: grid; gap: 16px; min-width: 0; }\noutput { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }\n</style>\n"
             }
         ],
         "notes": [
@@ -1512,7 +1520,7 @@ export const completionPages = [
                 "title": "日期输入的基本用法",
                 "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDateInput } from '@lingyzh/ui';\nconst date = ref(new Date(2026, 9, 6));\nconst range = ref([new Date(2026, 9, 6), new Date(2026, 9, 10)]);\nfunction describe(value) {\n    return (Array.isArray(value) ? value : value ? [value] : [])\n        .map((date) => (date instanceof Date ? date.toLocaleDateString('zh-CN') : date))\n        .join(' - ');\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDateInput\">\n        <u-date-input\n            v-model=\"date\"\n            label=\"开始日期\"\n            input-format=\"yyyy-mm-dd\"\n            hint=\"输入 ISO 日期或打开日历，输出 Date 对象。\"\n        />\n        <u-date-input\n            v-model=\"range\"\n            label=\"需确认的范围草稿\"\n            multiple=\"range\"\n            :hide-actions=\"false\"\n            input-format=\"yyyy-mm-dd\"\n        />\n        <output>Date 模型：{{ describe(date) }}；范围：{{ describe(range) }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UDateInput } from '@lingyzh/ui';\nconst date = ref(new Date(2026, 9, 6));\nconst range = ref([new Date(2026, 9, 6), new Date(2026, 9, 10)]);\nconst editableDate = ref(new Date(2026, 9, 6));\nconst week = ref(new Date(2026, 9, 6));\nconst month = ref(new Date(2026, 9, 6));\nconst year = ref(new Date(2026, 9, 6));\nconst dateTime = ref(new Date(2026, 9, 6, 9, 30, 15));\nconst dateTimeRange = ref([new Date(2026, 9, 6, 9, 0, 0), new Date(2026, 9, 10, 17, 30, 0)]);\nfunction describe(value) {\n    return (Array.isArray(value) ? value : value ? [value] : [])\n        .map((date) => (date instanceof Date ? date.toLocaleDateString('zh-CN') : date))\n        .join(' - ');\n}\nfunction describeDateTime(value) {\n    return (Array.isArray(value) ? value : value ? [value] : [])\n        .map((date) => (date instanceof Date ? date.toLocaleString('zh-CN') : date))\n        .join(' - ');\n}\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDateInput\">\n        <u-date-input\n            v-model=\"date\"\n            label=\"开始日期\"\n            input-format=\"yyyy-mm-dd\"\n            clearable\n            hint=\"默认仅通过日历选择；点击日期区域或按 Enter 打开。\"\n        />\n        <u-date-input\n            v-model=\"range\"\n            label=\"需确认的范围草稿\"\n            multiple=\"range\"\n            :hide-actions=\"false\"\n            input-format=\"yyyy-mm-dd\"\n        />\n        <UDateInput\n            v-model=\"week\"\n            label=\"按周选择\"\n            granularity=\"week\"\n            input-format=\"YYYY 第 ww 周\"\n        />\n        <UDateInput v-model=\"month\" label=\"按月选择\" granularity=\"month\" input-format=\"YYYY-MM\" />\n        <UDateInput v-model=\"year\" label=\"按年选择\" granularity=\"year\" input-format=\"YYYY\" />\n        <UDateInput v-model=\"dateTime\" label=\"日期时间\" datetime clearable />\n        <UDateInput\n            v-model=\"dateTimeRange\"\n            label=\"日期时间范围\"\n            multiple=\"range\"\n            datetime\n            :hide-actions=\"false\"\n        />\n        <UDateInput\n            v-model=\"range\"\n            label=\"自定义范围分隔符\"\n            multiple=\"range\"\n            range-separator=\" 至 \"\n            input-format=\"yyyy-mm-dd\"\n        />\n        <UDateInput\n            v-model=\"dateTimeRange\"\n            label=\"日期时间自定义分隔符\"\n            multiple=\"range\"\n            datetime\n            range-separator=\" ~ \"\n        />\n        <output>\n            Date 模型：{{ describe(date) }}；范围：{{ describe(range) }}；周/月/年：{{\n                describe(week)\n            }}\n            / {{ describe(month) }} / {{ describe(year) }}；日期时间：{{\n                describeDateTime(dateTime)\n            }}\n            / {{ describeDateTime(dateTimeRange) }}\n        </output>\n        <UDateInput\n            v-model=\"editableDate\"\n            label=\"允许手动填写\"\n            editable\n            input-format=\"yyyy-mm-dd\"\n            hint=\"显式 editable 恢复手动输入，Enter 或离开输入框后提交。\"\n        />\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
             }
         ],
         "notes": [
@@ -1552,14 +1560,37 @@ export const completionPages = [
             {
                 "id": "component-time-picker",
                 "title": "时间选择的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "hide-header 与 hide-input 可组合成紧凑的时分秒选择行；日期时间输入默认采用此组合。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTimePicker } from '@lingyzh/ui';\nconst time = ref('14:30');\nconst seconds = ref('09:15:20');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UTimePicker\">\n        <u-time-picker\n            v-model=\"time\"\n            label=\"默认 24 小时拨盘\"\n            :allowed-hours=\"(hour) => hour >= 8 && hour <= 20\"\n        />\n        <u-time-picker\n            v-model=\"time\"\n            label=\"12 小时显示，模型仍为 24 小时\"\n            format=\"ampm\"\n            variant=\"select\"\n        />\n        <u-time-picker v-model=\"seconds\" label=\"秒级输入\" use-seconds variant=\"input\" />\n        <output>模型：{{ time }} / {{ seconds }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTimePicker } from '@lingyzh/ui';\nconst time = ref('14:30');\nconst seconds = ref('09:15:20');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UTimePicker\">\n        <u-time-picker\n            v-model=\"time\"\n            label=\"默认 24 小时拨盘\"\n            :allowed-hours=\"(hour) => hour >= 8 && hour <= 20\"\n        />\n        <u-time-picker\n            v-model=\"time\"\n            label=\"紧凑时间选择，模型仍为 24 小时\"\n            hide-header\n            hide-input\n            format=\"ampm\"\n            variant=\"select\"\n        />\n        <u-time-picker v-model=\"seconds\" label=\"秒级输入\" use-seconds variant=\"input\" />\n        <output>模型：{{ time }} / {{ seconds }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "hide-header 与 hide-input 可组合成紧凑的时分秒选择行；日期时间输入默认采用此组合。"
+        ]
+    },
+    {
+        "id": "time-input",
+        "title": "时间输入",
+        "name": "UTimeInput",
+        "kind": "component",
+        "group": "表单组件",
+        "description": "时间输入的独立用法与交互。",
+        "examples": [
+            {
+                "id": "component-time-input",
+                "title": "时间输入的基本用法",
+                "description": "默认只通过弹出面板选择，草稿确认后输出24小时 HH:mm 或 HH:mm:ss。支持单值、范围、清空、时段限制、禁用/只读和显式手动输入。取消、Esc或点击外部不提交草稿。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTimeInput } from '@lingyzh/ui';\nconst single = ref('14:30');\nconst range = ref(['09:00:00', '17:30:00']);\nconst limited = ref(null);\nconst editable = ref('14:30');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UTimeInput\">\n        <UTimeInput v-model=\"single\" label=\"时间\" clearable />\n        <UTimeInput v-model=\"range\" label=\"时间范围\" mode=\"range\" use-seconds clearable />\n        <UTimeInput\n            v-model=\"limited\"\n            label=\"工作时段\"\n            :allowed-ranges=\"[\n                ['09:15:20', '10:30:10'],\n                ['13:00:00', '17:30:00'],\n            ]\"\n            use-seconds\n            clearable\n        />\n        <UTimeInput v-model=\"editable\" label=\"允许手动填写\" format=\"12h\" editable />\n        <UTimeInput model-value=\"09:00\" label=\"只读\" readonly />\n        <UTimeInput model-value=\"09:00\" label=\"禁用\" disabled />\n        <output>模型：{{ single }} / {{ range }} / {{ limited }} / {{ editable }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n    overflow-wrap: anywhere;\n}\n</style>\n"
+            }
+        ],
+        "notes": [
+            "公开属性、模型、事件和插槽以本页 API 为准。",
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "默认只通过弹出面板选择，草稿确认后输出24小时 HH:mm 或 HH:mm:ss。支持单值、范围、清空、时段限制、禁用/只读和显式手动输入。取消、Esc或点击外部不提交草稿。"
         ]
     },
     {
@@ -2346,14 +2377,15 @@ export const completionPages = [
             {
                 "id": "component-speed-dial",
                 "title": "快捷操作展开的基本用法",
-                "description": "只演示当前组件及其所需的容器或子组件，源码与此示例一致。",
+                "description": "direction 支持 top/bottom/left/right；方向键、Home/End 导航可用操作，Esc 收起并回到触发器，点击外部收起。",
                 "fullSource": true,
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFab, USpeedDial } from '@lingyzh/ui';\nconst dial = ref(false);\nconst action = ref('尚未执行');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"USpeedDial\">\n        <u-speed-dial v-model=\"dial\">\n            <template #activator=\"{ props: activatorProps }\">\n                <u-fab v-bind=\"activatorProps\" label=\"打开快捷操作\" />\n            </template>\n            <u-button size=\"sm\" @click=\"action = '已新建项目'\">新建项目</u-button>\n            <u-button size=\"sm\" @click=\"action = '已导出配置'\">导出配置</u-button>\n        </u-speed-dial>\n        <output role=\"status\">{{ action }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFab, USpeedDial, USelect } from '@lingyzh/ui';\nconst direction = ref('top');\nconst dial = ref(false);\nconst action = ref('尚未执行');\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"USpeedDial\">\n        <u-select\n            v-model=\"direction\"\n            :items=\"['top', 'bottom', 'left', 'right']\"\n            label=\"展开方向\"\n        />\n        <div class=\"dial-stage\">\n            <u-speed-dial v-model=\"dial\" :direction=\"direction\">\n                <template #activator=\"{ props: activatorProps }\">\n                    <u-fab v-bind=\"activatorProps\" label=\"打开快捷操作\" />\n                </template>\n                <u-button size=\"sm\" @click=\"action = '已新建项目'\">新建</u-button>\n                <u-button size=\"sm\" @click=\"action = '已导出配置'\">导出</u-button>\n            </u-speed-dial>\n        </div>\n        <output role=\"status\">{{ action }}</output>\n    </div>\n</template>\n\n<style scoped>\n.component-demo {\n    display: grid;\n    justify-items: stretch;\n    gap: 16px;\n    min-width: 0;\n}\n.dial-stage {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    min-height: 300px;\n}\n.component-demo > output {\n    color: var(--muted);\n    font-size: 14px;\n}\n.component-demo > .ui-button {\n    justify-self: start;\n}\n</style>\n"
             }
         ],
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
-            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+            "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。",
+            "direction 支持 top/bottom/left/right；方向键、Home/End 导航可用操作，Esc 收起并回到触发器，点击外部收起。"
         ]
     },
     {
@@ -2375,6 +2407,110 @@ export const completionPages = [
         "notes": [
             "公开属性、模型、事件和插槽以本页 API 为准。",
             "组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。"
+        ]
+    },
+    {
+        "id": "cascader",
+        "name": "UCascader",
+        "title": "级联选择",
+        "kind": "component",
+        "group": "表单输入与控件",
+        "description": "以完整路径模型选择多级选项。",
+        "examples": [
+            {
+                "id": "component-cascader",
+                "title": "多选、搜索与严格模式",
+                "description": "以完整路径为模型，父项批量选择可选叶节点；支持搜索、半选和选择上限。",
+                "fullSource": true,
+                "code": "<script setup lang=\"ts\">\r\nimport { ref } from 'vue';\r\nimport { UCascader, UCheckbox } from '@lingyzh/ui';\r\nimport type { CascaderItem, CascaderValue } from '../../cascader';\r\n\r\nconst items: readonly CascaderItem[] = [\r\n    {\r\n        value: 'east',\r\n        label: '华东',\r\n        children: [\r\n            {\r\n                value: 'zhejiang',\r\n                label: '浙江省',\r\n                children: [\r\n                    { value: 'hangzhou', label: '杭州市' },\r\n                    { value: 'ningbo', label: '宁波市' }\r\n                ]\r\n            },\r\n            {\r\n                value: 'jiangsu',\r\n                label: '江苏省',\r\n                children: [\r\n                    { value: 'nanjing', label: '南京市' },\r\n                    { value: 'suzhou', label: '苏州市', disabled: true }\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        value: 'south',\r\n        label: '华南',\r\n        children: [\r\n            {\r\n                value: 'guangdong',\r\n                label: '广东省',\r\n                children: [\r\n                    { value: 'shenzhen', label: '深圳市' },\r\n                    { value: 'guangzhou', label: '广州市' }\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    { value: 'overseas', label: '暂未开放的区域', disabled: true },\r\n    { value: 0, label: '其他区域（数字值 0）' }\r\n];\r\nconst singlePath = ref<CascaderValue[] | null>([]);\r\nconst multiplePaths = ref<CascaderValue[][] | null>([]);\r\nconst checkStrictly = ref(false);\r\nconst collapseTags = ref(false);\r\n</script>\r\n\r\n<template>\r\n    <div class=\"component-demo cascader-advanced-demo\" data-demo-component=\"UCascader\">\r\n        <u-cascader\r\n            v-model=\"singlePath\"\r\n            :items=\"items\"\r\n            :check-strictly=\"checkStrictly\"\r\n            label=\"单选（原路径模型）\"\r\n            hint=\"默认选择完整叶节点路径；此模式保留 CascaderValue[] 模型。\"\r\n            clearable\r\n            placeholder=\"请选择一个区域\"\r\n        />\r\n        <u-checkbox v-model=\"checkStrictly\">严格模式：父节点独立选择</u-checkbox>\r\n        <UCheckbox v-model=\"collapseTags\">折叠已选标签</UCheckbox>\r\n        <u-cascader\r\n            v-model=\"multiplePaths\"\r\n            :items=\"items\"\r\n            label=\"多选区域\"\r\n            hint=\"华东父项会显示半选；禁用项不参与批量选择。\"\r\n            multiple\r\n            filterable\r\n            chips\r\n            clearable\r\n            :check-strictly=\"checkStrictly\"\r\n            :collapse-tags=\"collapseTags\"\r\n            :max-collapse-tags=\"1\"\r\n            :max=\"3\"\r\n            placeholder=\"请选择区域\"\r\n            search-placeholder=\"搜索级联选项\"\r\n        />\r\n        <output>单选模型：{{ JSON.stringify(singlePath) }}</output>\r\n        <output>多选模型（完整路径数组）：{{ JSON.stringify(multiplePaths) }}</output>\r\n        <p class=\"cascader-advanced-demo-help\">\r\n            直接在输入框搜索完整标签路径。普通模式只提供可选叶节点；严格模式允许父节点独立选择。多选标签显示在输入框内，可折叠成计数。达到上限时批量选择整体拒绝，已有路径仍可取消。\r\n        </p>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.cascader-advanced-demo {\r\n    display: grid;\r\n    gap: 16px;\r\n    min-width: 0;\r\n}\r\n.cascader-advanced-demo > output {\r\n    overflow-wrap: anywhere;\r\n    color: var(--muted);\r\n    font-size: 14px;\r\n}\r\n.cascader-advanced-demo-help {\r\n    margin: 0;\r\n    color: var(--muted);\r\n    font-size: 14px;\r\n    line-height: 1.6;\r\n}\r\n</style>\r\n"
+            }
+        ],
+        "notes": []
+    },
+    {
+        "id": "drawer",
+        "name": "UDrawer",
+        "title": "详情抽屉",
+        "kind": "component",
+        "group": "容器组件",
+        "description": "行内结束侧的模态详情面板，复用 Dialog 的遮罩、焦点管理和关闭协议。",
+        "examples": [
+            {
+                "id": "component-drawer",
+                "title": "详情与滚动",
+                "description": "固定标题和操作栏，内部内容滚动。关闭后焦点回到打开按钮。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UDrawer, USwitch, UTextField } from '@lingyzh/ui';\nconst open = ref(false);\nconst persistent = ref(false);\n</script>\n\n<template>\n    <div class=\"component-demo\" data-demo-component=\"UDrawer\">\n        <USwitch v-model=\"persistent\" label=\"阻止 Esc 和遮罩关闭\" />\n        <UDrawer v-model:open=\"open\" :persistent=\"persistent\" content-label=\"详情抽屉用例\">\n            <template #activator=\"{ props }\">\n                <UButton v-bind=\"props\">打开详情抽屉</UButton>\n            </template>\n            <template #header>\n                <h2>用户详情</h2>\n            </template>\n            <UTextField label=\"筛选详情\" placeholder=\"可检查键盘焦点\" />\n            <p v-for=\"index in 24\" :key=\"index\">第 {{ index }} 条详情：标题与关闭按钮保持可见，内容在面板内部滚动。</p>\n            <template #footer>\n                <UButton @click=\"open = false\">关闭详情抽屉</UButton>\n            </template>\n        </UDrawer>\n    </div>\n</template>\n"
+            }
+        ],
+        "notes": [
+            "open 和 modelValue 均支持受控开关；ref 暴露 open/close。默认宽度 560px，窄屏最大宽度为视口。",
+            "header/default/footer/activator 插槽与 UDialog 一致。Esc 与遮罩关闭，persistent 可阻止用户关闭；其他 Dialog 属性与事件透传。",
+            "面板位于行内结束侧，RTL 自动镜像；使用主题细线且无阴影。"
+        ]
+    },
+    {
+        "id": "image-viewer",
+        "name": "UImageViewer",
+        "title": "图片查看器",
+        "kind": "component",
+        "group": "图像与图标",
+        "description": "多图浏览、缩放、旋转和拖动，使用 Dialog 的焦点与关闭协议。",
+        "examples": [
+            {
+                "id": "component-image-viewer",
+                "title": "图片查看",
+                "description": "打开后使用工具栏或方向键浏览，按 Esc 关闭。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UImageViewer } from '@lingyzh/ui';\n\nconst open = ref(false);\nconst index = ref(0);\n// 内嵌示例图保证离线文档也能验证查看器。\nconst sources = ['#a34f36', '#47745c'].map((color, i) =>\n    `data:image/svg+xml,${encodeURIComponent(`<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\"><rect width=\"960\" height=\"640\" fill=\"${color}\"/><circle cx=\"480\" cy=\"290\" r=\"140\" fill=\"#faf9f5\"/><text x=\"480\" y=\"540\" text-anchor=\"middle\" font-size=\"48\" fill=\"#faf9f5\">Image ${i + 1}</text></svg>`)}`\n);\n</script>\n\n<template>\n    <div data-demo-component=\"UImageViewer\">\n        <UButton @click=\"open = true\">打开图片查看器</UButton>\n        <UImageViewer :sources=\"sources\" label=\"示例图片\"\n            v-model=\"open\" v-model:index=\"index\" />\n    </div>\n</template>\n"
+            }
+        ],
+        "notes": [
+            "sources 传入图片 URL 数组，index 模型保存当前索引。",
+            "左右方向键切图，+/- 缩放，0 重置。关闭后恢复触发器焦点。"
+        ]
+    },
+    {
+        "id": "tree-select",
+        "name": "UTreeSelect",
+        "title": "树选择",
+        "kind": "component",
+        "group": "表单输入与控件",
+        "description": "保留层级的单选与多选控件，支持父节点选择、搜索、清空和表单校验。",
+        "examples": [
+            {
+                "id": "component-tree-select",
+                "title": "部门选择",
+                "description": "选中值保持原始 ID 类型，停用节点及下级不可选择。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UTreeSelect } from '@lingyzh/ui';\n\nconst selected = ref(11);\nconst departments = ref([11]);\nconst items = [\n    { id: 1, name: '研发部', children: [{ id: 11, name: '前端组' }, { id: 12, name: '后端组' }] },\n    { id: 2, name: '运营部' },\n    { id: 3, name: '停用部门', disabled: true, children: [{ id: 31, name: '不可选子部门' }] }\n];\n</script>\n\n<template>\n    <div data-demo-component=\"UTreeSelect\">\n        <UTreeSelect :items=\"items\" item-title=\"name\" item-value=\"id\" label=\"所属部门\" searchable clearable\n            v-model=\"selected\" />\n        <p>已选 ID：{{ selected ?? '未选择' }}</p>\n        <UTreeSelect :items=\"items\" item-title=\"name\" item-value=\"id\" label=\"自定义部门\" multiple\n            select-strategy=\"independent\" searchable clearable required v-model=\"departments\" />\n        <p>独立勾选多个部门，选择父节点不会自动选择子节点：{{ departments }}</p>\n    </div>\n</template>\n"
+            }
+        ],
+        "notes": [
+            "单选 modelValue 为单个 ID 或 null；multiple 模式为 ID 数组，选择后保持面板打开，清空输出空数组。menu 控制面板开关。",
+            "多选默认独立勾选，可通过 selectStrategy 设置树选择策略；支持 itemTitle、itemValue、itemChildren、itemProps 映射，未知 ID 保留原值。"
+        ]
+    },
+    {
+        "id": "tree-table",
+        "name": "UTreeTable",
+        "title": "树形表格",
+        "kind": "component",
+        "group": "数据与展示",
+        "description": "基于标准数据表格展示部门和菜单层级，保留父子顺序与行内操作。",
+        "examples": [
+            {
+                "id": "component-tree-table",
+                "title": "层级与行操作",
+                "description": "使用展开按钮或全部展开/收起，行操作接收原始业务对象。",
+                "fullSource": true,
+                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UChip, UTreeTable } from '@lingyzh/ui';\nconst opened = ref([1]);\nconst tree = ref();\nconst selected = ref('');\nconst headers = [{ key: 'name', title: '部门', minWidth: 220 }, { key: 'manager', title: '负责人' }, { key: 'status', title: '状态' }, { key: 'actions', title: '操作' }];\nconst items = [\n    { id: 1, name: '牛卡商城', manager: '管理员', children: [\n        { id: 11, name: '研发中心', manager: '张三', children: [{ id: 111, name: '前端组', manager: '李四' }] },\n        { id: 12, name: '运营中心', manager: '王五' }\n    ] },\n    { id: 2, name: '独立事业部', manager: '赵六' }\n];\n</script>\n\n<template>\n    <div class=\"tree-table-demo\" data-demo-component=\"UTreeTable\">\n        <div class=\"tree-table-demo-actions\">\n            <UButton variant=\"outlined\" @click=\"tree.expandAll()\">展开全部</UButton>\n            <UButton variant=\"outlined\" @click=\"tree.collapseAll()\">收起全部</UButton>\n        </div>\n        <UTreeTable ref=\"tree\" :items=\"items\" :headers=\"headers\" tree-key=\"name\" label=\"部门树表格\" :height=\"320\" fixed-header\n            v-model:opened=\"opened\">\n            <template #item.status><UChip tone=\"success\">正常</UChip></template>\n            <template #item.actions=\"{ item }\"><UButton dense variant=\"text\" @click=\"selected = item.name\">查看</UButton></template>\n        </UTreeTable>\n        <output>当前查看：{{ selected || '未选择' }}</output>\n    </div>\n</template>\n\n<style scoped>\n.tree-table-demo { display: grid; gap: 16px; }\n.tree-table-demo-actions { display: flex; flex-wrap: wrap; gap: 8px; }\n</style>\n"
+            }
+        ],
+        "notes": [
+            "itemValue 必须为唯一稳定 ID，treeKey 指定显示层级缩进的列。opened 保存已展开分支 ID，收起父级保留子级展开状态。",
+            "expandAll/collapseAll 支持整体展开收起；item.<列名> 插槽与标准表格一致，树列额外提供 depth。",
+            "此组件显示完整树，无分页、本地搜索或排序，防止父子节点被打散；过滤由调用方提供保持层级的 items。沿用标准表格固定表头、密度及窄屏布局。"
         ]
     }
 ];

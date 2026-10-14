@@ -96,7 +96,7 @@ export function toggleSelection(model: unknown, item: SelectionItem, multiple: b
     return [...entries, value];
 }
 
-export function toggleGroupSelection(model: unknown, value: unknown, options: { multiple?: boolean; mandatory?: boolean; max?: number; comparator?: ValueComparator } = {}): unknown {
+export function toggleGroupSelection(model: unknown, value: unknown, options: { multiple?: boolean; mandatory?: boolean; max?: number; min?: number; comparator?: ValueComparator } = {}): unknown {
     const compare = options.comparator ?? defaultValueComparator;
     if (!options.multiple) {
         if (options.mandatory && compare(model, value)) return model;
@@ -104,7 +104,7 @@ export function toggleGroupSelection(model: unknown, value: unknown, options: { 
     }
     const entries = Array.isArray(model) ? model : [];
     const index = entries.findIndex((entry) => compare(entry, value));
-    if (index >= 0) return options.mandatory && entries.length === 1 ? entries : entries.filter((_, current) => current !== index);
+    if (index >= 0) return entries.length <= Math.max(options.mandatory ? 1 : 0, options.min ?? 0) ? entries : entries.filter((_, current) => current !== index);
     if (options.max !== undefined && entries.length >= options.max) return entries;
     return [...entries, value];
 }

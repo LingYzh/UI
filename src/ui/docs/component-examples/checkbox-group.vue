@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import { UCheckboxGroup, USelectionControl } from '../../index';
+import { UCheckbox, UCheckboxGroup, USelectionControl } from '../../index';
 const checks = ref(['a']);
+const bounded = ref(['a', 'b']);
 </script>
 
 <template>
@@ -10,6 +11,19 @@ const checks = ref(['a']);
             <u-selection-control value="a" label="测试" />
             <u-selection-control value="b" label="文档" />
         </u-checkbox-group>
+        <UCheckboxGroup
+            v-model="bounded"
+            label="带边框，至少两项、最多三项"
+            :min="2"
+            :max="3"
+            inline
+        >
+            <UCheckbox value="a" label="第一项" bordered />
+            <UCheckbox value="b" label="第二项" bordered />
+            <UCheckbox value="c" label="第三项" bordered />
+            <UCheckbox value="d" label="第四项" bordered />
+        </UCheckboxGroup>
+        <output>{{ bounded }}</output>
     </div>
 </template>
 

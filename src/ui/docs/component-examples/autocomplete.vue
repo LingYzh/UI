@@ -3,10 +3,14 @@ import { ref } from 'vue';
 import { UAutocomplete } from '../../index';
 const options = [
     { title: '默认工作区', value: 'default' },
-    { title: '完整的很长选项文字应保持单行，并在控件宽度不足时截断显示', value: 'long' },
+    {
+        title: '完整的很长选项文字应保持单行，并在控件宽度不足时截断显示',
+        value: 'long',
+    },
     { title: '归档工作区', value: 'archived', props: { disabled: true } },
 ];
 const choice = ref('default');
+const multiple = ref(['default']);
 const required = (value) => (Array.isArray(value) ? value.length > 0 : !!value) || '请填写此项。';
 </script>
 
@@ -19,6 +23,15 @@ const required = (value) => (Array.isArray(value) ? value.length > 0 : !!value) 
             hint="输入筛选，方向键选择；选项保留对象模型能力。"
             clearable
             :rules="[required]"
+        />
+        <u-autocomplete
+            v-model="multiple"
+            :items="options"
+            label="连续选择工作区"
+            hint="多选后保持菜单与焦点，可继续选择；Esc 或点击外部收起。"
+            multiple
+            chips
+            clearable
         />
     </div>
 </template>

@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import { UButton, UFileUpload, USwitch } from '../../index';
+import { UButton, UFileUpload, USwitch, USelect } from '../../index';
 const upload = ref(null);
+const previewFiles = ref([]);
+const listType = ref('picture');
 const single = ref(new File(['单文件示例'], '交接说明.txt', { type: 'text/plain' }));
 const inset = ref(false);
 const showSize = ref(true);
@@ -13,6 +15,23 @@ const details = ref([]);
 
 <template>
     <div class="component-demo" data-demo-component="UFileUpload">
+        <USelect
+            v-model="listType"
+            label="文件预览布局"
+            :items="[
+                { value: 'text', title: '文本' },
+                { value: 'picture', title: '图片列表' },
+                { value: 'picture-card', title: '图片卡片' },
+            ]"
+        />
+        <UFileUpload
+            v-model="previewFiles"
+            label="图片预览"
+            :list-type="listType"
+            multiple
+            accept="image/*"
+            filter-by-type="image/*"
+        />
         <u-switch v-model="inset" label="文件列表内嵌" />
         <u-switch v-model="showSize" label="显示文件大小" />
         <u-switch v-model="clearable" label="显示移除按钮" />

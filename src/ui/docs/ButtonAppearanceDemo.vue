@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { mdiCheck, mdiPencil } from '@mdi/js';
 import { UButton, USelect, UTextField, USwitch } from '../index';
 
 const variants = ['elevated', 'flat', 'tonal', 'outlined', 'text', 'plain'];
@@ -9,6 +10,7 @@ const color = ref('primary');
 const disabled = ref(false);
 const loading = ref(false);
 const clicks = ref(0);
+const textSizes = ['x-small', 'small', 'default', 'large', 'x-large'];
 const customColors = [
     'success',
     'error',
@@ -72,6 +74,25 @@ const customColors = [
             颜色独立作用于每一种变体。danger 默认与 error
             使用同一主题色；浅色实心按钮自动使用深色文字。
         </p>
+        <div class="button-typography-preview">
+            <p class="button-appearance-caption">不同字号下，带图标与纯文本按钮保持同一条中线。</p>
+            <div class="button-typography-row" :data-button-size-row="size"
+                v-for="size in textSizes" :key="size">
+                <span class="button-typography-size">{{ size }}</span>
+                <u-button :size="size" :prepend-icon="mdiPencil" :variant="variant" :color="color"
+                    :disabled="disabled" :loading="loading" @click="clicks++">
+                    中文修改
+                </u-button>
+                <u-button :size="size" :variant="variant" :color="color"
+                    :disabled="disabled" :loading="loading" @click="clicks++">
+                    调度日志
+                </u-button>
+                <u-button :size="size" :prepend-icon="mdiCheck" :variant="variant" :color="color"
+                    :disabled="disabled" :loading="loading" @click="clicks++">
+                    Save 保存
+                </u-button>
+            </div>
+        </div>
         <div class="button-appearance-colors">
             <div v-for="tone in customColors" :key="tone">
                 <span>{{ tone }}</span>
@@ -147,6 +168,21 @@ const customColors = [
 }
 .button-appearance-colors span {
     overflow-wrap: anywhere;
+}
+.button-typography-preview {
+    display: grid;
+    gap: 12px;
+}
+.button-typography-row {
+    line-height: 1.6;
+}
+.button-typography-row > .ui-button {
+    margin: 3px;
+}
+.button-typography-size {
+    display: block;
+    font-size: 14px;
+    color: var(--muted);
 }
 @media (max-width: 600px) {
     .button-appearance-controls {

@@ -14,6 +14,14 @@ export function dismissOverlay(element: HTMLDialogElement) {
     element.removeAttribute('popover');
 }
 
+/** The scrim is a sibling of the panel, so panel.getAnimations() cannot wait for it. */
+export async function waitForOverlayScrim(element: HTMLElement): Promise<void> {
+    const scrim = element.closest('.ui-overlay-layer')?.querySelector<HTMLElement>(':scope > .ui-overlay-scrim');
+    if (!scrim) return;
+    getComputedStyle(scrim).opacity;
+    await Promise.all(scrim.getAnimations().map((animation) => animation.finished.catch(() => {})));
+}
+
 export function pushOverlay(element: HTMLElement) {
     if (!openOverlays.includes(element)) openOverlays.push(element);
     let next = 2000;

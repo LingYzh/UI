@@ -260,6 +260,11 @@
         "file": "treeview.vue"
     },
     {
+        "name": "UTreeview",
+        "example": "component-tree-drag",
+        "file": "tree-drag.vue"
+    },
+    {
         "name": "UVirtualScroll",
         "example": "component-virtual-scroll",
         "file": "virtual-scroll.vue"
@@ -363,6 +368,11 @@
         "name": "UTimePicker",
         "example": "component-time-picker",
         "file": "time-picker.vue"
+    },
+    {
+        "name": "UTimeInput",
+        "example": "component-time-input",
+        "file": "time-input.vue"
     },
     {
         "name": "UCalendar",
@@ -553,5 +563,30 @@
         "name": "UFab",
         "example": "component-fab",
         "file": "fab.vue"
+    },
+    {
+        "name": "UCascader",
+        "example": "component-cascader",
+        "file": "cascader.vue"
+    },
+    {
+        "name": "UDrawer",
+        "example": "component-drawer",
+        "file": "drawer.vue"
+    },
+    {
+        "name": "UImageViewer",
+        "example": "component-image-viewer",
+        "file": "image-viewer.vue"
+    },
+    {
+        "name": "UTreeSelect",
+        "example": "component-tree-select",
+        "file": "tree-select.vue"
+    },
+    {
+        "name": "UTreeTable",
+        "example": "component-tree-table",
+        "file": "tree-table.vue"
     }
 ]

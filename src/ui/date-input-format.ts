@@ -18,12 +18,20 @@ export interface DateInputFormatOptions {
     placeholder?: string;
     currentYear?: number;
     isRtl?: boolean;
+    rangeSeparator?: string;
 }
 
 export interface DateFormatSpec {
     order: 'dmy' | 'mdy' | 'ymd' | string;
     separator: '/' | '-' | '.';
     format: string;
+}
+
+export interface DateInputSeparators {
+    date: DateFormatSpec['separator'];
+    multiple: string;
+    range: string;
+    join: string;
 }
 
 export interface ParsedDateSelection {
@@ -34,6 +42,10 @@ export interface ParsedDateSelection {
 const DATE_SEPARATOR_ORDER = ['/', '-', '.'] as const;
 const MULTIPLE_SEPARATOR = ', ';
 const RANGE_SEPARATOR = ' - ';
+
+export function resolveDateRangeSeparator(value?: string): string {
+    return value?.trim() ? value : RANGE_SEPARATOR;
+}
 
 function makeFormatSpec(order: string, separator: string): DateFormatSpec {
     const normalizedSeparator = DATE_SEPARATOR_ORDER.includes(separator as typeof DATE_SEPARATOR_ORDER[number])
@@ -145,11 +157,27 @@ function builtinFormatOptions(format: string): Intl.DateTimeFormatOptions | null
     }
 }
 
-function splitSelectionText(value: string, mode: DateInputMode): string[] | null {
+export function splitDateRangeText(value: string, rangeSeparator: string, parseDate: (value: string) => Date | null): string[] | null {
+    const candidates: string[][] = [];
+    let searchFrom = 0;
+    while (searchFrom <= value.length - rangeSeparator.length) {
+        const separatorIndex = value.indexOf(rangeSeparator, searchFrom);
+        if (separatorIndex < 0) break;
+        searchFrom = separatorIndex + 1;
+        const start = value.slice(0, separatorIndex).trim();
+        const end = value.slice(separatorIndex + rangeSeparator.length).trim();
+        if (!start || !end || !parseDate(start) || !parseDate(end)) continue;
+        candidates.push([start, end]);
+        if (candidates.length > 1) return null;
+    }
+    if (candidates.length === 1) return candidates[0];
+    return parseDate(value) ? [value.trim()] : null;
+}
+
+function splitSelectionText(value: string, mode: DateInputMode, rangeSeparator: string, parseDate: (value: string) => Date | null): string[] | null {
     if (mode === 'single') return [value.trim()];
-    const parts = mode === 'range'
-        ? value.trim().split(/\s+-\s+|\s+[–—]\s+/)
-        : value.trim().split(/\s*,\s*/);
+    if (mode === 'range') return splitDateRangeText(value.trim(), rangeSeparator, parseDate);
+    const parts = value.trim().split(/\s*,\s*/);
     const filtered = parts.map(part => part.trim()).filter(Boolean);
     return filtered.length === 0 ? [] : filtered;
 }
@@ -160,7 +188,7 @@ export interface DateInputFormat {
     separator: DateFormatSpec['separator'];
     parserFormat: string;
     placeholder: string;
-    separators: { date: DateFormatSpec['separator']; multiple: string; range: string; join: string };
+    separators: DateInputSeparators;
     formatDate(value: DateLike | null | undefined): string;
     parseDate(value: DateLike | null | undefined): Date | null;
     join(values: readonly string[], mode?: DateInputMode): string;
@@ -177,7 +205,7 @@ export function createDateInputFormat(options: DateInputFormatOptions = {}): Dat
     const mode = resolveMode(options);
     const currentYear = options.currentYear ?? new Date().getFullYear();
     const multipleSeparator = MULTIPLE_SEPARATOR;
-    const rangeSeparator = RANGE_SEPARATOR;
+    const rangeSeparator = resolveDateRangeSeparator(options.rangeSeparator);
 
     function parseDate(value: DateLike | null | undefined): Date | null {
         const date = cloneDate(value as DateLike);
@@ -247,7 +275,7 @@ export function createDateInputFormat(options: DateInputFormatOptions = {}): Dat
     function parseInput(value: string | null | undefined, selectionMode: DateInputMode = mode): ParsedDateSelection {
         const input = value?.trim() ?? '';
         if (!input) return { valid: true, value: empty(selectionMode) };
-        const parts = splitSelectionText(input, selectionMode);
+        const parts = splitSelectionText(input, selectionMode, rangeSeparator, parseDate);
         if (!parts || parts.length === 0 || (selectionMode === 'single' && parts.length !== 1) || (selectionMode === 'range' && parts.length > 2)) {
             return { valid: false, value: empty(selectionMode) };
         }

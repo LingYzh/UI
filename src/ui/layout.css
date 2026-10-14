@@ -116,11 +116,15 @@
 .ui-field.is-inline { width: auto; flex: 0 1 auto; }
 .ui-field[data-layout="horizontal"] {
     grid-template-columns: minmax(0, var(--ui-form-label-width, 180px)) minmax(0, 1fr);
-    gap: 8px 20px;
+    gap: 8px 12px;
 }
-.ui-field[data-layout="horizontal"] .ui-field-label { padding-block-start: 8px; }
+.ui-field[data-layout="horizontal"] .ui-field-label { padding-block-start: var(--ui-field-label-offset, 8px); }
 .ui-field[data-layout="horizontal"] .ui-field-details { grid-column: 2; }
 .ui-field[data-layout="horizontal"]:has(> :is(.ui-switch, .ui-checkbox, .ui-radio, .ui-checkbox-control, .ui-radio-control, .ui-swatches)) .ui-field-label { padding-block-start: 0; }
+/* Column groups align to their first option, not the height of the whole group. */
+.ui-field[data-layout="horizontal"]:has(> .u-selection-group.is-column) { --ui-field-label-offset: 0px; }
+.ui-field[data-layout="horizontal"]:has(> .u-selection-group.is-row) { --ui-field-label-offset: 6px; }
+.ui-field[data-layout="horizontal"]:has(> .u-selection-group.is-row.is-dense) { --ui-field-label-offset: 3px; }
 .ui-form-actions {
     display: flex;
     align-items: center;

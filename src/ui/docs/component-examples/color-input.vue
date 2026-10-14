@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { UColorInput } from '../../index';
 const color = ref('#bd6749');
 const translucent = ref({ r: 189, g: 103, b: 73, a: 0.45 });
+const hsv = ref('hsv(20, 65%, 74%)');
+const hsva = ref('hsva(20, 65%, 74%, 0.45)');
 </script>
 
 <template>
@@ -20,6 +22,9 @@ const translucent = ref({ r: 189, g: 103, b: 73, a: 0.45 });
         />
         <u-color-input v-model="color" label="即时更新" hide-actions pip-location="append-inner" />
         <u-color-input v-model="color" label="系统选择器扩展" native-picker />
+        <UColorInput v-model="hsv" label="HSV 字符串" :modes="['hsv']" />
+        <UColorInput v-model="hsva" label="HSVA 字符串" :modes="['hsva']" />
+        <output>{{ hsv }} / {{ hsva }}</output>
         <output>{{ translucent }}</output>
     </div>
 </template>

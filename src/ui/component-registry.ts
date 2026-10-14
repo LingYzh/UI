@@ -20,6 +20,7 @@ import UTabsWindow from './UiTabsWindow.vue';
 import UTabsWindowItem from './UiTabsWindowItem.vue';
 import UTabPanel from './UiTabPanel.vue';
 import UDialog from './UiDialog.vue';
+import UDrawer from './UDrawer.vue';
 import UCollapse from './UiCollapse.vue';
 import USnackbarHost from './UiSnackbarHost.vue';
 import UCard from './UiCard.vue';
@@ -93,6 +94,7 @@ import UHotkeyListener from './UHotkeyListener.vue';
 import UHotkey from './UHotkey.vue';
 import UHover from './UHover.vue';
 import UImg from './UImg.vue';
+import UImageViewer from './UImageViewer.vue';
 import UInfiniteScroll from './UInfiniteScroll.vue';
 import UInput from './UInput.vue';
 import UItem from './UItem.vue';
@@ -146,6 +148,7 @@ import UStepperWindow from './UStepperWindow.vue';
 import UStepperWindowItem from './UStepperWindowItem.vue';
 import USystemBar from './USystemBar.vue';
 import UTimePicker from './UTimePicker.vue';
+import UTimeInput from './UTimeInput.vue';
 import UTimeline from './UTimeline.vue';
 import UTimelineItem from './UTimelineItem.vue';
 import UToolbar from './UToolbar.vue';
@@ -153,6 +156,7 @@ import UToolbarItems from './UToolbarItems.vue';
 import UToolbarTitle from './UToolbarTitle.vue';
 import UTransition from './UTransition.vue';
 import UTreeview from './UTreeview.vue';
+import UTreeSelect from './UTreeSelect.vue';
 import UValidation from './UValidation.vue';
 import UVirtualScroll from './UVirtualScroll.vue';
 import UWindow from './UWindow.vue';
@@ -228,6 +232,7 @@ export const components = {
     UTabsWindowItem,
     UTabPanel,
     UDialog,
+    UDrawer,
     UCollapse,
     USnackbarHost,
     UCard,
@@ -301,6 +306,7 @@ export const components = {
     UHotkey,
     UHover,
     UImg,
+    UImageViewer,
     UInfiniteScroll,
     UInput,
     UItem,
@@ -354,6 +360,7 @@ export const components = {
     UStepperWindowItem,
     USystemBar,
     UTimePicker,
+    UTimeInput,
     UTimeline,
     UTimelineItem,
     UToolbar,
@@ -361,6 +368,7 @@ export const components = {
     UToolbarTitle,
     UTransition,
     UTreeview,
+    UTreeSelect,
     UValidation,
     UVirtualScroll,
     UWindow,

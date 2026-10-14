@@ -1,5 +1,55 @@
 # UI 项目交接
 
+## 2026-10-14：0.6.0 发布门禁通过，准备推送
+
+- 用户恢复执行并确认文档服务已停止。npm ci 已恢复普通 npm 依赖目录；此前 icon-consumers 失败随正确依赖恢复消失。不要在此仓库运行 pnpm 安装。
+- 新增 UTreeSelect 多选和独立勾选已获用户批准。数组模型、清空/表单重置、required、readonly/disabled、父子独立和显式策略覆盖均通过真实组件检查；NC_Admin 角色自定义部门已接入。
+- 最终门禁：typecheck、381/381 单测、文档/库 build、Electron 21 组通过。证据为 `.Codex/release-060-*.log`、`artifacts/ui-kHrdMZ`；Root 复核明暗及 390px 树选择截图，真实表单专项通过。旧的局部失败和恢复日志保留。
+- npm pack 0.6.0 白名单 569 个文件，无 src、README、LICENSE、package.json 以外文件。发布说明 `docs/RELEASE-0.6.0.md`。
+- 消费端继续 link:../UI，管理端不得推送；真实后端、验证码和生成模板不属于本次发布验收。后续核实 GitHub Actions 与官方 npm 后补记发布提交、标签和 integrity。
+
+## 2026-10-13 暂停：0.6.0 发布准备（最新状态优先）
+
+- 用户授权本仓库推送并发布，NC_Admin 仍保留本地 link 依赖且不得推送；随后明确要求暂停，后续再继续。
+- 当前分支 main，HEAD `22bbfde58d645b2030a2881ec275498626b331ef`；所有组件改动仍在工作区，未新提交/推送/打标签。已执行 `npm version 0.6.0 --no-git-tag-version`，package.json/package-lock.json 为 0.6.0；官方 registry 本次查询 latest 仍为 0.5.0。
+- **恢复第一步是修复依赖安装**：误用 pnpm 触发了依赖重排，产生的 pnpm-lock.yaml/pnpm-workspace.yaml 已移除；随后 `npm ci` 在清理时因原生 DLL 占用失败，node_modules 已部分缺失。不要用 pnpm，也不要把当前安装状态当作可运行环境。
+- 占用进程为用户的 5174 UI Vite 服务 PID 53736，锁定 `node_modules/@rolldown/binding-win32-x64-msvc/rolldown-binding.win32-x64-msvc.node`。Stop-Process 返回拒绝访问；用户要求先暂停，之后由用户停止该服务。不能绕过权限或误杀其它 node 进程。恢复时重新核实 PID，关闭服务后 `npm ci`，官方 registry 走本机 127.0.0.1:7890 代理，Electron 二进制代理另行检查。
+- 发布门禁初跑 381 项中 373 通过、8 失败。代理已修 7 项：动态 blurOnSelect API 默认说明、UiButton 测试新 loader 导入 stub、178 文档页/163 组件计数、多示例 manifest、生成文档与完整 SFC 示例一致性。相关 25/25、类型检查和生成器语法检查通过。
+- 剩余 `tests/icon-consumers.test.ts` 未改，疑似依赖重排后的 Vue 实例问题；必须 npm ci 后复跑，不能通过改弱测试掩盖。当前完整门禁尚未通过。
+- 恢复后顺序：npm ci → npm test/typecheck → build 与 Electron test:ui → Root 真实组件视觉与消费方验收 → npm pack --dry-run 核对 → 更新发布记录并提交 → v0.6.0 标签触发 GitHub Actions publish.yml → 验证 Actions、官方 registry latest/tarball/integrity。目前没有执行提交、标签推送或 npm 发布。
+- 本地日志 `.Codex/release-install.log`、`.Codex/checkpoint-unit.log`、`.Codex/checkpoint-typecheck-direct.log`；NC_Admin/HANDOFF.md 记录消费端在途合并。不要宣称当前发布或业务合并已完成。
+
+## 2026-10-13 表头、选择器焦点与标签间距
+
+- 固定表头thead提供连续sticky主题底色，覆盖缩放时分列绘制缝隙；分组层级和固定列仍保留。共享horizontal label gap从20px减至12px。
+- UAutocomplete的selectOnly路径在pointerdown保留焦点并阻止选文，field统一转发一次click。用聚焦前快照实现展开后重复点击收起，避免focus开启与click关闭冲突。清除按钮独立阻止冒泡；readonly/disabled不转发业务点击，普通搜索/组合输入仍可编辑。只选型双击/Ctrl+A/Shift方向不可选文，原生select的selectedcontent也禁止选文。
+- Root在NC_Admin实际linked组件验收：控件9/9（明暗/125%/滚动/分组、边框箭头文本打开收起重开、文本选择、只读禁用），设计器12/12、生成7/7；库专项21/21、选择器专项类型检查、原选择协议16项通过，零warning/error。
+- 原选择协议脚本支持UI_QA_BROWSER=msedge，传送菜单按aria-labelledby定位并等待旧菜单关闭，fixture空favicon避免404；证据artifacts/component-audit-root/select-autocomplete-protocols及NC_Admin/.Codex/evidence/control-regressions。未全量构建、提交、推送、发布。
+
+## 2026-10-12 按钮几何最新修复
+
+- ui-button行内middle对齐消除带图标/纯文本的不同基线；UiButton显式小号padding2/4px，sm与small同为28px，五档尺寸24/28/36/44/52px稳定。ButtonAppearanceDemo及完整源码新增中英字号矩阵。
+- Root检查消费端/真实demo的明暗、六变体、五档字号、三档密度、125%缩放、390px和实际侧栏滚动；button-geometry24/24、操作列54/54、相关21/21专项。证据NC_Admin/.Codex/evidence/button-geometry与验收文档，零warning/error。
+- 消费端Sidebar白色轨道来自旧AppMain全局覆盖，已移除；库滚动条保持原实现。未全量构建/提交/推送/发布，本地链接保持。
+
+## 2026-10-12 readonly校验最新修复
+
+- NC_Admin异步控件验收发现form.ts在readonly切换时会重置错误并取消在途规则；现readonly仅冻结编辑，规则/disabled和值变化仍按原语义失效。管理端采用readonly校验、disabled保存。
+- 真实form-protocols浏览器8/8、校验/props继承10/10、form-protocols专项类型检查通过，Root查看截图。消费端异步24/24、CRUD10/10、交互14/14，零warning/error；管理端专项110/110。证据和复跑命令见NC_Admin/docs/ui-migration-acceptance.md。
+- UI仍本地链接；未全量构建、提交、推送或发布，先保留当前两个仓库的已有修改。
+
+## 2026-10-12 NC_Admin 消费端验收检查点
+
+- 消费端开发预览的剩余页面/公共组件与主流程验收完成，证据和复跑命令在 NC_Admin/docs/ui-migration-acceptance.md。29路由×双宽度58/58、CRUD10/10、交互14/14、公共组件9/9、导航4/4、iframe5/5、设计器11/11；Root亲自检查截图，最后各运行零warning/error。
+- 列默认均分、手动栅格、直角边界与按列宽响应式标签在消费端接入现有库组件，本批未新增库源码改动。库仍link:../UI，未发布新版本；前批库专项结果与提交/发布完整门禁保持原约定。
+- 当前源码docs5174、管理端5173，用户localhost:80未操作；实际后端权限/文件接口/Swagger/Druid待联调，tool/gen及生成导出模板仍延后。下方暂停状态为历史记录，不再作为当前待办。
+
+## 2026-10-10：NC_Admin 联合迁移暂停
+
+用户要求暂停，库和管理端的未提交修改保留，未发布新版本。最新恢复入口为 `E:/WebstormProjects/NC_Admin/HANDOFF.md`，库内摘要见 `.Codex/memory/admin-migration.md` 的暂停检查点。本批包含树表/树选择等组件补齐，以及主题、密度、日期、表格和树交互修复；不能用下方 0.5.0 已发布记录代表这些新改动已发布或全量验收。
+
+最后表格/树表专项 16/16、树状态 7/7 和树专项类型检查通过；管理端角色、部门、菜单仍待 Root 浏览器验收，用户 TreePanel 最后改动未测。恢复时先读联合交接，不重新覆盖当前工作区。
+
 ## 2026-10-09：0.5.0 已正式发布，UAH 只读评估完成
 
 main ee8fa4eb88196fa95d9c38b079c6fff215059e54 / v0.5.0 已推送。Actions 37911472623 / job 113757392405 的 Linux 327/327、typecheck、build、Publish 全部成功；签名 provenance 已生成，官方 metadata version/latest=0.5.0、545 文件及 tarball/integrity 已确认，attestation 源提交与 tarball 摘要一致。正式 integrity=sha512-gsuKUvq26X7hB+O1bbise3XbOkVpNNXITD4AFjfi18GiPJRE/qF+EoxtMVEdhYeiRtRvpUYsIBAcGaYCUwaJPQ==。发布后正常 npm 安装正式包，9 项消费检查和 UAH Vite8/TS7 代表性 SFC 构建通过；短暂 E404 传播保留，无重复发布。
@@ -562,3 +612,15 @@ root 亲自完成滑块/颜色通道、复合输入与上传表面、原生文�
 用户确认的兼容决策、当前验收边界与证据见 [.Codex/memory/component-repair.md](.Codex/memory/component-repair.md) 和 [REPAIR.md](docs/component-audit-2026-10-08/REPAIR.md)。旧 Field/Picker/Hotkey 已更名为 FormField/OptionPicker/HotkeyListener，UiField 仍为旧实现；公开 canonical 增为 156。Img/Tooltip/DataIterator 的旧协议默认保留，以 standardProtocol 显式切换；InfiniteScroll 支持新旧 direction。当前仅部分专项完成，仍须持续修复报告剩余项目，不能视为全库对齐完成。
 
 Radio/Form、分组状态、新职责与旧别名、Counter 的专项已有证据；媒体/滚动/Tooltip 正在验收，DataIterator 状态层执行中。此次只运行专项和隔离类型检查，不做完整 build/test/typecheck/test:ui，不提交推送、不修改 UAH。
+
+
+## 2026-10-13 控件细节与动效收尾
+
+本轮 UI 控件优化已完成专项及 Root 截图复核。详情与复跑入口见 NC_Admin/docs/ui-migration-acceptance.md 最新“UI 控件细节与动效验收”段。新脚本为 library-polish、library-polish-demos、library-polish-business，证据位于 NC_Admin/.Codex/evidence/library-polish*。包含紧凑日期时间行、四向 FAB、按钮/表格进度、数值输入、长多选、OTP、纵向范围滑块、日程对齐与 15 个业务二值表单开关。
+
+当前源码预览 127.0.0.1:5173、库 demo 127.0.0.1:5174；旧文中的端口是历史检查点。最后异步专项 24/24，9 个业务弹窗开关切换零警告/错误；本次未运行全量构建，未提交、推送或发布。保留此前未提交改动与生成/导出模板延后边界。
+
+
+## 2026-10-13 控件回归修复补充
+
+重合范围滑块可继续向两侧拖动；时间原生选项限高并滚动；Field/多选焦点只由字段表面呈现；多选默认连续选择，岗位独占整行。详细记录见 NC_Admin/docs/ui-migration-acceptance.md 最新“重合滑块、时间选项与复合字段回归”。新复跑脚本 scripts/qa/control-followup.mjs，15 组真实操作和明暗/390px 证据在 .Codex/evidence/control-followup/。本轮没有全量构建、提交或发布，生成/导出模板仍延后。

@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { URangeSlider } from '../../index';
 const range = ref([20.125, 70.875]);
+const vertical = ref([25, 75]);
+const coincident = ref([50, 50]);
 </script>
 
 <template>
@@ -9,12 +11,19 @@ const range = ref([20.125, 70.875]);
         <u-range-slider
             v-model="range"
             label="连续小数范围"
-            hint="默认步长为 0，两个手柄不能越过彼此。"
+            hint="默认步长为 0，重合后可向两侧拖动来重新分开。"
         />
         <output>{{ range }}</output>
         <u-range-slider
-            :model-value="[25, 75]"
+            v-model="coincident"
+            label="从重合位置开始拖动"
+            :step="1"
+            thumb-label="always"
+        />
+        <u-range-slider
+            v-model="vertical"
             direction="vertical"
+            :step="1"
             :ticks="{ 0: '0', 50: '50', 100: '100' }"
             show-ticks
             thumb-label="always"

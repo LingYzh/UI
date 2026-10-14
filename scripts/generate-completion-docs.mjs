@@ -43,7 +43,7 @@ const families = [
     ['内容组件', 'completion-data', 'DataCompletionDemo', '搜索、选择、展开与分组', ['UDataTable']],
     ['内容组件', 'completion-virtual-data', 'DataCompletionDemo', '10,000 行虚拟表格', ['UDataTableVirtual']],
     ['内容组件', 'completion-iterator', 'DataCompletionDemo', '用插槽组织分页后的数据', ['UDataIterator']],
-    ['表单组件', 'completion-dates', 'DataCompletionDemo', '日期、时间与确认编辑', ['UDateInput', 'UDatePicker', 'UTimePicker', 'UCalendar', 'UPicker', 'UConfirmEdit']],
+    ['表单组件', 'completion-dates', 'DataCompletionDemo', '日期、时间与确认编辑', ['UDateInput', 'UDatePicker', 'UTimePicker', 'UTimeInput', 'UCalendar', 'UPicker', 'UConfirmEdit']],
     ['反馈组件', 'completion-progress', 'DataCompletionDemo', '确定与不确定的进度', ['UProgressCircular', 'UProgressLinear']],
     ['容器组件', 'completion-panels', 'ExperienceCompletionDemo', '折叠组与展开过渡', ['UExpansionPanels', 'UExpansionPanel', 'UExpansionPanelTitle', 'UExpansionPanelText']],
     ['导航组件', 'completion-stepper', 'ExperienceCompletionDemo', '步骤与当前内容共享模型', ['UStepper', 'UStepperVertical', 'UStepperVerticalItem', 'UStepperVerticalActions', 'UStepperItem', 'UStepperWindow', 'UStepperWindowItem', 'UStepperActions']],
@@ -77,7 +77,12 @@ titles.USnackbar = '受控消息';
 titles.USnackbarQueue = '消息队列';
 titles.UStepperVerticalItem = '垂直步骤项';
 titles.UStepperVerticalActions = '垂直步骤操作';
+titles.UTimeInput = '时间输入';
 const focusNotes = {
+    USpeedDial: 'direction 支持 top/bottom/left/right；方向键、Home/End 导航可用操作，Esc 收起并回到触发器，点击外部收起。',
+    UAutocomplete: '多选默认保持输入焦点和菜单，可连续选项；blur-on-select 显式 true 恢复指针选择后失焦。单选保持原来的关闭行为。',
+    UTimePicker: 'hide-header 与 hide-input 可组合成紧凑的时分秒选择行；日期时间输入默认采用此组合。',
+    UTimeInput: '默认只通过弹出面板选择，草稿确认后输出24小时 HH:mm 或 HH:mm:ss。支持单值、范围、清空、时段限制、禁用/只读和显式手动输入。取消、Esc或点击外部不提交草稿。',
     UList: 'navigationStrategy="track" 时根节点为唯一键盘入口，aria-activedescendant 指向可见可用行；默认 focus 保留逐行焦点。对象值由 valueComparator 比较，activeStrategy 默认 single-independent，multiple 只控制选择。item 插槽直接替换整行，绑定作用域 props；title 插槽只替换标题。',
     UListGroup: 'activator 提供 props 和 isOpen；根 disabled/readonly 影响展开与操作。公开 open/select 可以传明确布尔值与原始事件，路径使用业务值。',
     UTreeview: 'items 可省略；默认按渲染节点注册（itemsRegistration="render"），"props" 使用完整树。activeStrategy 默认 single-independent，重复激活可取消；默认显示最近语言的无数据文案，hideNoData 可关闭。筛选支持模式、按键回调、重音和 noFilter，模型在收起或筛选时保持。',
@@ -114,7 +119,7 @@ const focusNotes = {
     UToolbarTitle: '此组件保留用于兼容自定义组合；常用标题直接使用UToolbar的title属性或title插槽。text属性、text插槽与默认插槽均支持，长文本省略，不挤掉操作。',
     UToolbarItems: '此组件保留用于兼容自定义组合；常用操作直接放入UToolbar的actions插槽。color/variant统一下发给按钮，显式属性优先；按钮使用本库圆角、尺寸和间距。',
     USlider: '默认 step=0 允许连续小数；显式正 step 才限制步长。鼠标拖动不显示焦点外框，Tab 和方向键保留键盘提示。',
-    URangeSlider: '默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。手柄不可互相越过，Tab 分别进入两个手柄。',
+    URangeSlider: '默认空值 [0,0]、step=0 连续小数；清空时按 [min,min] 展示。重合时按拖动方向切换活动端并可继续拖动分开，Tab 分别进入两个手柄。',
     UOtpInput: '默认允许字母和数字，未设置模型为 undefined；numeric 显式限制数字。聚焦外框平滑淡入淡出，减少动效设置关闭过渡。',
     USkeletonLoader: '有默认内容插槽时默认显示内容，loading=true 才显示骨架；无默认内容插槽时始终显示骨架。',
     UColorPicker: '保留默认黑色、HSV 滑块与 hex 输入。显式 hideCanvas=false 开启饱和度/明度二维面板，mode 切换 hex/hexa/rgb/rgba/hsl/hsla；对象模型保留颜色通道类型与透明度。',
@@ -136,13 +141,78 @@ for (const [group, example, demo, title, names] of families) {
         pages.push({ id: name === 'UInput' ? 'input-base' : slug, title: titles[name], name, kind: 'component', group, description: `${titles[name]}的独立用法与交互。`, examples: [{ id: 'component-' + slug, title: `${titles[name]}的基本用法`, description: focusNotes[name] ?? '只演示当前组件及其所需的容器或子组件，源码与此示例一致。', fullSource: true, code }], notes: ['公开属性、模型、事件和插槽以本页 API 为准。', '组件保留 UAH 主题与尺寸；使用方式参考 Vuetify，未承诺所有上游属性逐项相同。', ...(focusNotes[name] ? [focusNotes[name]] : [])] });
     }
 }
+const componentDemoEnhancements = [
+    {
+        id: 'cascader', name: 'UCascader', title: '级联选择', group: '表单输入与控件',
+        description: '以完整路径模型选择多级选项。',
+        example: { id: 'component-cascader', file: 'cascader.vue', title: '多选、搜索与严格模式', description: '以完整路径为模型，父项批量选择可选叶节点；支持搜索、半选和选择上限。' }
+    },
+    {
+        id: 'treeview', name: 'UTreeview', title: '树形列表', group: '数据与展示',
+        description: '使用层级列表展示和操作树形数据。',
+        example: { id: 'component-tree-drag', file: 'tree-drag.vue', title: '树内拖拽', description: '支持同级排序、跨分支移动和明确的前后/内部目标；禁用节点及循环移动不可投放。' }
+    },
+    {
+        id: 'time-input', name: 'UTimeInput', title: '时间输入', group: '选择器',
+        description: '弹出时间面板，确认后提交单个时间或时间范围。',
+        example: { id: 'component-time-input', file: 'time-input.vue', title: '单值、范围与时段限制', description: '取消保留原值；readonly 阻止修改，editable 显式开启手动填写。' },
+        notes: ['modelValue 为24小时 HH:mm / HH:mm:ss 字符串；range 为双端字符串数组。空单值 null，空范围 []。', '默认不允许手动填写，hideActions=false 保留确认和取消。取消、Esc、点击外部保留原值。', 'min/max 与 allowedRanges 同时限制可选时间；范围必须完整且开始不晚于结束。显示格式不改变模型格式。']
+    },
+    {
+        id: 'drawer', name: 'UDrawer', title: '详情抽屉', group: '容器组件',
+        description: '行内结束侧的模态详情面板，复用 Dialog 的遮罩、焦点管理和关闭协议。',
+        example: { id: 'component-drawer', file: 'drawer.vue', title: '详情与滚动', description: '固定标题和操作栏，内部内容滚动。关闭后焦点回到打开按钮。' },
+        notes: ['open 和 modelValue 均支持受控开关；ref 暴露 open/close。默认宽度 560px，窄屏最大宽度为视口。', 'header/default/footer/activator 插槽与 UDialog 一致。Esc 与遮罩关闭，persistent 可阻止用户关闭；其他 Dialog 属性与事件透传。', '面板位于行内结束侧，RTL 自动镜像；使用主题细线且无阴影。']
+    },
+    {
+        id: 'image-viewer', name: 'UImageViewer', title: '图片查看器', group: '图像与图标',
+        description: '多图浏览、缩放、旋转和拖动，使用 Dialog 的焦点与关闭协议。',
+        example: { id: 'component-image-viewer', file: 'image-viewer.vue', title: '图片查看', description: '打开后使用工具栏或方向键浏览，按 Esc 关闭。' },
+        notes: ['sources 传入图片 URL 数组，index 模型保存当前索引。', '左右方向键切图，+/- 缩放，0 重置。关闭后恢复触发器焦点。']
+    },
+    {
+        id: 'tree-select', name: 'UTreeSelect', title: '树选择', group: '表单输入与控件',
+        description: '保留层级的单选与多选控件，支持父节点选择、搜索、清空和表单校验。',
+        example: { id: 'component-tree-select', file: 'tree-select.vue', title: '部门选择', description: '选中值保持原始 ID 类型，停用节点及下级不可选择。' },
+        notes: ['单选 modelValue 为单个 ID 或 null；multiple 模式为 ID 数组，选择后保持面板打开，清空输出空数组。menu 控制面板开关。', '多选默认独立勾选，可通过 selectStrategy 设置树选择策略；支持 itemTitle、itemValue、itemChildren、itemProps 映射，未知 ID 保留原值。']
+    },
+    {
+        id: 'tree-table', name: 'UTreeTable', title: '树形表格', group: '数据与展示',
+        description: '基于标准数据表格展示部门和菜单层级，保留父子顺序与行内操作。',
+        example: { id: 'component-tree-table', file: 'tree-table.vue', title: '层级与行操作', description: '使用展开按钮或全部展开/收起，行操作接收原始业务对象。' },
+        notes: ['itemValue 必须为唯一稳定 ID，treeKey 指定显示层级缩进的列。opened 保存已展开分支 ID，收起父级保留子级展开状态。', 'expandAll/collapseAll 支持整体展开收起；item.<列名> 插槽与标准表格一致，树列额外提供 depth。', '此组件显示完整树，无分页、本地搜索或排序，防止父子节点被打散；过滤由调用方提供保持层级的 items。沿用标准表格固定表头、密度及窄屏布局。']
+    }
+];
+for (const component of componentDemoEnhancements) {
+    const code = (await readFile(new URL(`../src/ui/docs/component-examples/${component.example.file}`, import.meta.url), 'utf8'))
+        .replaceAll("from '../../index'", "from '@lingyzh/ui'");
+    const example = { ...component.example, fullSource: true, code };
+    delete example.file;
+    const existing = pages.find(page => page.name === component.name);
+    if (existing) {
+        if (!existing.examples.some(item => item.id === example.id)) existing.examples.push(example);
+        continue;
+    }
+    pages.push({
+        id: component.id,
+        name: component.name,
+        title: component.title,
+        kind: 'component',
+        group: component.group,
+        description: component.description,
+        examples: [example],
+        notes: component.notes ?? []
+    });
+}
 await writeFile(new URL('../src/ui/docs/completionContent.js', import.meta.url), '// Generated from root-authored real demos.\nexport const completionPages = ' + JSON.stringify(pages, null, 4) + ';\n');
 // Keep the dedicated-demo registry aligned when public components are added or renamed.
-const componentManifest = pages.map(page => ({
-    name: page.name,
-    example: page.examples[0].id,
-    file: page.examples[0].id.slice('component-'.length) + '.vue'
-}));
+const componentManifest = pages.flatMap(page => page.examples
+    .filter(example => example.id.startsWith('component-'))
+    .map(example => ({
+        name: page.name,
+        example: example.id,
+        file: example.id.slice('component-'.length) + '.vue'
+    })));
 await writeFile(new URL('../src/ui/docs/componentExampleManifest.json', import.meta.url), JSON.stringify(componentManifest, null, 4) + '\n');
 const buttonSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonLoadingDemo.vue', import.meta.url), 'utf8'));
 const buttonAppearanceSource = await formatDemoSource(await readFile(new URL('../src/ui/docs/ButtonAppearanceDemo.vue', import.meta.url), 'utf8'));

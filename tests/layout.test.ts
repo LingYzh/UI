@@ -95,13 +95,12 @@ test('each manifest component example matches its real Vue file and page metadat
         example: string;
         file: string;
     }>;
-    const names = manifest.map((entry) => entry.name);
     const exampleIds = manifest.map((entry) => entry.example);
     const files = manifest.map((entry) => entry.file);
 
-    assert.equal(new Set(names).size, manifest.length, 'manifest component names should be unique');
     assert.equal(new Set(exampleIds).size, manifest.length, 'every dedicated example must have a unique id');
     assert.equal(new Set(files).size, manifest.length, 'every dedicated example must have its own Vue file');
+    assert.ok(manifest.every((entry) => pages.some((page) => page.kind === 'component' && page.name === entry.name)), 'every manifest example belongs to a documented component');
 
     const documentedComponentExamples = pages.flatMap((page) => page.examples ?? [])
         .filter((example) => example.id.startsWith('component-'));
@@ -130,7 +129,7 @@ test('each manifest component example matches its real Vue file and page metadat
 test('dedicated input demos isolate sibling components and declare local model state', () => {
     const inputComponents = [
         'UNumberInput', 'UColorInput', 'USlider', 'URangeSlider', 'UOtpInput',
-        'URating', 'UFileInput', 'UFileUpload', 'UColorPicker'
+        'URating', 'UFileInput', 'UFileUpload', 'UColorPicker', 'UTimeInput'
     ];
     const manifest = JSON.parse(readFileSync(new URL('../src/ui/docs/componentExampleManifest.json', import.meta.url), 'utf8')) as Array<{
         name: string;
@@ -149,12 +148,13 @@ test('dedicated input demos isolate sibling components and declare local model s
         const script = source.match(/<script setup[^>]*>([\s\S]*?)<\/script>/)?.[1];
         assert.ok(template, `${component} example needs a template`);
         assert.ok(script, `${component} example needs local setup code`);
-        const ownTag = `u-${kebabName(component)}`;
+        const componentTags = (name: string) => `(?:u-${kebabName(name)}|${name})`;
+        const ownTag = componentTags(component);
         assert.match(template, new RegExp(`<${ownTag}(?:\\s|>|\\/)`, 'i'), `${component} example should render its own component`);
 
         for (const sibling of inputComponents) {
             if (sibling === component) continue;
-            const siblingTag = `u-${kebabName(sibling)}`;
+            const siblingTag = componentTags(sibling);
             assert.doesNotMatch(template, new RegExp(`<\\/?${siblingTag}(?:\\s|>|\\/)`, 'i'), `${component} example should not mix in ${sibling}`);
         }
 

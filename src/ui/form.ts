@@ -195,23 +195,24 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     let previousRules = [...props.rules ?? []];
     let previousRulesArray = props.rules;
     let previousDisabled = disabled.value;
-    let previousReadonly = readonly.value;
     function sameRule(a: ValidationRule, b: ValidationRule): boolean {
         // Vue recreates inline callbacks along with their rules array on each
         // slot render. Their identical bodies must not cancel that render's
         // validation. The runner still reads the latest callbacks on each run.
         return a === b || (typeof a === 'function' && typeof b === 'function' && a.toString() === b.toString());
     }
-    watch(() => [props.rules, disabled.value, readonly.value], () => {
+    // Readonly freezes editing without changing eligibility or validity. Busy
+    // forms may toggle it around validate(); that must not clear errors or
+    // cancel a pending async rule. Disabled still changes eligibility.
+    watch(() => [props.rules, disabled.value], () => {
         const rules = [...props.rules ?? []];
         const replacedArray = props.rules !== previousRulesArray;
-        const changed = previousDisabled !== disabled.value || previousReadonly !== readonly.value
+        const changed = previousDisabled !== disabled.value
             || rules.length !== previousRules.length || rules.some((rule, index) => replacedArray
                 ? !sameRule(rule, previousRules[index]) : rule !== previousRules[index]);
         previousRules = rules;
         previousRulesArray = props.rules;
         previousDisabled = disabled.value;
-        previousReadonly = readonly.value;
         if (!changed) return;
         void resetValidation();
     }, { deep: true, flush: 'sync' });

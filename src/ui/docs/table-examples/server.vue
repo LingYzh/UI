@@ -95,6 +95,8 @@ onBeforeUnmount(() => {
             :items-per-page-options="[5, 10, { value: -1, title: '全部工作区' }]"
             :items-per-page="5"
             :mobile="false"
+            :height="240"
+            fixed-header
             show-select
             show-expand
             multi-sort

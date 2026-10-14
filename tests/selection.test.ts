@@ -1,6 +1,17 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { defaultValueComparator, normalizeItems } from '../src/ui/selection';
+import { defaultValueComparator, normalizeItems, toggleGroupSelection } from '../src/ui/selection';
+
+test('multiple minimum blocks removals while allowing an initially empty group to fill', () => {
+    const options = { multiple: true, min: 2, max: 3 };
+    const initial = Object.freeze([1, 2]);
+    assert.deepEqual(toggleGroupSelection(initial, 1, options), [1, 2]);
+    assert.deepEqual(toggleGroupSelection(initial, 3, options), [1, 2, 3]);
+    assert.deepEqual(toggleGroupSelection([1, 2, 3], 1, options), [2, 3]);
+    assert.deepEqual(toggleGroupSelection([], 1, options), [1]);
+    assert.deepEqual(toggleGroupSelection([1], 2, options), [1, 2]);
+    assert.deepEqual(toggleGroupSelection([1, 2], 1, { ...options, min: 1 }), [2]);
+});
 
 test('normalizeItems consumes the default nested props bag and preserves selector overrides', () => {
     const item = { id: 'locked', title: 'Locked', value: 'locked', props: { disabled: true }, children: [] };

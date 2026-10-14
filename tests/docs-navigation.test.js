@@ -62,9 +62,9 @@ const expectedUsageFamilies = {
     radio: ['radio', 'radio-group']
 };
 
-test('original documentation map covers all 173 pages and API mode retains all 158 components', () => {
-    assert.equal(pages.length, 173);
-    assert.equal(pages.filter(page => page.kind === 'component').length, 158);
+test('original documentation map covers all 178 pages and API mode retains all 163 components', () => {
+    assert.equal(pages.length, 178);
+    assert.equal(pages.filter(page => page.kind === 'component').length, 163);
     assert.equal(docsNavigationGroups.length, 16);
     assert.equal(new Set(docsNavigationGroups.map(group => group.id)).size, docsNavigationGroups.length);
     assert.equal(new Set(docsNavigationGroups.map(group => group.title)).size, docsNavigationGroups.length);
@@ -76,7 +76,7 @@ test('original documentation map covers all 173 pages and API mode retains all 1
     const apiNavigation = buildDocsNavigation(pages, '', 'api');
     const apiPages = flattenGroups(apiNavigation);
     const componentPages = pages.filter(page => page.kind === 'component');
-    assert.equal(apiPages.length, 158);
+    assert.equal(apiPages.length, 163);
     assert.deepEqual(new Set(getPageIds(apiPages)), new Set(getPageIds(componentPages)));
     assert.ok(apiPages.every(page => page.href === `#/${page.id}/api`));
     assert.ok(apiPages.every(page => page.kind === 'component'), 'guides and service pages are not API components');

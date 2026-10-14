@@ -13,7 +13,7 @@ import { overlayAppearanceStyles } from './overlay-appearance';
 import UiMaybeTransition from './UiMaybeTransition.vue';
 import { useOverlayTransition } from './overlay-transition';
 import UiOverlayHost from './UiOverlayHost.vue';
-import { retainOverlayFocus } from './overlay-lifecycle';
+import { retainOverlayFocus, waitForOverlayScrim } from './overlay-lifecycle';
 import { useOverlayFocus } from './overlay-focus';
 
 type ScrollStrategy = 'none' | 'locked' | 'block' | 'close' | 'reposition';
@@ -266,9 +266,9 @@ async function sync() {
                 initial.focus({ preventScroll: true });
             }
         }
-        await completing;
+        await Promise.all([completing, waitForOverlayScrim(element)]);
     }
-    else await Promise.all(element.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    else await Promise.all([waitForOverlayScrim(element), ...element.getAnimations().map((animation) => animation.finished.catch(() => {}))]);
     if (current !== generation) return;
     if (open.value) {
         state.value = 'open';
@@ -384,7 +384,8 @@ defineExpose({
 
 <template>
     <slot v-if="!props.activator" name="activator" v-bind="activatorSlot" />
-    <UiOverlayHost :active="open || state !== 'closed'" :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :scrim="props.scrim" :opacity="props.opacity" :z-index="props.zIndex"
+    <UiOverlayHost :active="open || state !== 'closed'" :state="state" :animate="props.transition !== false"
+        :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :scrim="props.scrim" :opacity="props.opacity" :z-index="props.zIndex"
         @click:outside="event => { if (dialog && isTopOverlay(dialog)) { emit('click:outside', event); close(); } }"
     >
     <UiMaybeTransition :transition="props.transition ?? false"

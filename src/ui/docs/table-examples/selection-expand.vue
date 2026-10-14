@@ -10,14 +10,18 @@ const headers = [
     { key: 'title', title: '工作区' },
     { key: 'category', title: '分类' },
     { key: 'count', title: '任务数', align: 'end' },
+    { key: 'enabled', title: '启用', align: 'center' },
 ];
-const items = Array.from({ length: 12 }, (_, index) => ({
-    id: index + 1,
-    title: `工作区 ${index + 1}`,
-    category: index % 2 ? '开发' : '设计',
-    count: index * 3,
-    selectable: index !== 1,
-}));
+const items = ref(
+    Array.from({ length: 12 }, (_, index) => ({
+        id: index + 1,
+        title: `工作区 ${index + 1}`,
+        category: index % 2 ? '开发' : '设计',
+        count: index * 3,
+        selectable: index !== 1,
+        enabled: index % 2 === 0,
+    }))
+);
 function reset() {
     selected.value = [];
     expanded.value = [];
@@ -61,6 +65,14 @@ function reset() {
             </template>
             <template #item.data-table-expand="{ props }">
                 <u-button v-bind="props" variant="text" aria-label="切换详情" />
+            </template>
+            <template #item.enabled="{ item }">
+                <u-switch
+                    v-model="item.enabled"
+                    :aria-label="`${item.title}启用`"
+                    :disabled="!item.selectable"
+                    hide-details
+                />
             </template>
             <template #expanded-row="{ columns, item }">
                 <tr class="table-demo-expanded">

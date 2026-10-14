@@ -54,7 +54,7 @@ let browser;
 const checks = [];
 try {
     await vite.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: process.env.UI_QA_BROWSER, headless: true });
     const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
     const errors = [], warnings = [];
     page.on('pageerror', error => errors.push(error.message));

@@ -1,0 +1,51 @@
+.ui-cascader-trigger.ui-input { gap: 6px; align-items: center; height: auto; text-align: start; }
+.ui-cascader-content { display: flex; flex: 1 1 auto; align-items: center; flex-wrap: wrap; gap: 4px; min-width: 0; }
+.ui-cascader-content > .ui-cascader-input { flex: 1 1 48px; width: 0; min-width: 32px; padding: 0; border: 0; outline: none; background: transparent; color: var(--text); font: inherit; }
+.ui-cascader-input[readonly]:not(:disabled) { cursor: pointer; }
+.ui-cascader-trigger .ui-control-clear { flex: 0 0 auto; }
+.ui-cascader-trigger.is-disabled, .ui-cascader-input:disabled { cursor: not-allowed; }
+.ui-cascader-trigger.is-readonly .ui-cascader-input { cursor: default; }
+.ui-cascader-trigger.is-disabled:hover, .ui-cascader-trigger.is-readonly:hover { border-color: var(--border); background: var(--surface); }
+.ui-cascader-trigger:has(.ui-cascader-input:focus-visible:not([data-ui-pointer-focus])) { border-color: var(--accent-text); box-shadow: 0 0 0 3px var(--accent-soft); }
+.ui-cascader-chip { max-width: 100%; min-width: 0; }
+.ui-cascader-chip .ui-badge-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-cascader-node-select { width: 28px; height: 28px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; position: relative; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--muted); cursor: pointer; }
+.ui-cascader-node-select[aria-pressed="true"] { color: var(--primary); }
+.ui-cascader-node-select:disabled { cursor: not-allowed; opacity: .45; }
+.ui-cascader-node-select:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+.ui-cascader-selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-width: 0;
+    padding-block: 4px;
+}
+.ui-cascader-selected-chips > .ui-chip { max-width: 100%; }
+.ui-cascader-option-row,
+.ui-cascader-search-result {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+.ui-cascader-option-row > .ui-selection-ripple.is-checkbox,
+.ui-cascader-search-result > .ui-selection-ripple.is-checkbox {
+    flex: 0 0 auto;
+    cursor: pointer;
+}
+.ui-cascader-option-row > .ui-selection-ripple.is-checkbox:has(input:disabled),
+.ui-cascader-search-result > .ui-selection-ripple.is-checkbox:has(input:disabled) { cursor: not-allowed; }
+.ui-cascader-option-row > .ui-cascader-option,
+.ui-cascader-search-result > .ui-cascader-option { flex: 1 1 auto; }
+.ui-cascader-option { user-select: none; }
+.ui-cascader-panel { overflow-x: auto; overflow-y: auto; }
+.ui-cascader-search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: min(300px, 60dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 2px;
+}
+.ui-cascader-search-result > .ui-cascader-option { min-width: 0; }

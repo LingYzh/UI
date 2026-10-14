@@ -1,0 +1,9 @@
+.ui-checkbox.is-bordered, .ui-radio.is-bordered {
+    min-height: 36px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.ui-checkbox.is-bordered.is-dense, .ui-radio.is-bordered.is-dense { min-height: 30px; padding-block: 4px; }
+.ui-checkbox.is-bordered.is-selected, .ui-radio.is-bordered.is-selected { border-color: var(--accent-text); background: var(--accent-soft); }
+.ui-checkbox.is-bordered:has(input:focus-visible:not([data-ui-pointer-focus])), .ui-radio.is-bordered:has(input:focus-visible:not([data-ui-pointer-focus])) { outline: 2px solid var(--accent-text); outline-offset: 2px; }

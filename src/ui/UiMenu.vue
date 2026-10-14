@@ -65,7 +65,7 @@ const rawProps = withDefaults(defineProps<DimensionProps & OverlayPositionProps 
     persistent: false,
     closeOnBack: true,
     scrollStrategy: 'reposition',
-    transition: undefined
+    transition: 'ui-menu-motion'
 });
 const props = useDefaults(rawProps, 'UMenu');
 const transition = useOverlayTransition(() => props.transition);

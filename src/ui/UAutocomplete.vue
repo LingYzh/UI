@@ -19,7 +19,7 @@ const rawProps = withDefaults(defineProps<AutocompleteProps>(), {
     items: () => [],
     itemProps: 'props',
     clearOnSelect: false,
-    blurOnSelect: true,
+    blurOnSelect: undefined,
     closableChips: false,
     ignoreAccents: undefined,
     autoSelectFirst: false,
@@ -193,6 +193,29 @@ function openMenu(): void {
     menuOpen.value = true;
 }
 
+let pointerMenuWasOpen: boolean | undefined;
+function fieldPointerdown(event: PointerEvent): void {
+    if (control.disabled.value || control.readonly.value) return;
+    if (event.target instanceof Element && event.target.closest('button')) return;
+    pointerMenuWasOpen = menuOpen.value;
+    // Keep focus on the input when pressing the frame/arrow. The browser's
+    // default focus transfer would otherwise close and reopen the same menu.
+    if (props.selectOnly || event.target !== input.value) event.preventDefault();
+    input.value?.focus({ preventScroll: true });
+}
+
+function fieldClick(event: MouseEvent): void {
+    const wasOpen = pointerMenuWasOpen;
+    pointerMenuWasOpen = undefined;
+    if (control.disabled.value || control.readonly.value) return;
+    // Snapshot before focus opens a closed picker; one click must never toggle twice.
+    if (props.selectOnly && wasOpen === true) menuOpen.value = false;
+    else openMenu();
+    // Forward the consumer listener from this single surface, not again from the input.
+    const handlers = Array.isArray(attrs.onClick) ? attrs.onClick : [attrs.onClick];
+    for (const handler of handlers) if (typeof handler === 'function') handler(event);
+}
+
 function scrollActive(index: number): void {
     if (index < 0 || props.noAutoScroll) return;
     void nextTick(() => virtualScroll.value?.scrollToIndex(index, 'start'));
@@ -236,7 +259,7 @@ function choose(item: SelectionItem, pointer = false): boolean {
         menuOpen.value = false;
     }
 
-    if (pointer && props.blurOnSelect) input.value?.blur();
+    if (pointer && (props.blurOnSelect ?? !props.multiple)) input.value?.blur();
     return wasSelected !== isNowSelected;
 }
 
@@ -332,6 +355,11 @@ function asSelectionItem(item: unknown): SelectionItem {
 }
 
 function keydown(event: KeyboardEvent): void {
+    if (props.selectOnly && (((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'a')
+        || (event.shiftKey && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)))) {
+        event.preventDefault();
+        return;
+    }
     if (event.key === 'Escape' && menuOpen.value) {
         menuOpen.value = false;
         event.preventDefault();
@@ -425,18 +453,20 @@ defineExpose({
         <template v-if="$slots.message" #message="scope"><slot name="message" v-bind="scope" /></template>
         <template #default="{ controlAttrs }">
             <div ref="root" class="u-autocomplete" :class="[$attrs.class, control.classes.value]" :style="[control.styles.value, control.framed.value ? undefined : controlSizeStyles(props), $attrs.style as CSSProperties]" @focusout="blur">
-            <div class="u-autocomplete-field" @pointerdown="!control.disabled.value && input?.focus()">
+            <div class="u-autocomplete-field" @pointerdown="fieldPointerdown" @click="fieldClick">
                 <slot name="prepend" :disabled="control.disabled.value" :readonly="control.readonly.value" />
                 <slot name="prepend-inner" :disabled="control.disabled.value" :readonly="control.readonly.value" />
+                <div class="u-autocomplete-values" :class="{ 'has-selection': selections.length, 'is-select-only': props.selectOnly }">
                 <span v-if="props.chips && selections.length" class="u-autocomplete-chips">
                     <span v-for="(selection, index) in selections" :key="index" class="u-autocomplete-chip">
-                        <slot name="chip" :item="selection.internalItem.raw" :internal-item="selection.internalItem" :index="index" :props="{ disabled: control.disabled.value || control.readonly.value }">{{ selection.title }}</slot>
+                        <span class="u-autocomplete-chip-title" :title="selection.title"><slot name="chip" :item="selection.internalItem.raw" :internal-item="selection.internalItem" :index="index" :props="{ disabled: control.disabled.value || control.readonly.value }">{{ selection.title }}</slot></span>
                         <button v-if="props.closableChips && !control.readonly.value && !control.disabled.value" v-ripple="props.ripple" type="button" :aria-label="`${locale.t('badge.remove')} ${selection.title}`" @pointerdown.stop.prevent @click.stop="remove(index)"><Icon name="$close" :size="14" /></button>
                     </span>
                 </span>
-                <input ref="input" :value="display" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" role="combobox" :aria-controls="listId" :aria-expanded="menuVisible" :aria-activedescendant="menuVisible && visible[active] ? `${listId}-${active}` : undefined" :aria-autocomplete="props.selectOnly ? 'none' : 'list'" :placeholder="props.placeholder" :disabled="control.disabled.value" :readonly="control.readonly.value || props.selectOnly" :aria-invalid="control.state.value === false || undefined" @input="onInput" @focus="openMenu(); control.focus()" @click="openMenu()" @keydown="keydown" />
+                <input ref="input" :value="display" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined, onClick: undefined }, controlAttrs, control.id())" role="combobox" :aria-controls="listId" :aria-expanded="menuVisible" :aria-activedescendant="menuVisible && visible[active] ? `${listId}-${active}` : undefined" :aria-autocomplete="props.selectOnly ? 'none' : 'list'" :placeholder="selections.length ? undefined : props.placeholder" :disabled="control.disabled.value" :readonly="control.readonly.value || props.selectOnly" :aria-invalid="control.state.value === false || undefined" @input="onInput" @focus="openMenu(); control.focus()" @keydown="keydown" />
+                </div>
                 <slot name="append-inner" :disabled="control.disabled.value" :readonly="control.readonly.value" />
-                <button v-if="props.clearable && (selections.length || search) && !control.disabled.value && !control.readonly.value" v-ripple="props.ripple" type="button" class="u-autocomplete-clear" :aria-label="locale.t('cascader.clear')" @pointerdown.prevent @click.stop="clear"><slot name="clear"><Icon name="$close" :size="16" /></slot></button>
+                <button v-if="props.clearable && (selections.length || search) && !control.disabled.value && !control.readonly.value" v-ripple="props.ripple" type="button" class="u-autocomplete-clear" :aria-label="locale.t('cascader.clear')" @pointerdown.stop.prevent @click.stop="clear"><slot name="clear"><Icon name="$close" :size="16" /></slot></button>
                 <span v-if="props.loading" class="u-autocomplete-loader"><slot name="loader" /></span>
                 <Icon name="$expand" :size="18" class="u-autocomplete-arrow ui-disclosure-icon is-down" :class="{ 'is-open': menuVisible }" />
                 <slot name="append" :disabled="control.disabled.value" :readonly="control.readonly.value" />

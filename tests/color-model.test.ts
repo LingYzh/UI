@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import vue from '@vitejs/plugin-vue';
+import { createServer } from 'vite';
 import {
     convertChannel,
     hslToHsv,
@@ -62,6 +64,29 @@ test('parses comma and modern CSS rgb/rgba and hsl/hsla syntax', () => {
     const achromaticOutput = serializeColorModel(achromatic, 'hsla(275 0% 50% / 0.4)');
     assert.equal(achromaticOutput, 'hsl(275 0 50 / 0.4)');
     assert.deepEqual(parseColorModel(achromaticOutput), achromatic);
+});
+
+test('parses and serializes HSV and HSVA strings with percent channels and alpha', () => {
+    const hsvSource = 'hsv(120, 100%, 50%)';
+    const hsv = parseColorModel(hsvSource);
+    assert.deepEqual(hsv, { h: 120, s: 1, v: 0.5, a: 1 });
+    const hsvOutput = serializeColorModel(hsv, hsvSource);
+    assert.equal(hsvOutput, 'hsv(120 100% 50%)');
+    assert.deepEqual(parseColorModel(hsvOutput), hsv);
+
+    const changedHsv = serializeColorModel({ ...(hsv as HSVA), h: 240, v: 1 }, hsvSource);
+    assert.equal(changedHsv, 'hsv(240 100% 100%)');
+    const hsvaSource = 'hsva(240, 100%, 50%, 0.4)';
+    const hsva = parseColorModel(hsvaSource);
+    assert.deepEqual(hsva, { h: 240, s: 1, v: 0.5, a: 0.4 });
+    const hsvaOutput = serializeColorModel(hsva, hsvaSource);
+    assert.equal(hsvaOutput, 'hsva(240 100% 50% / 0.4)');
+    assert.ok(String(hsvaOutput).startsWith('hsva('));
+    assert.deepEqual(parseColorModel(hsvaOutput), hsva);
+
+    const alphaFromHsv = serializeColorModel({ ...(hsv as HSVA), a: 0.25 }, hsvSource);
+    assert.equal(alphaFromHsv, 'hsva(120 100% 50% / 0.25)');
+    assert.deepEqual(parseColorModel(alphaFromHsv), { h: 120, s: 1, v: 0.5, a: 0.25 });
 });
 
 test('parses RGB, HSV, and HSL objects and serializes each in its original channel family', () => {
@@ -167,4 +192,25 @@ test('converts between byte and normalized channels with finite clamping', () =>
     near(convertChannel(0.5, 'unit', 'rgb') ?? -1, 127.5);
     assert.equal(convertChannel(999, 'rgb', 'rgb'), 255);
     assert.equal(convertChannel(Number.NaN, 'unit', 'rgb'), undefined);
+});
+
+test('Vite compiles UColorInput and UColorPicker with their HSV modes', async () => {
+    const viteServer = await createServer({
+        root: process.cwd(),
+        configFile: false,
+        plugins: [vue()],
+        optimizeDeps: { noDiscovery: true, include: [] },
+        appType: 'custom',
+        server: { middlewareMode: true },
+        resolve: { dedupe: ['vue'] },
+        logLevel: 'silent'
+    });
+    try {
+        for (const componentPath of ['/src/ui/UColorInput.vue', '/src/ui/UColorPicker.vue']) {
+            const component = (await viteServer.ssrLoadModule(componentPath)).default;
+            assert.ok(component, componentPath);
+        }
+    } finally {
+        await viteServer.close();
+    }
 });

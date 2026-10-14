@@ -1,0 +1,11 @@
+.u-time-input { width: 100%; min-width: 0; }
+.u-time-input .ui-input { display: flex; align-items: center; gap: 6px; }
+.u-time-input .ui-input > input { width: 0; min-width: 0; flex: 1 1 auto; }
+.u-time-input.is-picker-only .ui-input > input:not(:disabled) { cursor: pointer; }
+.u-time-input-menu { max-width: calc(100vw - 16px); }
+.u-time-input-pickers { display: grid; gap: 16px; padding: 16px; }
+.u-time-input-pickers.is-range { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.u-time-input-pickers .u-time-picker { min-width: 0; }
+@media (max-width: 480px) {
+    .u-time-input-pickers.is-range { grid-template-columns: minmax(0, 1fr); }
+}

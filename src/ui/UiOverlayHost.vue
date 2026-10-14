@@ -4,7 +4,13 @@ import { provideUiTheme } from './theme';
 import { overlayAppearanceStyles, type OverlayAppearanceProps } from './overlay-appearance';
 import type { OverlayContainerProps } from './overlay-container';
 
-const props = defineProps<OverlayContainerProps & OverlayAppearanceProps & { active: boolean; scrim?: boolean | string; floating?: boolean }>();
+const props = defineProps<OverlayContainerProps & OverlayAppearanceProps & {
+    active: boolean;
+    scrim?: boolean | string;
+    floating?: boolean;
+    state?: 'opening' | 'open' | 'closing' | 'closed';
+    animate?: boolean;
+}>();
 const emit = defineEmits<{ 'click:outside': [event: MouseEvent] }>();
 const layer = ref<HTMLElement>();
 const theme = provideUiTheme(() => undefined);
@@ -40,6 +46,7 @@ defineExpose({ layer });
             v-show="props.active"
         >
             <div class="ui-overlay-scrim"
+                :data-state="props.state" :data-no-motion="props.animate === false || undefined"
                 v-if="props.scrim !== false && !props.floating"
                 @pointerdown="pointerDown" @pointerup="pointerUp" @click="clickOutside"
             />

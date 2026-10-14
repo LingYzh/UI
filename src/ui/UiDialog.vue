@@ -8,7 +8,7 @@ import { provideUiTheme } from './theme';
 import { useDefaults } from './defaults';
 import { dimensionStyles } from './dimensions';
 import { useOverlayBack } from './overlay-back';
-import { claimOverlayDismiss } from './overlay-lifecycle';
+import { claimOverlayDismiss, waitForOverlayScrim } from './overlay-lifecycle';
 import { overlayActivatorElement, overlayPositionStyles, resolveOverlayTarget, type OverlayPositionProps } from './overlay-position';
 import { menuContextKey } from './menu';
 import { overlayAppearanceStyles, type OverlayAppearanceProps } from './overlay-appearance';
@@ -28,6 +28,7 @@ const rawProps = withDefaults(defineProps<OverlayPositionProps & OverlayAppearan
     open?: boolean;
     modelValue?: boolean;
     persistent?: boolean;
+    closeOnClickOutside?: boolean;
     closeOnBack?: boolean;
     disabled?: boolean;
     eager?: boolean;
@@ -60,6 +61,7 @@ const rawProps = withDefaults(defineProps<OverlayPositionProps & OverlayAppearan
     open: undefined,
     modelValue: undefined,
     persistent: false,
+    closeOnClickOutside: true,
     closeOnBack: true,
     disabled: false,
     eager: false,
@@ -141,6 +143,7 @@ function setOpen(value: boolean) {
 }
 function openDialog() { setOpen(true); }
 function requestClose() { if (!props.persistent) setOpen(false); }
+function requestOutsideClose() { if (props.closeOnClickOutside) requestClose(); }
 useOverlayBack(element, () => props.closeOnBack, () => isOpen.value, requestClose);
 function clearTimers() {
     clearTimeout(openTimer);
@@ -218,7 +221,7 @@ function pointerDown(event: PointerEvent) {
 function pointerUp(event: PointerEvent) {
     if (backdropPressed && outside(event)) {
         emit('click:outside', event);
-        requestClose();
+        requestOutsideClose();
     }
     backdropPressed = false;
 }
@@ -256,7 +259,7 @@ function onDocumentClick(event: MouseEvent) {
     if (!isOpen.value || !dialog || !isTopOverlay(dialog) || dialog.closest('.ui-overlay-layer')?.contains(event.target as Node) || activatorEl.value?.contains(event.target as Node)) return;
     if (!claimOverlayDismiss(event)) return;
     emit('click:outside', event);
-    requestClose();
+    requestOutsideClose();
 }
 
 async function sync() {
@@ -291,9 +294,9 @@ async function sync() {
         const completing = transition.run(isOpen.value);
         await nextTick();
         if (isOpen.value) updateLocation();
-        await completing;
+        await Promise.all([completing, waitForOverlayScrim(dialog)]);
     }
-    else await Promise.all(dialog.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    else await Promise.all([waitForOverlayScrim(dialog), ...dialog.getAnimations().map((animation) => animation.finished.catch(() => {}))]);
     if (current !== generation) return;
     if (isOpen.value) {
         state.value = 'open';
@@ -454,19 +457,21 @@ defineExpose({
 
 <template>
     <slot v-if="!props.activator" name="activator" v-bind="activatorSlot" />
-    <UiOverlayHost :active="isOpen || state !== 'closed'" :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :scrim="props.scrim" :opacity="props.opacity" :z-index="props.zIndex"
-        @click:outside="event => { if (element && isTopOverlay(element)) { emit('click:outside', event); requestClose(); } }"
+    <UiOverlayHost :active="isOpen || state !== 'closed'" :state="state" :animate="props.transition !== false"
+        :attach="props.attach" :contained="props.contained" :absolute="props.absolute" :scrim="props.scrim" :opacity="props.opacity" :z-index="props.zIndex"
+        @click:outside="event => { if (element && isTopOverlay(element)) { emit('click:outside', event); requestOutsideClose(); } }"
     >
     <UiMaybeTransition :transition="props.transition ?? false"
         @after-enter="transition.finish" @after-leave="transition.finish" @enter-cancelled="transition.finish" @leave-cancelled="transition.finish">
-        <dialog ref="element" v-bind="contentAttrs"
+        <dialog ref="element" v-bind="contentAttrs" :class="{ 'ui-dialog--structured': !props.scrollable && !!($slots.header || $slots.footer) }"
             v-show="props.transition === undefined || transition.visible.value">
             <template v-if="contentMounted || props.eager">
-                <template v-if="props.scrollable">
+                <template v-if="props.scrollable || $slots.header || $slots.footer">
                     <header v-if="$slots.header" class="ui-dialog-header"><slot name="header" v-bind="contentSlot" /></header>
                     <div class="ui-dialog-content" :style="{ '--ui-dialog-error-space': `${errorSpace}px` }">
                         <div v-if="props.error" ref="errorElement" class="ui-dialog-error" role="alert">{{ props.error }}</div>
-                        <UiScrollArea class="ui-dialog-scroll" :label="props.contentLabel ?? locale.t('dialog.contentLabel')" :rounded="false"><div class="ui-dialog-body"><slot v-bind="contentSlot" /></div></UiScrollArea>
+                        <UiScrollArea v-if="props.scrollable" class="ui-dialog-scroll" :label="props.contentLabel ?? locale.t('dialog.contentLabel')" :rounded="false"><div class="ui-dialog-body"><slot v-bind="contentSlot" /></div></UiScrollArea>
+                        <div v-else class="ui-dialog-body ui-dialog-body--plain"><slot v-bind="contentSlot" /></div>
                     </div>
                     <footer v-if="$slots.footer" class="ui-dialog-footer"><slot name="footer" v-bind="contentSlot" /></footer>
                 </template>

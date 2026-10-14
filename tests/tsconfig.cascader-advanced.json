@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/UiCascader.vue",
+        "../src/ui/cascader.ts",
+        "cascader-model-types.vue",
+        "../src/ui/markdown-plugins.d.ts"
+    ],
+    "exclude": []
+}

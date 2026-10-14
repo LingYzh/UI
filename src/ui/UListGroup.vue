@@ -116,7 +116,8 @@ const activatorProps = computed(() => ({
                 v-ripple="props.ripple"
                 v-pointer-blur
             >
-                {{ props.title }}
+                <slot name="prepend" />
+                <slot name="title">{{ props.title }}</slot>
                 <Icon name="$expand" :size="18" class="ui-disclosure-icon is-down" :class="{ 'is-open': expanded }" />
             </button>
         </slot>

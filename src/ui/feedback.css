@@ -109,12 +109,7 @@
 :root[data-reduced-motion="true"] .ui-spinner > svg { animation-duration: 1.6s; }
 /* Circular renders the shared SVG; these compatibility rules keep the 24px quarter arc. */
 .ui-spinner .ui-spinner-circular.u-progress-circular { color: inherit; }
-.ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { transform: none; animation: ui-spin 800ms linear infinite; }
-.ui-spinner .ui-spinner-circular.u-progress-circular circle { cx: 12px; cy: 12px; r: 9px; }
-.ui-spinner .ui-spinner-circular.u-progress-circular .u-progress-track { stroke: currentColor; opacity: .2; }
-.ui-spinner .ui-spinner-circular.u-progress-circular .u-progress-value { stroke-dasharray: 14.137167 42.411501; stroke-dashoffset: 0; transform: rotate(-90deg); transform-origin: 12px 12px; transition: none; }
-@media (prefers-reduced-motion: reduce) { .ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { animation-duration: 1.6s; } }
-:root[data-reduced-motion="true"] .ui-spinner .ui-spinner-circular.u-progress-circular.is-indeterminate svg { animation-duration: 1.6s; }
+.ui-spinner .ui-spinner-circular .u-progress-track { stroke: currentColor; opacity: .2; }
 
 /* Menu uses a DOM layer with connected placement and library dismissal. */
 .ui-menu { display: contents; }
@@ -205,3 +200,11 @@
 .ui-confirm-title { margin: 0 0 8px; font: 600 16px/1.5 var(--font); }
 .ui-confirm-message { margin: 0 0 22px; color: var(--muted); font-size: var(--ui-font-body-large); line-height: 1.7; white-space: pre-line; overflow-wrap: anywhere; }
 .ui-confirm-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+
+/* Vue keeps teleported panels mounted until the exit finishes. */
+.ui-menu-motion-enter-active { transition: opacity 180ms ease-out, transform 180ms var(--ease); }
+.ui-menu-motion-leave-active { transition: opacity 130ms ease-in, transform 130ms ease-in; pointer-events: none; }
+.ui-menu-motion-enter-from, .ui-menu-motion-leave-to { opacity: 0; transform: translateY(-4px) scale(.98); }
+.ui-menu-surface { transform-origin: top center; }
+.ui-menu-surface[data-placement^="top"] { transform-origin: bottom center; }
+.ui-menu-surface[data-placement^="top"]:is(.ui-menu-motion-enter-from, .ui-menu-motion-leave-to) { transform: translateY(4px) scale(.98); }

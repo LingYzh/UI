@@ -32,7 +32,8 @@ function click(event: MouseEvent) {
         @click="click"
     >
         <span class="u-progress-buffer" :style="{ width: bufferRatio * 100 + '%' }" />
-        <span class="u-progress-value" :style="{ width: props.indeterminate ? '35%' : ratio * 100 + '%' }" />
+        <template v-if="props.indeterminate"><span class="u-progress-value is-long" /><span class="u-progress-value is-short" /></template>
+        <span v-else class="u-progress-value" :style="{ width: ratio * 100 + '%' }" />
         <span class="u-progress-content">
             <slot :value="value" :buffer="buffer" :ratio="ratio" />
         </span>

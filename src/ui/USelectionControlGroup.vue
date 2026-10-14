@@ -14,8 +14,12 @@ defineEmits<{ 'update:focused': [value: boolean] }>();
 const attrs = useAttrs();
 const model = defineModel<unknown>();
 const element = ref<HTMLDivElement>();
-const control = useFormControl(props, model, element, attrs);
 const multiple = computed(() => !!props.multiple || (props.multiple == null && Array.isArray(model.value)));
+const validationProps = new Proxy(props, { get(target, key, receiver) {
+    if (key === 'rules') return [(value: unknown) => !multiple.value || !props.min || Array.isArray(value) && value.length >= props.min || `至少选择 ${props.min} 项。`, ...(props.rules ?? [])];
+    return Reflect.get(target, key, receiver);
+} });
+const control = useFormControl(validationProps, model, element, attrs);
 const mandatory = computed(() => !!props.mandatory);
 const max = computed(() => props.max);
 const comparator = computed(() => props.valueComparator);
@@ -26,7 +30,7 @@ function selected(value: unknown) {
 }
 function toggle(value: unknown) {
     if (control.disabled.value || control.readonly.value) return;
-    model.value = toggleGroupSelection(model.value, value, { multiple: multiple.value, mandatory: mandatory.value, max: max.value, comparator: comparator.value });
+    model.value = toggleGroupSelection(model.value, value, { multiple: multiple.value, mandatory: mandatory.value, max: max.value, min: props.min, comparator: comparator.value });
 }
 provide(selectionGroupKey, { model, multiple, mandatory, max, disabled: control.disabled, readonly: control.readonly, name, comparator, toggle, selected });
 defineExpose({ element, focus: () => element.value?.querySelector<HTMLElement>('input:not(:disabled),button:not(:disabled)')?.focus(), validate: control.validate, reset: control.reset, resetValidation: control.resetValidation, errors: control.errors });

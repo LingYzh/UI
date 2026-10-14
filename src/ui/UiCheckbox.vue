@@ -12,6 +12,7 @@ defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<FormControlProps & {
     /** 部分选中；与 checked 相互独立，用户点击后由原生控件清除，调用方按选择结果重新计算。 */
     indeterminate?: boolean;
+    bordered?: boolean;
     value?: unknown;
     trueValue?: unknown;
     falseValue?: unknown;
@@ -84,11 +85,11 @@ defineExpose({ element, focus: () => element.value?.focus(), validate: control.v
 </script>
 
 <template>
-    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :framed="control.framed.value" :for="control.id()" :error="control.displayErrors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
+    <UiControlFrame v-slot="{ controlAttrs }" v-bind="props" :label="props.bordered ? undefined : props.label" :framed="control.framed.value" :for="control.id()" :error="control.displayErrors.value.join('\n')" :required="attrs.required !== undefined && attrs.required !== false" :label-position="control.labelPosition.value" :label-width="control.labelWidth.value">
         <!-- 有标签时整个 label 可点击；无标签时须通过 aria-label 等提供名称。 -->
-        <label v-if="$slots.default" class="ui-checkbox" :class="[$attrs.class, { 'is-disabled': control.disabled.value }]" :style="$attrs.style as any">
+        <label v-if="$slots.default || props.bordered && props.label" class="ui-checkbox" :class="[$attrs.class, { 'is-disabled': control.disabled.value, 'is-bordered': props.bordered, 'is-selected': checked, 'is-dense': control.dense.value }]" :style="$attrs.style as any">
             <span class="ui-selection-ripple is-checkbox" v-ripple.center.circle="control.disabled.value || control.readonly.value ? false : props.ripple"><input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs({ ...attrs, class: undefined, style: undefined }, controlAttrs, control.id())" :name="name" :value="inputValue as any" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="guard" @keydown="guardKeys" @focus="control.focus" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" /></span>
-            <span class="ui-checkbox-label"><slot /></span>
+            <span class="ui-checkbox-label"><slot>{{ props.label }}</slot></span>
         </label>
         <span v-else class="ui-selection-ripple is-checkbox" v-ripple.center.circle="control.disabled.value || control.readonly.value ? false : props.ripple"><input v-pointer-blur ref="element" :checked="checked" @change="change" v-bind="mergeControlAttrs(attrs, controlAttrs, control.id())" :name="name" :value="inputValue as any" type="checkbox" class="ui-checkbox-control" :class="control.classes.value" :style="control.styles.value" :disabled="control.disabled.value" :aria-readonly="control.readonly.value || undefined" :aria-invalid="control.state.value === false || undefined" @click="guard" @keydown="guardKeys" @focus="control.focus" @blur="control.blur" :aria-checked="indeterminate ? 'mixed' : undefined" /></span>
     </UiControlFrame>

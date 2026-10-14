@@ -198,7 +198,7 @@ let app;
 
 try {
     await server.listen();
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ channel: process.env.UI_QA_BROWSER, headless: true });
     const page = await browser.newPage();
     page.on('console', message => {
         if (message.type() === 'warning') report.warnings.push(message.text());

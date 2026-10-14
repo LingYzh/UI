@@ -112,11 +112,16 @@ test('explicit undefined inherits shared control defaults while omitted Boolean 
     assert.equal(icon.type, 'boolean | IconValue');
     assert.deepEqual(icon.default, { kind: 'vue-boolean-false' });
 
-    const select = contracts.find(component => component.name === 'USelect');
-    const blurOnSelect = select?.props.find(prop => prop.name === 'blurOnSelect');
-    assert.ok(blurOnSelect, 'USelect declares blurOnSelect');
-    assert.deepEqual(blurOnSelect.default, { kind: 'explicit', source: 'true' }, 'the wrapper must preserve its child control default');
-    assert.deepEqual(componentApi.USelect.props.find(prop => prop.name === 'blurOnSelect').declaredDefault, blurOnSelect.default);
+    for (const name of ['USelect', 'UAutocomplete']) {
+        const component = contracts.find(item => item.name === name);
+        const blurOnSelect = component?.props.find(prop => prop.name === 'blurOnSelect');
+        assert.ok(blurOnSelect, `${name} declares blurOnSelect`);
+        assert.deepEqual(blurOnSelect.default, { kind: 'explicit-undefined', source: 'undefined' });
+
+        const apiProp = componentApi[name].props.find(prop => prop.name === 'blurOnSelect');
+        assert.deepEqual(apiProp.declaredDefault, blurOnSelect.default);
+        assert.match(apiProp.description, /未指定时，单选指针选择后失焦，多选保持焦点/);
+    }
 });
 
 test('Form has no implicit column API and Row/Col pages include the real form example', () => {

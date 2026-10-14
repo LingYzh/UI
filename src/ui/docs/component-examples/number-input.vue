@@ -42,10 +42,10 @@ const persistentCounter = ref(false);
             data-number-custom-demo
         >
             <template #increment="{ props }">
-                <u-button v-bind="props" variant="text">+</u-button>
+                <u-button v-bind="props" variant="text" icon="$plus" />
             </template>
             <template #decrement="{ props }">
-                <u-button v-bind="props" variant="text">−</u-button>
+                <u-button v-bind="props" variant="text" icon="$minus" />
             </template>
             <template #counter="{ counter }">输入 {{ counter }} 个字符</template>
         </u-number-input>

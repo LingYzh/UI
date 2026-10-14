@@ -123,3 +123,8 @@ UAH 已从官方 registry 固定安装 0.2.3，并更新 lockfile。发布前 ty
 UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4dde9d32，工作区干净。最终typecheck、应用／文档构建通过；完整UI25/25（60路由）、Agent15/15、端点11/11通过，无pageerror；证据D:/UAH/artifacts/ui-q949vX、agents-sQ9goh、endpoints-98M7dG。root复核实际能力弹窗深色窄屏和endpoint-error-fixed.png，表单滚动时错误固定悬浮顶部，padding保护首项，外层没有滚动。
 
 消费端仅更新固定依赖、TypeScript7的SFC文件访问适配、测试夹具和记录；保留Vue dedupe、Electron隔离及原业务／运行时代码。旧桌面夹具同步V2动态上下文、条件提示词模块、启动草稿后显式选择历史会话，以及Tabs手动激活和悬浮错误，原模型／历史／权限／持久化／委派断言保留。此前单测1043通过／2跳过、外观7和扩展32通过，相关产品代码未变。本轮未发布UAH桌面应用安装包；UI正式最新npm版本为0.3.2，无阻断项。
+# 2026-10-13 发布准备暂停
+
+- 用户已授权 UI 推送/发版，但随后要求暂停。package.json/lock 预备为 0.6.0，HEAD 仍 22bbfde，没有新提交/标签/发布。
+- npm ci 因 5174 服务持有 Rolldown DLL 失败，当前依赖部分缺失。需用户停止服务后恢复 npm 安装，重新跑完整门禁；详见 HANDOFF.md 顶部。不要使用 pnpm。
+- NC_Admin 使用本地 link，不升级为 npm 包，且不得推送。

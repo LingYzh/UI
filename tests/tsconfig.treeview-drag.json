@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "types": [
+            "vite/client",
+            "node"
+        ]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UTreeview.vue",
+        "../src/ui/treeview-drag.ts",
+        "treeview-drag.test.ts"
+    ],
+    "exclude": []
+}

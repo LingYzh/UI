@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UImageViewer.vue",
+        "../src/ui/docs/component-examples/image-viewer.vue"
+    ],
+    "exclude": []
+}

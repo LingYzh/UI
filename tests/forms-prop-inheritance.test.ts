@@ -10,7 +10,7 @@ const files = [
     'UiCheckbox', 'UiRadio', 'UiSwitch', 'UiColorSwatches', 'UiInput', 'UiTextarea', 'UiSelect', 'UiSelectNative',
     'UAutocomplete', 'UCombobox', 'USelectionControlGroup', 'URadioGroup', 'UCheckboxGroup',
     'UItemGroup', 'UChipGroup', 'UBtnGroup', 'UBtnToggle', 'UNumberInput', 'UFileInput',
-    'UFileUpload', 'USlider', 'URangeSlider', 'UOtpInput', 'UColorPicker', 'UColorInput', 'URating'
+    'UFileUpload', 'USlider', 'URangeSlider', 'UOtpInput', 'UColorPicker', 'UColorInput', 'URating', 'UDateInput'
 ];
 
 function formContext(): FormContext {

@@ -21,7 +21,7 @@ type UiSelectProps = Omit<AutocompleteProps, 'combobox' | 'selectOnly'> & {
 defineOptions({ inheritAttrs: false });
 const rawProps = withDefaults(defineProps<UiSelectProps>(), {
     ripple: true,
-    blurOnSelect: true,
+    blurOnSelect: undefined,
     itemProps: undefined,
     ignoreAccents: undefined,
     autoSelectFirst: undefined,

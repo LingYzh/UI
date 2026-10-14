@@ -16,12 +16,27 @@ createApp(App).use(theme).mount('#app');`;
 const switchingCode = `<script setup>
 import { useUiTheme, UButton } from '@lingyzh/ui';
 const theme = useUiTheme();
+
+function followSystem(event) {
+    theme.setTransitionOrigin(event.currentTarget);
+    void theme.change('system');
+}
+
+function toggleTheme(event) {
+    theme.setTransitionOrigin(event.currentTarget);
+    void theme.toggle();
+}
+
+function cycleTheme(event) {
+    theme.setTransitionOrigin(event.currentTarget);
+    void theme.cycle(['light', 'dark', 'ocean', 'midnight']);
+}
 </script>
 
 <template>
-    <u-button @click="theme.change('system')">跟随系统</u-button>
-    <u-button @click="theme.toggle()">切换明暗</u-button>
-    <u-button @click="theme.cycle(['light', 'dark', 'ocean'])">循环主题</u-button>
+    <u-button @click="followSystem">跟随系统</u-button>
+    <u-button @click="toggleTheme">切换明暗</u-button>
+    <u-button @click="cycleTheme">循环主题</u-button>
     <p>模式 {{ theme.mode.value }} · 实际主题 {{ theme.name.value }}</p>
 </template>`;
 const row = (name, type, fallback, description) => ({ name, type, fallback, description });
@@ -30,7 +45,7 @@ export const themePages = [
         id: 'theme', title: '主题', name: 'createUiTheme / useUiTheme', group: '设计基础', kind: 'service',
         description: '注册与切换 light、dark、system 和自定义主题；沿用现有 UAH 配色，通过容器继承控制局部外观。',
         examples: [
-            { id: 'theme-switch', title: '全局切换与跟随系统', description: '模式保留 system，实际主题随系统明暗变化。切换默认播放过渡，减少动态效果时立即更新；与顶栏明暗开关使用相同策略。', code: switchingCode },
+            { id: 'theme-switch', title: '全局切换与跟随系统', description: '模式保留 system，实际主题随系统明暗变化。明亮主题从触发器铺开，深色主题将旧画面收束到触发器；自定义主题按 dark 属性决定方向。示例循环浅色、深色、海蓝、夜海四种主题；跟随系统通过下拉选择，避免循环到相同配色。减少动态效果时立即更新，与顶栏明暗开关使用相同策略。', code: switchingCode },
             { id: 'theme-custom', title: '自定义主题与实时配色', description: '注册主题继承对应明暗默认值；修改响应式 themes 即时更新所有使用该主题的区域。', code: setupCode },
             { id: 'theme-scoped', title: '局部主题与嵌套覆盖', description: 'Provider、Card 和 Dialog 的主题沿组件树继承；局部切换不改变全局选择。', code: scopedCode },
             { id: 'theme-diagrams', title: 'Markdown 图表继承主题', description: '同一图表并行显示于两个主题区域，SVG 配色与文字继承各自作用域；动态修改主题后重新呈现。', code: "<script setup>\nimport { UThemeProvider, UMarkdown } from '@lingyzh/ui';\nconst diagram = '```mermaid\\nflowchart LR\\n    A[主题颜色] --> B[安全图表]\\n```';\n</script>\n\n<template>\n    <u-theme-provider theme=\"ocean\" with-background>\n        <u-markdown :source=\"diagram\" />\n    </u-theme-provider>\n    <u-theme-provider theme=\"midnight\" with-background>\n        <u-markdown :source=\"diagram\" />\n    </u-theme-provider>\n</template>\n" }

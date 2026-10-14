@@ -93,7 +93,9 @@ function pointerEnd() {
         window.removeEventListener('pointercancel', pointerEnd);
         window.removeEventListener('blur', pointerEnd);
     }
+    const focusedInput = interaction === 'pointer' ? (activeIndex === 0 ? startInput.value : endInput.value) : undefined;
     finish('pointer');
+    focusedInput?.focus({ preventScroll: true });
 }
 function keydown(index: 0 | 1, event: KeyboardEvent) {
     if (!KEYBOARD_KEYS.includes(event.key)) return;
@@ -130,7 +132,13 @@ function input(index: 0 | 1, event: Event) {
         finish();
         return;
     }
-    update(index, Number(target.value));
+    const value = Number(target.value);
+    // Like Vuetify's range slider, coincident thumbs choose the moving endpoint
+    // by value direction. Keep it for the rest of this native pointer gesture.
+    if (interaction === 'pointer' && range.value[0] === range.value[1] && value !== range.value[0]) {
+        activeIndex = value < range.value[0] ? 0 : 1;
+    }
+    update(interaction === 'pointer' ? activeIndex : index, value);
 }
 function blur() { finish(); control.blur(); }
 watch([control.disabled, control.readonly], ([disabled, readonly]) => { if (disabled || readonly) finish(); });

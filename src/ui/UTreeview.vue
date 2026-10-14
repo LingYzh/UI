@@ -16,6 +16,7 @@ import { useLocale } from './locale-context';
 import { buildNestedIndex, createOpenStrategy, createSelectStrategy, type NestedSelectStrategy, type NestedSelectionState, type SelectStrategyFactory, type SelectStrategyInput } from './nested-strategies';
 import { defaultValueComparator, type ItemProperty, type ValueComparator } from './selection';
 import { filterTreeviewNodes, modelValuesToTreeviewIds, resolveTreeviewItemProps, treeviewIdsToModelValues, type TreeviewFilterNode, type TreeviewFilterFunction } from './treeview-state';
+import { canTreeviewDrop, moveTreeviewItem, type TreeviewDropGuardOptions, type TreeviewDropPosition, type TreeviewItemAccess } from './treeview-drag';
 
 type Item = unknown;
 type TreeviewActiveStrategyName = 'single-independent' | 'independent' | 'leaf' | 'single-leaf';
@@ -78,6 +79,9 @@ const rawProps = withDefaults(defineProps<{
     noDataText?: string;
     disabled?: boolean;
     readonly?: boolean;
+    draggable?: boolean;
+    allowDrag?: (rawItem: unknown) => boolean;
+    allowDrop?: (dragRaw: unknown, targetRaw: unknown, position: TreeviewDropPosition) => boolean;
 } & { ripple?: RippleOptions }>(), {
     items: () => [],
     ripple: true,
@@ -101,7 +105,8 @@ const rawProps = withDefaults(defineProps<{
     hideNoData: false,
     noDataText: '$vuetify.noDataText',
     disabled: false,
-    readonly: false
+    readonly: false,
+    draggable: false
 });
 const props = useDefaults(rawProps, 'UTreeview');
 const emit = defineEmits<{
@@ -111,11 +116,17 @@ const emit = defineEmits<{
     'update:activated': [value: unknown[]];
     'click:open': [value: { id: unknown; value: boolean; path: unknown[]; event?: Event }];
     'click:select': [value: { id: unknown; value: boolean; path: unknown[]; event?: Event }];
+    'update:items': [items: Item[]];
+    'node-drag-start': [value: { rawItem: unknown; targetRaw: undefined; position: undefined; event: DragEvent }];
+    'node-drop': [value: { rawItem: unknown; targetRaw: unknown; position: TreeviewDropPosition; event: DragEvent }];
 }>();
 
 const localSelected = ref<unknown[]>([]);
 const localOpened = ref<unknown[]>([]);
 const localActivated = ref<unknown[]>([]);
+const activeDrag = ref<{ id: unknown; raw: unknown } | null>(null);
+const activeDrop = ref<{ id: unknown; position: TreeviewDropPosition } | null>(null);
+let suppressDragClickUntil = 0;
 const root = ref<HTMLElement>();
 const revision = ref(0);
 const pendingLoads = ref(new Set<unknown>());
@@ -132,6 +143,10 @@ const reduced = useReducedMotion();
 const motion = useExpandMotion(() => reduced.value);
 const locale = useLocale();
 const openStrategy = createOpenStrategy<unknown>('multiple');
+const treeDragEnabled = computed(() => props.draggable && !props.readonly && !props.disabled && typeof props.itemChildren === 'string');
+watch(treeDragEnabled, (enabled) => {
+    if (!enabled) clearDragState(true);
+}, { flush: 'sync' });
 
 function currentItemProps(item: Item) {
     return resolveTreeviewItemProps(item, props.itemProps);
@@ -415,6 +430,8 @@ function itemSlotProps(node: Node) {
         isOpen: nodeIsOpen(node),
         isActivated: nodeIsActivated(node),
         disabled: node.disabled || props.disabled,
+        isDragging: activeDrag.value !== null && Object.is(activeDrag.value.id, node.id),
+        dropPosition: activeDrop.value !== null && Object.is(activeDrop.value.id, node.id) ? activeDrop.value.position : undefined,
         hasChildren: node.hasChildren,
         loading: isLoading(node),
         error: loadError(node),
@@ -592,7 +609,126 @@ function activate(value: unknown, active?: boolean) {
 
 const shouldOpenOnClick = computed(() => props.openOnClick ?? (props.selectable && !props.activatable));
 
+function canDragNode(node: Node) {
+    return treeDragEnabled.value
+        && !node.disabled
+        && !isPresentationItemType(node.type)
+        && props.allowDrag?.(node.raw) !== false;
+}
+
+function treeviewDragAccess(childrenKey: string): TreeviewItemAccess<Item> {
+    const idsByItem = new Map<Item, unknown>();
+    for (const node of allNodes.value) idsByItem.set(node.raw, node.id);
+    return {
+        childrenKey,
+        getValue: (item) => idsByItem.has(item) ? idsByItem.get(item) : getItemField(item, props.itemValue!, undefined)
+    };
+}
+
+function clearDragState(suppressClick = false) {
+    if (suppressClick && activeDrag.value) suppressDragClickUntil = Date.now() + 250;
+    activeDrag.value = null;
+    activeDrop.value = null;
+}
+
+function handleDragStart(node: Node, event: DragEvent) {
+    const host = event.currentTarget instanceof HTMLElement ? event.currentTarget : undefined;
+    if (!canDragNode(node) || isNestedControlEvent(event, host)) {
+        event.preventDefault();
+        return;
+    }
+
+    activeDrag.value = { id: node.id, raw: node.raw };
+    activeDrop.value = null;
+    if (event.dataTransfer) {
+        event.dataTransfer.setData('text/plain', String(node.id));
+        event.dataTransfer.effectAllowed = 'move';
+    }
+    emit('node-drag-start', { rawItem: node.raw, targetRaw: undefined, position: undefined, event });
+}
+
+function dropPositionFromEvent(event: DragEvent): TreeviewDropPosition {
+    const row = event.currentTarget instanceof HTMLElement ? event.currentTarget : undefined;
+    if (!row) return 'inner';
+    const rect = row.getBoundingClientRect();
+    const offset = event.clientY - rect.top;
+    if (rect.height > 0 && offset < rect.height * 0.25) return 'before';
+    if (rect.height > 0 && offset > rect.height * 0.75) return 'after';
+    return 'inner';
+}
+
+function canDropOn(node: Node, position: TreeviewDropPosition) {
+    const drag = activeDrag.value;
+    const childrenKey = props.itemChildren;
+    if (!drag || !treeDragEnabled.value || typeof childrenKey !== 'string' || node.disabled || isPresentationItemType(node.type)) return false;
+
+    const sourceNode = nodeById.value.get(drag.id);
+    if (!sourceNode || sourceNode.raw !== drag.raw || sourceNode.disabled || isPresentationItemType(sourceNode.type)) return false;
+
+    const access = treeviewDragAccess(childrenKey);
+    const options: TreeviewDropGuardOptions<Item> = {
+        ...access,
+        isDisabled: (item) => {
+            const itemNode = nodeById.value.get(access.getValue(item));
+            return !itemNode || itemNode.disabled || isPresentationItemType(itemNode.type);
+        },
+        allowDrop: props.allowDrop
+    };
+    return canTreeviewDrop(props.items, drag.id, node.id, position, options);
+}
+
+function handleDragOver(node: Node, event: DragEvent) {
+    const position = dropPositionFromEvent(event);
+    if (!canDropOn(node, position)) {
+        activeDrop.value = null;
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'none';
+        return;
+    }
+
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    activeDrop.value = { id: node.id, position };
+}
+
+function handleDragLeave(node: Node, event: DragEvent) {
+    const host = event.currentTarget;
+    if (host instanceof HTMLElement && event.relatedTarget instanceof Element && host.contains(event.relatedTarget)) return;
+    if (activeDrop.value && Object.is(activeDrop.value.id, node.id)) activeDrop.value = null;
+}
+
+function handleDrop(node: Node, event: DragEvent) {
+    const position = dropPositionFromEvent(event);
+    const drag = activeDrag.value;
+    if (!drag || !canDropOn(node, position)) {
+        activeDrop.value = null;
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'none';
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    const childrenKey = props.itemChildren;
+    if (typeof childrenKey !== 'string') return;
+    const moved = moveTreeviewItem(props.items, drag.id, node.id, position, treeviewDragAccess(childrenKey));
+    if (!moved.changed) return;
+
+    emit('update:items', moved.items);
+    if (position === 'inner') commitOpened([...openedIds.value, node.id]);
+    emit('node-drop', { rawItem: drag.raw, targetRaw: node.raw, position, event });
+}
+
+function handleDragEnd(node: Node) {
+    if (!activeDrag.value || !Object.is(activeDrag.value.id, node.id)) return;
+    clearDragState(true);
+}
+
 function handleRowClick(node: Node, event?: MouseEvent) {
+    if (event && suppressDragClickUntil >= Date.now()) {
+        suppressDragClickUntil = 0;
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
     if (node.disabled || props.disabled || event && isNestedControlEvent(event, event.currentTarget as HTMLElement)) return;
     toggleActivated(node);
     if (node.hasChildren && shouldOpenOnClick.value) {
@@ -755,6 +891,7 @@ watch(() => allNodes.value.map((node) => ({ id: node.id, item: node.item })), (e
 }, { flush: 'sync' });
 
 onBeforeUnmount(() => {
+    clearDragState();
     unmounted = true;
     loadRequests.clear();
     loadedChildrenByItem.clear();
@@ -797,7 +934,14 @@ defineExpose({
                     <UiLinkSurface
                         v-bind="node.props"
                         class="ui-treeview-item"
-                        :class="{ 'is-active': nodeIsActivated(node) }"
+                        :class="{
+                            'is-active': nodeIsActivated(node),
+                            'is-interactive': node.props.to || node.props.href || (!props.readonly && (props.activatable || props.selectable)) || (node.hasChildren && shouldOpenOnClick),
+                            'is-draggable': canDragNode(node),
+                            'is-dragging': activeDrag !== null && Object.is(activeDrag.id, node.id),
+                            'is-drop-target': activeDrop !== null && Object.is(activeDrop.id, node.id)
+                        }"
+                        :draggable="canDragNode(node)"
                         :disabled="node.disabled || props.disabled"
                         :aria-level="node.depth + 1"
                         :aria-expanded="node.hasChildren ? nodeIsOpen(node) : undefined"
@@ -807,9 +951,15 @@ defineExpose({
                         :style="{ paddingInlineStart: `${node.depth * 20 + 8}px` }"
                         :tabindex="node.disabled || props.disabled ? -1 : 0"
                         :data-treeview-index="node.index"
+                        :data-drop-position="activeDrop !== null && Object.is(activeDrop.id, node.id) ? activeDrop.position : undefined"
                         role="treeitem"
                         v-focus-modality
                         v-ripple="props.ripple"
+                        @dragstart="handleDragStart(node, $event)"
+                        @dragover="handleDragOver(node, $event)"
+                        @dragleave="handleDragLeave(node, $event)"
+                        @drop="handleDrop(node, $event)"
+                        @dragend="handleDragEnd(node)"
                         @click="handleRowClick(node, $event)"
                         @keydown="keydown($event, node)"
                     >

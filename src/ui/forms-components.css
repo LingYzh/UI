@@ -1,5 +1,5 @@
 /* Root-authored form surfaces: shared tokens, editable text clips, selections truncate. */
-.u-autocomplete { position: relative; width: 100%; min-width: 0; color: var(--text); font-size: var(--ui-font-body-large); }
+.u-autocomplete { position: relative; width: 100%; min-width: 0; color: var(--text); font-size: var(--ui-font-body-large); line-height: 1.4; }
 .u-autocomplete-field { display: flex; align-items: center; gap: 6px; min-height: 36px; min-width: 0; padding: 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); transition: border-color 160ms, background-color 160ms, box-shadow 160ms; }
 .u-autocomplete:not(.is-disabled) .u-autocomplete-field:hover { border-color: color-mix(in srgb, var(--accent-text) 38%, var(--border)); background: var(--soft); }
 .u-autocomplete:not(.is-disabled) .u-autocomplete-field:has(:focus-visible:not([data-ui-pointer-focus])) { border-color: var(--ui-control-color, var(--accent-text)); box-shadow: 0 0 0 3px var(--accent-soft); }
@@ -13,13 +13,18 @@
 .u-autocomplete.is-disabled { opacity: .56; }
 .u-autocomplete input { flex: 1 1 60px; min-width: 0; width: 100%; min-height: 34px; padding: 7px 0; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; text-overflow: clip; }
 .u-autocomplete.is-dense input { min-height: 28px; padding-block: 4px; }
+.u-autocomplete.is-comfortable input { min-height: 30px; padding-block: 5px; }
+/* The composite field, not its editable/1px readonly input, paints focus. */
+.u-autocomplete .u-autocomplete-field input:focus-visible { outline: none; }
 .u-autocomplete input::placeholder { color: var(--faint); }
 .u-autocomplete-clear, .u-autocomplete-chip button, .ui-control-step, .ui-rating-star { display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
 :is(.u-autocomplete-clear, .u-autocomplete-chip button, .ui-control-step):hover:not(:disabled) { background: var(--hover); color: var(--text); }
 :is(.u-autocomplete-clear, .u-autocomplete-chip button, .ui-control-step, .ui-rating-star):focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 .u-autocomplete-arrow { flex: none; color: var(--muted); pointer-events: none; }
-.u-autocomplete-chips { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; padding-block: 4px; }
-.u-autocomplete-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 180px; padding-inline-start: 8px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-text); }
+.u-autocomplete-values { display: flex; flex: 1 1 0; align-items: center; flex-wrap: wrap; gap: 4px; min-width: 0; }
+.u-autocomplete-values.is-select-only.has-selection:has(.u-autocomplete-chips) > input { flex: 0 0 1px; width: 1px; min-height: 0; padding: 0; }
+.u-autocomplete-chips { display: contents; }
+.u-autocomplete-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; min-width: 0; margin-block: 3px; padding: 2px 6px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-text); }
 .u-autocomplete-chip > span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .u-autocomplete-menu { position: absolute; z-index: 50; inset-block-start: calc(100% + 4px); inset-inline-start: 0; width: max-content; max-width: min(600px, calc(100vw - 24px)); max-height: min(320px, 50dvh); padding: 5px; overflow: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
 .ui-menu-surface.is-panel.u-autocomplete-menu { width: max-content; max-width: min(600px, calc(100vw - 24px), calc(100% - 24px)); max-height: min(320px, 50dvh, calc(100% - 24px)); padding: 5px; overflow: auto; border: 1px solid var(--border); border-radius: 10px; }
@@ -29,6 +34,13 @@
 .u-autocomplete-option.is-selected { color: var(--accent-text); background: var(--accent-soft); }
 .u-autocomplete-option.is-selected.is-active { background: color-mix(in srgb, var(--accent) 20%, var(--surface)); }
 .u-autocomplete-option.is-disabled { opacity: .45; cursor: not-allowed; }
+.u-autocomplete:has(input[aria-autocomplete="none"]) .u-autocomplete-field,
+.u-autocomplete input[aria-autocomplete="none"] { cursor: pointer; user-select: none; }
+.u-autocomplete:has(input[aria-autocomplete="none"]) :is(.u-autocomplete-field, .u-autocomplete-selection, .u-autocomplete-summary) { user-select: none; }
+.u-autocomplete:is(.is-disabled, .is-readonly) .u-autocomplete-field,
+.u-autocomplete:is(.is-disabled, .is-readonly) input { cursor: not-allowed; }
+.u-date-input.is-picker-only .ui-input input { cursor: pointer; }
+.u-date-input.is-picker-only .ui-input:is(.is-readonly, .is-disabled) input { cursor: not-allowed; }
 .u-autocomplete-empty { color: var(--muted); }
 .u-autocomplete-summary { display: block; margin-top: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
 .u-selection-group { display: flex; flex-wrap: wrap; gap: 8px 16px; min-width: 0; min-height: 36px; }
@@ -71,16 +83,19 @@ button.u-chip-main, .u-chip-close { cursor: pointer; }
 .ui-number-input.is-control-end input { order: 0; }
 .ui-number-input.is-control-end .ui-number-input-body { order: 0; }
 .ui-number-input.is-control-end .ui-control-step { order: 1; }
-.ui-number-input.is-control-stacked { display: grid; grid-template-columns: minmax(0, 1fr) 28px; grid-template-rows: 1fr 1fr; column-gap: 6px; }
+.ui-number-input.is-control-stacked { display: grid; grid-template-columns: minmax(0, 1fr) 28px; grid-template-rows: 1fr 1fr; column-gap: 6px; row-gap: 0; }
 .ui-number-input.is-control-stacked input { grid-area: 1 / 1 / 3 / 2; }
 .ui-number-input.is-control-stacked .ui-number-input-body { grid-area: 1 / 1 / 3 / 2; }
 .ui-number-input.is-control-stacked .ui-control-step:first-child { grid-area: 2 / 2; }
 .ui-number-input.is-control-stacked .ui-control-step:last-child { grid-area: 1 / 2; }
-.ui-number-input.is-control-stacked .ui-control-step { width: 28px; min-height: 15px; padding: 0; line-height: 1; }
+.ui-number-input.is-control-stacked { align-items: stretch; padding-block: 0; padding-inline-end: 0; overflow: hidden; }
+.ui-number-input.is-control-stacked .ui-control-step { width: 28px; height: auto; min-height: 14px; padding: 0; line-height: 1; border-radius: 0; border-inline-start: 1px solid var(--border); }
+.ui-number-input.is-control-stacked .ui-control-step:first-child { border-block-start: 1px solid var(--border); }
+.ui-control-step > svg { display: block; }
 .ui-number-input.is-input-hidden { display: inline-grid; grid-template-columns: 32px; width: fit-content; }
 .ui-number-input.is-input-hidden .ui-control-step:first-child { grid-area: 2 / 1; }
 .ui-number-input.is-input-hidden .ui-control-step:last-child { grid-area: 1 / 1; }
-.ui-number-input.is-inset .ui-control-step { border-radius: 4px; background: var(--soft); }
+.ui-number-input.is-inset:not(.is-control-stacked) .ui-control-step { border-radius: 4px; background: var(--soft); }
 .ui-textarea-field { position: relative; min-width: 0; }
 .ui-textarea-field textarea { box-sizing: border-box; width: 100%; padding-inline-end: 44px; }
 .ui-textarea-field > .u-input-clear { position: absolute; inset: 8px 8px auto auto; }
@@ -132,6 +147,7 @@ button.u-chip-main, .u-chip-close { cursor: pointer; }
 .ui-slider-control.is-vertical.is-reversed input::-webkit-slider-runnable-track { background: linear-gradient(to bottom, var(--ui-control-color, var(--accent)) 0 var(--ui-slider-value-percent), var(--border) var(--ui-slider-value-percent) 100%); }
 .ui-slider-control.is-vertical input::-webkit-slider-thumb, .ui-range-slider-control.is-vertical input::-webkit-slider-thumb { margin-top: 0; margin-left: calc((4px - var(--ui-slider-thumb-size, 16px)) / 2); }
 .ui-range-slider-control.is-vertical .ui-range-slider-track { width: 24px; height: 180px; }
+.ui-range-slider-control.is-vertical input::-webkit-slider-runnable-track { width: 4px; height: 100%; }
 .ui-range-slider-control.is-vertical .ui-range-slider-values { flex-direction: column; gap: 8px; }
 .ui-range-slider-control.is-vertical:has(.ui-range-slider-thumb-labels) .ui-range-slider-values { visibility: hidden; }
 .ui-range-slider-control.is-vertical .ui-range-slider-track::before { inset: 0 10px; width: 4px; height: 100%; }
@@ -144,7 +160,8 @@ button.u-chip-main, .u-chip-close { cursor: pointer; }
 .ui-range-slider-control.is-vertical .ui-range-slider-thumb-labels > output { inset-inline: 28px auto; top: clamp(10px, calc(100% - var(--ui-slider-thumb-position)), calc(100% - 10px)); transform: translateY(-50%); }
 .ui-range-slider-control.is-vertical.is-reversed .ui-range-slider-thumb-labels > output { top: clamp(10px, var(--ui-slider-thumb-position), calc(100% - 10px)); }
 .ui-otp-input { display: flex; gap: 8px; max-width: 100%; }
-.ui-otp-input input { width: 40px; min-width: 0; height: 44px; padding: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 20px; text-align: center; box-shadow: 0 0 0 3px transparent; transition: border-color var(--motion-fast) var(--ease), box-shadow var(--motion-fast) var(--ease); }
+.ui-otp-input input { width: 40px; min-width: 0; height: 44px; padding: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 20px; text-align: center; box-shadow: 0 0 0 3px transparent; transition: border-color 180ms var(--ease), background-color 180ms var(--ease), box-shadow 180ms var(--ease); }
+.ui-otp-input:not(.is-disabled) input:hover { background: var(--soft); border-color: color-mix(in srgb, var(--accent-text) 38%, var(--border)); }
 .ui-otp-input.is-dense input { width: 32px; height: 36px; font-size: 16px; }
 .ui-otp-input.is-square input { border-radius: 0; }
 .ui-otp-input input:focus { outline: none; border-color: var(--accent-text); box-shadow: 0 0 0 3px var(--accent-soft); }

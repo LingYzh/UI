@@ -33,7 +33,7 @@ export type ColorModelFormat = 'hex' | 'rgb' | 'hsv' | 'hsl';
 export type ColorChannelScale = 'rgb' | 'unit';
 
 type MutableHSVA = { h: number; s: number; v: number; a: number };
-type ColorFunction = 'rgb' | 'rgba' | 'hsl' | 'hsla';
+type ColorFunction = 'rgb' | 'rgba' | 'hsl' | 'hsla' | 'hsv' | 'hsva';
 
 const numberPattern = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i;
 
@@ -243,7 +243,7 @@ function parseHex(value: string): MutableHSVA | undefined {
 }
 
 function parseCssFunction(value: string): MutableHSVA | undefined {
-    const match = value.match(/^(rgba?|hsla?)\(([\s\S]*)\)$/i);
+    const match = value.match(/^(rgba?|hsla?|hsva?)\(([\s\S]*)\)$/i);
     if (!match) return undefined;
     const fn = match[1].toLowerCase() as ColorFunction;
     const values = parseFunctionValues(match[2]);
@@ -258,6 +258,15 @@ function parseCssFunction(value: string): MutableHSVA | undefined {
         const b = parseRgbValue(bToken);
         if (r === undefined || g === undefined || b === undefined) return undefined;
         return rgbToHsva({ r, g, b, a: alpha });
+    }
+
+    if (fn === 'hsv' || fn === 'hsva') {
+        const [hToken, sToken, vToken] = values.channels;
+        const h = parseHue(hToken);
+        const s = parseUnitValue(sToken, true);
+        const v = parseUnitValue(vToken, true);
+        if (h === undefined || s === undefined || v === undefined) return undefined;
+        return { h, s, v, a: alpha };
     }
 
     const [hToken, sToken, lToken] = values.channels;
@@ -312,6 +321,7 @@ function colorFormat(input: ColorModelInput): ColorModelFormat {
         const value = input.trim().toLowerCase();
         if (/^rgba?\(/.test(value)) return 'rgb';
         if (/^hsla?\(/.test(value)) return 'hsl';
+        if (/^hsva?\(/.test(value)) return 'hsv';
         return 'hex';
     }
     if (input == null) return 'hex';
@@ -324,7 +334,7 @@ function hasExplicitAlpha(input: ColorModelInput): boolean {
     if (typeof input === 'string') {
         const value = input.trim();
         if (value.startsWith('#')) return value.length === 5 || value.length === 9;
-        const match = value.match(/^(?:rgba?|hsla?)\(([\s\S]*)\)$/i);
+        const match = value.match(/^(?:rgba?|hsla?|hsva?)\(([\s\S]*)\)$/i);
         if (!match) return false;
         const parts = parseFunctionValues(match[1]);
         return parts?.alpha !== undefined;
@@ -360,6 +370,13 @@ export function serializeColorModel(color: HSVA | null | undefined, source?: Col
         if (typeof source !== 'string') return includeAlpha ? rgb : { r: rgb.r, g: rgb.g, b: rgb.b };
         return `rgb(${rgb.r} ${rgb.g} ${rgb.b}${includeAlpha ? ` / ${hsva.a}` : ''})`;
     }
+    if (format === 'hsv') {
+        if (typeof source !== 'string') return includeAlpha ? hsva : { h: hsva.h, s: hsva.s, v: hsva.v };
+        const channels = `${hsva.h} ${Math.round(hsva.s * 100)}% ${Math.round(hsva.v * 100)}%`;
+        const functionName = includeAlpha ? 'hsva' : 'hsv';
+        return `${functionName}(${channels}${includeAlpha ? ` / ${hsva.a}` : ''})`;
+    }
+
     if (format === 'hsl') {
         const hsl = hsvToHsl(hsva);
         if (!hsl) return undefined;

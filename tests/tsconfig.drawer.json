@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client", "node"]
+    },
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/UDrawer.vue",
+        "../src/ui/docs/component-examples/drawer.vue"
+    ],
+    "exclude": []
+}

@@ -20,8 +20,12 @@ const instance = getCurrentInstance();
 const attrs = useAttrs();
 const model = defineModel<unknown>();
 const element = ref<HTMLElement>();
-const control = useFormControl(props, model, element, attrs);
 const multiple = computed(() => !!props.multiple);
+const validationProps = new Proxy(props, { get(target, key, receiver) {
+    if (key === 'rules') return [(value: unknown) => !multiple.value || !props.min || Array.isArray(value) && value.length >= props.min || `至少选择 ${props.min} 项。`, ...(props.rules ?? [])];
+    return Reflect.get(target, key, receiver);
+} });
+const control = useFormControl(validationProps, model, element, attrs);
 const mandatory = computed(() => !!props.mandatory);
 const max = computed(() => props.max);
 const comparator = computed(() => props.valueComparator);
@@ -34,7 +38,7 @@ function isValueSelected(value: unknown): boolean {
 function toggle(value: unknown): void {
     if (control.disabled.value || control.readonly.value) return;
     if (!multiple.value && !mandatory.value && isValueSelected(value)) { model.value = undefined; return; }
-    model.value = toggleGroupSelection(model.value, value, { multiple: multiple.value, mandatory: mandatory.value, max: max.value, comparator: comparator.value });
+    model.value = toggleGroupSelection(model.value, value, { multiple: multiple.value, mandatory: mandatory.value, max: max.value, min: props.min, comparator: comparator.value });
 }
 const context = { model, multiple, mandatory, max, disabled: control.disabled, readonly: control.readonly, name, comparator, toggle, selected: isValueSelected };
 provide(selectionGroupKey, context);

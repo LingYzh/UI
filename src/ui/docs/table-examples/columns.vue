@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import { UDataTable, USelect } from '../../index';
 const density = ref('default');
+const gridlines = ref('all');
 const headers = [
+    { key: 'serial', title: '编号', value: 'id', fixed: 'start', width: 80 },
     { key: 'name', title: '工作区', value: 'meta.name', fixed: 'start', width: 150, nowrap: true },
     {
         title: '资源统计',
@@ -18,6 +20,7 @@ const headers = [
         ],
     },
     { key: 'description', title: '说明', minWidth: 300, sortable: false },
+    { key: 'owner', title: '负责人', fixed: 'end', width: 100 },
     { key: 'status', title: '状态', fixed: 'end', width: 100 },
 ];
 const items = Array.from({ length: 18 }, (_, index) => ({
@@ -26,6 +29,7 @@ const items = Array.from({ length: 18 }, (_, index) => ({
     files: index * 7 + 3,
     description: '嵌套表头、取值映射与左右固定列共用标准化叶列。',
     status: index % 2 ? '就绪' : '进行中',
+    owner: `成员 ${(index % 3) + 1}`,
 }));
 function rowProps({ item }) {
     return { 'data-status': item.status };
@@ -37,10 +41,17 @@ function cellProps({ column }) {
 
 <template>
     <div class="table-demo" data-table-demo="columns">
-        <u-select v-model="density" aria-label="列示例密度" dense>
-            <option value="default">默认密度</option>
-            <option value="compact">紧凑</option>
-        </u-select>
+        <div class="table-demo-controls">
+            <u-select v-model="density" aria-label="列示例密度" dense>
+                <option value="default">默认密度</option>
+                <option value="compact">紧凑</option>
+            </u-select>
+            <u-select v-model="gridlines" aria-label="列示例网格线" dense>
+                <option value="all">全部网格线</option>
+                <option value="horizontal">水平网格线</option>
+                <option value="none">无普通网格线</option>
+            </u-select>
+        </div>
         <u-data-table
             :headers="headers"
             :items="items"
@@ -52,11 +63,13 @@ function cellProps({ column }) {
             :mobile="false"
             fixed-header
             fixed-footer
-            gridlines="all"
+            :gridlines="gridlines"
             label="嵌套与固定列"
         >
             <template #caption>
-                <caption>横向滚动可检查两侧固定列；点击容量列按取值函数排序。</caption>
+                <caption>
+                    横向滚动可检查固定列组内侧的主题细分界线；点击容量列按取值函数排序。
+                </caption>
             </template>
             <template #item.size="{ value }">
                 <code>{{ value.toFixed(2) }} MB</code>

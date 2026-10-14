@@ -5,6 +5,7 @@ export interface SelectionControlGroupProps extends FormControlProps {
     multiple?: boolean;
     mandatory?: boolean;
     max?: number;
+    min?: number;
     direction?: 'row' | 'column';
     valueComparator?: ValueComparator;
     name?: string;
@@ -14,6 +15,7 @@ export interface ItemGroupProps extends FormControlProps {
     multiple?: boolean;
     mandatory?: boolean | 'force';
     max?: number;
+    min?: number;
     direction?: 'row' | 'column';
     valueComparator?: ValueComparator;
     selectedClass?: string;
@@ -21,5 +23,5 @@ export interface ItemGroupProps extends FormControlProps {
     theme?: string;
 }
 
-export type RadioGroupProps = Omit<SelectionControlGroupProps, 'multiple' | 'max'>;
+export type RadioGroupProps = Omit<SelectionControlGroupProps, 'multiple' | 'max' | 'min'>;
 export type CheckboxGroupProps = Omit<SelectionControlGroupProps, 'multiple'>;

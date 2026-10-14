@@ -26,6 +26,7 @@ import { useDataTableState } from './data-table-state';
 import { dataRowKey, useTableVirtual } from './data-table-virtual';
 import {
     extractItems,
+    flatHeaders,
     getItemProperty,
     toUnit,
     type DataGroup,
@@ -320,6 +321,8 @@ function cellScope(item: InternalDataItem, index: number, column: NormalizedHead
     return { ...itemScope(item, index), column, value: item.columns[column.key], props: controls };
 }
 function columnStyles(column: NormalizedHeader, header = false): CSSProperties {
+    // Mobile cards use full-width label/value rows, not the desktop column geometry.
+    if (isMobile.value && !header) return { textAlign: 'end' };
     return {
         textAlign: column.align,
         width: toUnit(column.width),
@@ -345,11 +348,22 @@ function columnStyles(column: NormalizedHeader, header = false): CSSProperties {
             : {}),
     };
 }
+function fixedColumnClasses(column: NormalizedHeader) {
+    // Only the edge beside scrolling columns gets a separator, including grouped headers.
+    const startBoundary = layout.value.columns.filter((item) => item.fixed === 'start').at(-1)?.key;
+    const endBoundary = layout.value.columns.find((item) => item.fixed === 'end')?.key;
+    const leafKeys = flatHeaders([column]).map((item) => item.key);
+    return {
+        'is-fixed-column': !!column.fixed,
+        'is-fixed-start-boundary': column.fixed === 'start' && leafKeys.includes(startBoundary),
+        'is-fixed-end-boundary': column.fixed === 'end' && leafKeys.includes(endBoundary),
+    };
+}
 function headerAttributes(column: NormalizedHeader) {
     return mergeProps(
         {
             style: columnStyles(column, true),
-            class: { 'is-fixed-column': !!column.fixed },
+            class: fixedColumnClasses(column),
             scope: column.colspan > 1 ? 'colgroup' : 'col',
             rowspan: column.rowspan,
             colspan: column.colspan,
@@ -402,7 +416,7 @@ function cellAttributes(item: InternalDataItem, index: number, column: Normalize
     return mergeProps(
         {
             style: columnStyles(column),
-            class: { 'is-fixed-column': !!column.fixed },
+            class: fixedColumnClasses(column),
             'data-column': column.key,
             'data-label': column.title,
         },
@@ -462,7 +476,12 @@ watch(
     { immediate: true, flush: 'post' }
 );
 watch(state.paginatedEntries, (items) => emit('update:currentItems', items), { immediate: true });
-watch([() => props.search, sortBy, groupBy], () => nextTick(virtual.reset), { deep: true });
+// A new page starts at its first row; ordinary item refreshes and selection keep their position.
+watch(
+    [state.page, state.size, () => props.search, sortBy, groupBy],
+    () => nextTick(virtual.reset),
+    { deep: true }
+);
 watch(
     expanded,
     () => {
@@ -574,7 +593,7 @@ defineExpose({
                                                 v-ripple.center.circle="props.ripple"
                                             >
                                                 <input
-                                                    type="checkbox"
+                                                    type="checkbox" class="u-data-table-checkbox"
                                                     :checked="slotProps.allSelected"
                                                     :indeterminate="
                                                         slotProps.someSelected &&
@@ -595,10 +614,10 @@ defineExpose({
                                                     @change="selectAll(!slotProps.allSelected)"
                                                 />
                                             </span>
-                                            <button
+                                            <button class="u-data-table-button"
                                                 v-else-if="column.sortable && !props.disableSort"
                                                 type="button"
-                                                class="u-data-table-sort"
+                                                :class="'u-data-table-sort'"
                                                 :disabled="blocked"
                                                 :aria-label="
                                                     uiText('table.sort', { title: column.title })
@@ -688,7 +707,7 @@ defineExpose({
                                                     {{ column.title }}
                                                 </option>
                                             </UiSelect>
-                                            <button
+                                            <button class="u-data-table-button"
                                                 v-if="sortBy.length && !props.disableSort"
                                                 type="button"
                                                 :disabled="blocked"
@@ -722,7 +741,7 @@ defineExpose({
                                                 "
                                             >
                                                 <input
-                                                    type="checkbox"
+                                                    type="checkbox" class="u-data-table-checkbox"
                                                     :checked="slotProps.allSelected"
                                                     :indeterminate="
                                                         slotProps.someSelected &&
@@ -870,7 +889,7 @@ defineExpose({
                                                                     )
                                                                 "
                                                             >
-                                                                <button
+                                                                <button class="u-data-table-button"
                                                                     type="button"
                                                                     :style="{
                                                                         marginInlineStart: `${row.depth * 16}px`,
@@ -920,7 +939,7 @@ defineExpose({
                                                                 "
                                                             >
                                                                 <input
-                                                                    type="checkbox"
+                                                                    type="checkbox" class="u-data-table-checkbox"
                                                                     :checked="
                                                                         isSelected(
                                                                             groupItems(row)
@@ -1011,16 +1030,29 @@ defineExpose({
                                                         )
                                                     "
                                                 >
-                                                    <span
+                                                    <template
                                                         v-if="
                                                             isMobile &&
                                                             !column.key.startsWith('data-table-')
                                                         "
-                                                        class="u-data-table-mobile-label"
                                                     >
-                                                        {{ column.title }}
-                                                    </span>
+                                                        <span class="u-data-table-mobile-label">
+                                                            {{ column.title }}
+                                                        </span>
+                                                        <div class="u-data-table-mobile-value">
+                                                            <slot
+                                                                :name="`item.${column.key}`"
+                                                                v-bind="cellScope(row, virtual.range.value.start + rowIndex, column)"
+                                                            >
+                                                                <DataTableHighlight
+                                                                    :value="row.columns[column.key]"
+                                                                    :matches="matches(row)?.[column.key]"
+                                                                />
+                                                            </slot>
+                                                        </div>
+                                                    </template>
                                                     <slot
+                                                        v-else
                                                         :name="`item.${column.key}`"
                                                         v-bind="
                                                             cellScope(
@@ -1039,7 +1071,7 @@ defineExpose({
                                                             v-ripple.center.circle="props.ripple"
                                                         >
                                                             <input
-                                                                type="checkbox"
+                                                                type="checkbox" class="u-data-table-checkbox"
                                                                 :checked="isSelected(row)"
                                                                 :disabled="
                                                                     blocked || !row.selectable
@@ -1056,7 +1088,7 @@ defineExpose({
                                                                 "
                                                             />
                                                         </span>
-                                                        <button
+                                                        <button class="u-data-table-button"
                                                             v-else-if="
                                                                 column.key === 'data-table-expand'
                                                             "

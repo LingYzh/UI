@@ -62,18 +62,27 @@
 .u-progress-circular circle { fill: none; }
 .u-progress-circular .u-progress-track { stroke: var(--border); }
 .u-progress-circular .u-progress-value { stroke: currentColor; stroke-linecap: round; transition: stroke-dashoffset 180ms; }
-.u-progress-circular.is-indeterminate svg { animation: u-progress-rotate 1.2s linear infinite; }
+.u-progress-circular.is-indeterminate svg { animation: u-progress-rotate 1.4s linear infinite; }
+.u-progress-circular.is-indeterminate .u-progress-value { stroke-dasharray: 25 100; animation: u-progress-dash 1.4s ease-in-out infinite; transition: none; transform-origin: center; }
+@keyframes u-progress-dash {
+    0% { stroke-dasharray: 1 100; stroke-dashoffset: 0; }
+    50% { stroke-dasharray: 70 100; stroke-dashoffset: -15; }
+    100% { stroke-dasharray: 70 100; stroke-dashoffset: -100; }
+}
 .u-progress-content { position: relative; color: var(--text); font-size: var(--ui-font-body-small); }
 .u-progress-linear { position: relative; width: 100%; height: 4px; overflow: hidden; border-radius: 4px; background: var(--border); color: var(--accent); }
 .u-progress-linear .u-progress-buffer, .u-progress-linear .u-progress-value { position: absolute; inset-block: 0; inset-inline-start: 0; transition: width 180ms; }
 .u-progress-linear .u-progress-buffer { background: var(--accent-soft); }
 .u-progress-linear .u-progress-value { background: currentColor; }
 .u-progress-linear.is-reverse .u-progress-buffer, .u-progress-linear.is-reverse .u-progress-value { inset-inline-start: auto; inset-inline-end: 0; }
-.u-progress-linear.is-reverse.is-indeterminate .u-progress-value { animation-direction: reverse; }
-.u-progress-linear.is-indeterminate .u-progress-value { animation: u-progress-indeterminate 1.4s ease-in-out infinite; }
+.u-progress-linear.is-reverse.is-indeterminate { transform: scaleX(-1); }
+.u-progress-linear.is-reverse.is-indeterminate .u-progress-content { transform: scaleX(-1); }
+.u-progress-linear.is-indeterminate .u-progress-value { inset-inline: auto; transition: none; animation: u-progress-long 2.2s cubic-bezier(.65, 0, .35, 1) infinite; }
+.u-progress-linear.is-indeterminate .u-progress-value.is-short { animation-name: u-progress-short; }
+@keyframes u-progress-long { 0%, 60% { left: -90%; right: 107%; } 100% { left: 107%; right: -35%; } }
+@keyframes u-progress-short { 0% { left: -200%; right: 107%; } 60%, 100% { left: 107%; right: -8%; } }
 .u-progress-linear.is-stream { background-image: radial-gradient(var(--muted) 1px, transparent 1px); background-size: 5px 5px; }
 @keyframes u-progress-rotate { to { transform: rotate(270deg); } }
-@keyframes u-progress-indeterminate { from { inset-inline-start: -35%; } to { inset-inline-start: 100%; } }
 .u-img { position: relative; min-width: 0; overflow: hidden; background: var(--soft); }
 .u-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .u-img.is-absolute { position: absolute; inset: 0; }
@@ -137,7 +146,24 @@
 .u-speed-dial { position: relative; display: inline-flex; }
 .u-speed-dial-icon { transition: transform var(--motion-normal) var(--ease); }
 .u-speed-dial-icon.is-open { transform: rotate(45deg); }
-.u-speed-dial-actions { position: absolute; z-index: 10; inset-block-end: calc(100% + 8px); inset-inline-end: 0; display: flex; flex-direction: column; gap: 6px; align-items: end; }
+/* Keep positioning independent of the scale used by the enter/leave animation. */
+.u-speed-dial-actions { position: absolute; z-index: 10; inset-block-end: calc(100% + 12px); inset-inline-end: 50%; translate: 50% 0; display: flex; flex-direction: column-reverse; gap: 8px; align-items: center; width: max-content; }
+.u-speed-dial[data-direction="bottom"] .u-speed-dial-actions { inset-block: calc(100% + 12px) auto; flex-direction: column; }
+.u-speed-dial[data-direction="left"] .u-speed-dial-actions { inset-block: auto 50%; inset-inline: auto calc(100% + 12px); translate: 0 50%; flex-direction: row-reverse; }
+.u-speed-dial[data-direction="right"] .u-speed-dial-actions { inset-block: auto 50%; inset-inline: calc(100% + 12px) auto; translate: 0 50%; flex-direction: row; }
+.u-speed-dial-actions:is(.u-scale-enter-active, .u-scale-leave-active) { transition: opacity 400ms; }
+.u-speed-dial-actions:is(.u-scale-enter-from, .u-scale-leave-to) { opacity: 1; transform: none; }
+.u-speed-dial-actions > * { --u-action-index: 0; transition: opacity 160ms ease, transform 180ms var(--ease), background-color 160ms, color 160ms, box-shadow 160ms; transition-delay: calc(var(--u-action-index) * 30ms); }
+.u-speed-dial-actions > :nth-child(2) { --u-action-index: 1; }
+.u-speed-dial-actions > :nth-child(3) { --u-action-index: 2; }
+.u-speed-dial-actions > :nth-child(4) { --u-action-index: 3; }
+.u-speed-dial-actions > :nth-child(n+5) { --u-action-index: 4; }
+.u-speed-dial-actions:is(.u-scale-enter-from, .u-scale-leave-to) > * { opacity: 0; transform: scale(.6); }
+.u-speed-dial-actions.u-scale-leave-active > * { transition-duration: 120ms; }
+.u-speed-dial .u-fab[aria-expanded="true"] .ui-button-content { transform: rotate(45deg); }
+.u-speed-dial .u-fab .ui-button-content { transition: transform 180ms var(--ease); }
+@media (prefers-reduced-motion: reduce) { .u-speed-dial-actions, .u-speed-dial-actions > *, .u-speed-dial .u-fab .ui-button-content { transition: none !important; } }
+:root[data-reduced-motion="true"] :is(.u-speed-dial-actions, .u-speed-dial-actions > *, .u-speed-dial .u-fab .ui-button-content) { transition: none !important; }
 .ui-button.u-fab { width: 44px; height: 44px; padding: 0; border-radius: 50%; box-shadow: var(--shadow); font-size: 22px; }
 .u-fab-wrapper { display: inline-flex; }
 .u-fab-wrapper.is-positioned { z-index: 30; }
@@ -208,25 +234,29 @@
     .u-calendar-cell { min-height: 60px; padding: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .u-progress-circular.is-indeterminate svg, .u-progress-linear.is-indeterminate .u-progress-value { animation: none; }
+    .u-progress-circular.is-indeterminate svg, .u-progress-circular.is-indeterminate .u-progress-value, .u-progress-linear.is-indeterminate .u-progress-value { animation: none; }
     .u-speed-dial-icon, .u-progress-value, .u-progress-buffer { transition: none; }
 }
-:root[data-reduced-motion="true"] :is(.u-progress-circular.is-indeterminate svg, .u-progress-linear.is-indeterminate .u-progress-value) { animation: none; }
+:root[data-reduced-motion="true"] :is(.u-progress-circular.is-indeterminate svg, .u-progress-circular.is-indeterminate .u-progress-value, .u-progress-linear.is-indeterminate .u-progress-value) { animation: none; }
 :root[data-reduced-motion="true"] :is(.u-speed-dial-icon, .u-progress-value, .u-progress-buffer) { transition: none; }
-.u-data-table { width: 100%; min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+.u-data-table { --u-data-table-cell-padding-inline: 16px; width: 100%; min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
 .u-data-table-scroll { overflow: auto; }
 .u-data-table table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: start; font-size: var(--ui-font-body-large); line-height: 1.6; }
-.u-data-table th, .u-data-table td { padding: 12px 16px; border-block-end: 1px solid var(--line); vertical-align: middle; }
+.u-data-table th, .u-data-table td { padding: 12px var(--u-data-table-cell-padding-inline); border-block-end: 1px solid var(--line); vertical-align: middle; }
 .u-data-table th { background: var(--soft); color: var(--muted); font-weight: 500; white-space: nowrap; text-align: start; }
 .u-data-table tbody tr:last-child td { border-block-end: 0; }
 .u-data-table.is-hover tbody tr:not(.u-data-table-group):not(.u-data-table-spacer):hover { --ui-table-row-background: var(--hover); background: var(--hover); }
-.u-data-table.is-dense th, .u-data-table.is-dense td { padding: 8px 12px; }
-.u-data-table button:not(.ui-button) { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
-.u-data-table button:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 3px; }
-.u-data-table input[type="checkbox"] { width: 16px; height: 16px; margin: 0; accent-color: var(--ui-button-color, var(--accent)); vertical-align: middle; }
+.u-data-table.is-dense { --u-data-table-cell-padding-inline: 12px; }
+.u-data-table.is-dense th, .u-data-table.is-dense td { padding: 8px var(--u-data-table-cell-padding-inline); }
+.u-data-table-button { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.u-data-table-button:disabled { cursor: not-allowed; }
+.u-data-table-button:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+/* Only table selection controls own this geometry; slotted switches keep their own track size. */
+.u-data-table-checkbox { width: 16px; height: 16px; margin: 0; accent-color: var(--ui-button-color, var(--accent)); vertical-align: middle; cursor: pointer; }
+.u-data-table-checkbox:disabled { cursor: not-allowed; }
 .u-data-table-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 16px; border-block-start: 1px solid var(--line); color: var(--muted); font-size: 14px; }
 .u-data-table-footer > label { display: inline-flex; align-items: center; gap: 8px; margin-inline-end: auto; }
-.u-data-table-footer select { min-height: 30px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; }
+.u-data-table-footer select:not(.ui-select) { min-height: 30px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; }
 .u-data-table-group td { background: var(--soft); font-weight: 500; }
 .u-data-table .u-data-table-details-row > td { padding: 0; border: 0; }
 .u-data-table-details { padding: 12px 16px; border-block-end: 1px solid var(--line); }
@@ -234,6 +264,9 @@
 .u-data-table tbody > .u-data-table-details-row:last-child .u-data-table-details { border-block-end: 0; }
 .u-data-table tbody > tr:has(+ .u-data-table-details-row[aria-hidden="true"]:last-child) > td { border-block-end: 0; }
 .u-data-table:is(.is-fixed-header, .u-data-table-virtual) thead th { position: sticky; top: 0; z-index: 1; }
+/* Paint one continuous sticky surface behind fractional-width header cells. */
+.u-data-table:is(.is-fixed-header, .u-data-table-virtual) thead { position: sticky; top: 0; z-index: 3; background: var(--soft); }
+.u-data-table:is(.is-fixed-header, .u-data-table-virtual).is-ghost thead { background: var(--surface); }
 /* 复用覆盖式滚动条，让表头与行背景填满边框内宽度。 */
 .u-data-table-virtual { display: flex; flex-direction: column; }
 .u-data-table-virtual > .ui-scroll-area { height: 100%; min-height: 0; flex: 1 1 auto; }
@@ -256,6 +289,9 @@
 .u-data-table[data-gridlines="none"] :is(th, td) { border: 0; }
 .u-data-table[data-gridlines="all"] :is(th, td), .u-data-table[data-gridlines="vertical"] :is(th, td) { border-inline-end: 1px solid var(--line); }
 .u-data-table[data-gridlines="all"] tr > :last-child, .u-data-table[data-gridlines="vertical"] tr > :last-child { border-inline-end: 0; }
+/* Fixed blocks retain their theme separator even when ordinary gridlines are disabled. */
+.u-data-table:not(.is-mobile) .is-fixed-start-boundary { border-inline-end: 1px solid var(--border); }
+.u-data-table:not(.is-mobile) .is-fixed-end-boundary { border-inline-start: 1px solid var(--border); }
 .ui-table-page-actions { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
 .ui-table-current-page { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .u-data-table .ui-table-state { text-align: center; min-height: 80px; color: var(--muted); }
@@ -267,9 +303,12 @@
 .u-data-table mark { color: inherit; background: var(--active); }
 .u-data-table.is-mobile thead > tr:not(.u-data-table-mobile-header):not(.u-data-table-loader) { display: none; }
 .u-data-table.is-mobile tbody tr[data-item-key] { display: grid; height: auto; padding: 8px 0; border-block-end: 1px solid var(--line); }
-.u-data-table.is-mobile tbody tr[data-item-key] > td { display: flex; justify-content: space-between; align-items: center; gap: 16px; border: 0; min-width: 0; white-space: normal; position: static !important; }
-.u-data-table.is-mobile .u-data-table-mobile-label { display: inline; }
-.u-data-table.is-mobile tbody tr[data-item-key] > td[data-column^="data-table-"] { justify-content: flex-end; }
+/* Match Vuetify's mobile title/value grid; desktop column sizes do not constrain these rows. */
+.u-data-table.is-mobile tbody tr[data-item-key] > td { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; column-gap: 4px; border: 0; min-width: 0; white-space: normal; position: static !important; }
+.u-data-table.is-mobile .u-data-table-mobile-label { display: block; min-width: 0; text-align: start; overflow-wrap: anywhere; }
+.u-data-table-mobile-value { min-width: 0; text-align: end; overflow-wrap: anywhere; }
+.u-data-table.is-mobile tbody tr[data-item-key] > td[data-column^="data-table-"] { grid-template-columns: auto; justify-content: end; }
+.u-data-table.is-mobile tbody tr[data-item-key] > td[data-column="data-table-expand"] { justify-content: center; }
 .u-data-table-mobile-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .u-data-table-mobile-controls > .ui-select { width: auto; min-width: 140px; }
 @keyframes ui-table-progress { 0%, 100% { transform: scaleX(.25); opacity: .55; } 50% { transform: scaleX(1); opacity: 1; } }
@@ -304,3 +343,10 @@
 .u-calendar-time-day { position: relative; border-inline-start: 1px solid var(--border); min-width: 0; }
 .u-calendar-interval { box-sizing: border-box; border-top: 1px solid var(--line); }
 .u-calendar-event.is-timed { position: absolute; box-sizing: border-box; margin: 0; overflow: hidden; border: 1px solid var(--surface); border-radius: 4px; padding: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .u-progress-linear.is-indeterminate .u-progress-value.is-long { left: 0; right: auto; width: 40%; }
+    .u-progress-linear.is-indeterminate .u-progress-value.is-short { display: none; }
+}
+:root[data-reduced-motion="true"] .u-progress-linear.is-indeterminate .u-progress-value.is-long { left: 0; right: auto; width: 40%; }
+:root[data-reduced-motion="true"] .u-progress-linear.is-indeterminate .u-progress-value.is-short { display: none; }

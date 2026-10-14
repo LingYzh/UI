@@ -2,6 +2,7 @@
 import { vFocusModality } from './focus-modality';
 import { vRipple, type RippleOptions } from './ripple';
 import Icon from '../components/Icon.vue';
+import UImageViewer from './UImageViewer.vue';
 import type { IconValue } from './icon-config';
 import UiControlFrame from './UiControlFrame.vue';
 import { mergeControlAttrs } from './form';
@@ -14,7 +15,7 @@ import { validateFiles, type FileValidationResult } from './specialized-inputs';
 import { formatFileSize } from './file-display';
 
 defineOptions({ inheritAttrs: false });
-const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; title?: string; subtitle?: string; browseText?: string; dividerText?: string; icon?: IconValue; hideBrowse?: boolean; insetFileList?: boolean; showSize?: boolean } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, showSize: true, title: '拖放文件到这里', browseText: '选择本地文件', icon: '$upload', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
+const rawProps = withDefaults(defineProps<FormControlProps & { accept?: string; filterByType?: string; multiple?: boolean; maxSize?: number; title?: string; subtitle?: string; browseText?: string; dividerText?: string; icon?: IconValue; hideBrowse?: boolean; insetFileList?: boolean; showSize?: boolean; listType?: 'text' | 'picture' | 'picture-card' } & { ripple?: RippleOptions }>(), { ripple: true, clearable: true, showSize: true, listType: 'text', title: '拖放文件到这里', browseText: '选择本地文件', icon: '$upload', dense: undefined, ghost: undefined, rounded: undefined, hideDetails: undefined, persistentHint: undefined });
 const props = useDefaults(rawProps, 'UFileUpload');
 const emit = defineEmits<{ 'update:focused': [value: boolean]; rejected: [files: File[]]; 'rejected-details': [result: FileValidationResult['rejected']]; change: [files: File[]]; 'click:browse': [event?: MouseEvent]; 'click:remove': [index: number] }>();
 const model = defineModel<File | File[] | null>({ default: null });
@@ -26,6 +27,28 @@ const control = useFormControl(props, model, element, attrs);
 const form = inject(formContextKey, null);
 const dragging = ref(false);
 const files = computed(() => model.value == null ? [] : Array.isArray(model.value) ? model.value : [model.value]);
+const previewUrls = ref(new Map<File, string>());
+const imageOpen = ref(false);
+const imageIndex = ref(0);
+const imageSources = computed(() => [...previewUrls.value.values()]);
+let mounted = false;
+function syncImagePreviews() {
+    if (!mounted) return;
+    const images = props.listType === 'text' ? [] : files.value.filter(file => file.type.startsWith('image/') || /\.(?:png|jpe?g|gif|webp|avif|bmp|svg)$/i.test(file.name));
+    const next = new Map(previewUrls.value);
+    for (const [file, url] of next) if (!images.includes(file)) { URL.revokeObjectURL(url); next.delete(file); }
+    for (const file of images) if (!next.has(file)) next.set(file, URL.createObjectURL(file));
+    previewUrls.value = next;
+    if (!next.size) imageOpen.value = false;
+}
+watch([files, () => props.listType], syncImagePreviews, { flush: 'post' });
+function previewImage(file: File) {
+    if (control.disabled.value) return;
+    const url = previewUrls.value.get(file);
+    if (!url) return;
+    imageIndex.value = imageSources.value.indexOf(url);
+    imageOpen.value = true;
+}
 const interactive = computed(() => !control.disabled.value && !control.readonly.value);
 const customInput = computed(() => !!slots.default || !!slots.browse || !!slots.input || !!props.hideBrowse || !!props.insetFileList && files.value.length > 0);
 const slotScope = computed(() => ({ id: control.id(), controlRef: input, model, files: files.value, isDragging: dragging.value, hasFiles: files.value.length > 0, isFocused: control.focused, isDisabled: control.disabled, isReadonly: control.readonly, isValid: control.state, props: browseProps.value }));
@@ -139,10 +162,14 @@ function onDragLeave(event: DragEvent) {
     if (nextTarget instanceof Node && element.value?.contains(nextTarget)) event.stopPropagation();
 }
 onMounted(() => {
+    mounted = true;
+    syncImagePreviews();
     element.value?.addEventListener('dragleave', onDragLeave, true);
     element.value?.addEventListener('paste', paste);
 });
 onBeforeUnmount(() => {
+    mounted = false;
+    for (const url of previewUrls.value.values()) URL.revokeObjectURL(url);
     invalidateFileOperation();
     element.value?.removeEventListener('dragleave', onDragLeave, true);
     element.value?.removeEventListener('paste', paste);
@@ -186,11 +213,23 @@ defineExpose({ element, input, files, dragging, control, receive, drop, change, 
                         <template v-if="!props.hideBrowse"><slot v-if="$slots.browse || props.insetFileList && files.length > 0" name="browse" :props="browseProps"><button v-ripple="interactive ? props.ripple : false" v-pointer-blur v-bind="browseProps" class="ui-upload-browse">{{ props.browseText }}</button></slot><span v-else class="ui-upload-hint">或{{ props.browseText }}</span></template>
                         <slot name="input" :input-node="nativeInputNode"><component :is="nativeInputNode" v-focus-modality :aria-describedby="controlAttrs['aria-describedby']" /></slot>
                     </div>
-                    <ul v-if="files.length" class="ui-upload-files"><li v-for="(file, index) in files" :key="index"><slot :name="!props.multiple && files.length === 1 && $slots.single ? 'single' : 'item'" :file="file" :index="index" :props="removeProps(index)"><span :title="file.name">{{ file.name }}</span><small v-if="props.showSize">{{ formatFileSize(file.size) }}</small><button v-if="props.clearable" v-ripple="interactive ? props.ripple : false" v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="!interactive" @click="remove(index)"><Icon icon="$close" :size="16" /></button></slot></li></ul>
+                    <ul v-if="files.length" class="ui-upload-files" :class="`is-${props.listType}`">
+                        <li v-for="(file, index) in files" :key="index">
+                            <slot :name="!props.multiple && files.length === 1 && $slots.single ? 'single' : 'item'" :file="file" :index="index" :props="removeProps(index)">
+                                <button v-if="previewUrls.has(file)" v-ripple="props.ripple" v-pointer-blur type="button" class="ui-upload-thumbnail" :aria-label="'预览 ' + file.name" :disabled="control.disabled.value" @click="previewImage(file)">
+                                    <img :src="previewUrls.get(file)" :alt="file.name" />
+                                </button>
+                                <span :title="file.name">{{ file.name }}</span>
+                                <small v-if="props.showSize">{{ formatFileSize(file.size) }}</small>
+                                <button v-if="props.clearable" v-ripple="interactive ? props.ripple : false" v-pointer-blur type="button" class="ui-control-clear" :aria-label="'移除 ' + file.name" :disabled="!interactive" @click="remove(index)"><Icon icon="$close" :size="16" /></button>
+                            </slot>
+                        </li>
+                    </ul>
                 </template>
                 <component :is="nativeInputNode" v-if="$slots.default" v-focus-modality :aria-describedby="controlAttrs['aria-describedby']" />
                 <slot v-if="props.loading" name="loader" :is-active="true" :color="props.color"><span class="u-input-loading" role="status" aria-label="加载中" /></slot>
             </div>
+            <UImageViewer v-model="imageOpen" v-model:index="imageIndex" :sources="imageSources" label="文件图片预览" />
             <slot name="append" v-bind="slotScope" />
         </template>
         <template v-if="$slots.label" #label="scope"><slot name="label" v-bind="scope" /></template>

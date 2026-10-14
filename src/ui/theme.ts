@@ -158,12 +158,25 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
         if (!/^(?:\d+(?:\.\d+)?%|center|left|right|top|bottom)(?:\s+(?:\d+(?:\.\d+)?%|center|left|right|top|bottom))?$/.test(origin)) throw new Error('Invalid theme transition origin');
         const style = document.createElement('style');
         if (options.cspNonce) style.nonce = options.cspNonce;
-        style.textContent = `::view-transition-old(root){animation:none}::view-transition-new(root){animation:ui-theme-reveal ${Math.max(0, Math.min(2000, config.duration ?? 400))}ms ease-in-out}@keyframes ui-theme-reveal{from{clip-path:circle(0% at ${origin})}to{clip-path:circle(150% at ${origin})}}`;
+        const dark = computedThemes.value[resolveName(value)].dark;
+        const duration = Math.max(0, Math.min(2000, config.duration ?? 400));
+        // Light reveals the new snapshot; dark contracts the old snapshot toward the trigger.
+        // Explicit stacking and opaque snapshots prevent the underlying theme flashing early.
+        style.textContent = `
+            ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+            ::view-transition-old(root){z-index:${dark ? 2 : 1}}
+            ::view-transition-new(root){z-index:${dark ? 1 : 2}}
+            ::view-transition-${dark ? 'old' : 'new'}(root){animation:ui-theme-${dark ? 'conceal' : 'reveal'} ${duration}ms ease-in-out both}
+            @keyframes ui-theme-reveal{from{clip-path:circle(0% at ${origin})}to{clip-path:circle(150% at ${origin})}}
+            @keyframes ui-theme-conceal{from{clip-path:circle(150% at ${origin})}to{clip-path:circle(0% at ${origin})}}
+        `;
         transitionStyle?.remove();
         transitionStyle = style;
         document.head.append(style);
         const animation = document.startViewTransition(() => { if (sequence === changeSequence) selection.value = value; });
         activeTransition = animation;
+        // Replacing a transition may reject ready even when the update still completes.
+        void animation.ready.catch(() => {});
         void animation.finished.finally(() => { style.remove(); if (activeTransition === animation) { activeTransition = undefined; transitionOrigin = undefined; } }).catch(() => {});
         await animation.updateCallbackDone;
     }
@@ -213,27 +226,32 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
             previousTheme = target?.dataset.theme; previousUiTheme = target?.dataset.uiTheme;
             if (options.utilities !== false) { utilityStyle = document.createElement('style'); utilityStyle.id = `ui-theme-${++stylesheetSequence}`; if (options.cspNonce) utilityStyle.nonce = options.cspNonce; document.head.append(utilityStyle); }
             const scope = effectScope(true);
-            scope.run(() => watch([styles, computedThemes, name], () => {
-                if (target) {
-                    for (const [key, [original, applied]] of previous) {
-                        if (!(key in styles.value) && target.style.getPropertyValue(key) === applied) {
-                            if (original) target.style.setProperty(key, original); else target.style.removeProperty(key);
+            scope.run(() => {
+                watch(styles, () => {
+                    if (target) {
+                        for (const [key, [original, applied]] of previous) {
+                            if (!(key in styles.value) && target.style.getPropertyValue(key) === applied) {
+                                if (original) target.style.setProperty(key, original); else target.style.removeProperty(key);
+                            }
                         }
+                        for (const [key, raw] of Object.entries(styles.value)) {
+                            const value = String(raw);
+                            if (!previous.has(key)) previous.set(key, [target.style.getPropertyValue(key), value]);
+                            previous.get(key)![1] = value;
+                            target.style.setProperty(key, value);
+                        }
+                        target.dataset.theme = current.value.dark ? 'dark' : 'light';
+                        target.dataset.uiTheme = name.value;
                     }
-                    for (const [key, raw] of Object.entries(styles.value)) {
-                        const value = String(raw);
-                        if (!previous.has(key)) previous.set(key, [target.style.getPropertyValue(key), value]);
-                        previous.get(key)![1] = value;
-                        target.style.setProperty(key, value);
+                }, { immediate: true, flush: 'sync' });
+                // Utility selectors depend on available colors, not the selected theme.
+                watch(computedThemes, () => {
+                    if (utilityStyle) {
+                        const keys = new Set(Object.values(computedThemes.value).flatMap(theme => Object.keys(theme.colors)));
+                        utilityStyle.textContent = [...keys].filter(key => !key.startsWith('on-')).map(key => `.text-${key}{color:var(--ui-theme-${key})}.bg-${key}{background-color:var(--ui-theme-${key});color:var(--ui-theme-on-${key})}.border-${key}{border-color:var(--ui-theme-${key})}`).join('\n');
                     }
-                    target.dataset.theme = current.value.dark ? 'dark' : 'light';
-                    target.dataset.uiTheme = name.value;
-                }
-                if (utilityStyle) {
-                    const keys = new Set(Object.values(computedThemes.value).flatMap(theme => Object.keys(theme.colors)));
-                    utilityStyle.textContent = [...keys].filter(key => !key.startsWith('on-')).map(key => `.text-${key}{color:var(--ui-theme-${key})}.bg-${key}{background-color:var(--ui-theme-${key});color:var(--ui-theme-on-${key})}.border-${key}{border-color:var(--ui-theme-${key})}`).join('\n');
-                }
-            }, { immediate: true, flush: 'sync' }));
+                }, { immediate: true, flush: 'sync' });
+            });
             stop = () => scope.stop();
             if (target) {
                 legacyObserver = new MutationObserver(() => { const legacy = target?.dataset.theme; if (legacy && legacy !== (current.value.dark ? 'dark' : 'light') && ['light', 'dark'].includes(legacy)) selection.value = legacy; });

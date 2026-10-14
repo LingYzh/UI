@@ -17,8 +17,8 @@ const readonly = ref(false);
             label="单选组"
             hint="URadio读取组的模型、名称、禁用和只读状态。"
         >
-            <u-radio value="a">默认</u-radio>
-            <u-radio value="b">自定义</u-radio>
+            <u-radio value="a" bordered>默认</u-radio>
+            <u-radio value="b" bordered>自定义</u-radio>
         </u-radio-group>
         <output>当前选择：{{ radio }}</output>
     </div>

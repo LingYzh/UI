@@ -8,7 +8,7 @@ import { createServer } from 'vite';
 const evidence = path.resolve('artifacts/component-audit-root/select-autocomplete-protocols');
 await mkdir(evidence, { recursive: true });
 
-const fixture = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Select and autocomplete protocol fixture</title></head><body><div id="app"></div><script type="module">
+const fixture = `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,"><title>Select and autocomplete protocol fixture</title></head><body><div id="app"></div><script type="module">
 import { createApp, defineComponent, h, nextTick, reactive, ref } from 'vue';
 import * as UI from '/src/ui/index.ts';
 import '/src/ui/tokens.css';
@@ -282,7 +282,7 @@ const sourceSha256 = Object.fromEntries(await Promise.all(sourceFiles.map(async 
 ])));
 
 await server.listen();
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, channel: process.env.UI_QA_BROWSER });
 const page = await browser.newPage({ viewport: { width: 1280, height: 1100 } });
 const errors = [];
 const warnings = [];
@@ -361,16 +361,19 @@ try {
     report.checks.disabledKeyboardSkipping = 'Opening does not highlight a row by default; ArrowDown skips the disabled first row before Enter selection.';
     report.checks.nullReset = 'Reset restores a null model and the component remains usable.';
 
+    // Finish the previous picker's focus restoration before testing another input.
+    await page.locator('#skip-input').press('Escape');
+    await page.waitForFunction(() => !document.querySelector('.ui-menu-surface[data-state="closing"]'));
     await page.locator('#filter-input').focus();
     await page.locator('#filter-input').fill('x-9');
     await flush();
-    assert.equal(await page.locator('#filter-panel .u-autocomplete-option').count(), 0);
+    assert.equal(await page.locator('[aria-labelledby="filter-input"] .u-autocomplete-option').count(), 0);
     await page.evaluate(() => { window.selectAutocompleteProtocol.state.filterMode = 'union'; });
     await flush();
-    assert.deepEqual(await page.locator('#filter-panel .u-autocomplete-option').allTextContents(), ['Alpha']);
+    assert.deepEqual(await page.locator('[aria-labelledby="filter-input"] .u-autocomplete-option').allTextContents(), ['Alpha']);
     await page.evaluate(() => { window.selectAutocompleteProtocol.state.noFilter = true; });
     await flush();
-    assert.deepEqual(await page.locator('#filter-panel .u-autocomplete-option').allTextContents(), ['Alpha', 'Beta']);
+    assert.deepEqual(await page.locator('[aria-labelledby="filter-input"] .u-autocomplete-option').allTextContents(), ['Alpha', 'Beta']);
     await page.locator('#filter-input').press('Escape');
     await flush();
     report.checks.standardFiltering = 'customKeyFilter and filterKeys work with intersection/union modes; noFilter returns every item.';
@@ -378,14 +381,14 @@ try {
     assert.equal(await page.locator('#object-input').getAttribute('aria-activedescendant'), null);
     await page.locator('#object-input').focus();
     await flush();
-    assert.equal(await page.locator('#object-panel .u-autocomplete-option').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('[aria-labelledby="object-input"] .u-autocomplete-option').getAttribute('aria-selected'), 'true');
     await page.locator('#object-input').press('Escape');
     await flush();
     report.checks.objectComparator = 'returnObject selections use the existing deep comparator to match structurally equal objects.';
 
     await page.locator('#multi-input').fill('Al');
     await flush();
-    await page.locator('#multi-panel .u-autocomplete-option').click();
+    await page.locator('[aria-labelledby="multi-input"] .u-autocomplete-option').click();
     await flush();
     assert.deepEqual((await protocol()).state.multiModel, ['alpha']);
     assert.equal((await protocol()).state.multiSearch, 'Al');
@@ -400,7 +403,7 @@ try {
     await page.locator('#controlled-input').fill('Ban');
     await flush();
     assert.equal((await protocol()).state.controlledSearch, 'Ban');
-    assert.deepEqual(await page.locator('#controlled-panel .u-autocomplete-option').allTextContents(), ['Banana']);
+    assert.deepEqual(await page.locator('[aria-labelledby="controlled-input"] .u-autocomplete-option').allTextContents(), ['Banana']);
     assert.equal(await page.locator('#controlled-input').getAttribute('aria-activedescendant'), null);
     await page.locator('#controlled-input').press('ArrowDown');
     await page.locator('#controlled-input').press('Enter');
@@ -424,7 +427,7 @@ try {
     await page.locator('#clear-default-combo').focus();
     await page.locator('#clear-default-combo').fill('Know');
     await flush();
-    await page.locator('#combo-panel .u-autocomplete-option').filter({ hasText: 'Known' }).click();
+    await page.locator('[aria-labelledby="clear-default-combo"] .u-autocomplete-option').filter({ hasText: 'Known' }).click();
     await flush();
     assert.deepEqual((await protocol()).state.clearComboValue, { title: 'Known', value: 'known' });
     assert.equal((await protocol()).state.clearComboSearch, '');
@@ -441,10 +444,10 @@ try {
 
     await page.locator('#localized-empty').focus();
     await flush();
-    assert.equal(await page.locator('#locale-panel .u-autocomplete-empty').textContent(), 'Scoped no matches');
+    assert.equal(await page.locator('[aria-labelledby="localized-empty"] .u-autocomplete-empty').textContent(), 'Scoped no matches');
     await page.evaluate(() => { window.selectAutocompleteProtocol.state.locale = 'zh'; });
     await flush();
-    assert.equal(await page.locator('#locale-panel .u-autocomplete-empty').textContent(), '范围内无匹配项');
+    assert.equal(await page.locator('[aria-labelledby="localized-empty"] .u-autocomplete-empty').textContent(), '范围内无匹配项');
     report.checks.scopedLocale = 'Explicit $vuetify.noDataText resolves from the nearest provider and updates when its locale changes.';
 
     await page.locator('#clear-input').focus();
@@ -465,13 +468,13 @@ try {
 
     await page.locator('#virtual-input').focus();
     await flush();
-    assert.ok(await page.locator('#virtual-panel .u-autocomplete-option').count() < 160);
+    assert.ok(await page.locator('[aria-labelledby="virtual-input"] .u-autocomplete-option').count() < 160);
     for (let index = 0; index < 40; index++) await page.locator('#virtual-input').press('ArrowDown');
     await flush();
     const activeDescendant = await page.locator('#virtual-input').getAttribute('aria-activedescendant');
     assert.ok(activeDescendant);
     assert.equal(await page.locator('[id="' + activeDescendant + '"]').count(), 1);
-    assert.ok(await page.locator('#virtual-panel .u-autocomplete-option').count() < 160);
+    assert.ok(await page.locator('[aria-labelledby="virtual-input"] .u-autocomplete-option').count() < 160);
     await page.evaluate(() => { window.selectAutocompleteProtocol.state.virtualMounted = false; });
     await flush();
     assert.equal(await page.locator('#virtual-input').count(), 0);
