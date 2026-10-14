@@ -1,6 +1,6 @@
 {
     "version": "0.6.1",
-    "status": "ready_for_tagged_publish",
+    "status": "published_verified",
     "runtime": "Node.js 24.19.0",
     "checks": {
         "typecheck": true,
@@ -11,5 +11,16 @@
         "pack": { "files": 569, "exportsVerified": true, "unexpectedFiles": [] }
     },
     "logs": ".Codex/release-061-*",
-    "publication": null
+    "publication": {
+        "commit": "fff1cf97ba1918094d7acc52794c0ff44a8ef7f8",
+        "tag": "v0.6.1",
+        "workflow": "https://github.com/LingYzh/UI/actions/runs/38517358029",
+        "conclusion": "success",
+        "registryLatest": "0.6.1",
+        "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.6.1.tgz",
+        "sha1": "b3e0325ac3bc6944f86f78bffc5751c3279ebc51",
+        "integrity": "sha512-Po1NtafyKL29TgLZ/TRby/Oj1Zy8qzr8Fk45q0JUw+Cf1o8nQI25SRTjiaYowjAo5lVIazUhqRVhqNkc51Ixtg==",
+        "verifiedDownloadedTarball": true,
+        "verifiedChangedSources": ["USnackbar.vue", "USnackbarQueue.vue", "styles.css", "alignment-components.css"]
+    }
 }

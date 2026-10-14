@@ -1,5 +1,12 @@
 # UI 项目交接
 
+## 2026-10-14：0.6.1 已正式发布
+
+- Snackbar 修复提交 `fff1cf97ba1918094d7acc52794c0ff44a8ef7f8` 与 v0.6.1 已原子推送；Actions `38517358029` 成功，官方 version/latest 均为0.6.1。
+- 下载 tarball 的 SHA1/SHA512 与 registry 相同，569文件及四个变更源码与发布提交一致（规范化 CRLF/LF）。完整摘要见 `docs/RELEASE-0.6.1-evidence.json`；传播延迟期间没有重复发布或移动标签。
+- NC_Admin 用户已授权升级固定 npm 0.6.1，并推送 master、UI_Adapter；开发本地 alias 继续保留。消费端最终验收和推送以其 HANDOFF 为准。
+- 下方未发布和本地依赖记录均为历史状态。
+
 ## 2026-10-14：0.6.1 发布检查点
 
 - 用户已授权提交 Snackbar 修复、发布 UI，再更新并推送 NC_Admin 两个分支。版本与 npm lock 根版本同步0.6.1，按 v0.6.1 标签触发现有 OIDC Actions，不移动旧标签。

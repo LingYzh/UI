@@ -134,3 +134,9 @@ UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4
 - npm 提交后提示异步处理中，最初 metadata 404/latest0.5.0；约数分钟后正式 version/latest=0.6.0。不要据传播延迟重新发布同版本。
 - 官方 tarball 569 文件、SHA1 f5a7918ab66a92410d2dfa30847ab10ac03f6d92，下载 SHA512 与 registry 一致。完整 integrity、门禁和消费端记录见 docs/RELEASE-0.6.0-evidence.json。
 - NC_Admin 已本地合并 master，保留 link:../UI 且不推送；UI 文档服务恢复5174。UI依赖只用npm，恢复DLL占用后安装成功。
+
+# 2026-10-14：0.6.1 Snackbar 修复正式发布
+
+- 用户授权 UI 发版和管理端双分支推送。提交 fff1cf97ba1918094d7acc52794c0ff44a8ef7f8 与 v0.6.1 原子推送，Actions38517358029成功；官方 registry version/latest=0.6.1。
+- tarball569文件，SHA1 b3e0325ac3bc6944f86f78bffc5751c3279ebc51，下载SHA512与registry一致；四个修复源码规范化换行后完全相同。摘要与本地完整门禁见 docs/RELEASE-0.6.1-evidence.json。
+- npm异步同步期间短暂404，不重复发布。NC_Admin升级固定npm版本，开发alias仍使用本地源码；以消费端验收记录为准。
