@@ -1,12 +1,16 @@
 # UI 项目交接
 
-## 2026-10-14：0.6.0 发布门禁通过，准备推送
+## 2026-10-14：0.6.0 已正式发布
+
+- 发布提交 `8374db11930c8fd23aa1ac1b9b66a3b1ce194d9d` 与 v0.6.0 已原子推送。Actions `38494630450` / job `115627486046` 全部成功，官方 version/latest 均为 0.6.0；传播期间的短暂 E404 已恢复，没有重复发布。
+- 官方 tarball 569 文件、SHA1 `f5a7918ab66a92410d2dfa30847ab10ac03f6d92`；下载包的 SHA512 与 registry integrity 一致，四个新增组件源码与发布提交相同。签名 provenance 已生成。完整摘要见 `docs/RELEASE-0.6.0-evidence.json`。
+- NC_Admin 本地合并提交 `be1b293`（master 6906ce0），不推送且继续本地依赖。UI 文档服务已恢复在 127.0.0.1:5174。
 
 - 用户恢复执行并确认文档服务已停止。npm ci 已恢复普通 npm 依赖目录；此前 icon-consumers 失败随正确依赖恢复消失。不要在此仓库运行 pnpm 安装。
 - 新增 UTreeSelect 多选和独立勾选已获用户批准。数组模型、清空/表单重置、required、readonly/disabled、父子独立和显式策略覆盖均通过真实组件检查；NC_Admin 角色自定义部门已接入。
 - 最终门禁：typecheck、381/381 单测、文档/库 build、Electron 21 组通过。证据为 `.Codex/release-060-*.log`、`artifacts/ui-kHrdMZ`；Root 复核明暗及 390px 树选择截图，真实表单专项通过。旧的局部失败和恢复日志保留。
 - npm pack 0.6.0 白名单 569 个文件，无 src、README、LICENSE、package.json 以外文件。发布说明 `docs/RELEASE-0.6.0.md`。
-- 消费端继续 link:../UI，管理端不得推送；真实后端、验证码和生成模板不属于本次发布验收。后续核实 GitHub Actions 与官方 npm 后补记发布提交、标签和 integrity。
+- 消费端继续 link:../UI，管理端不得推送；真实后端、验证码和生成模板不属于本次发布验收。
 
 ## 2026-10-13 暂停：0.6.0 发布准备（最新状态优先）
 

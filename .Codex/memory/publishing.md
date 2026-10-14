@@ -128,3 +128,9 @@ UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4
 - 用户已授权 UI 推送/发版，但随后要求暂停。package.json/lock 预备为 0.6.0，HEAD 仍 22bbfde，没有新提交/标签/发布。
 - npm ci 因 5174 服务持有 Rolldown DLL 失败，当前依赖部分缺失。需用户停止服务后恢复 npm 安装，重新跑完整门禁；详见 HANDOFF.md 顶部。不要使用 pnpm。
 - NC_Admin 使用本地 link，不升级为 npm 包，且不得推送。
+# 2026-10-14：0.6.0 发布完成
+
+- 发布提交 8374db11930c8fd23aa1ac1b9b66a3b1ce194d9d / v0.6.0 已推送；Actions 38494630450 全部成功。
+- npm 提交后提示异步处理中，最初 metadata 404/latest0.5.0；约数分钟后正式 version/latest=0.6.0。不要据传播延迟重新发布同版本。
+- 官方 tarball 569 文件、SHA1 f5a7918ab66a92410d2dfa30847ab10ac03f6d92，下载 SHA512 与 registry 一致。完整 integrity、门禁和消费端记录见 docs/RELEASE-0.6.0-evidence.json。
+- NC_Admin 已本地合并 master，保留 link:../UI 且不推送；UI 文档服务恢复5174。UI依赖只用npm，恢复DLL占用后安装成功。
