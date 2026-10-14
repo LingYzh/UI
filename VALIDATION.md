@@ -1,5 +1,11 @@
 # Checkpoint validation — 2026-09-26
 
+## 2026-10-14：0.6.1 发布门禁
+
+Node24.19.0完整类型检查、381/381单测、docs/lib构建、Electron21组/178文档路由通过（artifacts/ui-TBAqKL，errors0）。Snackbar源码专项验证位置方向、RTL、队列hold/overflow/Promise/clear和帧同步计时条、独立暂停原因、自动关闭与重开，明暗/390px/减少动态效果通过。Root复核实际截图；pack569文件白名单及全部exports核对通过。日志.Codex/release-061-*，版本化证据docs/RELEASE-0.6.1-evidence.json。
+
+首次单测扫描并行Electron profile时发生watch EBUSY和两个超时；三个纯编译SSR测试增加watch:null后完整381项复跑通过。源码和发布包未通过降低断言绕过失败。
+
 ## 2026-10-14：0.6.0 发布门禁
 
 普通 npm 依赖恢复后，最终源码通过 typecheck、381/381 测试、文档与库 build、Electron 21 组（artifacts/ui-kHrdMZ）。新增树形多选真实 demo 覆盖浅色、深色、390px；tree-select-form-multiple 覆盖 required、readonly、disabled、独立/显式策略、清空与 UiForm reset。Root 复核真实截图；源码发布包 569 文件白名单通过。日志 .Codex/release-060-*，首次 fixture 定位与主题设置错误保留，最终运行以实际主题开关断言为准。

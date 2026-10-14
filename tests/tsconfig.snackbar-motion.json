@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "../src/ui/markdown-plugins.d.ts",
+        "../src/ui/USnackbar.vue",
+        "../src/ui/USnackbarQueue.vue",
+        "../src/ui/UiSnackbarHost.vue"
+    ]
+}

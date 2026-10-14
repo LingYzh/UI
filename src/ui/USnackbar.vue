@@ -19,23 +19,34 @@ const remaining = ref(0);
 const ratio = ref(1);
 const pauses = new Set<string>();
 let timer: ReturnType<typeof setTimeout> | undefined;
-let progress: ReturnType<typeof setInterval> | undefined;
+let progress: number | undefined;
 let started = 0;
 let owner: Document | undefined;
 const duration = computed(() => { const value = Number(props.timeout); return Number.isFinite(value) ? value : 5000; });
 const location = computed(() => snackbarLocation(props.location));
 const colors = computed(() => buttonColorStyles(props.color));
-function stop() { clearTimeout(timer); clearInterval(progress); timer = undefined; progress = undefined; }
+function stopProgress() {
+    if (progress !== undefined) cancelAnimationFrame(progress);
+    progress = undefined;
+}
+function stop() { clearTimeout(timer); stopProgress(); timer = undefined; }
 function close() { model.value = false; }
 function outside(event: Event) { emit('click:outside', event); if (!props.persistent && !event.defaultPrevented) close(); }
 function escape(event: KeyboardEvent) { if (props.persistent || event.defaultPrevented) return; event.stopPropagation(); close(); }
 function updateProgress() { ratio.value = duration.value > 0 ? Math.max(0, (remaining.value - (Date.now() - started)) / duration.value) : 1; }
+function animateProgress() {
+    progress = undefined;
+    if (!props.timer || !model.value || duration.value < 0 || pauses.size) return;
+    updateProgress();
+    // 跟随屏幕刷新节奏；搭配 scaleX 更新合成层，避免 40ms 定时器和 width 重排造成跳动。
+    progress = requestAnimationFrame(animateProgress);
+}
 function schedule() {
     stop();
     if (typeof document === 'undefined' || !model.value || duration.value < 0 || pauses.size) return;
     started = Date.now();
     timer = setTimeout(() => { emit('timeout'); close(); }, Math.max(0, remaining.value));
-    if (props.timer) progress = setInterval(updateProgress, 40);
+    if (props.timer) progress = requestAnimationFrame(animateProgress);
 }
 function pause(reason: string) {
     if (pauses.has(reason)) return;
@@ -50,6 +61,13 @@ watch(() => [model.value, duration.value], () => {
     if (!model.value) { pauses.clear(); if (owner?.hidden) pauses.add('document'); }
     if (model.value) schedule();
 }, { immediate: true });
+watch(() => props.timer, () => {
+    stopProgress();
+    if (typeof document !== 'undefined' && timer && props.timer && !pauses.size) {
+        updateProgress();
+        progress = requestAnimationFrame(animateProgress);
+    }
+});
 onMounted(() => { owner = surface.value?.ownerDocument ?? document; owner.addEventListener('visibilitychange', visibility); visibility(); if (!pauses.size) schedule(); });
 onBeforeUnmount(() => { stop(); owner?.removeEventListener('visibilitychange', visibility); });
 defineExpose({ close, pause, resume, surface });
@@ -70,7 +88,7 @@ defineExpose({ close, pause, resume, surface });
                         <slot />
                     </div>
                     <div v-if="$slots.actions || props.closable" class="u-notice-actions"><slot name="actions" :is-active="model" :close="close"><UiButton variant="text" :color="typeof props.closable === 'string' ? props.closable : undefined" size="sm" @click="close">{{ props.closeText }}</UiButton></slot></div>
-                    <div v-if="props.timer && duration >= 0" class="u-notice-timer" :class="{ 'is-top': props.timer === 'top' }" aria-hidden="true"><span :style="{ width: `${100 * (props.reverseTimer ? 1 - ratio : ratio)}%`, background: props.timerColor ? `var(--ui-theme-${props.timerColor}, ${props.timerColor})` : undefined }" /></div>
+                    <div v-if="props.timer && duration >= 0" class="u-notice-timer" :class="{ 'is-top': props.timer === 'top' }" aria-hidden="true"><span :style="{ transform: `scaleX(${props.reverseTimer ? 1 - ratio : ratio})`, background: props.timerColor ? `var(--ui-theme-${props.timerColor}, ${props.timerColor})` : undefined }" /></div>
                 </div>
             </div>
         </Transition>

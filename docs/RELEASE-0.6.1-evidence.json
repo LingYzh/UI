@@ -1,0 +1,15 @@
+{
+    "version": "0.6.1",
+    "status": "ready_for_tagged_publish",
+    "runtime": "Node.js 24.19.0",
+    "checks": {
+        "typecheck": true,
+        "unit": { "passed": 381, "failed": 0 },
+        "docsAndLibraryBuild": true,
+        "electron": { "groups": 21, "routes": 178, "errors": 0, "evidence": "artifacts/ui-TBAqKL" },
+        "snackbarMotion": { "groups": 11, "queueProtocols": true, "evidence": "artifacts/snackbar-motion" },
+        "pack": { "files": 569, "exportsVerified": true, "unexpectedFiles": [] }
+    },
+    "logs": ".Codex/release-061-*",
+    "publication": null
+}

@@ -201,7 +201,8 @@ test('Vite compiles UColorInput and UColorPicker with their HSV modes', async ()
         plugins: [vue()],
         optimizeDeps: { noDiscovery: true, include: [] },
         appType: 'custom',
-        server: { middlewareMode: true },
+        // 纯编译/SSR 测试无需监听工作区，避免碰到 Electron 验收 profile 的锁文件。
+        server: { middlewareMode: true, watch: null },
         resolve: { dedupe: ['vue'] },
         logLevel: 'silent'
     });

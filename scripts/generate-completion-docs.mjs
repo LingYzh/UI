@@ -128,7 +128,8 @@ const focusNotes = {
     UOverlay: '默认普通DOM浮层，支持attach/contained/absolute及zIndex；默认非模态，captureFocus/retainFocus=false，scrollStrategy=none。retainFocus=true显式限制焦点；scrim支持布尔/颜色，opacity控制遮罩透明度。内容懒挂载，关闭动画完成后卸载，eager=true保留；default/activator的isActive为Ref。',
     UFileInput: '鼠标选择文件不显示键盘焦点框；Tab 进入时显示焦点提示。',
     UFileUpload: '上传区域仅在键盘焦点或拖放文件时高亮；鼠标点击选择文件不保持焦点高亮。',
-    UColorInput: '颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。'
+    UColorInput: '颜色按钮和文本编辑共享模型；非文本操作仅在键盘焦点时提示，文本编辑保留活动状态。',
+    USnackbar: '进入和退出沿停靠方向；中部居中仅淡入淡出。计时条跟随屏幕刷新，支持正向增长及悬停、焦点和页面隐藏暂停。'
 };
 for (const [group, example, demo, title, names] of families) {
     for (const name of names) {

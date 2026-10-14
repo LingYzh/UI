@@ -525,11 +525,15 @@
 .ui-snackbar[data-tone="success"] .ui-snackbar-mark { color: var(--green); }
 .ui-snackbar[data-tone="error"] .ui-snackbar-mark { color: var(--red); }
 .ui-snackbar-enter-active, .ui-snackbar-leave-active, .ui-snackbar-move { transition: opacity 160ms ease, transform 160ms var(--ease); }
-.ui-snackbar-enter-from, .ui-snackbar-leave-to { opacity: 0; transform: translateY(8px); }
-.ui-snackbar-stack[data-position^="top"] .ui-snackbar-enter-from,
-.ui-snackbar-stack[data-position^="top"] .ui-snackbar-leave-to { transform: translateY(-8px); }
-@media (prefers-reduced-motion: reduce) { .ui-snackbar { transition: none !important; } }
-:root[data-reduced-motion="true"] .ui-snackbar { transition: none !important; }
+/* 单消息、队列及服务 Host 共用方向；定位使用 translate，过渡 transform 不会破坏居中。 */
+:is(.u-notice-placement, .u-notice-stack, .ui-snackbar-stack)[data-position^="top"] { --ui-snackbar-offset-y: -8px; }
+:is(.u-notice-placement, .u-notice-stack, .ui-snackbar-stack)[data-position^="bottom"] { --ui-snackbar-offset-y: 8px; }
+:is(.u-notice-placement, .u-notice-stack, .ui-snackbar-stack)[data-position^="center"] { --ui-snackbar-offset-x: 0px; --ui-snackbar-offset-y: 0px; }
+:is(.u-notice-placement, .u-notice-stack, .ui-snackbar-stack):is([data-position="center-left"], [data-position="center-start"]:dir(ltr), [data-position="center-end"]:dir(rtl)) { --ui-snackbar-offset-x: -8px; }
+:is(.u-notice-placement, .u-notice-stack, .ui-snackbar-stack):is([data-position="center-right"], [data-position="center-end"]:dir(ltr), [data-position="center-start"]:dir(rtl)) { --ui-snackbar-offset-x: 8px; }
+.ui-snackbar-enter-from, .ui-snackbar-leave-to { opacity: 0; transform: translate(var(--ui-snackbar-offset-x, 0px), var(--ui-snackbar-offset-y, 8px)); }
+@media (prefers-reduced-motion: reduce) { .ui-snackbar, .ui-snackbar-service-message { transition: none !important; } }
+:root[data-reduced-motion="true"] :is(.ui-snackbar, .ui-snackbar-service-message) { transition: none !important; }
 
 .ui-tabs > .ui-tab { transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast); }
 .ui-tabs[data-variant="underline"] > .ui-tab { height: 46px; border-bottom: 2px solid transparent; border-radius: 7px 7px 0 0; padding: 10px 9px; background: transparent; }

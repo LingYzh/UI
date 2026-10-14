@@ -1,5 +1,19 @@
 # UI 项目交接
 
+## 2026-10-14：0.6.1 发布检查点
+
+- 用户已授权提交 Snackbar 修复、发布 UI，再更新并推送 NC_Admin 两个分支。版本与 npm lock 根版本同步0.6.1，按 v0.6.1 标签触发现有 OIDC Actions，不移动旧标签。
+- Node24.19.0 完整类型、381/381、docs/lib build、Electron21组/178路由及Snackbar专项通过，pack569文件/exports通过。首次单测碰到 Electron profile 锁文件；三个纯转换测试禁用无用 watcher 后全量复跑通过，原日志保留。
+- Snackbar 专项补测队列 hold/overflow/Promise/提前清空；方向、RTL、正反进度、暂停/恢复/重开及明暗390px/减少动态效果通过。Root 复核实际截图。
+- 发布准备与证据见 docs/RELEASE-0.6.1.md 及 evidence JSON；正式状态以发布后记录为准。NC_Admin 开发 alias 保留，发布确认后再升级 npm 版本。
+
+## 2026-10-14：Snackbar 动画与计时条本地修复
+
+- 已修复九种位置的进出方向，统一单条/队列/服务 Host，支持 start/end RTL；计时条逐帧 scaleX 更新，保留悬停、焦点、隐藏页面暂停及关闭清理。
+- Queue 也修复了首次动态挂载缺少进入动画的问题。独立 demo 增加中部位置和计时条正向增长开关，生成文档同步。
+- 源码浏览器专项通过，证据 `artifacts/snackbar-motion`；目标类型检查及服务计时2项单测通过。复跑及边界见 `.Codex/memory/snackbar-motion.md`。
+- 修改尚未提交、推送或发布；npm 0.6.0 不包含本次修复。管理端开发模式通过本地 alias 生效，其他环境要等发布新版本后升级依赖；未执行全量构建。
+
 ## 2026-10-14：0.6.0 已正式发布
 
 - 发布提交 `8374db11930c8fd23aa1ac1b9b66a3b1ce194d9d` 与 v0.6.0 已原子推送。Actions `38494630450` / job `115627486046` 全部成功，官方 version/latest 均为 0.6.0；传播期间的短暂 E404 已恢复，没有重复发布。

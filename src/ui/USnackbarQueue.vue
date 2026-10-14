@@ -12,7 +12,7 @@ const model = defineModel<SnackbarMessage[]>({ default: () => [] });
 const emit = defineEmits<{ dismiss: [item: SnackbarMessage, reason: SnackbarDismissReason] }>();
 const attrs = useAttrs();
 const theme = useUiTheme();
-interface Entry { id: number; source: SnackbarMessage; props: SnackbarProps; active: boolean }
+interface Entry { id: number; source: SnackbarMessage; props: SnackbarProps; active: boolean; open: boolean }
 const entries = ref<Entry[]>([]);
 const hovered = ref(false);
 const surfaces = new Map<number, InstanceType<typeof USnackbar>>();
@@ -31,9 +31,16 @@ function track(id: number, instance: unknown) {
 watch(() => props.collapsed && hovered.value, paused => { for (const surface of surfaces.values()) paused ? surface.pause('queue') : surface.resume('queue'); });
 function dismiss(entry: Entry, reason: SnackbarDismissReason) {
     if (!entry.active) return;
+    const wasOpen = entry.open;
     entry.active = false;
+    entry.open = false;
     if (typeof entry.source !== 'string') entry.source.onDismiss?.(reason);
     emit('dismiss', entry.source, reason);
+    // 尚未打开的条目不会触发 after-leave；直接清理，避免关闭/清空竞态残留隐藏条目。
+    if (!wasOpen) {
+        entries.value = entries.value.filter(item => item.id !== entry.id);
+        void nextTick(pump);
+    }
 }
 function afterLeave(entry: Entry) { entries.value = entries.value.filter(item => item.id !== entry.id); pump(); }
 function pump() {
@@ -55,7 +62,7 @@ function pump() {
             consumed = true;
             const options = typeof source === 'string' ? { text: source } : source;
             const { onDismiss, promise, success, error, ...notice } = options as Exclude<SnackbarMessage, string>;
-            const entry: Entry = { id: ++nextId, source, props: { ...(promise ? { loading: true, timeout: -1 } : {}), ...notice }, active: true };
+            const entry: Entry = { id: ++nextId, source, props: { ...(promise ? { loading: true, timeout: -1 } : {}), ...notice }, active: true, open: false };
             entries.value.push(entry);
             created.add(entry.id);
             if (promise) {
@@ -73,6 +80,10 @@ function pump() {
         // A same-tick overflow never mounted a surface and has no leave callback.
         entries.value = entries.value.filter(entry => entry.active || !created.has(entry.id));
         pumping = false;
+        // 新增条目先挂载关闭态，保证队列消息也执行与独立 Snackbar 一致的进入动画。
+        void nextTick(() => {
+            if (!disposed) for (const entry of entries.value) if (entry.active) entry.open = true;
+        });
     }
 }
 function clear() { model.value = []; for (const entry of entries.value) dismiss(entry, 'cleared'); }
@@ -88,8 +99,8 @@ defineExpose({ clear });
 <template>
     <Teleport :to="props.attach || 'body'" :disabled="props.contained || props.attach === false">
         <div class="u-notice-stack" :class="{ 'is-contained': props.contained, 'is-collapsed': props.collapsed && !hovered }" :data-position="location" :style="[theme.styles.value, { gap: spacing }]" :data-ui-theme="theme.name.value" :data-theme="theme.current.value.dark ? 'dark' : 'light'" @pointerenter="hovered = true" @pointerleave="hovered = false">
-            <template v-for="entry in entries" :key="entry.id"><slot name="item" :item="entry.source" :props="{ ...props, ...attrs, ...entry.props, modelValue: entry.active, contained: true, attach: false, queueIndex: entries.indexOf(entry), ref: (instance: unknown) => track(entry.id, instance), 'onUpdate:modelValue': () => dismiss(entry, 'auto'), onAfterLeave: () => afterLeave(entry) }">
-            <USnackbar :ref="instance => track(entry.id, instance)" v-bind="{ ...props, ...attrs, ...entry.props }" :model-value="entry.active" :contained="true" :attach="false" :queue-index="entries.indexOf(entry)" @update:model-value="dismiss(entry, 'auto')" @after-leave="afterLeave(entry)">
+            <template v-for="entry in entries" :key="entry.id"><slot name="item" :item="entry.source" :props="{ ...props, ...attrs, ...entry.props, modelValue: entry.open, contained: true, attach: false, queueIndex: entries.indexOf(entry), ref: (instance: unknown) => track(entry.id, instance), 'onUpdate:modelValue': () => dismiss(entry, 'auto'), onAfterLeave: () => afterLeave(entry) }">
+            <USnackbar :ref="instance => track(entry.id, instance)" v-bind="{ ...props, ...attrs, ...entry.props }" :model-value="entry.open" :contained="true" :attach="false" :queue-index="entries.indexOf(entry)" @update:model-value="dismiss(entry, 'auto')" @after-leave="afterLeave(entry)">
                 <template v-if="$slots.header" #header><slot name="header" :item="entry.source" /></template>
                 <template v-if="$slots.text" #text><slot name="text" :item="entry.source" /></template>
                 <template v-if="(entry.props.closable ?? props.closable) || $slots.actions" #actions><slot name="actions" :item="entry.source" :props="{ onClick: () => dismiss(entry, 'dismissed') }"><UiButton variant="text" size="sm" @click="dismiss(entry, 'dismissed')">{{ entry.props.closeText ?? props.closeText }}</UiButton></slot></template>

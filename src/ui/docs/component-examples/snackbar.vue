@@ -6,6 +6,7 @@ const text = ref('配置已保存，可以继续编辑。');
 const permanent = ref(false);
 const persistent = ref(false);
 const contained = ref(true);
+const reverseTimer = ref(false);
 const variant = ref('elevated');
 const location = ref('bottom center');
 const colors = ref('');
@@ -15,6 +16,9 @@ const locations = [
     'top left',
     'top center',
     'top right',
+    'center left',
+    'center center',
+    'center right',
     'bottom left',
     'bottom center',
     'bottom right',
@@ -33,6 +37,7 @@ const locations = [
             <u-switch v-model="permanent" label="持续显示" />
             <u-switch v-model="persistent" label="阻止 Escape 和外部点击关闭" />
             <u-switch v-model="contained" label="容器内显示" />
+            <u-switch v-model="reverseTimer" label="计时条正向增长" />
             <u-button @click="open = !open">{{ open ? '隐藏消息' : '显示消息' }}</u-button>
         </div>
         <div class="notice-demo-stage">
@@ -47,6 +52,7 @@ const locations = [
                 :location="location"
                 :color="colors"
                 timer
+                :reverse-timer="reverseTimer"
                 @after-leave="closed++"
             >
                 <template #actions="{ close }">
