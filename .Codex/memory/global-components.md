@@ -5,3 +5,4 @@
 - 接入指南加入真实 GlobalComponentsDemo，仅导入 Vue ref，覆盖 PascalCase 和 kebab-case。已有各组件 demo 的显式导入继续兼容。README 明确单次安装插件与 theme 配置。
 - 专项：node --import tsx --test tests/component-registration.test.ts tests/layout.test.ts tests/tree-table.test.ts；正在运行的文档服务下 node tests/desktop/global-components.mjs。证据 artifacts/global-components。
 - 用户已授权推送与升级，UI准备发布0.6.3。完整类型检查、387项测试、双构建和Electron完整回归通过；发布结果以后续RELEASE-0.6.3-evidence.json为准。Admin升级后可移除入口对npm0.6.2树表遗漏的兼容。
+- 0.6.3已正式发布：源码提交92dbb052f50845d16fa43c8d7cc4515c936687fb，v0.6.3，Actions38687065275成功，官方latest=0.6.3。572文件tarball与SHA512一致，四个关键源码与仓库规范化换行后相同；Admin通过正常官方registry安装，无额外树表注册。记录见docs/RELEASE-0.6.3-evidence.json。

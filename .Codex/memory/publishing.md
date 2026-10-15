@@ -146,3 +146,8 @@ UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4
 - 用户授权 UI 发版和管理端双分支推送。提交 fff1cf97ba1918094d7acc52794c0ff44a8ef7f8 与 v0.6.1 原子推送，Actions38517358029成功；官方 registry version/latest=0.6.1。
 - tarball569文件，SHA1 b3e0325ac3bc6944f86f78bffc5751c3279ebc51，下载SHA512与registry一致；四个修复源码规范化换行后完全相同。摘要与本地完整门禁见 docs/RELEASE-0.6.1-evidence.json。
 - npm异步同步期间短暂404，不重复发布。NC_Admin升级固定npm版本，开发alias仍使用本地源码；以消费端验收记录为准。
+## 2026-10-15：0.6.3 全局组件修正发布
+
+- 发布提交92dbb052f50845d16fa43c8d7cc4515c936687fb，v0.6.3；Actions38687065275与Publish步骤成功，官方version/latest=0.6.3。完整类型、387项测试、双构建和21组Electron回归通过。
+- npm包572文件，SHA1 be0423b5baba646abea7a120e6c4c3667912160d，SHA512与registry一致，关键注册表/demo/文档源码核对通过。完整记录docs/RELEASE-0.6.3-evidence.json。
+- 本次HTTPS凭据管理器无可用凭据，使用已有GitHub SSH认证成功推送同一仓库，未修改远程地址或全局配置。npm短暂索引延迟后正常安装，无重复发布。
