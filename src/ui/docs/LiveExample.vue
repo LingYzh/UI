@@ -53,6 +53,7 @@ import SwitchProtocolsDemo from './SwitchProtocolsDemo.vue';
 import SelectionMenuDemo from './SelectionMenuDemo.vue';
 import TabsSelectionDemo from './TabsSelectionDemo.vue';
 import MenuBranchDemo from './MenuBranchDemo.vue';
+import GlobalComponentsDemo from './GlobalComponentsDemo.vue';
 const componentDemos = import.meta.glob('./component-examples/*.vue', { eager: true, import: 'default' });
 const tableDemos = import.meta.glob('./table-examples/*.vue', { eager: true, import: 'default' });
 const controlExamples = ['checkbox-select-all', 'checkbox-states', 'radio-cards', 'progress-tones', 'copy-inline', 'swatches-tag', 'swatches-legacy'];
@@ -141,6 +142,7 @@ onBeforeUnmount(() => clearTimeout(saveTimer));
         <SelectionMenuDemo v-else-if="example === 'selection-menu-protocols'" />
         <TabsSelectionDemo v-else-if="example === 'tabs-selection-protocols'" />
         <MenuBranchDemo v-else-if="example === 'menu-branch-protocols'" />
+        <GlobalComponentsDemo v-else-if="example === 'global-components'" />
         <OverlayPresentationDemo v-else-if="example === 'overlay-presentation-protocols'" />
         <TreeFilterDemo v-else-if="example === 'tree-filter-protocols'" />
         <StepperItemsDemo v-else-if="example === 'stepper-items-protocols'" />

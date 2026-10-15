@@ -683,3 +683,14 @@ Radio/Form、分组状态、新职责与旧别名、Counter 的专项已有证�
 ## 2026-10-13 控件回归修复补充
 
 重合范围滑块可继续向两侧拖动；时间原生选项限高并滚动；Field/多选焦点只由字段表面呈现；多选默认连续选择，岗位独占整行。详细记录见 NC_Admin/docs/ui-migration-acceptance.md 最新“重合滑块、时间选项与复合字段回归”。新复跑脚本 scripts/qa/control-followup.mjs，15 组真实操作和明暗/390px 证据在 .Codex/evidence/control-followup/。本轮没有全量构建、提交或发布，生成/导出模板仍延后。
+## 2026-10-15：全局组件接入与树表注册修正
+
+- createUI 原本默认全局注册；NC_Admin此前主动关闭，现已启用。全局模板不需逐项导入；组合函数/服务/h()/动态组件对象仍需导入。已有显式用法兼容。
+- 补齐漏注册的UTreeTable；修正sync-components生成器，保留UFormField等公开别名及人工类型/工具导出，重复运行不丢API。注册表163个组件+48个兼容别名与公开入口一致。
+- README/组件契约/接入指南加入单次安装说明和真实无组件导入demo。12项专项、桌面/390px真实demo通过；Admin本地/npm/backend三模式、211组件及别名/表单/选择/树表/弹窗通过，Root看图，无异常/警告。详见.Codex/memory/global-components.md。
+- 此次未提交/推送/发布，npm仍0.6.2。Admin入口集中兼容该版本的树表遗漏，新版库自动跳过兼容注册。原有未提交同站文档工作保留。
+## 2026-10-15：0.6.3 发布准备
+
+- 用户授权将当前全局组件修正提交、推送并发版。版本已更新0.6.3；完整类型检查、387项测试、文档/库两套构建和完整Electron回归通过（artifacts/ui-5G8N0s，无异常）。无组件导入demo桌面/390px已由Root检查。
+- 范围为UTreeTable全局注册、注册表生成器保留公开别名/工具/类型、一次安装文档与真实demo。Admin将升级npm版本，保留dev本地alias，并一起提交此前待提交的同站文档和开发规范。
+- 发布走v0.6.3标签触发Actions，最终结果见后续RELEASE-0.6.3-evidence.json；不重复发布。

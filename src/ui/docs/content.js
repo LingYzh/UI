@@ -334,19 +334,25 @@ export const pages = [
         "name": "Getting started",
         "kind": "guide",
         "group": "开始使用",
-        "description": "从项目内公共入口导入组件，一次加载共享样式，再让页面持有业务状态。",
+        "description": "在应用入口安装一次 createUI，页面直接使用模板组件，再让页面持有业务状态。",
         "sections": [
             {
                 "id": "import",
-                "title": "导入与样式",
-                "text": "运行 npm install @lingyzh/ui；安装包导出 Vue/TypeScript 源码，需使用支持 Vue SFC 的构建工具。本地联调 UAH 可继续使用 file:../UI，并在 Vite 中配置 Vue dedupe。只在应用入口引入一次共享样式。",
-                "code": "import { UButton, UTextField, UFormField, USnackbarHost, snackbar } from '@lingyzh/ui';\nimport '@lingyzh/ui/styles.css';\n"
+                "title": "一次安装，全局组件",
+                "text": "运行 npm install @lingyzh/ui；包导出 Vue/TypeScript 源码，需使用支持 Vue SFC 的构建工具。入口安装一次 createUI 并引入共享样式，默认注册全部公开组件，页面可直接使用 UButton / u-button 等标签，Ui* 兼容别名继续可用。本地源码联调需配置 Vue dedupe。",
+                "code": "import { createApp } from 'vue';\nimport { createUI } from '@lingyzh/ui';\nimport App from './App.vue';\nimport '@lingyzh/ui/styles.css';\n\ncreateApp(App).use(createUI({ locale: { locale: 'zh' } })).mount('#app');\n"
             },
             {
                 "id": "form",
-                "title": "组合一个表单",
-                "text": "UFormField 提供关联属性，UTextField 接收字符串状态。校验属于页面；同时传入 error 与 invalid，分别提供说明和错误视觉。",
-                "code": "<script setup>\nimport { ref } from 'vue';\nimport { UButton, UFormField, UTextField, snackbar } from '@lingyzh/ui';\nconst name = ref('');\nconst error = ref('');\nfunction save() {\n    error.value = name.value.trim() ? '' : '请输入项目名称。';\n    if (!error.value) snackbar.show('项目已保存', { tone: 'success' });\n}\n</script>\n\n<template>\n    <form @submit.prevent=\"save\">\n        <u-text-field\n            label=\"项目名称\"\n            id=\"name\"\n            :error-messages=\"error\"\n            v-model=\"name\"\n            :invalid=\"Boolean(error)\"\n        />\n        <u-button type=\"submit\" variant=\"flat\" color=\"primary\">保存</u-button>\n    </form>\n</template>\n"
+                "title": "模板直接使用组件",
+                "text": "以下是真实组件示例，只导入 Vue 的 ref，没有导入 UI 组件。PascalCase 和 kebab-case 标签均由入口插件解析。已有显式组件导入仍兼容；组合函数、snackbar 等服务、h(UButton) 及动态组件对象仍需显式导入。",
+                "code": "<script setup>\nimport { ref } from 'vue';\n\n// createUI() 已在应用入口安装；这里不导入任何 UI 组件。\nconst name = ref('');\nconst count = ref(0);\n</script>\n\n<template>\n    <div class=\"global-components-demo d-flex flex-column ga-3\">\n        <UTextField label=\"项目名称\" placeholder=\"请输入项目名称\"\n            v-model=\"name\"\n        />\n        <div>\n            <u-button color=\"primary\" variant=\"flat\"\n                @click=\"count++\"\n            >\n                保存 {{ count }} 次\n            </u-button>\n        </div>\n        <p aria-live=\"polite\">{{ name || '未填写项目名称' }}</p>\n    </div>\n</template>\n",
+                "demo": "global-components"
+            },
+            {
+                "id": "selective",
+                "title": "按需注册与别名",
+                "text": "默认无需逐页面导入。需要控制全局注册范围的独立应用可传 components: { UButton }，组件对象须显式导入；components: false 完全关闭组件注册，适用于全部局部导入的用法。aliases 可提供自定义组件名。自定义主题通过 createUI({ theme: ... }) 配置，不重复安装独立主题服务。"
             },
             {
                 "id": "host",

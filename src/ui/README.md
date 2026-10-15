@@ -17,9 +17,15 @@
 通过 npm 安装 `@lingyzh/ui` 的固定版本。UAH 不使用本地源码复制或 file: 依赖；共享修改先在此库验收并发布，再升级 UAH 依赖。
 
 ```js
-import { UiInput, UiSelect, UiButton, snackbar } from '@lingyzh/ui';
+import { createApp } from 'vue';
+import { createUI } from '@lingyzh/ui';
+import App from './App.vue';
 import '@lingyzh/ui/styles.css';
+
+createApp(App).use(createUI({ locale: { locale: 'zh' } })).mount('#app');
 ```
+
+入口安装一次后，模板直接使用 `<UButton>` / `<u-button>` 等全部公开组件，无需逐页导入；`Ui*` 兼容别名和既有显式导入继续可用。组合函数、服务及 `h(UButton)`、动态组件对象仍需显式导入。`components: false` 关闭全局注册，按需注册可用 `components: { UButton }`，自定义名称使用 `aliases`。安装 `createUI` 时通过其 `theme` 配置主题，不再重复安装独立主题服务。
 
 运行 `npm run dev` 后打开 http://127.0.0.1:5174 查看完整组件文档与真实示例。运行 `npm run build` 生成 `dist/docs` 文档及 `dist/lib` 库构建；预览文档可运行 `npm run preview` 并打开 http://127.0.0.1:4174。文档与正式工作台构建分离，不加入工作台导航。
 

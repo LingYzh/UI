@@ -157,6 +157,7 @@ import UToolbarTitle from './UToolbarTitle.vue';
 import UTransition from './UTransition.vue';
 import UTreeview from './UTreeview.vue';
 import UTreeSelect from './UTreeSelect.vue';
+import UTreeTable from './UTreeTable.vue';
 import UValidation from './UValidation.vue';
 import UVirtualScroll from './UVirtualScroll.vue';
 import UWindow from './UWindow.vue';
@@ -369,6 +370,7 @@ export const components = {
     UTransition,
     UTreeview,
     UTreeSelect,
+    UTreeTable,
     UValidation,
     UVirtualScroll,
     UWindow,

@@ -15,9 +15,29 @@ Requires Node.js 24+. Run `npm ci`, `npm run dev` (port 5174), `npm run typechec
 Install the public package with `npm install @lingyzh/ui`. Vue `^3.5.0` is a peer dependency. The package exports Vue SFC and TypeScript source, so consumers need a Vue-aware bundler such as Vite.
 
 ```js
-import { UButton, UTable, UDataTableServer, UPagination } from '@lingyzh/ui';
+import { createApp } from 'vue';
+import { createUI } from '@lingyzh/ui';
+import App from './App.vue';
 import '@lingyzh/ui/styles.css';
+
+createApp(App).use(createUI({ locale: { locale: 'zh' } })).mount('#app');
 ```
+
+Install the plugin once. It registers all public components, so page templates can use `<UButton>` / `<u-button>`, `<UTextField>`, and `<UDataTableServer>` directly without per-page component imports. Existing `Ui*` aliases and explicit imports remain compatible. Composables, services and JavaScript component references such as `h(UButton)` still need named imports.
+
+```vue
+<script setup>
+import { ref } from 'vue';
+const name = ref('');
+</script>
+
+<template>
+    <UTextField label="名称" v-model="name" />
+    <u-button variant="flat" color="primary">保存</u-button>
+</template>
+```
+
+For selective global registration use `createUI({ components: { UButton } })` with named component imports; `components: false` opts out of global registration and requires local component imports. Custom aliases use the `aliases` option. Configure the plugin's `theme` option when using `createUI`; the standalone theme installation below is for applications installing only the theme service.
 
 UAH installs a fixed published npm version of `@lingyzh/ui` and deduplicates Vue (`resolve.dedupe: ['vue']`). Verify shared changes in this repository's demos, publish an accepted version, then upgrade the consumer dependency.
 
