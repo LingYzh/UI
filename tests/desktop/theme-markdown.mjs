@@ -11,13 +11,20 @@ const url = `${server.resolvedUrls.local[0]}index.html`;
 const env = { ...process.env, UAH_DATA_DIR: path.join(evidence, 'profile'), UAH_UI_PREVIEW_URL: `${url}#/theme` };
 delete env.ELECTRON_RUN_AS_NODE;
 delete env.UAH_DEV_URL;
-const app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
+const app = await electron.launch({ args: ['--force-device-scale-factor=1', 'tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
 const page = await app.firstWindow();
 const errors = [];
 const passed = [];
 page.on('pageerror', error => errors.push(error.message));
 const demo = id => page.locator(`.docs-example[aria-labelledby="${id}-heading"] .live-example`);
-async function route(id) { await page.goto(`${url}#/${id}`); await page.locator('.docs-page-heading h1').waitFor(); }
+async function route(id) {
+    await page.goto(`${url}#/${id}`);
+    await page.locator('.docs-page-heading h1').waitFor();
+    // Pointer geometry must be sampled after the document's entry translation settles.
+    await page.locator('.docs-article').evaluate(element => Promise.all(element.getAnimations()
+        .filter(animation => animation.effect.getTiming().iterations !== Infinity)
+        .map(animation => animation.finished.catch(() => {}))));
+}
 async function frames() { await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))); }
 async function windowSize(width, height, zoom = 1) {
     await app.evaluate(({ BrowserWindow }, size) => { const window = BrowserWindow.getAllWindows()[0]; window.webContents.setZoomFactor(size.zoom); window.setContentSize(size.width, size.height); }, { width, height, zoom });
@@ -137,7 +144,7 @@ async function prepareTargetForPointer(locator, scrollerSelector, label) {
         assert.ok(geometry.scrollport.top >= geometry.header.bottom - 1 && geometry.scrollport.bottom <= geometry.innerHeight + 1, `${label}: inner reading viewport is fully visible before pointer input`);
     }
     const box = await locator.boundingBox();
-    assert.ok(box && box.x >= 0 && box.y >= geometry.header.bottom && box.x + box.width <= geometry.innerWidth && box.y + box.height <= geometry.innerHeight, `${label}: pointer target has an on-screen bounding box`);
+    assert.ok(box && box.x >= -1 && box.y >= geometry.header.bottom - 1 && box.x + box.width <= geometry.innerWidth + 1 && box.y + box.height <= geometry.innerHeight + 1, `${label}: pointer target has an on-screen bounding box ${JSON.stringify({ box, geometry })}`);
     return box;
 }
 async function jumpToFootnote(markdownDemo, scrollerSelector, { keyboard = false, smooth = false, label = 'footnote' } = {}) {
@@ -212,19 +219,19 @@ try {
     assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--background').trim()), '#262624');
     await select.selectOption('light');
     await page.waitForFunction(() => document.documentElement.dataset.uiTheme === 'light');
-    assert.equal(await color(global.locator('.ui-markdown code')), 'rgb(163, 79, 54)');
+    assert.equal(await color(global.locator('.ui-markdown code')), 'rgb(217, 119, 87)');
     passed.push('default light/dark palette and primary Markdown code/mark');
     await capture('theme-light');
 
     await select.selectOption('ocean');
     await page.waitForTimeout(240);
     assert.equal(await color(global.locator('.ui-markdown code')), 'rgb(36, 106, 145)');
-    assert.equal(await global.locator('.ui-button.primary').evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(36, 106, 145)');
+    assert.equal(await global.getByRole('button', { name: '主要操作', exact: true }).evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(36, 106, 145)');
     await demo('theme-custom').getByLabel('海蓝主题主色', { exact: true }).fill('#e0b040');
     await frames();
     await page.waitForTimeout(240);
     assert.equal(await color(global.locator('.ui-markdown code')), 'rgb(224, 176, 64)');
-    assert.equal(await color(global.locator('.ui-button.primary')), 'rgb(0, 0, 0)');
+    assert.equal(await color(global.getByRole('button', { name: '主要操作', exact: true })), 'rgb(0, 0, 0)');
     assert.equal(await color(demo('theme-custom').locator('.bg-primary')), 'rgb(0, 0, 0)');
     passed.push('reactive custom primary, filled primary, on-color and color utilities');
 
@@ -251,7 +258,7 @@ try {
     await scoped.scrollIntoViewIfNeeded();
     const cards = scoped.locator('.theme-demo-scope > .ui-row > .ui-col > .ui-card');
     assert.equal(await color(cards.nth(0).locator('.ui-markdown code')), 'rgb(230, 160, 134)');
-    assert.equal(await color(cards.nth(1).locator(':scope > .ui-card-content > .ui-markdown code')), 'rgb(163, 79, 54)');
+    assert.equal(await color(cards.nth(1).locator(':scope > .ui-card-content > .ui-markdown code')), 'rgb(217, 119, 87)');
     assert.equal(await color(scoped.locator('.theme-demo-nested code')), 'rgb(142, 204, 233)');
     await scoped.getByRole('button', { name: '打开继承主题弹窗' }).click();
     const dialog = page.getByRole('dialog');

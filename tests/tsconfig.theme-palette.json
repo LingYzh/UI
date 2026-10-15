@@ -1,0 +1,26 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "../src/ui/UiButton.vue",
+        "../src/ui/theme.ts",
+        "../src/ui/theme-defaults.ts",
+        "../src/ui/button-colors.ts",
+        "../src/ui/DataTableCore.vue",
+        "../src/ui/UiCheckbox.vue",
+        "../src/ui/UiRadio.vue",
+        "../src/ui/UiSwitch.vue",
+        "../src/ui/UiBadge.vue",
+        "../src/ui/UiTooltip.vue",
+        "../src/ui/UAvatar.vue",
+        "../src/ui/UBadge.vue",
+        "../src/ui/UChip.vue",
+        "../src/ui/UHotkey.vue",
+        "../src/ui/UField.vue",
+        "../src/ui/UImg.vue",
+        "../src/ui/UPicker.vue",
+        "../src/ui/USheet.vue",
+        "../src/ui/USnackbar.vue",
+        "../src/ui/UTimelineItem.vue"
+    ],
+    "exclude": []
+}

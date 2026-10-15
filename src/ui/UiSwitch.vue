@@ -41,7 +41,7 @@ const slotProps = { model, isValid: control.state };
 const thumbStyle = computed(() => {
     if (!checked.value || !props.thumbColor) return;
     const colors = buttonColorStyles(props.thumbColor);
-    return { backgroundColor: colors['--ui-button-color' as keyof typeof colors] as string, color: colors['--ui-button-on-color' as keyof typeof colors] as string };
+    return { backgroundColor: colors['--ui-button-surface' as keyof typeof colors] as string, color: colors['--ui-button-on-surface' as keyof typeof colors] as string };
 });
 
 function sync() {

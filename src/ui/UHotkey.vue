@@ -8,6 +8,7 @@ import { useDefaults } from './defaults';
 import { defaultHotkeyMap, formatHotkeys, type HotkeyMap, type HotkeyDisplayMode, type HotkeyPlatform } from './hotkey';
 import { borderStyles, roundedStyles } from './appearance';
 import { useLocale } from './locale-context';
+import { themeColor, themeOnColor } from './button-colors';
 
 const rawProps = withDefaults(defineProps<{
     keys?: string;
@@ -41,7 +42,8 @@ const accessibleLabel = computed(() => {
     return locale.t('hotkey.label', { keys }).trim();
 });
 const keyStyles = computed(() => ({
-    color: props.color && /^[a-z][\w-]*$/i.test(props.color) ? `var(--ui-theme-${props.color}, ${props.color})` : props.color,
+    color: props.variant === 'flat' ? themeOnColor(props.color ?? 'primary', true) : themeColor(props.color),
+    background: props.variant === 'flat' ? themeColor(props.color ?? 'primary', true) : undefined,
     ...borderStyles(props.border),
     ...roundedStyles(props.rounded),
     boxShadow: props.elevation !== undefined ? Number(props.elevation) > 0 ? `0 ${Number(props.elevation) * 2}px ${Number(props.elevation) * 6}px rgb(0 0 0 / .12)` : 'none' : undefined

@@ -24,7 +24,7 @@
 :is(.u-notice-placement, .u-notice-stack)[data-position^="center"] { top: 50%; translate: 0 -50%; }
 :is(.u-notice-placement, .u-notice-stack)[data-position="center-center"] { translate: -50% -50%; }
 :is(.u-notice-placement, .u-notice-stack).is-contained { position: absolute; max-width: calc(100% - 32px); }
-.u-notice { position: relative; display: flex; align-items: center; gap: 12px; min-width: 240px; min-height: 48px; padding: 12px 16px; overflow: hidden; border: 0; border-radius: 8px; background: var(--ui-button-color, var(--surface)); color: var(--ui-button-on-color, var(--text)); font: var(--ui-font-body-large)/1.6 var(--font); pointer-events: auto; }
+.u-notice { --ui-button-color: initial; --ui-button-on-color: initial; --ui-button-surface: initial; --ui-button-on-surface: initial; position: relative; display: flex; align-items: center; gap: 12px; min-width: 240px; min-height: 48px; padding: 12px 16px; overflow: hidden; border: 0; border-radius: 8px; background: var(--ui-button-surface, var(--surface)); color: var(--ui-button-on-surface, var(--text)); font: var(--ui-font-body-large)/1.6 var(--font); pointer-events: auto; }
 .u-notice[data-variant="elevated"] { box-shadow: var(--shadow); }
 .u-notice[data-variant="outlined"] { border: 1px solid var(--ui-button-color, var(--border)); background: var(--surface); color: var(--ui-button-color, var(--text)); }
 .u-notice[data-variant="tonal"] { background: color-mix(in srgb, var(--ui-button-color, var(--text)) 12%, var(--surface)); color: var(--ui-button-color, var(--text)); }

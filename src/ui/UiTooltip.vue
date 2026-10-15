@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { themeColor, themeOnColor } from './button-colors';
 import { computed, getCurrentInstance, mergeProps, nextTick, normalizeClass, onActivated, onBeforeUnmount, onDeactivated, onMounted, provide, ref, useId, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
 import { vPointerBlur } from './pointer-focus';
 import { useDefaults } from './defaults';
@@ -99,7 +100,8 @@ const styles = computed<CSSProperties>(() => ({
     ...theme.styles.value,
     width: unit(props.width), height: unit(props.height), minWidth: unit(props.minWidth), minHeight: unit(props.minHeight),
     maxWidth: unit(props.maxWidth), maxHeight: unit(props.maxHeight), zIndex: props.zIndex,
-    backgroundColor: props.color && /^[a-z][\w-]*$/i.test(props.color) ? `var(--ui-theme-${props.color}, ${props.color})` : props.color,
+    backgroundColor: themeColor(props.color, true),
+    color: themeOnColor(props.color, true),
     transformOrigin: props.origin === 'auto' ? undefined : props.origin,
     transition: props.transition === false ? 'none' : undefined
 }));

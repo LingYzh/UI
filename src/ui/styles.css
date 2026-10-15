@@ -112,6 +112,11 @@
 }
 
 .ui-button {
+    --ui-button-color: initial;
+    --ui-button-on-color: initial;
+    /* Keep a parent's semantic surface (toolbar, notice, etc.) out of child buttons. */
+    --ui-button-surface: var(--ui-button-color, var(--surface));
+    --ui-button-on-surface: var(--ui-button-on-color, var(--text));
     min-height: var(--ui-button-height, 36px);
     padding: var(--ui-button-padding-block, 7px) 13px;
     display: inline-flex;
@@ -123,7 +128,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--surface);
-    color: var(--text);
+    color: inherit;
     font-size: var(--ui-font-body-large);
     line-height: 1.35;
     white-space: nowrap;
@@ -137,8 +142,8 @@
 
 .ui-button--variant-elevated, .ui-button--variant-flat {
     border-color: transparent;
-    background: var(--ui-button-color, var(--surface));
-    color: var(--ui-button-on-color, var(--text));
+    background: var(--ui-button-surface, var(--ui-button-color, var(--surface)));
+    color: var(--ui-button-on-surface, var(--ui-button-on-color, var(--text)));
 }
 .ui-button--variant-elevated { box-shadow: 0 2px 3px -1px #0004, 0 3px 6px #0002, 0 1px 9px #0002; }
 .ui-button--variant-elevated:hover:not(:disabled):not([aria-disabled="true"]) { box-shadow: 0 3px 5px -1px #0004, 0 5px 10px #0003, 0 2px 14px #0002; }
@@ -154,12 +159,12 @@
 .ui-button--variant-outlined {
     border-color: var(--ui-button-color, var(--border));
     background: transparent;
-    color: var(--ui-button-color, var(--text));
+    color: var(--ui-button-color, inherit);
 }
 .ui-button--variant-text, .ui-button--variant-plain {
     border-color: transparent;
     background: transparent;
-    color: var(--ui-button-color, var(--text));
+    color: var(--ui-button-color, inherit);
 }
 .ui-button--variant-plain { opacity: .62; }
 .ui-button--variant-plain:is(:hover, :focus-visible:not([data-ui-pointer-focus])):not(:disabled):not([aria-disabled="true"]) { opacity: 1; }
@@ -267,7 +272,7 @@
     font-size: 9px;
     pointer-events: none;
 }
-.ui-switch-track-true { left: 2px; color: var(--on-accent, #fff); }
+.ui-switch-track-true { left: 2px; color: var(--ui-control-on-color, var(--on-primary-surface, #fff)); }
 .ui-switch-track-false { right: 2px; }
 .ui-switch-loader { width: 8px; height: 8px; border: 1.5px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: ui-switch-spin 800ms linear infinite; }
 @keyframes ui-switch-spin { to { transform: rotate(360deg); } }
@@ -592,8 +597,8 @@
 .ui-tabs[data-variant="underline"] > .ui-tab:focus-visible:not([data-ui-pointer-focus]) { outline-offset: -3px; }
 .ui-tabs[aria-orientation="vertical"] { overflow-x: hidden; flex-direction: column; align-items: stretch; }
 .ui-tabs[aria-orientation="vertical"] > .ui-tab { justify-content: flex-start; text-align: start; border-radius: 6px 0 0 6px; padding-inline: 14px 20px; }
-.ui-tabs-slider { position: absolute; pointer-events: none; background: var(--accent-text); left: 0; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; z-index: 2; }
-.ui-tabs[aria-multiselectable="true"][data-variant="underline"]:not([data-hide-slider="true"]) > .ui-tab[aria-selected="true"]::after { content: ''; position: absolute; pointer-events: none; background: var(--accent-text); inset-inline: 0; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; }
+.ui-tabs-slider { position: absolute; pointer-events: none; background: var(--accent); left: 0; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; z-index: 2; }
+.ui-tabs[aria-multiselectable="true"][data-variant="underline"]:not([data-hide-slider="true"]) > .ui-tab[aria-selected="true"]::after { content: ''; position: absolute; pointer-events: none; background: var(--accent); inset-inline: 0; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; }
 .ui-tabs[aria-multiselectable="true"][aria-orientation="vertical"] > .ui-tab[aria-selected="true"]::after { inset-inline-start: auto; inset-inline-end: 0; top: 0; bottom: 0; width: 3px; height: auto; border-radius: 3px 0 0 3px; }
 .ui-tabs[aria-multiselectable="true"][aria-orientation="vertical"][data-indicator-side="start"] > .ui-tab[aria-selected="true"]::after { inset-inline-start: 0; inset-inline-end: auto; border-radius: 0 3px 3px 0; }
 .ui-tabs[data-ready="true"] .ui-tabs-slider { transition: transform var(--motion-layout) var(--ease), width var(--motion-layout) var(--ease), height var(--motion-layout) var(--ease); }

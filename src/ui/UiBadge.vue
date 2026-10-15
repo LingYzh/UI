@@ -3,6 +3,7 @@ import { vRipple, type RippleOptions } from './ripple';
 import { vPointerBlur } from './pointer-focus';
 import { computed, useId } from 'vue';
 import { uiText } from './locale';
+import { themeColor, themeOnColor } from './button-colors';
 
 const props = withDefaults(defineProps<{
     tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'error';
@@ -15,7 +16,15 @@ const props = withDefaults(defineProps<{
 } & { ripple?: RippleOptions }>(), { ripple: true, tone: 'neutral', variant: 'soft', dense: false, closable: false });
 const emit = defineEmits<{ close: [event: MouseEvent] }>();
 const labelId = useId();
-const style = computed(() => (props.color ? { '--badge-color': props.color } : undefined));
+const style = computed(() => {
+    const fill = props.color ?? ({ accent: 'primary', success: 'success', warning: 'warning', error: 'error' } as Record<string, string>)[props.tone];
+    return {
+        '--badge-color': themeColor(props.color),
+        '--badge-surface': themeColor(props.color, true),
+        '--badge-fill': themeColor(fill, true),
+        '--badge-on-fill': themeOnColor(fill, true)
+    };
+});
 </script>
 
 <template>

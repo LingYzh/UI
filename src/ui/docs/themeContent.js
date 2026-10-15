@@ -1,3 +1,4 @@
+import { themePaletteExample } from './themePaletteContent.js';
 const scopedCode = "<script setup>\nimport { ref } from 'vue';\nimport { UThemeProvider, UCard, UTextField, UButton, UMarkdown, UDialog } from '@lingyzh/ui';\nconst name = ref('工作空间');\nconst open = ref(false);\n</script>\n\n<template>\n    <u-theme-provider theme=\"dark\" with-background>\n        <u-card title=\"继承深色主题\">\n            <u-text-field v-model=\"name\" label=\"名称\" />\n            <u-markdown source=\"`行内代码` 与 ==标记== 使用主题主色。\" />\n            <u-button variant=\"flat\" color=\"primary\" @click=\"open = true\">打开继承主题弹窗</u-button>\n        </u-card>\n        <u-card theme=\"light\" title=\"独立浅色卡片\">嵌套区域可覆盖主题。</u-card>\n        <u-dialog v-model:open=\"open\"><h3>继承深色主题</h3><u-button @click=\"open = false\">关闭</u-button></u-dialog>\n    </u-theme-provider>\n</template>";
 const setupCode = `import { createApp } from 'vue';
 import { createUiTheme } from '@lingyzh/ui';
@@ -45,6 +46,7 @@ export const themePages = [
         id: 'theme', title: '主题', name: 'createUiTheme / useUiTheme', group: '设计基础', kind: 'service',
         description: '注册与切换 light、dark、system 和自定义主题；沿用现有 UAH 配色，通过容器继承控制局部外观。',
         examples: [
+            themePaletteExample,
             { id: 'theme-switch', title: '全局切换与跟随系统', description: '模式保留 system，实际主题随系统明暗变化。明亮主题从触发器铺开，深色主题将旧画面收束到触发器；自定义主题按 dark 属性决定方向。示例循环浅色、深色、海蓝、夜海四种主题；跟随系统通过下拉选择，避免循环到相同配色。减少动态效果时立即更新，与顶栏明暗开关使用相同策略。', code: switchingCode },
             { id: 'theme-custom', title: '自定义主题与实时配色', description: '注册主题继承对应明暗默认值；修改响应式 themes 即时更新所有使用该主题的区域。', code: setupCode },
             { id: 'theme-scoped', title: '局部主题与嵌套覆盖', description: 'Provider、Card 和 Dialog 的主题沿组件树继承；局部切换不改变全局选择。', code: scopedCode },
@@ -71,8 +73,8 @@ export const themePages = [
         notes: [
             'createUiTheme 返回可直接 app.use(theme) 的实例；组件 setup 中通过 useUiTheme() 获取当前作用域。每个 app 创建独立实例。未安装时兼容根节点 data-theme 的既有明暗切换。',
             'themes 是可写 Ref；computedThemes、current、name、mode、isSystem、themeNames、styles 是响应式计算值。JavaScript 与嵌套对象模板中使用 .value。name 是实际主题，mode 保留 system 等选择；global.name 可写、global.current 始终指向全局。change/toggle/cycle 始终切换全局，局部主题通过 Provider 的 theme 属性控制。',
-            'primary 用于可读文字，primary-surface 用于实心主色背景。默认明暗保持原 accent-text / accent；自定义 primary 默认同步 primary-surface，可独立覆盖。支持 success/error/warning/info 与现有全部 tokens。',
-            '未明确提供的 on-{color} 会根据十六进制 RGB 的亮度自动选择黑／白；其他颜色格式建议显式提供 on-{color}。on-surface 同时映射正文 text。颜色变量为 --ui-theme-{color} 与 --{color}；普通 variables 为 --{name}。',
+            '默认暖白与陶土色对齐 Anthropic / Claude：background #faf9f5、sidebar #f0eee6、primary-surface / accent #d97757。浅色主题 primary / accent-text 同为 #d97757，不再保留深棕色；深色文字适配为 #e6a086。主色实心按钮使用 primary-surface，默认陶土色搭配白字，描边、文字按钮使用 primary。自定义 primary 默认同步 primary-surface，可独立覆盖。支持 success/error/warning/info 与现有全部 tokens。',
+            '默认陶土 primary-surface 采用白色前景；其余未明确提供的 on-{color} 根据十六进制 RGB 亮度自动选择黑／白，显式 on-{color} 始终优先。其他颜色格式建议显式提供前景色。on-surface 同时映射正文 text。颜色变量为 --ui-theme-{color} 与 --{color}；普通 variables 为 --{name}。',
             '主题定义在 setup 时保持完整；局部 theme 必须为已注册名称或 system。Provider 不添加间距，with-background 只增加主题背景。Card/Dialog 可用 theme 属性覆盖，其他控件通过容器继承；Teleport 通知保持所在作用域。',
             '切换动画与系统／手动减少动态效果设置联动。light / dark 默认配色来自现有 tokens，不引入 Material 主题。'
         ]

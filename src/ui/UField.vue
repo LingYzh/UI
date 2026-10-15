@@ -7,6 +7,7 @@ import Icon from '../components/Icon.vue';
 import type { IconValue } from './icon-config';
 import type { FieldLayout } from './layout';
 import { roundedStyles } from './appearance';
+import { themeColor, themeOnColor } from './button-colors';
 
 interface FieldScope {
     isActive: Ref<boolean>;
@@ -75,13 +76,13 @@ const isActive = computed(() => !!props.active || !!props.dirty);
 const isFocused = computed(() => focused.value);
 const fieldColor = computed(() => props.error || props.disabled ? undefined : isActive.value && focused.value ? props.color : props.baseColor);
 const fieldIconColor = computed(() => props.iconColor === true || (!props.iconColor && props.glow && focused.value) ? fieldColor.value : typeof props.iconColor === 'string' ? props.iconColor : undefined);
-function color(value: string | undefined): string | undefined {
-    return value && /^[a-z][\w-]*$/i.test(value) ? `var(--ui-theme-${value}, ${value})` : value;
-}
 const scope = computed(() => ({ isActive, isFocused, controlRef, iconColor: fieldIconColor, focus, blur }));
 const styles = computed(() => ({
-    '--u-field-color': color(fieldColor.value),
-    background: color(props.bgColor),
+    '--u-field-color': themeColor(fieldColor.value),
+    background: themeColor(props.bgColor, true),
+    color: themeOnColor(props.bgColor, true),
+    '--u-field-on-color': themeOnColor(props.bgColor, true),
+    '--u-field-bg': themeColor(props.bgColor, true),
     ...roundedStyles(props.rounded)
 }));
 function focus(): void { if (!props.disabled) focused.value = true; }
@@ -110,7 +111,7 @@ defineExpose({ controlRef, fieldIconColor, focus, blur });
                         <span v-if="props.loading" class="u-field-loading" />
                     </slot>
                 </div>
-                <span v-if="props.prependInnerIcon || $slots['prepend-inner']" class="u-field-affix" :style="{ color: color(fieldIconColor) }">
+                <span v-if="props.prependInnerIcon || $slots['prepend-inner']" class="u-field-affix" :style="{ color: themeColor(fieldIconColor) }">
                     <slot name="prepend-inner" v-bind="scope">
                         <button type="button" class="u-field-icon" :disabled="!!props.disabled" aria-label="前置操作"
                             @click="emit('click:prependInner', $event)">
@@ -134,7 +135,7 @@ defineExpose({ controlRef, fieldIconColor, focus, blur });
                         </button>
                     </slot>
                 </span>
-                <span v-if="props.appendInnerIcon || $slots['append-inner']" class="u-field-affix" :style="{ color: color(fieldIconColor) }">
+                <span v-if="props.appendInnerIcon || $slots['append-inner']" class="u-field-affix" :style="{ color: themeColor(fieldIconColor) }">
                     <slot name="append-inner" v-bind="scope">
                         <button type="button" class="u-field-icon" :disabled="!!props.disabled" aria-label="后置操作"
                             @click="emit('click:appendInner', $event)">

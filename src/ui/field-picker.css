@@ -1,5 +1,7 @@
 .u-field-surface {
-    --u-field-color: var(--accent);
+    --u-field-bg: initial;
+    --u-field-on-color: initial;
+    --u-field-color: var(--accent-text);
     position: relative;
     display: flex;
     align-items: stretch;
@@ -81,7 +83,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--muted);
+    color: var(--u-field-on-color, var(--muted));
     pointer-events: none;
     font-size: 16px;
     line-height: 20px;
@@ -98,13 +100,13 @@
 .is-outlined > .u-field-control > .u-field-label.is-floating {
     top: -8px;
     padding-inline: 4px;
-    background: var(--surface);
+    background: var(--u-field-bg, var(--surface));
 }
 .u-field-affix {
     display: flex;
     align-items: flex-start;
     padding: 12px 8px;
-    color: var(--muted);
+    color: var(--u-field-on-color, var(--muted));
 }
 .is-center-affix > .u-field-affix {
     align-items: center;
@@ -213,7 +215,7 @@
 }
 .u-hotkey-key { display: inline-flex; align-items: center; }
 .u-hotkey-display.is-elevated .u-hotkey-key { box-shadow: 0 2px 4px rgb(0 0 0 / .12); }
-.u-hotkey-display.is-flat .u-hotkey-key { background: var(--accent); color: var(--accent-text); border-color: transparent; }
+.u-hotkey-display.is-flat .u-hotkey-key { background: var(--accent); color: var(--on-primary-surface); border-color: transparent; }
 .u-hotkey-display.is-tonal .u-hotkey-key { background: var(--accent-soft); }
 .u-hotkey-display.is-text .u-hotkey-key, .u-hotkey-display.is-plain .u-hotkey-key { border: 0; background: transparent; box-shadow: none; }
 @media (prefers-reduced-motion: reduce) {

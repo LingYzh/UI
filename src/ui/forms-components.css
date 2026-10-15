@@ -2,7 +2,7 @@
 .u-autocomplete { position: relative; width: 100%; min-width: 0; color: var(--text); font-size: var(--ui-font-body-large); line-height: 1.4; }
 .u-autocomplete-field { display: flex; align-items: center; gap: 6px; min-height: 36px; min-width: 0; padding: 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); transition: border-color 160ms, background-color 160ms, box-shadow 160ms; }
 .u-autocomplete:not(.is-disabled) .u-autocomplete-field:hover { border-color: color-mix(in srgb, var(--accent-text) 38%, var(--border)); background: var(--soft); }
-.u-autocomplete:not(.is-disabled) .u-autocomplete-field:has(:focus-visible:not([data-ui-pointer-focus])) { border-color: var(--ui-control-color, var(--accent-text)); box-shadow: 0 0 0 3px var(--accent-soft); }
+.u-autocomplete:not(.is-disabled) .u-autocomplete-field:has(:focus-visible:not([data-ui-pointer-focus])) { border-color: var(--ui-control-text-color, var(--accent-text)); box-shadow: 0 0 0 3px var(--accent-soft); }
 .u-autocomplete.is-dense .u-autocomplete-field { min-height: 30px; font-size: 14px; }
 .u-autocomplete.is-comfortable .u-autocomplete-field { min-height: 32px; }
 .u-autocomplete.is-ghost .u-autocomplete-field { background: transparent; border-color: transparent; }
@@ -69,6 +69,7 @@ button.u-chip-main, .u-chip-close { cursor: pointer; }
 .u-chip-close { padding: 4px 8px 4px 0; }
 .ui-chip.is-disabled { opacity: .56; }
 .ui-chip.is-text { background: transparent; border-color: transparent; }
+.ui-chip.is-flat { --badge-bg: var(--badge-fill, var(--soft)); --badge-fg: var(--badge-on-fill, var(--text)); border-color: transparent; }
 .ui-chip-select { min-width: 0; border: 0; padding: 3px 0; background: transparent; color: inherit; font: inherit; white-space: nowrap; cursor: pointer; }
 .ui-chip-select:disabled { cursor: not-allowed; }
 .ui-chip-select:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 2px; }

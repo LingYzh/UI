@@ -35,12 +35,12 @@
 /* A bare control (no label wrapper) dims itself; wrapped controls are dimmed by the label. */
 :not(.ui-checkbox) > .ui-checkbox-control:disabled, :not(.ui-radio) > .ui-radio-control:disabled { opacity: .56; }
 
-/* Checked / mixed: accent fill with a white glyph drawn by a mask so it follows theme-independent contrast. */
-.ui-checkbox-control:is(:checked, :indeterminate) { border-color: var(--accent); background: var(--accent); }
+/* Checked / mixed controls share the surface and foreground roles, including custom themes. */
+.ui-checkbox-control:is(:checked, :indeterminate) { border-color: var(--ui-control-color, var(--accent)); background: var(--ui-control-color, var(--accent)); }
 .ui-checkbox-control::after {
     position: absolute;
     inset: 0;
-    background: #fff;
+    background: var(--ui-control-on-color, var(--on-primary-surface, #fff));
     content: "";
     opacity: 0;
     transform: scale(.6);
@@ -57,12 +57,12 @@
     transform: none;
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
 }
-.ui-radio-control:checked { border-color: var(--accent); background: var(--surface); }
+.ui-radio-control:checked { border-color: var(--ui-control-color, var(--accent)); background: var(--surface); }
 .ui-radio-control::after {
     position: absolute;
     inset: 3px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--ui-control-color, var(--accent));
     content: "";
     transform: scale(0);
     transition: transform var(--motion-fast) var(--ease);

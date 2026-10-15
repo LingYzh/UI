@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { themeColor, themeOnColor } from './button-colors';
 import { computed, nextTick, normalizeClass, onBeforeUnmount, ref, watch, type CSSProperties } from 'vue';
 import { useDefaults } from './defaults';
 import UiMaybeTransition, { type UiTransition } from './UiMaybeTransition.vue';
@@ -72,13 +73,10 @@ const contentClass = computed(() => normalizeClass(props.contentClass));
 function unit(value?: number | string): string | undefined {
     return typeof value === 'number' || value !== undefined && /^\d+(\.\d+)?$/.test(value) ? `${value}px` : value;
 }
-function color(value?: string): string | undefined {
-    return value && /^[a-z][\w-]*$/i.test(value) ? `var(--ui-theme-${value}, ${value})` : value;
-}
 const styles = computed<CSSProperties>(() => ({
     width: unit(props.width), height: unit(props.height), minWidth: unit(props.minWidth), minHeight: unit(props.minHeight),
     maxWidth: unit(props.maxWidth), maxHeight: unit(props.maxHeight), aspectRatio: ratio.value,
-    backgroundColor: color(props.color), ...roundedStyles(props.tile ? 0 : props.rounded)
+    backgroundColor: themeColor(props.color, true), '--u-img-on-color': themeOnColor(props.color, true), ...roundedStyles(props.tile ? 0 : props.rounded)
 }));
 let observer: IntersectionObserver | undefined;
 let revision = 0;

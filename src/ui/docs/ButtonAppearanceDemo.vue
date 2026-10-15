@@ -72,7 +72,7 @@ const customColors = [
         </div>
         <p class="button-appearance-caption">
             颜色独立作用于每一种变体。danger 默认与 error
-            使用同一主题色；浅色实心按钮自动使用深色文字。
+            使用同一主题色。默认陶土主色采用白字；其他自定义填充色自动选择前景色。
         </p>
         <div class="button-typography-preview">
             <p class="button-appearance-caption">不同字号下，带图标与纯文本按钮保持同一条中线。</p>

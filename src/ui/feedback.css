@@ -2,6 +2,10 @@
 
 /* Badge: tone sets foreground/background pairs; a custom color is mixed toward --text so it stays readable in both themes. */
 .ui-badge {
+    --badge-color: initial;
+    --badge-surface: initial;
+    --badge-fill: initial;
+    --badge-on-fill: initial;
     --badge-fg: var(--muted);
     --badge-bg: color-mix(in srgb, var(--text) 7%, transparent);
     display: inline-flex;
@@ -27,7 +31,7 @@
 .ui-badge[data-tone="error"] { --badge-fg: var(--red); --badge-bg: var(--red-background); }
 .ui-badge.has-color {
     --badge-fg: color-mix(in srgb, var(--badge-color) 70%, var(--text));
-    --badge-bg: color-mix(in srgb, var(--badge-color) 16%, transparent);
+    --badge-bg: color-mix(in srgb, var(--badge-surface, var(--badge-color)) 16%, transparent);
 }
 .ui-badge--outline { border-color: color-mix(in srgb, var(--badge-fg) 38%, var(--border)); background: transparent; }
 .ui-badge.is-dense { min-height: 18px; padding: 0 5px; }

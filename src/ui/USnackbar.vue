@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch, type HTMLAttributes } from 'vue';
 import UiButton from './UiButton.vue';
 import UiSpinner from './UiSpinner.vue';
-import { buttonColorStyles } from './button-colors';
+import { buttonColorStyles, themeColor } from './button-colors';
 import { useDefaults } from './defaults';
 import { useUiTheme } from './theme';
 import { snackbarLocation, type SnackbarProps } from './snackbar-props';
@@ -88,7 +88,7 @@ defineExpose({ close, pause, resume, surface });
                         <slot />
                     </div>
                     <div v-if="$slots.actions || props.closable" class="u-notice-actions"><slot name="actions" :is-active="model" :close="close"><UiButton variant="text" :color="typeof props.closable === 'string' ? props.closable : undefined" size="sm" @click="close">{{ props.closeText }}</UiButton></slot></div>
-                    <div v-if="props.timer && duration >= 0" class="u-notice-timer" :class="{ 'is-top': props.timer === 'top' }" aria-hidden="true"><span :style="{ transform: `scaleX(${props.reverseTimer ? 1 - ratio : ratio})`, background: props.timerColor ? `var(--ui-theme-${props.timerColor}, ${props.timerColor})` : undefined }" /></div>
+                    <div v-if="props.timer && duration >= 0" class="u-notice-timer" :class="{ 'is-top': props.timer === 'top' }" aria-hidden="true"><span :style="{ transform: `scaleX(${props.reverseTimer ? 1 - ratio : ratio})`, background: themeColor(props.timerColor, true) }" /></div>
                 </div>
             </div>
         </Transition>

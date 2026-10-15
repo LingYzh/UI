@@ -14,6 +14,7 @@ import {
     useUiTheme,
 } from '../index';
 import { reducedMotion } from './preferences';
+import ThemePaletteDemo from './ThemePaletteDemo.vue';
 const props = defineProps({ example: { type: String, default: 'theme-switch' } });
 const theme = useUiTheme();
 theme.themes.value.ocean ??= { colors: { primary: '#246a91' } };
@@ -65,7 +66,8 @@ function cycleTheme(event) {
 
 <template>
     <div class="theme-demo" :data-example="props.example">
-        <template v-if="props.example === 'theme-switch'">
+        <ThemePaletteDemo v-if="props.example === 'theme-palette'" />
+        <template v-else-if="props.example === 'theme-switch'">
             <u-row align="end">
                 <u-col :cols="12" :sm="7">
                     <u-select

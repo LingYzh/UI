@@ -53,7 +53,7 @@ function close(event: MouseEvent) { event.stopPropagation(); shown.value = false
 
 <template>
     <UiBadge v-if="shown" ref="badge" v-bind="$attrs" :ripple="disabled || group?.readonly.value ? false : props.ripple" :tone="active ? 'accent' : props.tone" :variant="badgeVariant" :color="props.color" :dense="props.dense" :closable="props.closable && !disabled" :close-label="props.closeLabel"
-        class="ui-chip" :class="[selectedClass, { 'is-selected': active, 'is-disabled': disabled, 'is-text': props.variant === 'text', 'is-label': props.label }]" :aria-disabled="disabled || undefined" @close="close">
+        class="ui-chip" :class="[selectedClass, { 'is-selected': active, 'is-disabled': disabled, 'is-text': props.variant === 'text', 'is-flat': props.variant === 'flat', 'is-label': props.label }]" :aria-disabled="disabled || undefined" @close="close">
         <template v-if="$slots.icon" #icon><slot name="icon" /></template>
         <slot v-if="props.filter && active" name="filter"><span aria-hidden="true">✓</span></slot>
         <slot name="prepend" />

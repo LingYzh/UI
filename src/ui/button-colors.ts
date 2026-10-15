@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue';
 
 const semanticFallbacks: Record<string, string> = {
-    primary: 'var(--accent)', secondary: 'var(--muted)',
+    primary: 'var(--primary, var(--accent-text))', secondary: 'var(--muted)',
     success: 'var(--green)', error: 'var(--red)', danger: 'var(--red)',
     warning: 'var(--amber)', info: 'var(--code-property, #315f8b)',
     surface: 'var(--surface)', background: 'var(--background)'
@@ -32,17 +32,37 @@ function rgbChannels(color: string): number[] | undefined {
     }
 }
 
+/** Resolve semantic names without constructing invalid variables for raw CSS colors. */
+export function themeColor(color?: string, surface = false): string | undefined {
+    const value = color?.trim();
+    if (!value) return;
+    if (/^[a-z][a-z\d-]*$/i.test(value) && value !== 'currentColor' && value !== 'transparent') {
+        if (surface && value === 'primary') return 'var(--ui-theme-primary-surface, var(--primary-surface, var(--accent)))';
+        return `var(--ui-theme-${value}, ${semanticFallbacks[value] ?? value})`;
+    }
+    return value;
+}
+
+export function themeOnColor(color?: string, surface = false): string | undefined {
+    const value = color?.trim();
+    if (!value) return;
+    if (/^[a-z][a-z\d-]*$/i.test(value) && value !== 'currentColor' && value !== 'transparent') {
+        if (surface && value === 'primary') return 'var(--ui-theme-on-primary-surface, var(--on-primary-surface, #ffffff))';
+        return `var(--ui-theme-on-${value}, ${semanticFallbacks[value] ? `var(--on-${value}, #ffffff)` : foreground(value) ?? 'var(--text)'})`;
+    }
+    const themeVariable = value.match(/^var\(\s*--(?:ui-theme-)?([a-z][a-z\d-]*)\s*\)$/i)?.[1];
+    return themeVariable ? `var(--ui-theme-on-${themeVariable}, var(--on-${themeVariable}, var(--text)))` : foreground(value) ?? 'var(--text)';
+}
+
 export function buttonColorStyles(color?: string): CSSProperties {
     if (!color?.trim()) return {};
-    const value = color.trim();
-    if (/^[a-z][a-z\d-]*$/i.test(value) && value !== 'currentColor' && value !== 'transparent') {
-        return {
-            '--ui-button-color': `var(--ui-theme-${value}, ${semanticFallbacks[value] ?? value})`,
-            '--ui-button-on-color': `var(--ui-theme-on-${value}, ${semanticFallbacks[value] ? `var(--on-${value}, #ffffff)` : foreground(value) ?? 'var(--text)'})`
-        } as CSSProperties;
-    }
-    const themeVariable = value.match(/^var\(\s*--ui-theme-([a-z][a-z\d-]*)\s*\)$/i)?.[1];
-    return { '--ui-button-color': value, '--ui-button-on-color': themeVariable ? `var(--ui-theme-on-${themeVariable}, var(--text))` : foreground(value) ?? 'var(--text)' } as CSSProperties;
+    // Every colored surface owns both pairs, preventing inherited primary fills on nested colors.
+    return {
+        '--ui-button-color': themeColor(color),
+        '--ui-button-on-color': themeOnColor(color),
+        '--ui-button-surface': themeColor(color, true),
+        '--ui-button-on-surface': themeOnColor(color, true)
+    } as CSSProperties;
 }
 
 function foreground(color: string): string | undefined {

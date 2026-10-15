@@ -111,8 +111,13 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
             }
             for (const [key, color] of Object.entries(colors)) {
                 if (key.startsWith('on-')) continue;
-                if (definition.colors?.[`on-${key}`] === undefined) colors[`on-${key}`] = foreground(color);
+                if (definition.colors?.[`on-${key}`] === undefined) {
+                    // The default clay brand keeps white ink; custom surfaces still choose ink automatically.
+                    colors[`on-${key}`] = (key === 'primary' || key === 'primary-surface') && color.toLowerCase() === defaultUiThemes.light.colors['primary-surface']
+                        ? '#ffffff' : foreground(color);
+                }
             }
+            if (definition.colors?.['on-accent'] === undefined) colors['on-accent'] = colors['on-primary-surface'];
             if (definition.colors?.danger === undefined && definition.colors?.['on-danger'] === undefined) colors['on-danger'] = colors['on-error'];
             result[name] = { ...resolved, colors };
         }
@@ -248,7 +253,11 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
                 watch(computedThemes, () => {
                     if (utilityStyle) {
                         const keys = new Set(Object.values(computedThemes.value).flatMap(theme => Object.keys(theme.colors)));
-                        utilityStyle.textContent = [...keys].filter(key => !key.startsWith('on-')).map(key => `.text-${key}{color:var(--ui-theme-${key})}.bg-${key}{background-color:var(--ui-theme-${key});color:var(--ui-theme-on-${key})}.border-${key}{border-color:var(--ui-theme-${key})}`).join('\n');
+                        utilityStyle.textContent = [...keys].filter(key => !key.startsWith('on-')).map(key => {
+                            const text = key === 'accent' ? 'primary' : key;
+                            const surface = key === 'primary' ? 'primary-surface' : key;
+                            return `.text-${key}{color:var(--ui-theme-${text})}.bg-${key}{background-color:var(--ui-theme-${surface});color:var(--ui-theme-on-${surface})}.border-${key}{border-color:var(--ui-theme-${text})}`;
+                        }).join('\n');
                     }
                 }, { immediate: true, flush: 'sync' });
             });

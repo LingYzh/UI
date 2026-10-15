@@ -88,7 +88,7 @@ a {
     width: 30px;
     height: 30px;
     flex: 0 0 auto;
-    color: #be674b;
+    color: var(--accent);
 }
 
 ::-webkit-scrollbar {

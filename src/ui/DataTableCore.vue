@@ -152,7 +152,7 @@ const loaderScope = computed(() => ({
 }));
 const loaderStyle = computed(() => ({
     ...buttonColorStyles(loadingColor.value),
-    background: 'var(--ui-button-color, var(--accent))',
+    background: 'var(--ui-button-surface, var(--accent))',
 }));
 const compact = computed(() => props.density === 'compact' || props.dense);
 const headerHeight = computed(() =>

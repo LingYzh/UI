@@ -11,9 +11,10 @@
     --faint: #77746b;
     --border: #dedbd2;
     --line: #e9e6de;
-    --accent: #a34f36;
-    --accent-text: #a34f36;
-    --accent-soft: #f3e7de;
+    /* Light-theme accents share the clay brand; dark text adapts below. */
+    --accent: #d97757;
+    --accent-text: #d97757;
+    --accent-soft: #f6ece5;
     --green: #47745c;
     --green-background: #eaf1e8;
     --red: #a9473e;
@@ -60,9 +61,9 @@
     --faint: #969388;
     --border: #48473f;
     --line: #3b3a34;
-    --accent: #a9563d;
+    --accent: #d97757;
     --accent-text: #e6a086;
-    --accent-soft: #49362c;
+    --accent-soft: #3b2f2a;
     --green: #a4c4a6;
     --green-background: #2d3e32;
     --red: #e5a69c;
@@ -102,6 +103,6 @@
 :root { --scrollbar-thumb: #66645e66; --scrollbar-thumb-hover: #66645e99; }
 :root[data-theme="dark"] { --scrollbar-thumb: #b2afa366; --scrollbar-thumb-hover: #b2afa399; }
 
-:root { --primary: var(--accent-text); --primary-surface: var(--accent); --on-primary-surface: #fff; }
+:root { --primary: var(--accent-text); --primary-surface: var(--accent); --on-primary-surface: #fff; --on-accent: var(--on-primary-surface); }
 :root { --on-primary: #fff; --on-secondary: #fff; --on-success: #fff; --on-error: #fff; --on-danger: #fff; --on-warning: #fff; --on-info: #fff; --on-surface: var(--text); --on-background: var(--text); }
-:root[data-theme="dark"] { --on-secondary: #000; --on-success: #000; --on-error: #000; --on-danger: #000; --on-warning: #000; --on-info: #000; }
+:root[data-theme="dark"] { --on-primary: #000; --on-secondary: #000; --on-success: #000; --on-error: #000; --on-danger: #000; --on-warning: #000; --on-info: #000; }

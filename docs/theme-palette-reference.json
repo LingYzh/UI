@@ -1,0 +1,26 @@
+{
+    "verifiedDate": "2026-10-15",
+    "method": "Read computed CSS custom properties from the official homepages in Edge",
+    "sources": [
+        {
+            "url": "https://www.anthropic.com/",
+            "variables": {
+                "--swatch--accent": "#c6613f",
+                "--_color-theme---background": "#faf9f5",
+                "--_color-theme---background-secondary": "#f0eee6",
+                "--swatch--brand-text": "#141413"
+            }
+        },
+        {
+            "url": "https://claude.com/",
+            "variables": {
+                "--color-clay": "#d97757",
+                "--theme-accent-clay-primary": "#d97757",
+                "--theme-accent-clay-interactive": "#c6613f",
+                "--color-clay-hover": "#c6613f",
+                "--theme-background-primary": "#faf9f5",
+                "--theme-background-tertiary": "#f0eee6"
+            }
+        }
+    ]
+}

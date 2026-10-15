@@ -1,7 +1,7 @@
 .u-expansion-panels { display: flex; flex-direction: column; gap: 4px; width: 100%; }
 .u-expansion-panel { overflow: clip; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
-.u-expansion-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 12px 16px; border: 0; background: transparent; color: var(--text); font: inherit; text-align: start; cursor: pointer; }
-.u-expansion-title:hover:not(:disabled) { background: var(--hover); }
+.u-expansion-title { --ui-button-color: initial; --ui-button-on-color: initial; --ui-button-surface: initial; --ui-button-on-surface: initial; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 12px 16px; border: 0; background: var(--ui-button-surface, transparent); color: var(--ui-button-on-surface, var(--text)); font: inherit; text-align: start; cursor: pointer; }
+.u-expansion-title:hover:not(:disabled) { background: var(--ui-button-surface, var(--hover)); }
 .u-expansion-title:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: -2px; }
 .u-expansion-text { padding: 0 16px 16px; color: var(--muted); line-height: 1.7; }
 .u-stepper { display: flex; flex-wrap: wrap; align-items: start; gap: 8px; width: 100%; }
@@ -10,7 +10,7 @@
 .u-stepper-item.is-active { background: var(--accent-soft); color: var(--accent-text); }
 .u-stepper-number { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--soft); color: var(--muted); font-size: 14px; }
 :is(.u-stepper-item.is-active, .u-stepper-item.is-complete) .u-stepper-number { background: var(--accent); color: var(--on-primary-surface, #fff); }
-.u-stepper-item.is-error .u-stepper-number { background: var(--red); color: #fff; }
+.u-stepper-item.is-error .u-stepper-number { background: var(--red); color: var(--on-error, #fff); }
 .u-stepper-item:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 .u-stepper-copy { min-width: 0; }
 .u-stepper-title, .u-stepper-subtitle { display: block; }
@@ -93,7 +93,7 @@
 .u-img-preview { filter: blur(2px); }
 .u-img-gradient { pointer-events: none; }
 .u-img-content { min-width: 0; }
-.u-img-placeholder, .u-img-error { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 14px; }
+.u-img-placeholder, .u-img-error { position: absolute; inset: 0; display: grid; place-items: center; color: var(--u-img-on-color, var(--muted)); font-size: 14px; }
 .u-responsive { position: relative; min-width: 0; max-width: 100%; }
 .u-responsive.is-inline { display: inline-block; vertical-align: top; }
 .u-responsive-content { width: 100%; height: 100%; min-width: 0; }
@@ -132,7 +132,7 @@
 .u-timeline-item[data-side="end"] .u-timeline-content { grid-column: 3; }
 .u-timeline-item[data-side="start"] .u-timeline-opposite { grid-column: 3; grid-row: 1; }
 .u-timeline-item[data-side="end"] .u-timeline-opposite { grid-column: 1; grid-row: 1; text-align: end; }
-.u-timeline-marker.has-icon { display: grid; place-items: center; width: 24px; height: 24px; margin-top: 0; color: white; }
+.u-timeline-marker.has-icon { display: grid; place-items: center; width: 24px; height: 24px; margin-top: 0; color: var(--on-primary-surface, white); }
 .u-timeline[data-align='start'] .u-timeline-marker { align-self: start; }
 .u-timeline[data-justify='center'] { justify-content: center; }
 .u-timeline.is-horizontal { flex-direction: row; overflow-x: auto; }
@@ -252,7 +252,7 @@
 .u-data-table-button:disabled { cursor: not-allowed; }
 .u-data-table-button:focus-visible:not([data-ui-pointer-focus]) { outline: 2px solid var(--accent-text); outline-offset: 3px; }
 /* Only table selection controls own this geometry; slotted switches keep their own track size. */
-.u-data-table-checkbox { width: 16px; height: 16px; margin: 0; accent-color: var(--ui-button-color, var(--accent)); vertical-align: middle; cursor: pointer; }
+.u-data-table-checkbox { width: 16px; height: 16px; margin: 0; accent-color: var(--ui-button-surface, var(--accent)); vertical-align: middle; cursor: pointer; }
 .u-data-table-checkbox:disabled { cursor: not-allowed; }
 .u-data-table-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 16px; border-block-start: 1px solid var(--line); color: var(--muted); font-size: 14px; }
 .u-data-table-footer > label { display: inline-flex; align-items: center; gap: 8px; margin-inline-end: auto; }
@@ -315,10 +315,10 @@
 @media (prefers-reduced-motion: reduce) { .u-data-table-progress { animation: none; } }
 .u-time-picker-header, .u-time-picker-heading, .u-time-picker-period { display: flex; align-items: center; gap: 4px; }
 .u-time-picker-header { flex-wrap: wrap; justify-content: space-between; }
-.u-time-picker-heading [aria-pressed='true'], .u-time-picker-period [aria-pressed='true'] { color: var(--accent); background: var(--accent-soft); }
+.u-time-picker-heading [aria-pressed='true'], .u-time-picker-period [aria-pressed='true'] { color: var(--accent-text); background: var(--accent-soft); }
 .u-time-picker-dial { position: relative; width: min(100%, 280px); aspect-ratio: 1; border-radius: 50%; background: var(--soft); margin: 12px auto; }
 .u-time-picker-dial button { position: absolute; transform: translate(-50%, -50%); padding: 0; width: 30px; height: 30px; border: 0; border-radius: 50%; background: transparent; color: var(--text); font: inherit; font-size: 12px; cursor: pointer; }
-.u-time-picker-dial button[aria-pressed='true'] { background: var(--accent); color: var(--accent-contrast, white); }
+.u-time-picker-dial button[aria-pressed='true'] { background: var(--accent); color: var(--on-primary-surface, white); }
 .u-time-picker-dial button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .u-time-picker-dial button:disabled { opacity: .35; cursor: default; }
 .u-time-picker-dial button.is-tick { width: 10px; height: 10px; font-size: 10px; }

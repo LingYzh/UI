@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { IconValue, resolveIcon, useIcons } from '../ui/icon-config';
+import { themeColor } from '../ui/button-colors';
 
 const props = defineProps({
     name: { type: String, default: '' },
@@ -41,7 +42,7 @@ const markup = computed(() => resolved.value.kind === 'local' && resolved.value.
 <template>
     <span
         class="icon prototype-icon"
-        :style="{ '--icon-size': iconSize, color: color ? `var(--ui-theme-${color}, ${color})` : undefined }"
+        :style="{ '--icon-size': iconSize, color: themeColor(color) }"
         :aria-hidden="label ? undefined : true"
         :role="label ? 'img' : undefined"
         :aria-label="label || undefined"

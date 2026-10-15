@@ -3,6 +3,7 @@ import { createValidationRunner, parseValidateOn, type ValidateOn, type Validati
 import { useLocale } from './locale-context';
 import { useDefaults } from './defaults';
 import { useRules } from './rules';
+import { themeColor, themeOnColor } from './button-colors';
 
 export interface FormControlProps {
     label?: string;
@@ -94,7 +95,11 @@ export function useFormControl<T>(props: FormControlProps, model: Ref<T>, elemen
     const rounded = computed(() => props.rounded ?? form?.rounded.value ?? true);
     const variant = computed(() => props.variant ?? (ghost.value ? 'plain' : form?.variant?.value ?? 'outlined'));
     const color = computed(() => props.color ?? form?.color?.value);
-    const styles = computed<CSSProperties>(() => ({ '--ui-control-color': color.value ? `var(--ui-theme-${color.value}, ${color.value})` : 'var(--accent)' }));
+    const styles = computed<CSSProperties>(() => ({
+        '--ui-control-color': themeColor(color.value ?? 'primary', true),
+        '--ui-control-text-color': themeColor(color.value ?? 'primary'),
+        '--ui-control-on-color': themeOnColor(color.value ?? 'primary', true)
+    }));
     const classes = computed(() => ({ 'is-dense': dense.value, 'is-comfortable': density.value === 'comfortable', 'is-ghost': ghost.value || variant.value === 'plain', 'is-square': !rounded.value, 'is-filled': variant.value === 'filled', 'is-underlined': variant.value === 'underlined', 'is-disabled': disabled.value, 'is-invalid': state.value === false }));
     const labelPosition = computed(() => props.labelPosition ?? form?.labelPosition.value ?? 'top');
     const labelWidth = computed(() => props.labelWidth ?? form?.labelWidth.value ?? '180px');

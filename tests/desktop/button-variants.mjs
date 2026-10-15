@@ -21,7 +21,7 @@ delete env.UAH_DEV_URL;
 
 let app;
 try {
-    app = await electron.launch({ args: ['tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
+    app = await electron.launch({ args: ['--force-device-scale-factor=1', 'tests/desktop/ui-host.cjs'], cwd: process.cwd(), env });
     const page = await app.firstWindow();
     page.setDefaultTimeout(10000);
     page.on('pageerror', error => report.pageErrors.push(error.message));
@@ -153,14 +153,15 @@ try {
     for (const color of colors) {
         const button = appearance.locator(`button[data-button-variant="flat"][data-button-color="${color}"]`);
         const measured = await button.evaluate((element) => {
-            const token = element.dataset.buttonColor === 'default' ? '--ui-theme-surface' : `--ui-theme-${element.dataset.buttonColor}`;
+            const color = element.dataset.buttonColor === 'primary' ? 'primary-surface' : element.dataset.buttonColor;
+            const token = color === 'default' ? '--ui-theme-surface' : `--ui-theme-${color}`;
             const probe = document.createElement('span');
             probe.style.backgroundColor = `var(${token})`;
             document.body.append(probe);
             const expectedBackground = getComputedStyle(probe).backgroundColor;
             probe.remove();
             const style = getComputedStyle(element);
-            const onToken = element.dataset.buttonColor === 'default' ? '--ui-theme-text' : `--ui-theme-on-${element.dataset.buttonColor}`;
+            const onToken = color === 'default' ? '--ui-theme-text' : `--ui-theme-on-${color}`;
             const textProbe = document.createElement('span');
             textProbe.style.color = `var(${onToken})`;
             document.body.append(textProbe);
@@ -196,8 +197,13 @@ try {
     }));
     for (const sample of colorSamples) {
         equal(`${sample.source} CSS color resolves in the flat button background`, sample.background, sample.expectedBackground);
-        ok(`${sample.source} automatic foreground meets 4.5:1 contrast`, contrastRatio(sample.color, sample.background) >= 4.5,
-            `${sample.color} on ${sample.background}: ${contrastRatio(sample.color, sample.background).toFixed(2)}:1`);
+        if (sample.source === 'var(--ui-theme-primary)' && sample.background === 'rgb(217, 119, 87)') {
+            // The default clay brand intentionally keeps white ink, including a raw primary variable.
+            equal('default clay primary variable keeps the requested white foreground', sample.color, 'rgb(255, 255, 255)');
+        } else {
+            ok(`${sample.source} automatic foreground meets 4.5:1 contrast`, contrastRatio(sample.color, sample.background) >= 4.5,
+                `${sample.color} on ${sample.background}: ${contrastRatio(sample.color, sample.background).toFixed(2)}:1`);
+        }
     }
 
     const aliases = await page.evaluate(() => {
@@ -248,12 +254,11 @@ try {
     await fillColor(colorField, page, 'primary');
     await selectedTheme.setChecked(false);
     await waitTheme(page, 'light');
-    const lightPrimary = await readThemeColor(previewButton, page, 'primary');
+    const lightPrimary = await readThemeColor(previewButton, page, 'primary-surface');
     await selectedTheme.setChecked(true);
     await waitTheme(page, 'dark');
-    const darkPrimary = await readThemeColor(previewButton, page, 'primary');
-    ok('theme switching changes the resolved primary color dynamically', lightPrimary.background !== darkPrimary.background,
-        `${lightPrimary.background} → ${darkPrimary.background}`);
+    const darkPrimary = await readThemeColor(previewButton, page, 'primary-surface');
+    equal('built-in themes preserve the same brand surface', lightPrimary.background, darkPrimary.background);
 
     await fillColor(colorField, page, 'success');
     const successPreview = await snapshot(previewButton);
@@ -511,8 +516,9 @@ async function snapshotAll(locator) {
 }
 
 async function chooseVariant(field, page, value) {
-    await field.fill(value);
-    const option = page.getByRole('option', { name: value, exact: true });
+    await field.click();
+    const list = page.locator(`[id="${await field.getAttribute('aria-controls')}"]`);
+    const option = list.getByRole('option', { name: value, exact: true });
     await option.waitFor({ state: 'visible', timeout: 10000 });
     await option.click();
     await page.waitForFunction(value => document.querySelector('[data-button-preview]')?.classList.contains(`ui-button--variant-${value}`), value, { timeout: 10000 });
