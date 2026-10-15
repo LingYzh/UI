@@ -46,6 +46,11 @@ test('light accents share the clay brand and dark text adapts, with aligned stat
             assert.ok(contrast(colors.primary, colors.background) >= 4.5);
             assert.ok(contrast(colors.primary, colors['accent-soft']) >= 4.5);
         }
+        for (const key of ['primary', 'secondary', 'success', 'error', 'danger', 'warning', 'info']) {
+            const ink = colors[`on-${key}`] === '#ffffff' ? '#fff' : '#000';
+            const staticInk = css.match(mode === 'light' ? /:root \{ --on-primary:([^}]+)\}/ : /:root\[data-theme="dark"\] \{ --on-primary:([^}]+)\}/)![0];
+            assert.ok(staticInk.includes(`--on-${key}: ${ink};`), `${mode}: static ${key} ink`);
+        }
         for (const key of [
             'background',
             'sidebar',
@@ -104,5 +109,27 @@ test('custom primary surfaces still inherit automatic ink and follow live palett
     assert.equal(theme.current.value.colors['on-primary-surface'], '#000000');
     theme.themes.value.light.colors!['on-primary-surface'] = '#123456';
     assert.equal(theme.current.value.colors['on-primary-surface'], '#123456');
+    theme.dispose();
+});
+
+test('solid fills prefer white for medium tones and black only for bright fills, with explicit ink taking priority', () => {
+    for (const color of ['#d97757', '#ff9800', '#4caf50', '#888888', '#c0c0c0', '#d0d0d0', '#9dc5e6', '#a4c4a6', '#dfbf82', 'rgb(217, 119, 87)']) {
+        assert.equal(themeOnColor(color, true), '#ffffff', color);
+    }
+    for (const color of ['#ffffff', '#faf9f5', '#ffeeba', '#ffff00', '#e0e0e0']) {
+        assert.equal(themeOnColor(color, true), '#000000', color);
+    }
+    const theme = createUiTheme({ target: false });
+    for (const mode of ['light', 'dark']) {
+        for (const color of ['#ff9800', '#4caf50', '#ffeeba']) {
+            theme.themes.value[mode].colors!['primary-surface'] = color;
+            theme.themes.value[mode].colors!.warning = color;
+            const colors = theme.computedThemes.value[mode].colors;
+            assert.equal(colors['on-primary-surface'], themeOnColor(color, true));
+            assert.equal(colors['on-warning'], themeOnColor(color, true));
+        }
+        theme.themes.value[mode].colors!['on-primary-surface'] = '#123456';
+        assert.equal(theme.computedThemes.value[mode].colors['on-primary-surface'], '#123456');
+    }
     theme.dispose();
 });

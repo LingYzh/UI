@@ -1,5 +1,6 @@
 import { computed, effectScope, getCurrentInstance, inject, provide, ref, watch, type App, type ComputedRef, type CSSProperties, type InjectionKey, type Ref } from 'vue';
 import { defaultUiThemes } from './theme-defaults';
+import { surfaceForeground } from './button-colors';
 
 export interface UiThemeDefinition {
     dark?: boolean;
@@ -47,13 +48,6 @@ function channels(color: string) {
     if (!/^(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(hex)) return;
     const full = hex.length === 3 ? [...hex].map(character => character + character).join('') : hex;
     return [0, 2, 4].map(index => parseInt(full.slice(index, index + 2), 16));
-}
-function foreground(color: string) {
-    const rgb = channels(color);
-    if (!rgb) return '#ffffff';
-    const luminance = rgb.map(channel => { const c = channel / 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; });
-    const value = .2126 * luminance[0] + .7152 * luminance[1] + .0722 * luminance[2];
-    return (value + .05) / .05 > 1.05 / (value + .05) ? '#000000' : '#ffffff';
 }
 function variation(color: string, amount: number, lighter: boolean) {
     const rgb = channels(color);
@@ -112,9 +106,8 @@ export function createUiTheme(options: UiThemeOptions = {}): UiThemeInstance {
             for (const [key, color] of Object.entries(colors)) {
                 if (key.startsWith('on-')) continue;
                 if (definition.colors?.[`on-${key}`] === undefined) {
-                    // The default clay brand keeps white ink; custom surfaces still choose ink automatically.
-                    colors[`on-${key}`] = (key === 'primary' || key === 'primary-surface') && color.toLowerCase() === defaultUiThemes.light.colors['primary-surface']
-                        ? '#ffffff' : foreground(color);
+                    // Theme tokens and raw component colors share the same white-first fill policy.
+                    colors[`on-${key}`] = surfaceForeground(color) ?? '#ffffff';
                 }
             }
             if (definition.colors?.['on-accent'] === undefined) colors['on-accent'] = colors['on-primary-surface'];

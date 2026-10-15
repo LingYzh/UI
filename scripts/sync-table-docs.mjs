@@ -10,6 +10,7 @@ const definitions = [
     ['UDataTable', 'grouping', '嵌套分组、分页与汇总', 'opened/open-all/group-key、三种分页方式、分组选择、标准分组单元格插槽与汇总行。'],
     ['UDataTable', 'slots', '自定义结构与页脚', 'caption/colgroup/body.prepend/item/body/body.append/tfoot/bottom 的真实输出及完整作用域。'],
     ['UDataTableServer', 'server', '完整远程交互与全部分页', '本地模拟服务端查询、排序、分页、全部数据、选择、展开、错误重试与陈旧响应隔离。'],
+    ['UDataTableServer', 'loading', '与线性进度一致的加载动画', '普通、服务端与虚拟表格共用 UProgressLinear；可切换顶部、底部及双侧加载，RTL 和减少动态效果跟随同一组件。'],
     ['UDataTableVirtual', 'virtual', '一万行选择、分组与可变高度展开', '实际行高测量、搜索/排序复位、固定列、选择、分组、展开与公开 scrollToIndex。']
 ];
 const examples = {};

@@ -169,11 +169,11 @@ test('table public contracts retain the audited stable upstream names', () => {
         for (const event of table.upstreamEvents) assert.ok(events.includes(event), `${table.name} event ${event}`);
     }
 });
-test('eight table examples are registered and compile from their real SFC source', async () => {
+test('nine table examples are registered and compile from their real SFC source', async () => {
     const { tableAlignmentExamples } = await import('../src/ui/docs/tableAlignmentContent.js');
     const { pages } = await import('../src/ui/docs/content.js');
     const examples = Object.values(tableAlignmentExamples).flat();
-    assert.equal(examples.length, 8);
+    assert.equal(examples.length, 9);
     for (const example of examples) {
         const name = example.id.replace('table-align-', '');
         const source = readFileSync(`src/ui/docs/table-examples/${name}.vue`, 'utf8');

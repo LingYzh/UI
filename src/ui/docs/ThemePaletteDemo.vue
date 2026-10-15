@@ -65,6 +65,12 @@ const swatches = computed(() =>
             <UCheckbox color="primary" label="主色勾选" v-model="selected" />
             <USwitch color="primary" label="主色开关" v-model="enabled" />
         </div>
+        <p>实心色块优先白字，浅蓝和浅灰也保留白字，仅接近白色的填充改用黑字；显式前景色继续优先。</p>
+        <div class="theme-palette-controls" v-for="color in ['#d97757', '#ff9800', '#4caf50', '#9dc5e6', '#d0d0d0', '#e0e0e0', '#ffeeba']" :key="color">
+            <UButton variant="flat" :color="color">{{ color }}</UButton>
+            <UChip variant="flat" :color="color">实心标签</UChip>
+            <UAvatar :color="color" text="UI" :size="32"/>
+        </div>
         <USnackbar
             color="primary"
             text="填充与前景色跟随当前主题，关闭按钮继承文字颜色。"

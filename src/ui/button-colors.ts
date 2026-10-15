@@ -23,7 +23,7 @@ function rgbChannels(color: string): number[] | undefined {
         if (rgb.every(value => Number.isFinite(value) && value >= 0 && value <= 255)) return rgb;
     }
     // The browser resolves named and hsl colors; variables remain inherited CSS values.
-    if (typeof document !== 'undefined' && !/var\(|currentcolor|transparent/i.test(color) && CSS.supports('color', color)) {
+    if (typeof document !== 'undefined' && typeof CSS !== 'undefined' && !/var\(|currentcolor|transparent/i.test(color) && CSS.supports('color', color)) {
         const context = document.createElement('canvas').getContext('2d');
         if (!context) return;
         context.fillStyle = color;
@@ -48,10 +48,10 @@ export function themeOnColor(color?: string, surface = false): string | undefine
     if (!value) return;
     if (/^[a-z][a-z\d-]*$/i.test(value) && value !== 'currentColor' && value !== 'transparent') {
         if (surface && value === 'primary') return 'var(--ui-theme-on-primary-surface, var(--on-primary-surface, #ffffff))';
-        return `var(--ui-theme-on-${value}, ${semanticFallbacks[value] ? `var(--on-${value}, #ffffff)` : foreground(value) ?? 'var(--text)'})`;
+        return `var(--ui-theme-on-${value}, ${semanticFallbacks[value] ? `var(--on-${value}, #ffffff)` : surfaceForeground(value) ?? 'var(--text)'})`;
     }
     const themeVariable = value.match(/^var\(\s*--(?:ui-theme-)?([a-z][a-z\d-]*)\s*\)$/i)?.[1];
-    return themeVariable ? `var(--ui-theme-on-${themeVariable}, var(--on-${themeVariable}, var(--text)))` : foreground(value) ?? 'var(--text)';
+    return themeVariable ? `var(--ui-theme-on-${themeVariable}, var(--on-${themeVariable}, var(--text)))` : surfaceForeground(value) ?? 'var(--text)';
 }
 
 export function buttonColorStyles(color?: string): CSSProperties {
@@ -65,10 +65,11 @@ export function buttonColorStyles(color?: string): CSSProperties {
     } as CSSProperties;
 }
 
-function foreground(color: string): string | undefined {
+/** Solid fills prefer white ink; reserve black for near-white fills (linear luminance >= 0.7). */
+export function surfaceForeground(color: string): string | undefined {
     const rgb = rgbChannels(color);
     if (!rgb) return;
     const linear = rgb.map(channel => { const value = channel / 255; return value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4; });
     const luminance = .2126 * linear[0] + .7152 * linear[1] + .0722 * linear[2];
-    return (luminance + .05) / .05 > 1.05 / (luminance + .05) ? '#000000' : '#ffffff';
+    return luminance >= .7 ? '#000000' : '#ffffff';
 }

@@ -74,7 +74,7 @@ export const themePages = [
             'createUiTheme 返回可直接 app.use(theme) 的实例；组件 setup 中通过 useUiTheme() 获取当前作用域。每个 app 创建独立实例。未安装时兼容根节点 data-theme 的既有明暗切换。',
             'themes 是可写 Ref；computedThemes、current、name、mode、isSystem、themeNames、styles 是响应式计算值。JavaScript 与嵌套对象模板中使用 .value。name 是实际主题，mode 保留 system 等选择；global.name 可写、global.current 始终指向全局。change/toggle/cycle 始终切换全局，局部主题通过 Provider 的 theme 属性控制。',
             '默认暖白与陶土色对齐 Anthropic / Claude：background #faf9f5、sidebar #f0eee6、primary-surface / accent #d97757。浅色主题 primary / accent-text 同为 #d97757，不再保留深棕色；深色文字适配为 #e6a086。主色实心按钮使用 primary-surface，默认陶土色搭配白字，描边、文字按钮使用 primary。自定义 primary 默认同步 primary-surface，可独立覆盖。支持 success/error/warning/info 与现有全部 tokens。',
-            '默认陶土 primary-surface 采用白色前景；其余未明确提供的 on-{color} 根据十六进制 RGB 亮度自动选择黑／白，显式 on-{color} 始终优先。其他颜色格式建议显式提供前景色。on-surface 同时映射正文 text。颜色变量为 --ui-theme-{color} 与 --{color}；普通 variables 为 --{name}。',
+            '实心填充优先白色前景；浅蓝、浅绿和浅灰也保留白字，只有线性相对亮度达到 0.7、接近白色的填充才自动使用黑字。主题 token 与原始 CSS 色值共用规则，显式 on-{color} 始终优先。正文 on-surface/on-background 仍跟随各自主题，不按品牌填充规则处理。颜色变量为 --ui-theme-{color} 与 --{color}；普通 variables 为 --{name}。',
             '主题定义在 setup 时保持完整；局部 theme 必须为已注册名称或 system。Provider 不添加间距，with-background 只增加主题背景。Card/Dialog 可用 theme 属性覆盖，其他控件通过容器继承；Teleport 通知保持所在作用域。',
             '切换动画与系统／手动减少动态效果设置联动。light / dark 默认配色来自现有 tokens，不引入 Material 主题。'
         ]

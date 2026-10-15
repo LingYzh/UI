@@ -24,7 +24,10 @@ async function launch(name, url) {
 async function capture(app, name) {
     const page = await app.firstWindow();
     await page.evaluate(async () => {
-        await Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => {})));
+        // Indeterminate progress demos never finish; only wait for finite entry/layout transitions.
+        await Promise.all(document.getAnimations()
+            .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+            .map((animation) => animation.finished.catch(() => {})));
         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     });
     // Native capturePage reads the compositor; allow the settled frame to be presented.

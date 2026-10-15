@@ -36,3 +36,8 @@
 - 相关22项单测、主题/按钮专项类型检查、源码浏览器专项通过。实际明暗与390px截图已由Root查看；海蓝主题、CSS-only、选择器、开关和父变量隔离通过，零页面错误/组件警告。证据 `artifacts/theme-palette`；复跑 `node tests/desktop/theme-palette.mjs`，Node24并按需设 RAYON_NUM_THREADS=2。
 - 首次整站文档 Vite 依赖扫描因本机内存提交不足退出；保留失败事实，改用只导入相关真实组件的 fixture，不运行全量构建。旧 button-variants 的品牌角色断言已同步，但旧全库/已构建产物脚本本轮未执行。
 - 当前尚未提交、推送或发布，npm仍0.6.1；NC_Admin普通dev本地alias可用新源码，backend/生产npm入口要等发布升级。不得覆盖管理端上一批未提交的同站文档和开发规范。
+
+## 2026-10-15：实心填充白字优先（未发布）
+
+- 用户进一步要求更浅的颜色也使用白字，黑字亮度阈值由0.5上调至0.7；theme.ts 与 button-colors.ts 共用 surfaceForeground，浅蓝#9dc5e6、浅灰#d0d0d0也白字，#e0e0e0/暖白/浅黄黑字，显式 on-* 与正文色保留。静态深色success/warning/info同步白字。
+- 17项主题/颜色、专项类型、light/dark/ocean/medium/pastel/pale真实组件及CSS-only通过，Root看图；真实文档12项通过。对照demo含浅蓝/浅灰阈值两侧，源码已同步。记录docs/theme-palette.md；未提交推送发布，npm0.6.3保持旧规则，表格loading改动保留。

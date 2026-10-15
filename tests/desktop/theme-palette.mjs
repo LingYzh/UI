@@ -30,7 +30,7 @@ const fixture = `<!doctype html><html><head><meta charset="utf-8"><meta name="vi
     import { createUiTheme } from '/src/ui/theme.ts';
     import '/src/docs-base.css';
     import '/src/ui/styles.css';
-    const theme = createUiTheme({ transition: false, themes: { ocean: { colors: { primary: '#246a91' } }, pale: { colors: { primary: '#ffeeba' } } } });
+    const theme = createUiTheme({ transition: false, themes: { ocean: { colors: { primary: '#246a91' } }, medium: { colors: { primary: '#ff9800' } }, pastel: { colors: { primary: '#9dc5e6' } }, pale: { colors: { primary: '#ffeeba' } } } });
     const enabled = ref(true);
     window.palette = { theme };
     createApp({ setup() { return () => h('main', { style: 'padding:24px;max-width:1080px;margin:auto;display:grid;gap:24px' }, [
@@ -58,8 +58,9 @@ const fixture = `<!doctype html><html><head><meta charset="utf-8"><meta name="vi
     ]); } }).use(theme).mount('#app');
 </script></body></html>`;
 const server = await createServer({
+    cacheDir: 'node_modules/.vite-theme-palette',
     optimizeDeps: { noDiscovery: true, include: ['vue', '@vuetify/v0'] },
-    server: { host: '127.0.0.1', port: 0 },
+    server: { host: '127.0.0.1', port: 0, watch: null, hmr: false },
     plugins: [
         {
             name: 'palette-fixture',
@@ -102,7 +103,7 @@ try {
         content:
             'html,body,#app{height:auto!important;overflow:visible!important}',
     });
-    for (const mode of ['light', 'dark', 'ocean']) {
+    for (const mode of ['light', 'dark', 'ocean', 'medium', 'pastel', 'pale']) {
         await page.evaluate(
             (mode) => window.palette.theme.change(mode, false),
             mode,
@@ -127,18 +128,19 @@ try {
         samples.push({ mode, ...sample });
         assert.equal(
             sample.flat.background,
-            mode === 'ocean' ? 'rgb(36, 106, 145)' : 'rgb(217, 119, 87)',
+            { ocean: 'rgb(36, 106, 145)', medium: 'rgb(255, 152, 0)', pastel: 'rgb(157, 197, 230)', pale: 'rgb(255, 238, 186)' }[mode] ?? 'rgb(217, 119, 87)',
         );
-        assert.equal(sample.flat.color, 'rgb(255, 255, 255)');
+        assert.equal(sample.flat.color, mode === 'pale' ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)');
         assert.equal(
             sample.text.color,
             mode === 'dark'
                 ? 'rgb(230, 160, 134)'
-                : mode === 'ocean'
-                  ? 'rgb(36, 106, 145)'
-                  : 'rgb(217, 119, 87)',
+                : { ocean: 'rgb(36, 106, 145)', medium: 'rgb(255, 152, 0)', pastel: 'rgb(157, 197, 230)', pale: 'rgb(255, 238, 186)' }[mode] ?? 'rgb(217, 119, 87)',
         );
         assert.equal(sample.outlined.background, 'rgba(0, 0, 0, 0)');
+        for (const tone of ['success', 'warning', 'danger', 'info']) {
+            assert.equal(await page.locator(`[data-tone="${tone}"]`).evaluate(element => getComputedStyle(element).color), 'rgb(255, 255, 255)', `${mode}: ${tone} ink`);
+        }
         const surface = sample.flat.background;
         const ink = sample.flat.color;
         for (const selector of [

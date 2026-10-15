@@ -14,6 +14,7 @@ import UiScrollArea from './UiScrollArea.vue';
 import UiSelect from './UiSelect.vue';
 import UiPagination from './UiPagination.vue';
 import UiButton from './UiButton.vue';
+import UProgressLinear from './UProgressLinear.vue';
 import DataTableSlotRows from './DataTableSlotRows';
 import DataTableHighlight from './DataTableHighlight';
 import { vRipple } from './ripple';
@@ -152,7 +153,7 @@ const loaderScope = computed(() => ({
 }));
 const loaderStyle = computed(() => ({
     ...buttonColorStyles(loadingColor.value),
-    background: 'var(--ui-button-surface, var(--accent))',
+    color: 'var(--ui-button-surface, var(--accent))',
 }));
 const compact = computed(() => props.density === 'compact' || props.dense);
 const headerHeight = computed(() =>
@@ -759,11 +760,11 @@ defineExpose({
                             <tr v-if="busy && loadingSide !== 'end'" class="u-data-table-loader">
                                 <th :colspan="columnCount">
                                     <slot name="loader" v-bind="loaderScope">
-                                        <span
+                                        <UProgressLinear
                                             class="u-data-table-progress"
                                             :style="loaderStyle"
-                                            role="progressbar"
-                                            :aria-label="text(props.loadingText, 'common.loading')"
+                                            :label="text(props.loadingText, 'common.loading')"
+                                            indeterminate
                                         />
                                     </slot>
                                 </th>
@@ -1181,11 +1182,11 @@ defineExpose({
                             <tr v-if="busy && loadingSide !== 'start'" class="u-data-table-loader">
                                 <th :colspan="columnCount">
                                     <slot name="loader" v-bind="loaderScope">
-                                        <span
+                                        <UProgressLinear
                                             class="u-data-table-progress"
                                             :style="loaderStyle"
-                                            role="progressbar"
-                                            :aria-label="text(props.loadingText, 'common.loading')"
+                                            :label="text(props.loadingText, 'common.loading')"
+                                            indeterminate
                                         />
                                     </slot>
                                 </th>

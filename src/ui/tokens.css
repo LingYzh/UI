@@ -105,4 +105,4 @@
 
 :root { --primary: var(--accent-text); --primary-surface: var(--accent); --on-primary-surface: #fff; --on-accent: var(--on-primary-surface); }
 :root { --on-primary: #fff; --on-secondary: #fff; --on-success: #fff; --on-error: #fff; --on-danger: #fff; --on-warning: #fff; --on-info: #fff; --on-surface: var(--text); --on-background: var(--text); }
-:root[data-theme="dark"] { --on-primary: #000; --on-secondary: #000; --on-success: #000; --on-error: #000; --on-danger: #000; --on-warning: #000; --on-info: #000; }
+:root[data-theme="dark"] { --on-primary: #fff; --on-secondary: #fff; --on-success: #fff; --on-error: #fff; --on-danger: #fff; --on-warning: #fff; --on-info: #fff; }

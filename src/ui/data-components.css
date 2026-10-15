@@ -296,8 +296,8 @@
 .ui-table-current-page { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .u-data-table .ui-table-state { text-align: center; min-height: 80px; color: var(--muted); }
 .u-data-table .u-data-table-loader th { height: 3px; padding: 0; position: relative; }
-.u-data-table-progress { display: block; height: 3px; background: var(--accent); animation: ui-table-progress 1.4s ease-in-out infinite; transform-origin: left; }
-.u-data-table-progress[data-side="end"] { transform-origin: right; }
+/* Tables share the linear progress animation, including RTL and reduced motion. */
+.u-data-table-progress.u-progress-linear { height: 3px; border-radius: 0; }
 .u-data-table-sort-order { display: inline-grid; place-items: center; min-width: 18px; height: 18px; border-radius: 50%; background: var(--active); font-size: 11px; }
 .u-data-table-mobile-label { display: none; color: var(--muted); font-weight: 500; }
 .u-data-table mark { color: inherit; background: var(--active); }
@@ -311,8 +311,6 @@
 .u-data-table.is-mobile tbody tr[data-item-key] > td[data-column="data-table-expand"] { justify-content: center; }
 .u-data-table-mobile-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .u-data-table-mobile-controls > .ui-select { width: auto; min-width: 140px; }
-@keyframes ui-table-progress { 0%, 100% { transform: scaleX(.25); opacity: .55; } 50% { transform: scaleX(1); opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .u-data-table-progress { animation: none; } }
 .u-time-picker-header, .u-time-picker-heading, .u-time-picker-period { display: flex; align-items: center; gap: 4px; }
 .u-time-picker-header { flex-wrap: wrap; justify-content: space-between; }
 .u-time-picker-heading [aria-pressed='true'], .u-time-picker-period [aria-pressed='true'] { color: var(--accent-text); background: var(--accent-soft); }

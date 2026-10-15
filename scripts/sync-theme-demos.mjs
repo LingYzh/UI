@@ -15,7 +15,7 @@ const example = {
     id: 'theme-palette',
     title: '主色填充、主题文字与前景色',
     description:
-        '同一主题的真实按钮、工具栏、标签、头像、快捷键、勾选与消息共同使用颜色角色；默认陶土色实心表面采用白字，自定义主题保留自动前景与显式覆盖。',
+        '同一主题的真实按钮、工具栏、标签、头像、快捷键、勾选与消息共同使用颜色角色；实心填充及浅蓝、浅灰优先白字，仅接近白色时使用黑字，显式前景覆盖保持优先。',
     fullSource: true,
     code: source.replaceAll("from '../index'", "from '@lingyzh/ui'"),
 };

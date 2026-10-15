@@ -31,7 +31,12 @@
 
 文档 `#/theme` 新增真实配色组合示例，源码与示例共用 `ThemePaletteDemo.vue`；`scripts/sync-theme-demos.mjs` 同步完整可复制代码，并接入现有文档生成入口。Admin 同站 `ui-docs.html` 和库独立文档直接复用同一份内容。
 
-自定义主题仍可只设置 `primary`，此时自动同步 `primary-surface`；显式设置后者时独立生效。仅默认陶土色采用白字约定，其他背景继续自动计算黑／白前景，显式 `on-primary-surface` 始终优先。不能把品牌白字固定继承给其他自定义浅色背景。
+自定义主题仍可只设置 `primary`，此时自动同步 `primary-surface`；显式设置后者时独立生效。实心填充优先白字，仅线性相对亮度达到 0.7 的近白色改用黑字；例如陶土色、中橙、绿色、浅蓝 `#9dc5e6` 和浅灰 `#d0d0d0` 使用白字，`#e0e0e0`、浅黄和暖白使用黑字。主题服务与原始 CSS 色值共用内部 `surfaceForeground`，静态 CSS 的明暗语义前景同时对齐；显式 `on-*` 始终优先，正文的 `on-surface/on-background` 继续由主题控制。此规则按用户视觉偏好选择，并非取黑白对比度的数学最大值。
+
+## 2026-10-15 白字优先补充（未发布）
+
+- 用户进一步要求更浅的颜色也用白字，阈值由0.5调整为0.7；深色默认success/warning/info与静态CSS同步白字。主题与颜色相关17项、专项类型检查通过；真实组件浏览器覆盖 light/dark/ocean/中橙/浅蓝/浅黄六组，以及 CSS-only明暗。按钮、工具栏、Snackbar、面板、选择器、标签、头像、徽标、快捷键、字段、Tooltip与勾选图形共享前景，证据 `artifacts/theme-palette/report.json`，Root复核浅蓝与真实demo。
+- 真实5174文档12项通过，新增中间亮度与浅色填充对照demo，生成源码同步；证据 `artifacts/white-fill-docs`，Root复核。保留在途表格加载动画修复，未全量构建、提交、推送或发版；npm0.6.3仍是旧规则，需后续发布升级后进入包模式。
 
 ## 专项复跑
 

@@ -26,6 +26,7 @@
 - `createUI()` 默认全局注册全部 U* / u-* 和 Ui* 兼容组件；消费方模板不需逐项导入，组合函数/服务/h()/动态组件对象仍显式导入。`scripts/sync-components.mjs` 必须保留人工公开别名、类型及工具导出，不能用文件名推导覆盖既有契约。UTreeTable 已补入全局注册表；复跑 component-registration.test.ts 与真实文档 global-components.mjs。
 - 主题角色区分填充 `primary-surface / accent` 与文字 `primary / accent-text`，背景和对应 `on-*` 成对使用；浅色强调文字同陶土主色#d97757，深色提亮为#e6a086，不保留旧深棕色。默认陶土品牌填充白字，其他自定义色仍自动前景且显式覆盖优先。颜色props内部复用themeColor/themeOnColor，子组件重置局部变量避免父色污染；demo外壳和真实示例共用主题，导航选中不增加前导色条。来源、验证与复跑见docs/theme-palette.md，修改主题组合示例后运行scripts/sync-theme-demos.mjs同步完整源码。
 - 开发环境按 README 使用 Node.js 24+；`npm run dev` 在 5174 端口查看文档。
+- 实心表面前景使用共享 surfaceForeground：白字优先，仅线性相对亮度>=0.7时黑字，浅蓝/浅绿/浅灰保留白字，显式 on-* 优先；主题服务、原始CSS色和静态tokens必须一致。不能继续复制旧黑白最大对比度公式，正文 on-surface/on-background 不受此填充策略覆盖。
 - 日常改动只运行与变更相关的专项测试及必要的视觉验收，不默认运行完整测试、完整构建或`npm run test:ui`。专项优先使用开发服务或隔离源码fixture，避免为了测试重新完整构建。
 - 提交推送前再运行完整检查：`npm run typecheck`、`npm test`、`npm run build` 和 `npm run test:ui`；依赖安装需要时运行`npm ci`。发布前继续执行下方打包与消费方验证。
 - `dist/docs` 与 `dist/lib` 是忽略的构建产物。npm 包只发布 `package.json#files` 白名单中的源码及自动包含的 README、LICENSE、package.json；发布前用 `npm pack --dry-run --json` 核查文件列表。
