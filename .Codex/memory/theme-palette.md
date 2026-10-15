@@ -41,3 +41,7 @@
 
 - 用户进一步要求更浅的颜色也使用白字，黑字亮度阈值由0.5上调至0.7；theme.ts 与 button-colors.ts 共用 surfaceForeground，浅蓝#9dc5e6、浅灰#d0d0d0也白字，#e0e0e0/暖白/浅黄黑字，显式 on-* 与正文色保留。静态深色success/warning/info同步白字。
 - 17项主题/颜色、专项类型、light/dark/ocean/medium/pastel/pale真实组件及CSS-only通过，Root看图；真实文档12项通过。对照demo含浅蓝/浅灰阈值两侧，源码已同步。记录docs/theme-palette.md；未提交推送发布，npm0.6.3保持旧规则，表格loading改动保留。
+
+## 0.6.4 已发布
+
+- 上述白字规则与表格loading已随c1f779a/v0.6.4发布，Actions38704665688成功，官方版本/完整性/六份源码核对通过。完整388项/类型/双构建/桌面21组，非浏览器CSS保护和无限动画截图等待一并覆盖。前文未发布为历史阶段，当前以docs/RELEASE-0.6.4-evidence.json为准。

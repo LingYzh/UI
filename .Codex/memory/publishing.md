@@ -151,3 +151,8 @@ UAH已完成0.3.2固定npm升级，本地提交97c43a907520c5d747abdd00b985d3ec4
 - 发布提交92dbb052f50845d16fa43c8d7cc4515c936687fb，v0.6.3；Actions38687065275与Publish步骤成功，官方version/latest=0.6.3。完整类型、387项测试、双构建和21组Electron回归通过。
 - npm包572文件，SHA1 be0423b5baba646abea7a120e6c4c3667912160d，SHA512与registry一致，关键注册表/demo/文档源码核对通过。完整记录docs/RELEASE-0.6.3-evidence.json。
 - 本次HTTPS凭据管理器无可用凭据，使用已有GitHub SSH认证成功推送同一仓库，未修改远程地址或全局配置。npm短暂索引延迟后正常安装，无重复发布。
+## 2026-10-15：0.6.4 正式发布
+
+- 发布提交c1f779a282b63afbc12d1de7a089241174e0678b/v0.6.4已原子推送，Actions38704665688全部成功。官方latest=0.6.4，573文件tarball的SHA1/SHA512与registry一致，前景/主题/token/表格及两个demo六份源码与标签匹配。证据docs/RELEASE-0.6.4-evidence.json。
+- 本地完整388项、类型、双构建、完整桌面21组、表格18项及主题/文档专项通过，Root看图。共享前景增加CSS对象保护，截图等待过滤无限循环动画，保持真实进出过渡断言。未改写旧标签或workflow。
+- 初次npm版本端点404，随后完整官方packument确认version/latest=0.6.4；传播期间不重复发布。通过已有GitHub SSH权限推送同一origin仓库，远程配置不变；Admin升级固定npm并保留dev本地alias，UAH不升级。

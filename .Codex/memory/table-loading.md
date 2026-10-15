@@ -7,3 +7,5 @@
 - 复跑node tests/desktop/table-loading.mjs：18项真实浏览器检查，每种模式在8个时刻对照两段动画的相对几何、周期和颜色，覆盖三个表格/三种位置/三档密度/RTL/暗色390px/减少动态效果/自定义slot与完成状态。专项类型检查及24项table-alignment/tree-table/layout测试通过。
 - 证据artifacts/table-loading。当前改动尚未提交、推送或发版，npm0.6.3不变；Admin dev使用本地alias可见，backend/构建需后续UI发布升级。
 - Admin真实岗位页使用本地源码，明暗两主题均验证长短双条动画，零异常/警告，Root亲自检查截图；证据NC_Admin/.Codex/evidence/table-loading。仅浏览器本地状态置为loading，不访问或写入真实后端。
+
+- 2026-10-15后续已获授权发布0.6.4：c1f779a/v0.6.4、Actions38704665688与官方registry核对成功，完整门禁及18项逐帧检查通过。此前未发布状态被此记录替代，Admin消费固定0.6.4，dev仍使用本地alias。

@@ -1,0 +1,79 @@
+{
+    "version": "0.6.4",
+    "commit": "c1f779a282b63afbc12d1de7a089241174e0678b",
+    "tag": "v0.6.4",
+    "workflow": {
+        "id": 38704665688,
+        "url": "https://github.com/LingYzh/UI/actions/runs/38704665688",
+        "conclusion": "success"
+    },
+    "registry": {
+        "latest": "0.6.4",
+        "shasum": "658f77df9db735c5dd7791bc7facf7a2a5a1fbe7",
+        "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.6.4.tgz",
+        "fileCount": 573,
+        "integrity": "sha512-5KMRD2GsGFK/OCJdUFg9/N2lZC24ELxm6GOiY56WyWRXvcLDM11VBf2Y+cKgqS+PBAKok5IU7Sw7UP+wS/AX+g==",
+        "signatures": [
+            {
+                "sig": "MEQCIFuAkf2JkA5FCpQ8CRtwZ+q8NzYSTnz3KIWWm7b+QhSjAiBvnlGpimjGRqOqyjoVWxZFJ8Lu9YgkgruKPwKGWnwaTQ==",
+                "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+            },
+            {
+                "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+                "sig": "MEUCIA6rdBeyMUYGlWsXiA677EMpcfKcLLl4wKSsUjCV4ILmAiEAmhN3keiX3UZkveFLbz6YZKWB1P82e9k6lb0qDq6z2oM="
+            }
+        ],
+        "attestations": {
+            "url": "https://registry.npmjs.org/-/npm/v1/attestations/@lingyzh%2fui@0.6.4",
+            "provenance": {
+                "predicateType": "https://slsa.dev/provenance/v1"
+            }
+        },
+        "unpackedSize": 4807049
+    },
+    "sourceMatches": [
+        "src/ui/button-colors.ts",
+        "src/ui/theme.ts",
+        "src/ui/tokens.css",
+        "src/ui/DataTableCore.vue",
+        "src/ui/docs/ThemePaletteDemo.vue",
+        "src/ui/docs/table-examples/loading.vue"
+    ],
+    "validation": {
+        "typecheck": "passed",
+        "unitTests": 388,
+        "builds": [
+            "documentation",
+            "library"
+        ],
+        "desktop": {
+            "passed": [
+                "shared fields connect labels and errors; disabled inputs and numeric select values work",
+                "manual tabs skip disabled items, separate arrow focus from activation, and link panels across both axes",
+                "user reduced motion and actual closed event share the same dialog lifecycle",
+                "snackbar supports all six positions, manual close, and independent pointer/focus timer pauses",
+                "all 178 documentation routes render without page overflow",
+                "source preview copies actual sample text and supports wrapping",
+                "mobile documentation search, empty results, navigation dismissal and Escape focus restoration",
+                "built documentation remains within viewport at 200% zoom and 800px window",
+                "select placeholder/disabled values render, validation resets, pointer commit blurs and keyboard retains focus",
+                "tabs indicator animates through intermediate positions and anchors to the vertical trailing edge",
+                "ripple handles pointer and keyboard holds, releases without residue, supports disabling and reduced motion",
+                "card forms, native scroll keyboard handling, spacing utilities and escaped syntax-highlighted Vue code work",
+                "vertical wheel over horizontal-only content scrolls the parent without interception",
+                "overlay scrollbar supports thumb drag, track seek, horizontal overflow and dynamic content resizing",
+                "dense, ghost and square variants compose across fields, tabs, cards, buttons and code blocks",
+                "all seven component pages render independent default/dense/ghost/square demos and source",
+                "pagination handles ellipses, keyboard activation, boundaries and shrinking page counts",
+                "server table requests pages and sorting, resets on page-size change, locks while loading, retries errors and rejects stale demo requests",
+                "documentation API tables use UiTable and fixed headers remain anchored during keyboard scrolling",
+                "standalone data table retains its 1px frame; all four server variants keep one outer frame, zero inner frame, and correct ghost/square styling",
+                "text button hover has no border and uses a translucent state layer on light and dark surfaces; sort uses triangle SVGs"
+            ],
+            "errors": []
+        },
+        "tableLoading": "18 checks passed",
+        "palette": "six themes and CSS-only passed",
+        "docs": "12 checks passed"
+    }
+}

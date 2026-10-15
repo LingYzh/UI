@@ -1,5 +1,7 @@
 # UI 0.6.4
 
+发布提交 `c1f779a282b63afbc12d1de7a089241174e0678b`，标签 `v0.6.4`，[Actions](https://github.com/LingYzh/UI/actions/runs/38704665688) 成功；官方latest与版本均已核实0.6.4。573文件tarball的SHA1/SHA512与registry一致，六份关键源码与标签匹配。详见 [完整发布证据](RELEASE-0.6.4-evidence.json)。
+
 ## 本次变化
 
 - 表格默认加载条复用 UProgressLinear，保留普通/服务端/虚拟/树表的颜色、位置、3px高度、插槽与busy语义，修正独立缩放动画与线性进度不一致。
