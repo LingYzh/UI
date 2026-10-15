@@ -1,5 +1,11 @@
 # npm 发布记忆
 
+## 2026-10-15：0.6.2 主题色正式发布
+
+- 688a83ed1e8492327ed9687249d97d1b052556e1/v0.6.2原子推送；Actions38678894254/job116238672876全部成功并完成OIDC发布。官方安装元数据latest/version0.6.2，tarball571文件，SHA1 b6584410f54d8e5df8b470fb31d0546cb07fcece，完整SHA512和源码核对见docs/RELEASE-0.6.2-evidence.json。
+- npm完整metadata/版本endpoint曾在Publish成功后仍404/旧latest；安装用Accept:application/vnd.npm.install-v1+json元数据已最新，正常pnpm安装及tarball完整性同时通过。不能因单一缓存视图重复发布。pnpm11不接受--prefer-online，registry/proxy使用命令级--registry和--config.proxy/https-proxy，npm_config_registry环境变量未覆盖本机pnpm镜像配置。
+- 本地完整类型385项/双构建/Electron21组178路由、按钮722与主题Markdown17组通过；包只发布源码，新增主题demo和源代码共571文件，保留既有exports。
+
 ## 2026-10-09：0.5.0 已正式发布，UAH 只读评估完成
 
 main ee8fa4eb88196fa95d9c38b079c6fff215059e54 / v0.5.0 已推送。Actions 37911472623 / job 113757392405 的 Linux 327/327、typecheck、build、Publish 全部成功；签名 provenance 已生成，官方 metadata version/latest=0.5.0、545 文件及 tarball/integrity 已确认，attestation 源提交与 tarball 摘要一致。正式 integrity=sha512-gsuKUvq26X7hB+O1bbise3XbOkVpNNXITD4AFjfi18GiPJRE/qF+EoxtMVEdhYeiRtRvpUYsIBAcGaYCUwaJPQ==。发布后正常 npm 安装正式包，9 项消费检查和 UAH Vite8/TS7 代表性 SFC 构建通过；短暂 E404 传播保留，无重复发布。

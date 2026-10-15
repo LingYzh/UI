@@ -51,4 +51,4 @@ node tests/desktop/theme-palette-docs.mjs
 
 Admin 专项 `scripts/qa/theme-roles.mjs` 检查六个代表页面的明暗配色、两种页签风格、390px用户弹窗、设置默认色、陶土预设/海蓝/浅黄自定义色与真实 Element 兼容控件；相关16项单测通过。Admin 不再次加深所选主色，选回默认陶土色时沿用库内明暗文字。旧页签对主题文字和选中背景的覆盖已移除，旧别名仅引用主题变量。`report.json` 是最终结果，`failure.json` 保留早期检查定位及页签覆盖失败，后者已修复并复跑。
 
-本批尚未提交、推送或发版。NC_Admin 普通开发使用相邻源码时可见；npm 0.6.1、后端开发模式和生产构建仍使用已发布配色，需后续发布并升级才能同步。
+本批已作为0.6.2正式发布，提交688a83e、v0.6.2和Actions38678894254均已核对；官方latest/version、571文件tarball、SHA1/SHA512及关键源码匹配。详见RELEASE-0.6.2-evidence.json。NC_Admin普通开发继续相邻源码，backend/生产通过固定npm0.6.2消费。

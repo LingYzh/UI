@@ -1,0 +1,55 @@
+{
+    "version": "0.6.2",
+    "status": "published_verified",
+    "runtime": "Node.js 24.19.0",
+    "checks": {
+        "typecheck": true,
+        "unit": {
+            "passed": 385,
+            "failed": 0
+        },
+        "docsAndLibraryBuild": true,
+        "electron": {
+            "groups": 21,
+            "routes": 178,
+            "errors": 0,
+            "evidence": "artifacts/ui-VaouZM"
+        },
+        "buttons": {
+            "assertions": 722,
+            "evidence": "artifacts/button-variants-dmBygc"
+        },
+        "themeMarkdown": {
+            "groups": 17,
+            "errors": 0,
+            "evidence": "artifacts/theme-markdown-mhWsqE"
+        },
+        "pack": {
+            "files": 571,
+            "exportsVerified": true,
+            "unexpectedFiles": []
+        }
+    },
+    "publication": {
+        "commit": "688a83ed1e8492327ed9687249d97d1b052556e1",
+        "tag": "v0.6.2",
+        "workflow": "https://github.com/LingYzh/UI/actions/runs/38678894254",
+        "conclusion": "success",
+        "registryLatest": "0.6.2",
+        "tarball": "https://registry.npmjs.org/@lingyzh/ui/-/ui-0.6.2.tgz",
+        "sha1": "b6584410f54d8e5df8b470fb31d0546cb07fcece",
+        "integrity": "sha512-tXpfrASLTjt0qmOrem6Q8KS34PGFy2C3CkFXEfVY8a2jTTWc5DyW5IWBs8BPpTQagI2fu+HWTQEyF3EQi460GA==",
+        "verifiedDownloadedTarball": true,
+        "verifiedChangedSources": [
+            "src/ui/theme-defaults.ts",
+            "src/ui/tokens.css",
+            "src/ui/theme.ts",
+            "src/ui/button-colors.ts",
+            "src/ui/styles.css",
+            "src/ui/docs/docs.css",
+            "src/ui/docs/ThemePaletteDemo.vue",
+            "src/ui/docs/themePaletteContent.js",
+            "src/ui/docs/themeContent.js"
+        ]
+    }
+}

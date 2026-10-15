@@ -1,5 +1,11 @@
 # UI 项目交接
 
+## 2026-10-15：0.6.2 已正式发布
+
+- 发布提交688a83ed1e8492327ed9687249d97d1b052556e1/v0.6.2已原子推送；Actions38678894254完整成功，Linux385项、类型、构建、571文件检查与Publish通过，provenance已签署。
+- 官方安装元数据latest/version=0.6.2；实际tarball的SHA1 b6584410f54d8e5df8b470fb31d0546cb07fcece及SHA512匹配，571白名单文件、全部exports和九个关键源码与标签核对。证据docs/RELEASE-0.6.2-evidence.json；早期完整npm索引404为传播延迟，没有重复发布。
+- 本地完整类型、385项、双构建、Electron21组/178路由、按钮722断言、主题/Markdown17组均通过，Root复核实际明暗截图。Admin已正常安装0.6.2，开发本地alias保持，双分支消费提交验收进行中。
+
 ## 2026-10-15：0.6.2 发布准备
 
 - 用户已授权主题修正提交发版，以及Admin升级npm依赖后同步master/UI_Adapter并推送；普通开发仍本地源码。
